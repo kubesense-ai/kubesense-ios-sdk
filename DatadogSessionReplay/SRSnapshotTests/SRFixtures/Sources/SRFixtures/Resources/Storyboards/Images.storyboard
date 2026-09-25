@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Images View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="Images" id="Y6W-OH-hqX" customClass="ImagesViewController" customModule="SRFixtures" sceneMemberID="viewController">
+                    <view key="view" tag="1" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="xxq-Cw-MRl">
+                                <rect key="frame" x="180.66666666666666" y="67.333333333333329" width="32" height="30.333333333333329"/>
+                                <color key="backgroundColor" red="0.88235294119999996" green="0.8980392157" blue="0.52156862749999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="1vb-jA-kiT"/>
+                                    <constraint firstAttribute="width" constant="32" id="KCk-0l-g6b"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="zQI-BZ-L2g">
+                                <rect key="frame" x="0.0" y="131" width="393" height="428"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="n6y-pj-DAN">
+                                        <rect key="frame" x="90.666666666666686" y="0.0" width="212" height="60"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jcb-O5-2mM">
+                                                <rect key="frame" x="0.0" y="0.33333333333333215" width="60" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemRedColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="HJk-5C-6yC"/>
+                                                    <constraint firstAttribute="height" constant="60" id="WsJ-yB-EEv"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Fgp-KK-Ke7">
+                                                <rect key="frame" x="75.999999999999986" y="0.33333333333333215" width="60.000000000000014" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemOrangeColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="5Mm-VS-B0n"/>
+                                                    <constraint firstAttribute="width" constant="60" id="d5l-gr-b9s"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Rik-nq-iMy">
+                                                <rect key="frame" x="152" y="0.33333333333333215" width="60" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="RTB-lF-xFo"/>
+                                                    <constraint firstAttribute="width" constant="60" id="lBc-SD-VDw"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="wRN-n5-SFz">
+                                        <rect key="frame" x="90.666666666666686" y="92" width="212" height="60"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="9qF-XG-XC7">
+                                                <rect key="frame" x="0.0" y="0.33333333333333215" width="60" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemOrangeColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="D4p-wX-cAR"/>
+                                                    <constraint firstAttribute="height" constant="60" id="OR5-VA-iKs"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="wWC-qT-tCu">
+                                                <rect key="frame" x="75.999999999999986" y="0.33333333333333215" width="60.000000000000014" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="KVO-nL-h1p"/>
+                                                    <constraint firstAttribute="height" constant="60" id="LEa-60-E9c"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Iso-5C-C33">
+                                                <rect key="frame" x="152" y="0.33333333333333215" width="60" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemGreenColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="7BE-o3-YdX"/>
+                                                    <constraint firstAttribute="width" constant="60" id="TVg-sz-r2T"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="qpo-uE-LXg">
+                                        <rect key="frame" x="90.666666666666686" y="184" width="212" height="60"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="lYB-g3-TyJ">
+                                                <rect key="frame" x="0.0" y="0.33333333333333215" width="60" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemYellowColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="MbE-d9-apI"/>
+                                                    <constraint firstAttribute="height" constant="60" id="wch-Ab-vni"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="7U1-O7-lco">
+                                                <rect key="frame" x="75.999999999999986" y="0.33333333333333215" width="60.000000000000014" height="58.333333333333343"/>
+                                                <color key="tintColor" systemColor="systemGreenColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="52P-KT-QxO"/>
+                                                    <constraint firstAttribute="width" constant="60" id="hwX-kQ-z79"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottomRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applelogo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="cEK-CH-9GB">
+                                                <rect key="frame" x="152" y="0.33333333333333215" width="60" height="58.333333333333343"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="7ZE-pY-DhO"/>
+                                                    <constraint firstAttribute="height" constant="60" id="I1U-uF-b2q"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="sNB-oY-maF">
+                                        <rect key="frame" x="84.666666666666686" y="276" width="224" height="60"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dd_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Fqh-W8-08U">
+                                                <rect key="frame" x="0.0" y="0.0" width="64" height="60"/>
+                                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" systemColor="systemIndigoColor"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dd_logo" translatesAutoresizingMaskIntoConstraints="NO" id="0a4-O8-EYV">
+                                                <rect key="frame" x="79.999999999999986" y="0.0" width="64.000000000000014" height="60"/>
+                                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dd_logo" translatesAutoresizingMaskIntoConstraints="NO" id="wYw-V1-M80">
+                                                <rect key="frame" x="160" y="0.0" width="64" height="60"/>
+                                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" systemColor="systemGreenColor"/>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="MAt-Kt-8CE">
+                                        <rect key="frame" x="108.66666666666669" y="368" width="176" height="60"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vKz-Ut-7bS">
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="60"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" systemColor="systemIndigoColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="80" id="PD8-Q7-Hmr"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lus-kO-cFd">
+                                                <rect key="frame" x="96" y="0.0" width="80" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="79.999999999999972" id="97u-JO-CUS"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IgI-MW-YYv" userLabel="Content aspect fill Width Image View">
+                                                <rect key="frame" x="192" y="0.0" width="80" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="79.999999999999972" id="5PA-6h-mCw"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SKa-QT-ujY" userLabel="Content aspect fill Height Image View">
+                                                <rect key="frame" x="288" y="0.0" width="80" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="79.999999999999972" id="aW8-hV-vIK"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KxN-zV-mGU">
+                                <rect key="frame" x="260.66666666666669" y="53" width="116.33333333333331" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="HaR-cP-xUI"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button" image="face.dashed.fill" catalog="system">
+                                    <color key="titleColor" name="AccentColor"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="KxN-zV-mGU" secondAttribute="trailing" constant="16" id="Cj8-dU-3FG"/>
+                            <constraint firstItem="zQI-BZ-L2g" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="OAe-l4-L39"/>
+                            <constraint firstItem="xxq-Cw-MRl" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="OTN-dD-tUV"/>
+                            <constraint firstItem="zQI-BZ-L2g" firstAttribute="top" secondItem="xxq-Cw-MRl" secondAttribute="bottom" constant="32" id="SQh-2j-ine"/>
+                            <constraint firstItem="KxN-zV-mGU" firstAttribute="leading" secondItem="xxq-Cw-MRl" secondAttribute="trailing" constant="48" id="VVE-7k-3Tk"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="zQI-BZ-L2g" secondAttribute="trailing" id="Wjg-fd-LWW"/>
+                            <constraint firstItem="xxq-Cw-MRl" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="8" id="jIN-YZ-8QX"/>
+                            <constraint firstItem="KxN-zV-mGU" firstAttribute="centerY" secondItem="xxq-Cw-MRl" secondAttribute="centerY" id="wlR-Fb-T22"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="contentHeightAspectFillImageView" destination="SKa-QT-ujY" id="CsL-Vm-0tH"/>
+                        <outlet property="contentImageView" destination="lus-kO-cFd" id="Uch-4j-NpS"/>
+                        <outlet property="contentWidthAspectFillImageView" destination="IgI-MW-YYv" id="sWc-Pk-HD1"/>
+                        <outlet property="customButton" destination="KxN-zV-mGU" id="zX2-X5-J8J"/>
+                        <outlet property="customImageView" destination="vKz-Ut-7bS" id="aJg-Sy-OrB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="130.53435114503816" y="-28.169014084507044"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="applelogo" catalog="system" width="105" height="128"/>
+        <image name="dd_logo" width="64" height="74"/>
+        <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803921568627" green="0.33725490196078434" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

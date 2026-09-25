@@ -1,0 +1,431 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+import XCTest
+import DatadogInternal
+@testable import DatadogRUM
+@testable import TestUtilities
+
+class RUMFeatureOperationManagerTests: XCTestCase {
+    private var manager: RUMFeatureOperationManager! // swiftlint:disable:this implicitly_unwrapped_optional
+    private var mockParent: RUMContextProviderMock! // swiftlint:disable:this implicitly_unwrapped_optional
+    private var mockDependencies: RUMScopeDependencies! // swiftlint:disable:this implicitly_unwrapped_optional
+    private var mockWriter: FileWriterMock! // swiftlint:disable:this implicitly_unwrapped_optional
+    private var mockContext: DatadogContext! // swiftlint:disable:this implicitly_unwrapped_optional
+
+    override func setUp() {
+        super.setUp()
+        mockParent = RUMContextProviderMock()
+        mockDependencies = RUMScopeDependencies.mockAny()
+        mockWriter = FileWriterMock()
+        mockContext = DatadogContext.mockAny()
+
+        manager = RUMFeatureOperationManager(
+            parent: mockParent,
+            dependencies: mockDependencies,
+            sessionSampler: .mockKeepAll()
+        )
+    }
+
+    override func tearDown() {
+        manager = nil
+        mockParent = nil
+        mockDependencies = nil
+        mockWriter = nil
+        mockContext = nil
+        super.tearDown()
+    }
+
+    // MARK: - Process Command Tests
+
+    func testFeatureOperationCommand_CreatesVitalEvent() throws {
+        // Given
+        let command = RUMOperationStepVitalCommand.mockRandom()
+        let view: RUMViewScope = .mockAny()
+        let quotaReason: DDProfiling.QuotaReason = .mockRandom()
+
+        // When
+        mockContext.set(additionalContext: ProfilingContext(status: .running, quotaReason: quotaReason))
+        manager.process(
+            command,
+            context: mockContext,
+            writer: mockWriter,
+            activeView: view
+        )
+
+        // Then
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, 1)
+
+        let event = try XCTUnwrap(vitalEvents.first)
+        // View properties
+        XCTAssertEqual(event.view.id, view.viewUUID.toRUMDataFormat)
+        XCTAssertEqual(event.view.url, view.viewPath)
+
+        // Common properties
+        XCTAssertNil(event.account)
+        XCTAssertNil(event.buildId)
+        XCTAssertNotNil(event.buildVersion)
+        XCTAssertNil(event.ciTest)
+        XCTAssertNotNil(event.connectivity)
+        XCTAssertNil(event.container)
+        XCTAssertNotNil(event.context)
+        XCTAssertNotNil(event.ddtags)
+        XCTAssertNotNil(event.device)
+        XCTAssertNil(event.display)
+        XCTAssertNotNil(event.os)
+        XCTAssertNotNil(event.service)
+        XCTAssertEqual(event.source, .ios)
+        XCTAssertNil(event.synthetics)
+        XCTAssertNil(event.usr)
+        XCTAssertNotNil(event.version)
+
+        // Operation Step specific properties
+        let vital = event.vital
+        XCTAssertEqual(vital.type, "operation_step")
+        XCTAssertEqual(vital.id, command.vitalId)
+        XCTAssertEqual(vital.name, command.name)
+        XCTAssertEqual(vital.operationKey, command.operationKey)
+        XCTAssertEqual(vital.stepType, command.stepType)
+        XCTAssertEqual(vital.failureReason, command.failureReason)
+        XCTAssertNil(vital.vitalDescription)
+
+        // Profiling Status
+        XCTAssertEqual(event.dd.profiling?.status, .running)
+        XCTAssertEqual(event.dd.profiling?.quotaReason, quotaReason)
+    }
+
+    func testFeatureOperationCommand_sanitizesContextAttributesBeforeWriting() throws {
+        // Given
+        let numberOfAttributes = AttributesSanitizer.Constraints.maxNumberOfAttributes * 2
+        let attributes = Dictionary(
+            uniqueKeysWithValues: (0..<numberOfAttributes).map { ("attribute-\($0)", String.mockAny()) }
+        )
+        let command: RUMOperationStepVitalCommand = .mockWith(attributes: attributes)
+
+        // When
+        manager.process(command, context: mockContext, writer: mockWriter, activeView: .mockAny())
+
+        // Then
+        let event = try XCTUnwrap(mockWriter.events(ofType: RUMVitalOperationStepEvent.self).first)
+        XCTAssertEqual(event.context?.contextInfo.count, AttributesSanitizer.Constraints.maxNumberOfAttributes)
+    }
+
+    func testFeatureOperationCommand_sendsOperationMessageWithServerTimeOffset() throws {
+        // Given
+        let featureScope = FeatureScopeMock()
+        mockDependencies = .mockWith(featureScope: featureScope)
+        manager = RUMFeatureOperationManager(
+            parent: mockParent,
+            dependencies: mockDependencies,
+            sessionSampler: .mockKeepAll()
+        )
+        mockContext.serverTimeOffset = 2
+        let command: RUMOperationStepVitalCommand = .mockWith(
+            stepType: .start,
+            options: ProfilingOptions(sampleRate: .maxSampleRate),
+            time: Date()
+        )
+
+        // When
+        manager.process(command, context: mockContext, writer: mockWriter, activeView: .mockAny())
+
+        // Then
+        let message = try XCTUnwrap(
+            featureScope.messagesSent().compactMap { $0.asPayload as? OperationMessage }.first
+        )
+        XCTAssertEqual(message.operation.serverTimeOffset, mockContext.serverTimeOffset)
+        XCTAssertEqual(message.operation.date, command.time)
+
+        let event = try XCTUnwrap(mockWriter.events(ofType: RUMVitalOperationStepEvent.self).first)
+        XCTAssertEqual(
+            event.date,
+            command.time
+                .addingTimeInterval(mockContext.serverTimeOffset)
+                .timeIntervalSince1970.dd.toInt64Milliseconds
+        )
+    }
+
+    func testProcess_MultipleOperations_CreatesCorrectNumberOfEvents() {
+        // Given
+        let commandCount = Int.random(in: 1...10)
+        let commands = Array(repeating: RUMOperationStepVitalCommand.mockRandom(), count: commandCount)
+        let view: RUMViewScope = .mockAny()
+
+        commands.forEach { command in
+            manager.process(
+                command,
+                context: mockContext,
+                writer: mockWriter,
+                activeView: view
+            )
+        }
+
+        // Then
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, commands.count)
+
+        for (index, operation) in commands.enumerated() {
+            let event = vitalEvents[index]
+            XCTAssertEqual(event.view.id, view.viewUUID.toRUMDataFormat)
+            XCTAssertEqual(event.view.url, view.viewPath)
+
+            let vital = event.vital
+            XCTAssertEqual(vital.type, "operation_step")
+            XCTAssertEqual(vital.id, operation.vitalId)
+            XCTAssertEqual(vital.name, operation.name)
+            XCTAssertEqual(vital.operationKey, operation.operationKey)
+            XCTAssertEqual(vital.stepType, operation.stepType)
+            XCTAssertEqual(vital.failureReason, operation.failureReason)
+            XCTAssertNil(vital.vitalDescription)
+        }
+    }
+
+    // MARK: - Edge Cases Tests
+
+    // Blank / empty names are rejected: the backend rejects them with its
+    // own non-empty precondition, so the SDK drops client-side to match.
+    private let invalidNames = ["", " ", "\n", "\t", "   \n\t  "]
+    func testProcess_OperationWithInvalidName_DoesNotCreateVitalEvent() {
+        // Given
+        for invalidName in invalidNames {
+            let command = RUMOperationStepVitalCommand.mockWith(name: invalidName)
+
+            // When
+            manager.process(
+                command,
+                context: mockContext,
+                writer: mockWriter,
+                activeView: .mockAny()
+            )
+        }
+
+        // Then
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, 0)
+    }
+
+    // Names containing characters outside the schema facet-path set
+    // (letters / digits / - _ . @ $). All must be rejected at the API boundary.
+    private let invalidCharacterSetNames = [
+        "user login",     // space
+        "api/v1",         // slash
+        "checkout:step",  // colon
+        "a,b",            // comma
+        "a+b",            // plus
+        "login!",         // bang
+        "login\ttwo",     // tab
+        "ログイン",         // Unicode
+        "login🔐",         // emoji
+    ]
+
+    func testProcess_OperationWithNameOutsideSchemaCharacterSet_StillCreatesVitalEvent() {
+        // Names outside the schema facet-path set are warned about but still
+        // emitted — the backend is the source of truth on character-set policy,
+        // so client-side drop would force an SDK bump if the rule were relaxed.
+        let dd = DD.mockWith(logger: CoreLoggerMock())
+        defer { dd.reset() }
+
+        for invalidName in invalidCharacterSetNames {
+            let command = RUMOperationStepVitalCommand.mockWith(name: invalidName)
+
+            // When
+            manager.process(
+                command,
+                context: mockContext,
+                writer: mockWriter,
+                activeView: .mockAny()
+            )
+        }
+
+        // Then — every event is emitted; the name is preserved verbatim.
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, invalidCharacterSetNames.count)
+        for (emitted, expected) in zip(vitalEvents, invalidCharacterSetNames) {
+            XCTAssertEqual(emitted.vital.name, expected)
+        }
+
+        // A warning is logged for each non-conforming name.
+        XCTAssertEqual(dd.logger.warnMessages.count, invalidCharacterSetNames.count)
+        for (message, name) in zip(dd.logger.warnMessages, invalidCharacterSetNames) {
+            XCTAssertTrue(message.contains(name), "Expected warning to mention '\(name)', got: \(message)")
+        }
+    }
+
+    func testProcess_OperationWithNameInSchemaCharacterSet_CreatesVitalEvent() {
+        // Given — exercises every allowed character class
+        let dd = DD.mockWith(logger: CoreLoggerMock())
+        defer { dd.reset() }
+
+        let validNames = ["login", "step42", "login-v2", "user_login", "login.v2", "login@prod", "login$1", "LoginV2"]
+        for validName in validNames {
+            let command = RUMOperationStepVitalCommand.mockWith(name: validName)
+
+            // When
+            manager.process(
+                command,
+                context: mockContext,
+                writer: mockWriter,
+                activeView: .mockAny()
+            )
+        }
+
+        // Then — every event is emitted and no warnings are produced.
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, validNames.count)
+        XCTAssertNil(dd.logger.warnLog)
+    }
+
+    func testProcess_OperationKeyOutsideNameCharacterSet_CreatesVitalEvent() {
+        // operation_key has no character-set restriction in the schema.
+        let command = RUMOperationStepVitalCommand.mockWith(name: "login", operationKey: "user foo / bar")
+
+        // When
+        manager.process(
+            command,
+            context: mockContext,
+            writer: mockWriter,
+            activeView: .mockAny()
+        )
+
+        // Then
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, 1)
+    }
+
+    func testProcess_OperationWithBlankOperationKey_LogsWarningAndCreatesVitalEvent() throws {
+        // operationKey is optional — a blank value warns but does not discard the event.
+        let dd = DD.mockWith(logger: CoreLoggerMock())
+        defer { dd.reset() }
+
+        for invalidOpKey in invalidNames {
+            let command = RUMOperationStepVitalCommand.mockWith(name: .mockAny(), operationKey: invalidOpKey)
+
+            // When
+            manager.process(
+                command,
+                context: mockContext,
+                writer: mockWriter,
+                activeView: .mockAny()
+            )
+        }
+
+        // Then — events are emitted and a warning is logged for each blank key.
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, invalidNames.count)
+        XCTAssertEqual(dd.logger.warnMessages.count, invalidNames.count)
+        let warnMessage = try XCTUnwrap(dd.logger.warnLog?.message)
+        XCTAssertTrue(warnMessage.contains("operationKey"), "Expected warning to mention 'operationKey', got: \(warnMessage)")
+    }
+
+    // MARK: Warning Logs Tests
+
+    func testProcess_OperationUpdateWithoutStart_LogsWarning() throws {
+        // Given
+        let dd = DD.mockWith(logger: CoreLoggerMock())
+        defer { dd.reset() }
+        let operationName: String = .mockRandom()
+        let stepType = [
+            RUMVitalOperationStepEvent.Vital.StepType.end,
+            RUMVitalOperationStepEvent.Vital.StepType.retry,
+            RUMVitalOperationStepEvent.Vital.StepType.update
+        ].randomElement()!
+        let command = RUMOperationStepVitalCommand.mockWith(
+            name: operationName,
+            operationKey: nil,
+            stepType: stepType
+        )
+
+        // When
+        manager.process(command, context: mockContext, writer: mockWriter, activeView: .mockAny())
+
+        // Then
+        let logMessage = try XCTUnwrap(dd.logger.warnLog?.message)
+        XCTAssertEqual(logMessage, "`\(stepType.rawValue)` was called, but operation `\(operationName)` is currently not active. This may lead to a backend `instrumentation_error`. Make sure to call `startOperation(name:operationKey:attributes:options:)` first. Note that the SDK only tracks operations locally and not across sessions.")
+    }
+
+    func testProcess_OperationStartTwice_LogsWarning() throws {
+        // Given
+        let dd = DD.mockWith(logger: CoreLoggerMock())
+        defer { dd.reset() }
+        let operationName: String = .mockRandom()
+        let operationKey: String = .mockAny()
+        let startCommand1 = RUMOperationStepVitalCommand.mockWith(
+            name: operationName,
+            operationKey: operationKey,
+            stepType: .start
+        )
+        let startCommand2 = RUMOperationStepVitalCommand.mockWith(
+            name: operationName,
+            operationKey: operationKey,
+            stepType: .start
+        )
+
+        // When
+        manager.process(startCommand1, context: mockContext, writer: mockWriter, activeView: .mockAny())
+        manager.process(startCommand2, context: mockContext, writer: mockWriter, activeView: .mockAny())
+
+        // Then
+        let logMessage = try XCTUnwrap(dd.logger.warnLog?.message)
+        XCTAssertEqual(logMessage, "Operation `\(operationName)` (key `\(operationKey)`) has already been started. This may result in the backend terminating the previous instance with an `auto_restart` failure. Note that the SDK only tracks operations locally and not across sessions.")
+    }
+
+    func testProcess_ValidOperationFlow_NoWarnings() {
+        // Given
+        let dd = DD.mockWith(logger: CoreLoggerMock())
+        defer { dd.reset() }
+        let startCommand = RUMOperationStepVitalCommand.mockWith(stepType: .start)
+        let endCommand = RUMOperationStepVitalCommand.mockWith(stepType: .end)
+
+        // When
+        manager.process(startCommand, context: mockContext, writer: mockWriter, activeView: .mockAny())
+        manager.process(endCommand, context: mockContext, writer: mockWriter, activeView: .mockAny())
+
+        // Then
+        XCTAssertNil(dd.logger.warnLog)
+    }
+
+    // MARK: - Synthetics Test ID Tests
+
+    func testProcess_WithSyntheticsTestId_IncludesSyntheticsInVitalEvent() throws {
+        // Given
+        let fakeSyntheticsTestId: String = .mockRandom()
+        let fakeSyntheticsResultId: String = .mockRandom()
+        let syntheticsTest = RUMSyntheticsTest(
+            injected: nil,
+            resultId: fakeSyntheticsResultId,
+            testId: fakeSyntheticsTestId,
+            syntheticsInfo: [:]
+        )
+
+        mockDependencies = RUMScopeDependencies.mockWith(syntheticsTest: syntheticsTest)
+        manager = RUMFeatureOperationManager(
+            parent: mockParent,
+            dependencies: mockDependencies,
+            sessionSampler: .mockKeepAll()
+        )
+
+        let command = RUMOperationStepVitalCommand.mockRandom()
+        let view: RUMViewScope = .mockAny()
+
+        // When
+        manager.process(
+            command,
+            context: mockContext,
+            writer: mockWriter,
+            activeView: view
+        )
+
+        // Then
+        let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
+        XCTAssertEqual(vitalEvents.count, 1)
+
+        let event = try XCTUnwrap(vitalEvents.first)
+        XCTAssertEqual(event.synthetics?.testId, fakeSyntheticsTestId)
+        XCTAssertEqual(event.synthetics?.resultId, fakeSyntheticsResultId)
+        XCTAssertEqual(event.synthetics?.injected, nil)
+    }
+}

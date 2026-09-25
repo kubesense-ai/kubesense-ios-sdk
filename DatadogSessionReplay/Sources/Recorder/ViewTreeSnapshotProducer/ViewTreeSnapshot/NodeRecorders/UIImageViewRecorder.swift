@@ -1,0 +1,188 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+#if os(iOS)
+import UIKit
+
+internal struct UIImageViewRecorder: NodeRecorder {
+    internal let identifier: UUID
+
+    private let tintColorProvider: (UIImageView) -> UIColor?
+    private let shouldRecordImagePredicateOverride: ((UIImageView) -> Bool)?
+    /// An option for overriding default semantics from parent recorder.
+    var semanticsOverride: (UIImageView, ViewAttributes) -> NodeSemantics? = { imageView, _ in
+        return imageView.isSystemShadow ? IgnoredElement(subtreeStrategy: .ignore) : nil
+    }
+
+    internal init(
+        identifier: UUID,
+        tintColorProvider: @escaping (UIImageView) -> UIColor? = { imageView in
+            if let image = imageView.image {
+                return image.isTinted ? imageView.tintColor : nil
+            } else {
+                return nil
+            }
+        },
+        shouldRecordImagePredicateOverride: ((UIImageView) -> Bool)? = nil
+    ) {
+        self.identifier = identifier
+        self.tintColorProvider = tintColorProvider
+        self.shouldRecordImagePredicateOverride = shouldRecordImagePredicateOverride
+    }
+
+    func semantics(
+        of view: UIView,
+        with attributes: ViewAttributes,
+        in context: ViewTreeRecordingContext
+    ) -> NodeSemantics? {
+        guard let imageView = view as? UIImageView else {
+            return nil
+        }
+        if let semantics = semanticsOverride(imageView, attributes) {
+            return semantics
+        }
+
+        guard attributes.hasAnyAppearance || imageView.image != nil else {
+            return InvisibleElement.constant
+        }
+
+        let ids = context.ids.nodeIDs(2, view: imageView, nodeRecorder: self)
+        let contentFrame = imageView.image.map {
+            attributes.frame.dd.contentFrame(
+                for: $0.size,
+                using: imageView.contentMode
+            )
+        }
+
+        let shouldRecordImage = if let shouldRecordImagePredicateOverride {
+            shouldRecordImagePredicateOverride(imageView)
+        } else {
+            attributes.resolveImagePrivacyLevel(in: context).shouldRecordImagePredicate(imageView)
+        }
+        let imageResource = shouldRecordImage ? imageView.image.map { image in
+            UIImageResource(image: image, tintColor: tintColorProvider(imageView))
+        } : nil
+
+        let builder = UIImageViewWireframesBuilder(
+            wireframeID: ids[0],
+            imageWireframeID: ids[1],
+            attributes: attributes,
+            contentFrame: contentFrame,
+            imageResource: imageResource,
+            imagePrivacyLevel: context.recorder.imagePrivacy
+        )
+        let node = Node(viewAttributes: attributes, wireframesBuilder: builder)
+        return SpecificElement(
+           subtreeStrategy: .record,
+           nodes: [node]
+       )
+    }
+}
+
+internal struct UIImageViewWireframesBuilder: NodeWireframesBuilder {
+    let wireframeID: WireframeID
+
+    var wireframeRect: CGRect {
+        attributes.frame
+    }
+
+    let imageWireframeID: WireframeID
+
+    let attributes: ViewAttributes
+
+    let contentFrame: CGRect?
+
+    let imageResource: UIImageResource?
+
+    let imagePrivacyLevel: ImagePrivacyLevel
+
+    func buildWireframes(with builder: WireframesBuilder) -> [SRWireframe] {
+        var wireframes = [
+            builder.createShapeWireframe(
+                id: wireframeID,
+                frame: attributes.frame,
+                clip: attributes.clip,
+                borderColor: attributes.layerBorderColor,
+                borderWidth: attributes.layerBorderWidth,
+                backgroundColor: attributes.backgroundColor,
+                cornerRadius: attributes.layerCornerRadius,
+                opacity: attributes.alpha
+            )
+        ]
+
+        guard let contentFrame else {
+            return wireframes
+        }
+
+        if let imageResource {
+            wireframes.append(
+                builder.createImageWireframe(
+                    id: imageWireframeID,
+                    resource: imageResource,
+                    frame: contentFrame,
+                    clip: attributes.clip
+                )
+            )
+        } else {
+            wireframes.append(
+                builder.createPlaceholderWireframe(
+                    id: imageWireframeID,
+                    frame: attributes.clip.intersection(contentFrame), // = visible frame of the image
+                    clip: attributes.clip,
+                    label: imagePrivacyLevel == .maskNonBundledOnly ? "Content Image" : "Image"
+                )
+            )
+        }
+
+        return wireframes
+    }
+}
+
+fileprivate extension UIImageView {
+    var isSystemControlBackground: Bool {
+        return isButtonBackground || isBarBackground
+    }
+
+    var isSystemShadow: Bool {
+        let className = "\(type(of: self))"
+        // This gets effective on iOS 15.0+ which is the earliest version that displays some elements in popover views.
+        // Here we explicitly ignore the "shadow" effect applied to popover.
+        return className == "_UICutoutShadowView"
+    }
+
+    var isButtonBackground: Bool {
+        if let button = superview as? UIButton, button.buttonType == .custom {
+            return button.backgroundImage(for: button.state) == image
+        }
+        return false
+    }
+
+    var isBarBackground: Bool {
+        guard let superview = superview else {
+            return false
+        }
+        let superViewType = "\(type(of: superview))"
+        return superViewType == "_UIBarBackground"
+    }
+}
+
+fileprivate extension ImagePrivacyLevel {
+    var shouldRecordImagePredicate: (UIImageView) -> Bool {
+        switch self {
+        case .maskNone: return { _ in true }
+        case .maskNonBundledOnly: return { imageView in
+            if let image = imageView.image {
+                return image.isContextual || imageView.isSystemControlBackground
+            } else {
+                return false
+            }
+        }
+        case .maskAll:
+            return { _ in false }
+        }
+    }
+}
+#endif

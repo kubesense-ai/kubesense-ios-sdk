@@ -1,0 +1,314 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+import XCTest
+import TestUtilities
+import DatadogInternal
+
+@_spi(Internal)
+@testable import DatadogFlags
+
+final class ExposureLoggerTests: XCTestCase {
+    private let featureScope = FeatureScopeMock()
+
+    func testLogExposure() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(now: .mockAny()),
+            featureScope: featureScope
+        )
+
+        let serverTimeOffset: TimeInterval = 1
+        featureScope.contextMock.serverTimeOffset = serverTimeOffset
+
+        // When
+        logger.logExposure(
+            for: "some-flag",
+            assignment: .init(
+                allocationKey: "allocation-123",
+                variationKey: "variation-123",
+                variation: .mockAnyBoolean(),
+                reason: .mockAny(),
+                doLog: true
+            ),
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(
+            featureScope.exposureEventsWritten,
+            [
+                .init(
+                    timestamp: Date.mockAny()
+                        .addingTimeInterval(serverTimeOffset)
+                        .timeIntervalSince1970
+                        .dd.toInt64Milliseconds,
+                    allocation: .init(key: "allocation-123"),
+                    flag: .init(key: "some-flag"),
+                    variant: .init(key: "variation-123"),
+                    serialID: nil,
+                    subject: .init(id: .mockAny(), attributes: .mockAny())
+                )
+            ]
+        )
+    }
+
+    func testLogExposureWithSerialID() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(now: .mockAny()),
+            featureScope: featureScope
+        )
+
+        // When
+        logger.logExposure(
+            for: "some-flag",
+            assignment: .init(
+                allocationKey: "allocation-123",
+                variationKey: "variation-123",
+                variation: .mockAnyBoolean(),
+                reason: .mockAny(),
+                doLog: true,
+                serialID: 0
+            ),
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(
+            featureScope.exposureEventsWritten,
+            [
+                .init(
+                    timestamp: Date.mockAny().timeIntervalSince1970.dd.toInt64Milliseconds,
+                    allocation: .init(key: "allocation-123"),
+                    flag: .init(key: "some-flag"),
+                    variant: .init(key: "variation-123"),
+                    serialID: 0,
+                    subject: .init(id: .mockAny(), attributes: .mockAny())
+                )
+            ]
+        )
+    }
+
+    func testLogExposureSerialIDAppearing() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+        let assignment1 = FlagAssignment.mockAnyBoolean()
+        var assignment2 = assignment1
+        assignment2.serialID = 0
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: assignment1,
+            evaluationContext: .mockAny()
+        )
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: assignment2,
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(
+            featureScope.exposureEventsWritten.map(\.serialID),
+            [nil, 0],
+            "A serial id appearing on an otherwise unchanged assignment should not be deduplicated"
+        )
+    }
+
+    func testLogExposureLoggingDisabled() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: .mockAnyBoolean(doLog: false),
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertTrue(featureScope.eventsWritten.isEmpty)
+    }
+
+    func testLogExposureDeduplication() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: .mockAnyBoolean(),
+            evaluationContext: .mockAny()
+        )
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: .mockAnyBoolean(),
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(featureScope.eventsWritten.count, 1)
+    }
+
+    func testLogExposureDifferentVariation() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+        let assignment1 = FlagAssignment.mockAnyBoolean()
+        var assignment2 = assignment1
+        assignment2.variationKey = "other-variation"
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: assignment1,
+            evaluationContext: .mockAny()
+        )
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: assignment2,
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(featureScope.eventsWritten.count, 2, "Same flag with different variation should be not deduplicated")
+    }
+
+    func testLogExposureDifferentAllocation() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+        let assignment1 = FlagAssignment.mockAnyBoolean()
+        var assignment2 = assignment1
+        assignment2.allocationKey = "other-allocation"
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: assignment1,
+            evaluationContext: .mockAny()
+        )
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: assignment2,
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(featureScope.eventsWritten.count, 2, "Same flag with different allocation should be not deduplicated")
+    }
+
+    func testLogExposureAssignmentCycle() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+        let evaluationContext = FlagsEvaluationContext(
+            targetingKey: "target-1",
+            attributes: .mockAny()
+        )
+        var assignmentA = FlagAssignment.mockAnyBoolean()
+        assignmentA.allocationKey = "allocation-a"
+        assignmentA.variationKey = "variation-a"
+        var assignmentB = assignmentA
+        assignmentB.allocationKey = "allocation-b"
+        assignmentB.variationKey = "variation-b"
+
+        // When
+        logger.logExposure(
+            for: "flag-1",
+            assignment: assignmentA,
+            evaluationContext: evaluationContext
+        )
+        logger.logExposure(
+            for: "flag-1",
+            assignment: assignmentB,
+            evaluationContext: evaluationContext
+        )
+        logger.logExposure(
+            for: "flag-1",
+            assignment: assignmentA,
+            evaluationContext: evaluationContext
+        )
+
+        // Then
+        XCTAssertEqual(
+            featureScope.eventsWritten.count,
+            3,
+            "Assignment changes should emit exposures, including cycles back to a previous assignment"
+        )
+    }
+
+    func testLogExposureDifferentFlag() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: .mockAnyBoolean(),
+            evaluationContext: .mockAny()
+        )
+        logger.logExposure(
+            for: "other-flag",
+            assignment: .mockAnyBoolean(),
+            evaluationContext: .mockAny()
+        )
+
+        // Then
+        XCTAssertEqual(featureScope.eventsWritten.count, 2, "Different flags should be not deduplicated")
+    }
+
+    func testLogExposureDifferentTargeting() {
+        // Given
+        let logger = ExposureLogger(
+            dateProvider: DateProviderMock(),
+            featureScope: featureScope
+        )
+
+        // When
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: .mockAnyBoolean(),
+            evaluationContext: .mockAny()
+        )
+        logger.logExposure(
+            for: .mockAny(),
+            assignment: .mockAnyBoolean(),
+            evaluationContext: .init(targetingKey: "other-targeting", attributes: .mockAny())
+        )
+
+        // Then
+        XCTAssertEqual(featureScope.eventsWritten.count, 2, "Same flag with different targeting should be not deduplicated")
+    }
+}
+
+extension FeatureScopeMock {
+    fileprivate var exposureEventsWritten: [ExposureEvent] {
+        eventsWritten.compactMap {
+            $0 as? ExposureEvent
+        }
+    }
+}

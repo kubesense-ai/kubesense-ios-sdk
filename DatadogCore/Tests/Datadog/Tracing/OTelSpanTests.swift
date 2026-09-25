@@ -1,0 +1,163 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+import XCTest
+import TestUtilities
+import DatadogInternal
+import OpenTelemetryApi
+
+@testable import DatadogLogs
+@testable import DatadogTrace
+
+final class OTelSpanTests: XCTestCase {
+    func testAddEvent() {
+        let core = DatadogCoreProxy()
+        defer { XCTAssertNoThrow(try core.flushAndTearDown()) }
+
+        Logs.enable(in: core)
+        Trace.enable(in: core)
+
+        // Given
+        OpenTelemetry.registerTracerProvider(
+            tracerProvider: OTelTracerProvider(in: core)
+        )
+
+        let tracer = OpenTelemetry
+            .instance
+            .tracerProvider
+            .get(instrumentationName: "", instrumentationVersion: nil)
+
+        let span = tracer
+            .spanBuilder(spanName: "OperationName")
+            .startSpan()
+
+        // When
+        let attributes: [String: OpenTelemetryApi.AttributeValue] = .leafMock()
+        span.addEvent(name: "Otel Span Event", attributes: attributes, timestamp: Date())
+
+        // Then
+        let logs: [LogEvent] = core.waitAndReturnEvents(ofFeature: LogsFeature.name, ofType: LogEvent.self)
+        XCTAssertEqual(logs.count, 0)
+    }
+
+    func testContextProviderSetActive_givenParentSpan() throws {
+        let core = DatadogCoreProxy()
+        defer { XCTAssertNoThrow(try core.flushAndTearDown())}
+
+        Trace.enable(in: core)
+
+        // Given
+        OpenTelemetry.registerTracerProvider(
+            tracerProvider: OTelTracerProvider(in: core)
+        )
+
+        let tracer = OpenTelemetry
+            .instance
+            .tracerProvider
+            .get(instrumentationName: "", instrumentationVersion: nil)
+
+        let parentSpan = tracer
+            .spanBuilder(spanName: "ParentSpan")
+            .startSpan()
+
+        // When
+        OpenTelemetry.instance.contextProvider.setActiveSpan(parentSpan)
+
+        let childSpan = tracer
+            .spanBuilder(spanName: "ChildSpan")
+            .startSpan()
+
+        childSpan.end()
+        parentSpan.end()
+
+        // Then
+        let spans = try core.waitAndReturnSpanMatchers()
+        XCTAssertEqual(spans.count, 2)
+
+        let childSpanMatcher = spans[0]
+        let parentSpanMatcher = spans[1]
+
+        XCTAssertEqual(try parentSpanMatcher.traceID(), try childSpanMatcher.traceID())
+        XCTAssertEqual(try parentSpanMatcher.spanID(), try childSpanMatcher.parentSpanID())
+    }
+
+    func testAddLink() throws {
+        let core = DatadogCoreProxy()
+        defer { XCTAssertNoThrow(try core.flushAndTearDown()) }
+
+        Trace.enable(in: core)
+
+        // Given
+        OpenTelemetry.registerTracerProvider(
+            tracerProvider: OTelTracerProvider(in: core)
+        )
+
+        let tracer = OpenTelemetry
+            .instance
+            .tracerProvider
+            .get(instrumentationName: "", instrumentationVersion: nil)
+
+        let span1 = tracer
+            .spanBuilder(spanName: "Span 1")
+            .startSpan()
+
+        let span2 = tracer
+            .spanBuilder(spanName: "Span 2")
+            .startSpan()
+
+        // When
+        span1.addLink(spanContext: span2.context, attributes: ["weight": .int(42)])
+
+        span1.end()
+        span2.end()
+
+        // Then
+        let spans = try core.waitAndReturnSpanMatchers()
+        XCTAssertEqual(spans.count, 2)
+
+        let span1Matcher = try XCTUnwrap(spans.first(where: { try $0.operationName() == "Span 1" }))
+        let span2Matcher = try XCTUnwrap(spans.first(where: { try $0.operationName() == "Span 2" }))
+        let linksString = try XCTUnwrap(span1Matcher.meta.links())
+        let links: [[String: AnyDecodable]] = try JSONDecoder().decode([[String: AnyDecodable]].self, from: linksString.utf8Data)
+        XCTAssertEqual(links.count, 1)
+        let firstLink = try XCTUnwrap(links.first)
+
+        XCTAssertEqual(firstLink["trace_id"]?.value as? String, try span2Matcher.traceID()?.toString(representation: .hexadecimal32Chars))
+        XCTAssertEqual(firstLink["span_id"]?.value as? String, try span2Matcher.spanID()?.toString(representation: .hexadecimal16Chars))
+
+        let attributes = try XCTUnwrap(firstLink["attributes"]?.value as? [String: String])
+        XCTAssertEqual(attributes["weight"], "42")
+    }
+}
+
+extension Dictionary where Key == String, Value == OpenTelemetryApi.AttributeValue {
+    static func mock() -> Self {
+        return [
+            "string": .string("value"),
+            "bool": .bool(true),
+            "int": .int(2),
+            "double": .double(2.0),
+            "stringArray": .array(.init(values: [.string("value1"), .string("value2")])),
+            "boolArray": .array(.init(values: [.bool(true), .bool(false)])),
+            "intArray": .array(.init(values: [.int(1), .int(2)])),
+            "doubleArray": .array(.init(values: [.double(1.0), .double(2.0)])),
+            "set": .set(.init(labels: .leafMock()))
+        ]
+    }
+
+    static func leafMock() -> Self {
+        return [
+            "string": .string("value"),
+            "bool": .bool(true),
+            "int": .int(2),
+            "double": .double(2.0),
+            "stringArray": .array(.init(values: [.string("value1"), .string("value2")])),
+            "boolArray": .array(.init(values: [.bool(true), .bool(false)])),
+            "intArray": .array(.init(values: [.int(1), .int(2)])),
+            "doubleArray": .array(.init(values: [.double(1.0), .double(2.0)]))
+        ]
+    }
+}
