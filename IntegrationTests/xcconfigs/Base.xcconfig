@@ -1,0 +1,12 @@
+// Minimum supported Swift version
+SWIFT_VERSION=5.9
+
+// Add common settings from Datadog.xcconfig
+#include "../xcconfigs/Datadog.xcconfig"
+
+// Add DatadogSDKTesting instrumentation (if available in current environment)
+#include? "../xcconfigs/DatadogSDKTesting.local.xcconfig"
+
+// Override minimum deployment targets for building integration tests:
+IPHONEOS_DEPLOYMENT_TARGET=15.0
+TVOS_DEPLOYMENT_TARGET=15.0

@@ -1,0 +1,14 @@
+version: 1
+builder:
+  configs:
+    - platform: ios
+      documentation_targets:
+        - DatadogCore
+        - DatadogLogs
+        - DatadogTrace
+        - DatadogRUM
+        - DatadogSessionReplay
+        - DatadogCrashReporting
+        - DatadogWebViewTracking
+        - DatadogFlags
+        - DatadogProfiling

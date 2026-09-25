@@ -1,0 +1,70 @@
+{
+  "configurations" : [
+    {
+      "id" : "09CDD920-D143-447E-B9FD-F49185968B98",
+      "name" : "Configuration",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:IntegrationTests.xcodeproj",
+      "identifier" : "61441C2924616F1D003D8BB8",
+      "name" : "IntegrationScenarios"
+    }
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "RUMAlertScenarioTests\/testRUMAlertScenarioSwiftUI()",
+        "RUMAlertScenarioTests\/testRUMAlertScenarioUIKit()",
+        "RUMFeatureOperationsScenarioTests\/testBasicFeatureOperation()",
+        "RUMFeatureOperationsScenarioTests\/testConcurrentFeatureOperations()",
+        "RUMFeatureOperationsScenarioTests\/testFeatureOperationAcrossMultipleViews()",
+        "RUMFeatureOperationsScenarioTests\/testFeatureOperationErrors()",
+        "RUMFeatureOperationsScenarioTests\/testFeatureOperationWithFailure()",
+        "RUMFeatureOperationsScenarioTests\/testParallelFeatureOperations()",
+        "RUMFeatureOperationsScenarioTests\/testParallelFeatureOperationsWithFailure()",
+        "RUMManualInstrumentationScenarioTests\/testRUMManualInstrumentationScenario()",
+        "RUMMobileVitalsScenarioTests\/testRUMMobileVitalsScenario()",
+        "RUMMobileVitalsScenarioTests\/testRUMShortTimeSpentCPUScenario()",
+        "RUMModalViewsScenarioTests\/testRUMModalViewsScenario()",
+        "RUMModalViewsScenarioTests\/testRUMUntrackedModalViewsScenario()",
+        "RUMNavigationControllerScenarioTests\/testRUMNavigationControllerScenario()",
+        "RUMResourceActiveSpanAugmentationTests\/testDropped()",
+        "RUMResourceActiveSpanAugmentationTests\/testManuallyDropped()",
+        "RUMResourceActiveSpanAugmentationTests\/testManuallyKept()",
+        "RUMResourceActiveSpanAugmentationTests\/testSampled()",
+        "RUMResourcesScenarioTests\/testRUMNSURLSessionResourcesScenario_composition()",
+        "RUMResourcesScenarioTests\/testRUMNSURLSessionResourcesScenario_delegateUsingFeatureFirstPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMNSURLSessionResourcesScenario_delegateWithAdditionalFirstyPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMNSURLSessionResourcesScenario_inheritance()",
+        "RUMResourcesScenarioTests\/testRUMNSURLSessionResourcesScenario_legacyWithAdditionalFirstyPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMNSURLSessionResourcesScenario_legacyWithFeatureFirstPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMURLSessionResourcesScenario_composition()",
+        "RUMResourcesScenarioTests\/testRUMURLSessionResourcesScenario_delegateUsingFeatureFirstPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMURLSessionResourcesScenario_delegateWithAdditionalFirstyPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMURLSessionResourcesScenario_inheritance()",
+        "RUMResourcesScenarioTests\/testRUMURLSessionResourcesScenario_legacyWithAdditionalFirstyPartyHosts()",
+        "RUMResourcesScenarioTests\/testRUMURLSessionResourcesScenario_legacyWithFeatureFirstPartyHosts()",
+        "RUMScrubbingScenarioTests\/testRUMScrubbingScenario()",
+        "RUMStopSessionScenarioTests\/testRUMStopSessionScenario()",
+        "RUMSwiftUIAutoInstrumentationTests\/testActions()",
+        "RUMSwiftUIAutoInstrumentationTests\/testRootTabbar()",
+        "RUMSwiftUIAutoInstrumentationTests\/testSingleViewRoot()",
+        "RUMSwiftUIManualInstrumentationScenarioTests\/testSwiftUIManualScenario()",
+        "RUMSwiftUIScenarioTests\/testSwiftUIScenario()",
+        "RUMTabBarControllerScenarioTests\/testRUMTabBarScenario()",
+        "RUMTapActionScenarioTests\/testRUMTapActionScenario()"
+      ],
+      "target" : {
+        "containerPath" : "container:IntegrationTests.xcodeproj",
+        "identifier" : "61441C2924616F1D003D8BB8",
+        "name" : "IntegrationScenarios"
+      }
+    }
+  ],
+  "version" : 1
+}
