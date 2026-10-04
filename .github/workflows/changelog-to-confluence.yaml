@@ -5,11 +5,11 @@ on:
             - master
         paths:
             - 'CHANGELOG.md'
-            - 'DatadogRUM/RUM_FEATURE.md'
-            - 'DatadogSessionReplay/SESSION_REPLAY_FEATURE.md'
-            - 'DatadogTrace/TRACE_FEATURE.md'
-            - 'DatadogProfiling/PROFILING_FEATURE.md'
-            - 'DatadogLogs/LOGS_FEATURE.md'
+            - 'KubesenseRUM/RUM_FEATURE.md'
+            - 'KubesenseSessionReplay/SESSION_REPLAY_FEATURE.md'
+            - 'KubesenseTrace/TRACE_FEATURE.md'
+            - 'KubesenseProfiling/PROFILING_FEATURE.md'
+            - 'KubesenseLogs/LOGS_FEATURE.md'
 permissions:
     contents: read
 jobs:
@@ -22,28 +22,28 @@ jobs:
             - name: Prepare Changelog and Feature Docs
               run: |
                   mkdir -p publish_folder
-                  cp CHANGELOG.md publish_folder/dd-ios-sdk-changelog.md
+                  cp CHANGELOG.md publish_folder/kubesense-ios-sdk-changelog.md
                   echo "Publishing CHANGELOG.md"
 
-                  cp DatadogRUM/RUM_FEATURE.md publish_folder/dd-sdk-ios-rum-feature.md
+                  cp KubesenseRUM/RUM_FEATURE.md publish_folder/kubesense-ios-sdk-rum-feature.md
                   echo "Publishing RUM_FEATURE.md"
 
-                  cp DatadogSessionReplay/SESSION_REPLAY_FEATURE.md publish_folder/dd-sdk-ios-session-replay-feature.md
+                  cp KubesenseSessionReplay/SESSION_REPLAY_FEATURE.md publish_folder/kubesense-ios-sdk-session-replay-feature.md
                   echo "Publishing SESSION_REPLAY_FEATURE.md"
 
-                  cp DatadogTrace/TRACE_FEATURE.md publish_folder/dd-sdk-ios-trace-feature.md
+                  cp KubesenseTrace/TRACE_FEATURE.md publish_folder/kubesense-ios-sdk-trace-feature.md
                   echo "Publishing TRACE_FEATURE.md"
 
-                  cp DatadogProfiling/PROFILING_FEATURE.md publish_folder/dd-sdk-ios-profiling-feature.md
+                  cp KubesenseProfiling/PROFILING_FEATURE.md publish_folder/kubesense-ios-sdk-profiling-feature.md
                   echo "Publishing PROFILING_FEATURE.md"
 
-                  cp DatadogLogs/LOGS_FEATURE.md publish_folder/dd-sdk-ios-logs-feature.md
+                  cp KubesenseLogs/LOGS_FEATURE.md publish_folder/kubesense-ios-sdk-logs-feature.md
                   echo "Publishing LOGS_FEATURE.md"
 
             - name: Publish Markdown to Confluence
               uses: markdown-confluence/publish-action@7767a0a7f438bb1497ee7ffd7d3d685b81dfe700 # v5
               with:
-                  confluenceBaseUrl: ${{ secrets.DATADOG_CONFLUENCE_BASE_URL }}
+                  confluenceBaseUrl: ${{ secrets.KUBESENSE_CONFLUENCE_BASE_URL }}
                   confluenceParentId: ${{ secrets.CONFLUENCE_PARENT_ID }}
                   atlassianUserName: ${{ secrets.CONFLUENCE_ROBOT_RUM_EMAIL }}
                   atlassianApiToken: ${{ secrets.CONFLUENCE_ROBOT_RUM_API_KEY }}

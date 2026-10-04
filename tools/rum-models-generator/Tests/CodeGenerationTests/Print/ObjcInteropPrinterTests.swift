@@ -92,7 +92,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -141,12 +141,12 @@ final class ObjcInteropPrinterTests: XCTestCase {
             .transform(swiftTypes: [fooStruct])
         let objcInteropPrinter = ObjcInteropPrinter(
             objcTypeNamesPrefix: "objc_",
-            objcRuntimeNameOverrides: ["objc_Foo": "DDCustomFoo"]
+            objcRuntimeNameOverrides: ["objc_Foo": "KubesenseCustomFoo"]
         )
         let output = try objcInteropPrinter.print(objcInteropTypes: objcInteropTypes)
 
-        XCTAssertTrue(output.contains("@objc(DDCustomFoo)"))
-        XCTAssertFalse(output.contains("@objc(DDFoo)"))
+        XCTAssertTrue(output.contains("@objc(KubesenseCustomFoo)"))
+        XCTAssertFalse(output.contains("@objc(KubesenseFoo)"))
     }
 
     func testPrintingObjcInteropForSwiftStructWithIntProperties() throws {
@@ -215,7 +215,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -318,7 +318,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -421,7 +421,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -524,7 +524,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -664,7 +664,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -694,7 +694,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooEnumeration1)
+        @objc(KubesenseFooEnumeration1)
         @_spi(objc)
         public enum objc_FooEnumeration1: Int {
             internal init(swift: Foo.Enumeration1) {
@@ -718,7 +718,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             case case3
         }
 
-        @objc(DDFooEnumeration2)
+        @objc(KubesenseFooEnumeration2)
         @_spi(objc)
         public enum objc_FooEnumeration2: Int {
             internal init(swift: Foo.Enumeration2?) {
@@ -745,7 +745,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             case case3
         }
 
-        @objc(DDFooEnumeration3)
+        @objc(KubesenseFooEnumeration3)
         @_spi(objc)
         public enum objc_FooEnumeration3: Int {
             internal init(swift: Foo.Enumeration3) {
@@ -769,7 +769,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             case case3
         }
 
-        @objc(DDFooEnumeration4)
+        @objc(KubesenseFooEnumeration4)
         @_spi(objc)
         public enum objc_FooEnumeration4: Int {
             internal init(swift: Foo.Enumeration4?) {
@@ -871,7 +871,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -974,7 +974,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1080,7 +1080,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1100,7 +1100,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooOptions1)
+        @objc(KubesenseFooOptions1)
         @_spi(objc)
         public enum objc_FooOptions1: Int {
             internal init(swift: Foo.Options1) {
@@ -1124,7 +1124,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             case option3
         }
 
-        @objc(DDFooOptions2)
+        @objc(KubesenseFooOptions2)
         @_spi(objc)
         public enum objc_FooOptions2: Int {
             internal init(swift: Foo.Options2?) {
@@ -1247,7 +1247,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1267,7 +1267,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBar)
+        @objc(KubesenseFooBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooBar: NSObject {
@@ -1283,7 +1283,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBizz)
+        @objc(KubesenseFooBizz)
         @objcMembers
         @_spi(objc)
         public class objc_FooBizz: NSObject {
@@ -1374,7 +1374,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1477,7 +1477,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1558,7 +1558,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1769,7 +1769,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1797,7 +1797,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooMutableBar)
+        @objc(KubesenseFooMutableBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooMutableBar: NSObject {
@@ -1826,7 +1826,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooImmutableBar)
+        @objc(KubesenseFooImmutableBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooImmutableBar: NSObject {
@@ -1845,7 +1845,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooOptionalMutableBar)
+        @objc(KubesenseFooOptionalMutableBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooOptionalMutableBar: NSObject {
@@ -1864,7 +1864,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooOptionalImmutableBar)
+        @objc(KubesenseFooOptionalImmutableBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooOptionalImmutableBar: NSObject {
@@ -1963,7 +1963,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -1979,7 +1979,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBar)
+        @objc(KubesenseFooBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooBar: NSObject {
@@ -1995,7 +1995,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarEnumeration)
+        @objc(KubesenseFooBarEnumeration)
         @_spi(objc)
         public enum objc_FooBarEnumeration: Int {
             internal init(swift: Foo.Bar.Enumeration) {
@@ -2199,7 +2199,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -2215,7 +2215,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBar)
+        @objc(KubesenseFooBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooBar: NSObject {
@@ -2235,7 +2235,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarSharedStruct)
+        @objc(KubesenseFooBarSharedStruct)
         @objcMembers
         @_spi(objc)
         public class objc_FooBarSharedStruct: NSObject {
@@ -2251,7 +2251,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarSharedEnum)
+        @objc(KubesenseFooBarSharedEnum)
         @_spi(objc)
         public enum objc_FooBarSharedEnum: Int {
             internal init(swift: SharedEnum) {
@@ -2275,7 +2275,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             case case3
         }
 
-        @objc(DDBizz)
+        @objc(KubesenseBizz)
         @objcMembers
         @_spi(objc)
         public class objc_Bizz: NSObject {
@@ -2291,7 +2291,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDBizzBuzz)
+        @objc(KubesenseBizzBuzz)
         @objcMembers
         @_spi(objc)
         public class objc_BizzBuzz: NSObject {
@@ -2311,7 +2311,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDBizzBuzzSharedStruct)
+        @objc(KubesenseBizzBuzzSharedStruct)
         @objcMembers
         @_spi(objc)
         public class objc_BizzBuzzSharedStruct: NSObject {
@@ -2327,7 +2327,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDBizzBuzzSharedEnum)
+        @objc(KubesenseBizzBuzzSharedEnum)
         @_spi(objc)
         public enum objc_BizzBuzzSharedEnum: Int {
             internal init(swift: SharedEnum) {
@@ -2433,7 +2433,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -2449,7 +2449,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBar)
+        @objc(KubesenseFooBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooBar: NSObject {
@@ -2464,7 +2464,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarSharedAssociatedTypeEnum)
+        @objc(KubesenseFooBarSharedAssociatedTypeEnum)
         @objcMembers
         @_spi(objc)
         public class objc_FooBarSharedAssociatedTypeEnum: NSObject {
@@ -2576,7 +2576,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDTelemetryDebugEvent)
+        @objc(KubesenseTelemetryDebugEvent)
         @objcMembers
         @_spi(objc)
         public class objc_TelemetryDebugEvent: NSObject {
@@ -2592,7 +2592,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDTelemetryDebugEventAction)
+        @objc(KubesenseTelemetryDebugEventAction)
         @objcMembers
         @_spi(objc)
         public class objc_TelemetryDebugEventAction: NSObject {
@@ -2616,7 +2616,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDTelemetryDebugEventActionRUMActionID)
+        @objc(KubesenseTelemetryDebugEventActionRUMActionID)
         @objcMembers
         @_spi(objc)
         public class objc_TelemetryDebugEventActionRUMActionID: NSObject {
@@ -2661,7 +2661,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
                         properties: [
                             .mock(
                                 propertyName: "shared",
-                                type: SwiftTypeReference(referencedTypeName: "DDShared"),
+                                type: SwiftTypeReference(referencedTypeName: "KubesenseShared"),
                                 isOptional: true,
                                 mutability: .immutable
                             )
@@ -2675,8 +2675,8 @@ final class ObjcInteropPrinterTests: XCTestCase {
             conformance: []
         )
 
-        let ddShared = SwiftStruct(
-            name: "DDShared",
+        let kubesenseShared = SwiftStruct(
+            name: "KubesenseShared",
             comment: nil,
             properties: [
                 .mock(
@@ -2709,16 +2709,16 @@ final class ObjcInteropPrinterTests: XCTestCase {
             conformance: []
         )
 
-        let actual = try printSwiftWithObjcInterop(for: [rumErrorEvent, ddShared])
+        let actual = try printSwiftWithObjcInterop(for: [rumErrorEvent, kubesenseShared])
 
         XCTAssertTrue(actual.contains("public var shared: objc_RUMEventDDShared?"))
-        XCTAssertTrue(actual.contains("@objc(DDRUMEventDDShared)"))
+        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventDDShared)"))
         XCTAssertTrue(actual.contains("public class objc_RUMEventDDShared: NSObject"))
-        XCTAssertTrue(actual.contains("@objc(DDRUMEventDDSharedDetail)"))
+        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventDDSharedDetail)"))
         XCTAssertTrue(actual.contains("public enum objc_RUMEventDDSharedDetail: Int"))
-        XCTAssertTrue(actual.contains("@objc(DDRUMEventDDSharedStatus)"))
+        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventDDSharedStatus)"))
         XCTAssertTrue(actual.contains("public enum objc_RUMEventDDSharedStatus: Int"))
-        XCTAssertFalse(actual.contains("DDDDShared"))
+        XCTAssertFalse(actual.contains("KubesenseDDShared"))
     }
 
     func testPrintingObjcInteropForSwiftStructWithAssociatedTypeEnumArrayProperties() throws {
@@ -2795,7 +2795,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -2815,7 +2815,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooStatus1)
+        @objc(KubesenseFooStatus1)
         @objcMembers
         @_spi(objc)
         public class objc_FooStatus1: NSObject {
@@ -2841,7 +2841,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooStatus2)
+        @objc(KubesenseFooStatus2)
         @objcMembers
         @_spi(objc)
         public class objc_FooStatus2: NSObject {
@@ -3016,7 +3016,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         // MARK: - ObjcInterop
 
-        @objc(DDFoo)
+        @objc(KubesenseFoo)
         @objcMembers
         @_spi(objc)
         public class objc_Foo: NSObject {
@@ -3036,7 +3036,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBar)
+        @objc(KubesenseFooBar)
         @objcMembers
         @_spi(objc)
         public class objc_FooBar: NSObject {
@@ -3051,7 +3051,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarNestedEnum)
+        @objc(KubesenseFooBarNestedEnum)
         @objcMembers
         @_spi(objc)
         public class objc_FooBarNestedEnum: NSObject {
@@ -3076,7 +3076,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarNestedEnumNestedStruct)
+        @objc(KubesenseFooBarNestedEnumNestedStruct)
         @objcMembers
         @_spi(objc)
         public class objc_FooBarNestedEnumNestedStruct: NSObject {
@@ -3096,7 +3096,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
         }
 
-        @objc(DDFooBarNestedEnumNestedStructEnum)
+        @objc(KubesenseFooBarNestedEnumNestedStructEnum)
         @_spi(objc)
         public enum objc_FooBarNestedEnumNestedStructEnum: Int {
             internal init(swift: Foo.Bar.NestedEnum.NestedStruct.Enum) {

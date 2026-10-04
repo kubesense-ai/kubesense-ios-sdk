@@ -110,7 +110,7 @@ if [ "$ssh" = "true" ]; then
 
     if [ ! -f "$SSH_KEY_PATH" ] || [ ! -f "$SSH_CONFIG_PATH" ]; then
         echo_warn "Found no SSH key or SSH config file. Configuring..."
-        get_secret $DD_IOS_SECRET__SSH_KEY > $SSH_KEY_PATH
+        get_secret $KUBESENSE_IOS_SECRET__SSH_KEY > $SSH_KEY_PATH
         chmod 600 "$SSH_KEY_PATH"
 
         cat <<EOF > "$HOME/.ssh/config"
@@ -126,7 +126,7 @@ EOF
     fi
 fi
 
-if [ "$datadog_ci" = "true" ]; then
+if [ "$kubesense_ci" = "true" ]; then
     echo_subtitle "Supply datadog-ci"
     echo "Check current runner for existing 'datadog-ci' installation:"
     if ! command -v datadog-ci >/dev/null 2>&1; then

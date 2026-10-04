@@ -2,36 +2,36 @@
 
 ## Where to Add New Code
 
-### New Feature Module (e.g., DatadogNotifications)
-1. Create `DatadogNotifications/` with `Sources/` and `Tests/` subdirectories
+### New Feature Module (e.g., KubesenseNotifications)
+1. Create `KubesenseNotifications/` with `Sources/` and `Tests/` subdirectories
 2. Entry point: `Notifications.swift`, config: `NotificationsConfiguration.swift`
-3. Feature plugin: `Feature/NotificationsFeature.swift` (implements `DatadogRemoteFeature`)
-4. Update `Datadog.xcworkspace` and any relevant `.pbxproj` files
+3. Feature plugin: `Feature/NotificationsFeature.swift` (implements `KubesenseRemoteFeature`)
+4. Update `Kubesense.xcworkspace` and any relevant `.pbxproj` files
 
 ### New RUM Instrumentation
-1. Create files in `DatadogRUM/Sources/Instrumentation/<InstrumentationName>/`
+1. Create files in `KubesenseRUM/Sources/Instrumentation/<InstrumentationName>/`
 2. Follow existing patterns (e.g., `Resources/`, `Actions/`, `AppHangs/`, `Views/`)
 3. Register in `RUMInstrumentation.swift`
-4. Add tests in `DatadogRUM/Tests/RUMTests/Instrumentation/`
+4. Add tests in `KubesenseRUM/Tests/RUMTests/Instrumentation/`
 
 ### New RUM Command
-1. Add struct to `DatadogRUM/Sources/RUMMonitor/RUMCommand.swift` (implements `RUMCommand` protocol)
+1. Add struct to `KubesenseRUM/Sources/RUMMonitor/RUMCommand.swift` (implements `RUMCommand` protocol)
 2. Include timestamp, attributes, and any decision hints (e.g., `canStartBackgroundView`)
 3. Add public API method to `RUMMonitorProtocol.swift` and implement in `Monitor.swift`
 4. Add processing logic in the appropriate scope
-5. Add tests in `DatadogRUM/Tests/RUMTests/Scopes/`
+5. Add tests in `KubesenseRUM/Tests/RUMTests/Scopes/`
 6. Update API surface: `make api-surface`
 
 ### New Context Provider
-1. Add the property to `DatadogContext` in `DatadogInternal/Sources/Context/`
-2. Create `DatadogCore/Sources/Core/Context/<ProviderName>Publisher.swift` implementing `ContextValuePublisher`
+1. Add the property to `KubesenseContext` in `KubesenseInternal/Sources/Context/`
+2. Create `KubesenseCore/Sources/Core/Context/<ProviderName>Publisher.swift` implementing `ContextValuePublisher`
 3. Subscribe to relevant system notifications
-4. Register the publisher in `DatadogContextProvider` initialization
-5. Add tests in `DatadogCore/Tests/`
+4. Register the publisher in `KubesenseContextProvider` initialization
+5. Add tests in `KubesenseCore/Tests/`
 
 ### Shared Internal Types (used by multiple features)
-1. Add to `DatadogInternal/Sources/` in the appropriate subdirectory
-2. Add tests in `DatadogInternal/Tests/`
+1. Add to `KubesenseInternal/Sources/` in the appropriate subdirectory
+2. Add tests in `KubesenseInternal/Tests/`
 3. Changes here affect ALL modules — proceed with extreme caution
 
 ## RFC Process for Major Changes

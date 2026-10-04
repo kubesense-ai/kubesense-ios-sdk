@@ -2,11 +2,11 @@
 
 # Usage:
 # $ ./tools/dogfooding/dogfood.sh -h                                                                                   
-# Updates the 'dd-sdk-ios' version in a dependent project and creates a dogfooding PR in its repository.
+# Updates the 'kubesense-ios-sdk' version in a dependent project and creates a dogfooding PR in its repository.
 
 # Options:
 #   --shopist       Dogfood in the Shopist iOS project.
-#   --datadog-app   Dogfood in the Datadog iOS app.
+#   --kubesense-app   Dogfood in the Kubesense iOS app.
 
 set -eo pipefail
 source ./tools/utils/argparse.sh
@@ -14,9 +14,9 @@ source ./tools/utils/echo-color.sh
 source ./tools/utils/current-git.sh
 source ./tools/secrets/get-secret.sh
 
-set_description "Updates 'dd-sdk-ios' version in dependent project and opens dogfooding PR to its repo."
+set_description "Updates 'kubesense-ios-sdk' version in dependent project and opens dogfooding PR to its repo."
 define_arg "shopist" "false" "Dogfood in Shopist iOS." "store_true"
-define_arg "datadog-app" "false" "Dogfood in Datadog iOS app." "store_true"
+define_arg "kubesense-app" "false" "Dogfood in Kubesense iOS app." "store_true"
 
 check_for_help "$@"
 parse_args "$@"
@@ -27,7 +27,7 @@ echo_info "cd '$SCRIPT_DIR'" && cd "$SCRIPT_DIR"
 DEPENDENT_REPO_CLONE_DIR="repos"
 
 SDK_PACKAGE_PATH=$(realpath "../..")
-SDK_VERSION_FILE_PATH=$(realpath "../../DatadogCore/Sources/Versioning.swift")
+SDK_VERSION_FILE_PATH=$(realpath "../../KubesenseCore/Sources/Versioning.swift")
 DOGFOODED_BRANCH="$(current_git_branch)"
 DOGFOODED_COMMIT="$(current_git_commit)"
 DOGFOODED_COMMIT_SHORT="$(current_git_commit_short)"
@@ -80,7 +80,7 @@ commit_repo() {
     BASE_SHA=$(git rev-parse HEAD)
     git checkout -b "$DOGFOODING_BRANCH_NAME"
     git add .
-    git commit -m "Dogfooding dd-sdk-ios commit: $DOGFOODED_COMMIT"
+    git commit -m "Dogfooding kubesense-ios-sdk commit: $DOGFOODED_COMMIT"
     cd -
 }
 
@@ -93,7 +93,7 @@ push_repo() {
         echo_warn "Running in DRY RUN mode. Skipping push."
     else
         HEADLESS_TOKEN="$GITHUB_TOKEN" commit-headless push \
-            -T "DataDog/$REPO_NAME" \
+            -T "Kubesense/$REPO_NAME" \
             --branch "$DOGFOODING_BRANCH_NAME" \
             --head-sha "$BASE_SHA" \
             --create-branch \
@@ -109,10 +109,10 @@ create_pr() {
     local target_branch="$3"
     echo_subtitle "Create PR in '$REPO_NAME' repo"
 
-    PR_TITLE="[Dogfooding] Upgrade dd-sdk-ios to \`$DOGFOODED_SDK_VERSION\`"
+    PR_TITLE="[Dogfooding] Upgrade kubesense-ios-sdk to \`$DOGFOODED_SDK_VERSION\`"
     PR_DESCRIPTION="$(cat <<EOF
-⚙️ This is an automated PR upgrading the version of 'dd-sdk-ios' to:
-- https://github.com/DataDog/dd-sdk-ios/commit/$DOGFOODED_COMMIT
+⚙️ This is an automated PR upgrading the version of 'kubesense-ios-sdk' to:
+- https://github.com/kubesense-ai/kubesense-ios-sdk/commit/$DOGFOODED_COMMIT
 
 ### 🎁 What's new:
 $changelog
@@ -131,15 +131,15 @@ EOF
     cd -
 }
 
-# Resolves dependencies version in `dd-sdk-ios`.
-resolve_dd_sdk_ios_package() {
-    echo_subtitle "Resolve dd-sdk-ios package in '$SDK_PACKAGE_PATH'"
+# Resolves dependencies version in `kubesense-ios-sdk`.
+resolve_kubesense_sdk_ios_package() {
+    echo_subtitle "Resolve kubesense-ios-sdk package in '$SDK_PACKAGE_PATH'"
     swift package --package-path "$SDK_PACKAGE_PATH" resolve
-    echo "dd-sdk-ios dependencies:"
+    echo "kubesense-ios-sdk dependencies:"
     swift package --package-path "$SDK_PACKAGE_PATH" show-dependencies
 }
 
-# Reads sdk_version from current `dd-sdk-ios` commit and stores it in DOGFOODED_SDK_VERSION variable.
+# Reads sdk_version from current `kubesense-ios-sdk` commit and stores it in DOGFOODED_SDK_VERSION variable.
 read_dogfooded_version() {
     echo_subtitle "Read sdk_version from '$SDK_VERSION_FILE_PATH'"
     sdk_version=$(grep 'internal let __sdkVersion' "$SDK_VERSION_FILE_PATH" | awk -F'"' '{print $2}')
@@ -186,9 +186,9 @@ print_changelog() {
     echo_info "<<< git log end" >&2
 
     # Extract only merge commits:
-    CHANGELOG=$(echo "$git_log" | grep -o 'Merge pull request #[0-9]\+' | awk -F'#' '{print "- https://github.com/DataDog/dd-sdk-ios/pull/"$2}' || true)
+    CHANGELOG=$(echo "$git_log" | grep -o 'Merge pull request #[0-9]\+' | awk -F'#' '{print "- https://github.com/kubesense-ai/kubesense-ios-sdk/pull/"$2}' || true)
     if [ -z "$CHANGELOG" ]; then
-        CHANGELOG="- Empty (no PRs merged since https://github.com/DataDog/dd-sdk-ios/commit/$from_commit)"
+        CHANGELOG="- Empty (no PRs merged since https://github.com/kubesense-ai/kubesense-ios-sdk/commit/$from_commit)"
     fi
 
     echo_info "▸ Changelog:" >&2
@@ -199,10 +199,10 @@ print_changelog() {
     echo "$CHANGELOG"
 }
 
-# Updates dd-sdk-ios version in dependent project to DOGFOODED_COMMIT.
+# Updates kubesense-ios-sdk version in dependent project to DOGFOODED_COMMIT.
 update_dependent_package_resolved() {
     local package_resolved_path="$1"
-    echo_subtitle "Update dd-sdk-ios version in '$package_resolved_path'"
+    echo_subtitle "Update kubesense-ios-sdk version in '$package_resolved_path'"
     make run PARAMS="update-dependency.py \
         --repo-package-resolved-path '$package_resolved_path' \
         --dogfooded-package-resolved-path '$SDK_PACKAGE_PATH/Package.resolved' \
@@ -210,10 +210,10 @@ update_dependent_package_resolved() {
         --dogfooded-commit '$DOGFOODED_COMMIT'"
 }
 
-# Updates dd-sdk-ios branch requirement in dependent project's project.pbxproj.
+# Updates kubesense-ios-sdk branch requirement in dependent project's project.pbxproj.
 update_dependent_pbxproj_branch() {
     local pbxproj_path="$1"
-    echo_subtitle "Update dd-sdk-ios branch to '$DOGFOODED_BRANCH' in '$pbxproj_path'"
+    echo_subtitle "Update kubesense-ios-sdk branch to '$DOGFOODED_BRANCH' in '$pbxproj_path'"
     sed -i '' -E "s/(branch = )develop(;)/\1$DOGFOODED_BRANCH\2/" "$pbxproj_path"
 }
 # Updates 'sdk_version' in dependent project to DOGFOODED_SDK_VERSION.
@@ -242,26 +242,26 @@ prepare
 trap "cleanup" EXIT INT
 
 read_dogfooded_version
-resolve_dd_sdk_ios_package
+resolve_kubesense_sdk_ios_package
 
 if [ "$shopist" = "true" ]; then
     REPO_NAME="shopist-ios"
     CLONE_PATH="$DEPENDENT_REPO_CLONE_DIR/$REPO_NAME"
     DEFAULT_BRANCH="main"
 
-    clone_repo "git@github.com:DataDog/shopist-ios.git" $DEFAULT_BRANCH $CLONE_PATH
+    clone_repo "git@github.com:Kubesense/shopist-ios.git" $DEFAULT_BRANCH $CLONE_PATH
 
     # Generate CHANGELOG:
     LAST_DOGFOODED_COMMIT=$(read_dogfooded_commit "$CLONE_PATH/Shopist/Shopist/DogfoodingConfig.swift")
     CHANGELOG=$(print_changelog "$LAST_DOGFOODED_COMMIT")
     
-    # Update dd-sdk-ios version:
+    # Update kubesense-ios-sdk version:
     update_dependent_package_resolved "$CLONE_PATH/Shopist/Shopist.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
     update_dependent_sdk_version "$CLONE_PATH/Shopist/Shopist/DogfoodingConfig.swift"
     update_dependent_pbxproj_branch "$CLONE_PATH/Shopist/Shopist.xcodeproj/project.pbxproj"
 
     echo_info "▸ Exporting 'GITHUB_TOKEN' for CI"
-    export GITHUB_TOKEN=$(dd-octo-sts --disable-tracing token --scope DataDog/shopist-ios --policy dd-sdk-ios.gitlab.pr)
+    export GITHUB_TOKEN=$(dd-octo-sts --disable-tracing token --scope Kubesense/shopist-ios --policy kubesense-ios-sdk.gitlab.pr)
     verify_gh_auth
 
     # Push & create PR:
@@ -272,23 +272,23 @@ if [ "$shopist" = "true" ]; then
     dd-octo-sts --disable-tracing revoke
 fi
 
-if [ "$datadog_app" = "true" ]; then
-    REPO_NAME="datadog-ios"
+if [ "$kubesense_app" = "true" ]; then
+    REPO_NAME="kubesense-ios"
     CLONE_PATH="$DEPENDENT_REPO_CLONE_DIR/$REPO_NAME"
     DEFAULT_BRANCH="develop"
 
-    clone_repo "git@github.com:DataDog/datadog-ios.git" $DEFAULT_BRANCH $CLONE_PATH
+    clone_repo "git@github.com:Kubesense/kubesense-ios.git" $DEFAULT_BRANCH $CLONE_PATH
 
     # Generate CHANGELOG:
-    LAST_DOGFOODED_COMMIT=$(read_dogfooded_commit "$CLONE_PATH/Targets/Platform/DatadogObservability/DogfoodingConfig.swift")
+    LAST_DOGFOODED_COMMIT=$(read_dogfooded_commit "$CLONE_PATH/Targets/Platform/KubesenseObservability/DogfoodingConfig.swift")
     CHANGELOG=$(print_changelog "$LAST_DOGFOODED_COMMIT")
     
-    # Update dd-sdk-ios version:
+    # Update kubesense-ios-sdk version:
     update_dependent_package_resolved "$CLONE_PATH/Tuist/Package.resolved"
-    update_dependent_sdk_version "$CLONE_PATH/Targets/Platform/DatadogObservability/DogfoodingConfig.swift"
+    update_dependent_sdk_version "$CLONE_PATH/Targets/Platform/KubesenseObservability/DogfoodingConfig.swift"
 
     echo_info "▸ Exporting 'GITHUB_TOKEN' for CI"
-    export GITHUB_TOKEN=$(dd-octo-sts --disable-tracing token --scope DataDog/datadog-ios --policy dd-sdk-ios.gitlab.pr)
+    export GITHUB_TOKEN=$(dd-octo-sts --disable-tracing token --scope Kubesense/kubesense-ios --policy kubesense-ios-sdk.gitlab.pr)
     verify_gh_auth
 
     # Push & create PR:

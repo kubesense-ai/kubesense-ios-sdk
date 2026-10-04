@@ -11,52 +11,52 @@
 		3C0F8E232B768A05004948CD /* OpenTelemetryApi.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0F8E212B768A05004948CD /* OpenTelemetryApi.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C0F8E242B768A17004948CD /* OpenTelemetryApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0F8E212B768A05004948CD /* OpenTelemetryApi.xcframework */; };
 		3C0F8E252B768A17004948CD /* OpenTelemetryApi.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0F8E212B768A05004948CD /* OpenTelemetryApi.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3CB135E729F6B90F0000234F /* DatadogWebViewTracking.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB135E429F6B8F90000234F /* DatadogWebViewTracking.xcframework */; };
-		3CB135E829F6B90F0000234F /* DatadogWebViewTracking.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB135E429F6B8F90000234F /* DatadogWebViewTracking.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5B828D5C2E7972B10088E11D /* DatadogFlags.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* DatadogFlags.xcframework */; };
-		5B828D5D2E7972B10088E11D /* DatadogFlags.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* DatadogFlags.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5B828D5E2E79762B0088E11D /* DatadogFlags.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* DatadogFlags.xcframework */; };
-		5B828D5F2E79762B0088E11D /* DatadogFlags.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* DatadogFlags.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		617803D22A6FF2EA005FE258 /* DatadogSessionReplay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 617803D12A6FF2EA005FE258 /* DatadogSessionReplay.xcframework */; };
-		617803D32A6FF2EA005FE258 /* DatadogSessionReplay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 617803D12A6FF2EA005FE258 /* DatadogSessionReplay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3CB135E729F6B90F0000234F /* KubesenseWebViewTracking.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB135E429F6B8F90000234F /* KubesenseWebViewTracking.xcframework */; };
+		3CB135E829F6B90F0000234F /* KubesenseWebViewTracking.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB135E429F6B8F90000234F /* KubesenseWebViewTracking.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5B828D5C2E7972B10088E11D /* KubesenseFlags.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* KubesenseFlags.xcframework */; };
+		5B828D5D2E7972B10088E11D /* KubesenseFlags.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* KubesenseFlags.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5B828D5E2E79762B0088E11D /* KubesenseFlags.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* KubesenseFlags.xcframework */; };
+		5B828D5F2E79762B0088E11D /* KubesenseFlags.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B828D5B2E7972B10088E11D /* KubesenseFlags.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		617803D22A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 617803D12A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework */; };
+		617803D32A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 617803D12A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		61C36419243752A500C4D4E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C36418243752A500C4D4E6 /* AppDelegate.swift */; };
 		61C3641B243752A500C4D4E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3641A243752A500C4D4E6 /* SceneDelegate.swift */; };
 		61C3641D243752A500C4D4E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3641C243752A500C4D4E6 /* ViewController.swift */; };
 		61C36430243752A600C4D4E6 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3642F243752A600C4D4E6 /* AppTests.swift */; };
 		61C3643B243752A600C4D4E6 /* AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3643A243752A600C4D4E6 /* AppUITests.swift */; };
-		9E9D5E8C25F90FC6002F12A0 /* DatadogCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* DatadogCore.xcframework */; };
-		9E9D5E8D25F90FC6002F12A0 /* DatadogCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* DatadogCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D20D6FE629F6C2EB00D2886E /* DatadogRUM.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* DatadogRUM.xcframework */; };
-		D20D6FE729F6C2EB00D2886E /* DatadogRUM.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* DatadogRUM.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D20D6FE829F6C2ED00D2886E /* DatadogTrace.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* DatadogTrace.xcframework */; };
-		D20D6FE929F6C2ED00D2886E /* DatadogTrace.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* DatadogTrace.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D20D6FEA29F6C2F200D2886E /* DatadogRUM.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* DatadogRUM.xcframework */; };
-		D20D6FEB29F6C2F200D2886E /* DatadogRUM.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* DatadogRUM.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9E9D5E8C25F90FC6002F12A0 /* KubesenseCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* KubesenseCore.xcframework */; };
+		9E9D5E8D25F90FC6002F12A0 /* KubesenseCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* KubesenseCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D20D6FE629F6C2EB00D2886E /* KubesenseRUM.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* KubesenseRUM.xcframework */; };
+		D20D6FE729F6C2EB00D2886E /* KubesenseRUM.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* KubesenseRUM.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D20D6FE829F6C2ED00D2886E /* KubesenseTrace.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* KubesenseTrace.xcframework */; };
+		D20D6FE929F6C2ED00D2886E /* KubesenseTrace.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* KubesenseTrace.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D20D6FEA29F6C2F200D2886E /* KubesenseRUM.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* KubesenseRUM.xcframework */; };
+		D20D6FEB29F6C2F200D2886E /* KubesenseRUM.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D20D6FE329F6C2D600D2886E /* KubesenseRUM.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D22919292B76525C00C38A18 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D22919282B76525C00C38A18 /* PrivacyInfo.xcprivacy */; };
 		D229192A2B76525C00C38A18 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D22919282B76525C00C38A18 /* PrivacyInfo.xcprivacy */; };
-		D229FF6A2E3BC257009CCD62 /* DatadogProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D229FF692E3BC257009CCD62 /* DatadogProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D229FF6B2E3BC261009CCD62 /* DatadogProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D229FF692E3BC257009CCD62 /* DatadogProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2675BF32A019CF500190669 /* DatadogCrashReporting.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* DatadogCrashReporting.xcframework */; };
-		D2675BF42A019CF500190669 /* DatadogCrashReporting.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* DatadogCrashReporting.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2675BF52A019CF600190669 /* DatadogInternal.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* DatadogInternal.xcframework */; };
-		D2675BF62A019CF600190669 /* DatadogInternal.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* DatadogInternal.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2675BF72A019CFF00190669 /* DatadogCrashReporting.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* DatadogCrashReporting.xcframework */; };
-		D2675BF82A019CFF00190669 /* DatadogCrashReporting.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* DatadogCrashReporting.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2675BF92A019D0100190669 /* DatadogInternal.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* DatadogInternal.xcframework */; };
-		D2675BFA2A019D0100190669 /* DatadogInternal.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* DatadogInternal.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D26F741829ACC61E00D25622 /* DatadogLogs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* DatadogLogs.xcframework */; };
-		D26F741929ACC61E00D25622 /* DatadogLogs.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* DatadogLogs.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D229FF6A2E3BC257009CCD62 /* KubesenseProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D229FF692E3BC257009CCD62 /* KubesenseProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D229FF6B2E3BC261009CCD62 /* KubesenseProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D229FF692E3BC257009CCD62 /* KubesenseProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2675BF32A019CF500190669 /* KubesenseCrashReporting.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* KubesenseCrashReporting.xcframework */; };
+		D2675BF42A019CF500190669 /* KubesenseCrashReporting.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* KubesenseCrashReporting.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2675BF52A019CF600190669 /* KubesenseInternal.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* KubesenseInternal.xcframework */; };
+		D2675BF62A019CF600190669 /* KubesenseInternal.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* KubesenseInternal.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2675BF72A019CFF00190669 /* KubesenseCrashReporting.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* KubesenseCrashReporting.xcframework */; };
+		D2675BF82A019CFF00190669 /* KubesenseCrashReporting.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 615D9E6A2604B5B1006DC6D1 /* KubesenseCrashReporting.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2675BF92A019D0100190669 /* KubesenseInternal.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* KubesenseInternal.xcframework */; };
+		D2675BFA2A019D0100190669 /* KubesenseInternal.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D240FC8B2995183D00D9F099 /* KubesenseInternal.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D26F741829ACC61E00D25622 /* KubesenseLogs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* KubesenseLogs.xcframework */; };
+		D26F741929ACC61E00D25622 /* KubesenseLogs.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* KubesenseLogs.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D290BA1B27CD09740019936D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3641C243752A500C4D4E6 /* ViewController.swift */; };
 		D290BA1C27CD09740019936D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C36418243752A500C4D4E6 /* AppDelegate.swift */; };
 		D290BA1D27CD09740019936D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3641A243752A500C4D4E6 /* SceneDelegate.swift */; };
-		D290BA2127CD09740019936D /* DatadogCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* DatadogCore.xcframework */; };
-		D290BA2827CD09740019936D /* DatadogCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* DatadogCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D290BA2127CD09740019936D /* KubesenseCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* KubesenseCore.xcframework */; };
+		D290BA2827CD09740019936D /* KubesenseCore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9E9D5E8725F90FC6002F12A0 /* KubesenseCore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D290BA3327CD09A20019936D /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3642F243752A600C4D4E6 /* AppTests.swift */; };
 		D290BA3F27CD09C70019936D /* AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3643A243752A600C4D4E6 /* AppUITests.swift */; };
-		D2966C2629CA1C5B00FC6B3C /* DatadogTrace.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* DatadogTrace.xcframework */; };
-		D2966C2729CA1C5B00FC6B3C /* DatadogTrace.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* DatadogTrace.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D2B946AE29ACF6C20080CB40 /* DatadogLogs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* DatadogLogs.xcframework */; };
-		D2B946AF29ACF6C20080CB40 /* DatadogLogs.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* DatadogLogs.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2966C2629CA1C5B00FC6B3C /* KubesenseTrace.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* KubesenseTrace.xcframework */; };
+		D2966C2729CA1C5B00FC6B3C /* KubesenseTrace.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D2966C2329CA1C5300FC6B3C /* KubesenseTrace.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D2B946AE29ACF6C20080CB40 /* KubesenseLogs.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* KubesenseLogs.xcframework */; };
+		D2B946AF29ACF6C20080CB40 /* KubesenseLogs.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D26F741729ACC61E00D25622 /* KubesenseLogs.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,17 +97,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D229FF6A2E3BC257009CCD62 /* DatadogProfiling.xcframework in Embed Frameworks */,
-				D2966C2729CA1C5B00FC6B3C /* DatadogTrace.xcframework in Embed Frameworks */,
-				3CB135E829F6B90F0000234F /* DatadogWebViewTracking.xcframework in Embed Frameworks */,
-				617803D32A6FF2EA005FE258 /* DatadogSessionReplay.xcframework in Embed Frameworks */,
-				D2675BF62A019CF600190669 /* DatadogInternal.xcframework in Embed Frameworks */,
-				5B828D5D2E7972B10088E11D /* DatadogFlags.xcframework in Embed Frameworks */,
-				9E9D5E8D25F90FC6002F12A0 /* DatadogCore.xcframework in Embed Frameworks */,
-				D20D6FEB29F6C2F200D2886E /* DatadogRUM.xcframework in Embed Frameworks */,
-				D2675BF42A019CF500190669 /* DatadogCrashReporting.xcframework in Embed Frameworks */,
+				D229FF6A2E3BC257009CCD62 /* KubesenseProfiling.xcframework in Embed Frameworks */,
+				D2966C2729CA1C5B00FC6B3C /* KubesenseTrace.xcframework in Embed Frameworks */,
+				3CB135E829F6B90F0000234F /* KubesenseWebViewTracking.xcframework in Embed Frameworks */,
+				617803D32A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework in Embed Frameworks */,
+				D2675BF62A019CF600190669 /* KubesenseInternal.xcframework in Embed Frameworks */,
+				5B828D5D2E7972B10088E11D /* KubesenseFlags.xcframework in Embed Frameworks */,
+				9E9D5E8D25F90FC6002F12A0 /* KubesenseCore.xcframework in Embed Frameworks */,
+				D20D6FEB29F6C2F200D2886E /* KubesenseRUM.xcframework in Embed Frameworks */,
+				D2675BF42A019CF500190669 /* KubesenseCrashReporting.xcframework in Embed Frameworks */,
 				3C0F8E232B768A05004948CD /* OpenTelemetryApi.xcframework in Embed Frameworks */,
-				D26F741929ACC61E00D25622 /* DatadogLogs.xcframework in Embed Frameworks */,
+				D26F741929ACC61E00D25622 /* KubesenseLogs.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,16 +118,16 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D229FF6B2E3BC261009CCD62 /* DatadogProfiling.xcframework in Embed Frameworks */,
+				D229FF6B2E3BC261009CCD62 /* KubesenseProfiling.xcframework in Embed Frameworks */,
 				D290BA2627CD09740019936D /* CrashReporter.xcframework in Embed Frameworks */,
 				3C0F8E252B768A17004948CD /* OpenTelemetryApi.xcframework in Embed Frameworks */,
-				D20D6FE729F6C2EB00D2886E /* DatadogRUM.xcframework in Embed Frameworks */,
-				D20D6FE929F6C2ED00D2886E /* DatadogTrace.xcframework in Embed Frameworks */,
-				D2675BFA2A019D0100190669 /* DatadogInternal.xcframework in Embed Frameworks */,
-				D2675BF82A019CFF00190669 /* DatadogCrashReporting.xcframework in Embed Frameworks */,
-				D290BA2827CD09740019936D /* DatadogCore.xcframework in Embed Frameworks */,
-				5B828D5F2E79762B0088E11D /* DatadogFlags.xcframework in Embed Frameworks */,
-				D2B946AF29ACF6C20080CB40 /* DatadogLogs.xcframework in Embed Frameworks */,
+				D20D6FE729F6C2EB00D2886E /* KubesenseRUM.xcframework in Embed Frameworks */,
+				D20D6FE929F6C2ED00D2886E /* KubesenseTrace.xcframework in Embed Frameworks */,
+				D2675BFA2A019D0100190669 /* KubesenseInternal.xcframework in Embed Frameworks */,
+				D2675BF82A019CFF00190669 /* KubesenseCrashReporting.xcframework in Embed Frameworks */,
+				D290BA2827CD09740019936D /* KubesenseCore.xcframework in Embed Frameworks */,
+				5B828D5F2E79762B0088E11D /* KubesenseFlags.xcframework in Embed Frameworks */,
+				D2B946AF29ACF6C20080CB40 /* KubesenseLogs.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,12 +136,12 @@
 
 /* Begin PBXFileReference section */
 		3C0F8E212B768A05004948CD /* OpenTelemetryApi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenTelemetryApi.xcframework; path = Carthage/Build/OpenTelemetryApi.xcframework; sourceTree = "<group>"; };
-		3CB135E429F6B8F90000234F /* DatadogWebViewTracking.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogWebViewTracking.xcframework; path = Carthage/Build/DatadogWebViewTracking.xcframework; sourceTree = "<group>"; };
-		5B828D5B2E7972B10088E11D /* DatadogFlags.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogFlags.xcframework; path = Carthage/Build/DatadogFlags.xcframework; sourceTree = "<group>"; };
-		615519322461CDB4002A85CF /* Datadog.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Datadog.xcconfig; sourceTree = "<group>"; };
-		615519332461CDB4002A85CF /* Datadog.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Datadog.local.xcconfig; sourceTree = "<group>"; };
-		615D9E6A2604B5B1006DC6D1 /* DatadogCrashReporting.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogCrashReporting.xcframework; path = Carthage/Build/DatadogCrashReporting.xcframework; sourceTree = "<group>"; };
-		617803D12A6FF2EA005FE258 /* DatadogSessionReplay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogSessionReplay.xcframework; path = Carthage/Build/DatadogSessionReplay.xcframework; sourceTree = "<group>"; };
+		3CB135E429F6B8F90000234F /* KubesenseWebViewTracking.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseWebViewTracking.xcframework; path = Carthage/Build/KubesenseWebViewTracking.xcframework; sourceTree = "<group>"; };
+		5B828D5B2E7972B10088E11D /* KubesenseFlags.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseFlags.xcframework; path = Carthage/Build/KubesenseFlags.xcframework; sourceTree = "<group>"; };
+		615519322461CDB4002A85CF /* Kubesense.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Kubesense.xcconfig; sourceTree = "<group>"; };
+		615519332461CDB4002A85CF /* Kubesense.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Kubesense.local.xcconfig; sourceTree = "<group>"; };
+		615D9E6A2604B5B1006DC6D1 /* KubesenseCrashReporting.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseCrashReporting.xcframework; path = Carthage/Build/KubesenseCrashReporting.xcframework; sourceTree = "<group>"; };
+		617803D12A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseSessionReplay.xcframework; path = Carthage/Build/KubesenseSessionReplay.xcframework; sourceTree = "<group>"; };
 		61C36415243752A500C4D4E6 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C36418243752A500C4D4E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61C3641A243752A500C4D4E6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -153,16 +153,16 @@
 		61C36436243752A600C4D4E6 /* App iOS UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "App iOS UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C3643A243752A600C4D4E6 /* AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUITests.swift; sourceTree = "<group>"; };
 		61C3643C243752A600C4D4E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9E9D5E8725F90FC6002F12A0 /* DatadogCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogCore.xcframework; path = Carthage/Build/DatadogCore.xcframework; sourceTree = "<group>"; };
-		D20D6FE329F6C2D600D2886E /* DatadogRUM.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogRUM.xcframework; path = Carthage/Build/DatadogRUM.xcframework; sourceTree = "<group>"; };
+		9E9D5E8725F90FC6002F12A0 /* KubesenseCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseCore.xcframework; path = Carthage/Build/KubesenseCore.xcframework; sourceTree = "<group>"; };
+		D20D6FE329F6C2D600D2886E /* KubesenseRUM.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseRUM.xcframework; path = Carthage/Build/KubesenseRUM.xcframework; sourceTree = "<group>"; };
 		D22919282B76525C00C38A18 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		D229FF692E3BC257009CCD62 /* DatadogProfiling.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogProfiling.xcframework; path = Carthage/Build/DatadogProfiling.xcframework; sourceTree = "<group>"; };
-		D240FC8B2995183D00D9F099 /* DatadogInternal.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogInternal.xcframework; path = Carthage/Build/DatadogInternal.xcframework; sourceTree = "<group>"; };
-		D26F741729ACC61E00D25622 /* DatadogLogs.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogLogs.xcframework; path = Carthage/Build/DatadogLogs.xcframework; sourceTree = "<group>"; };
+		D229FF692E3BC257009CCD62 /* KubesenseProfiling.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseProfiling.xcframework; path = Carthage/Build/KubesenseProfiling.xcframework; sourceTree = "<group>"; };
+		D240FC8B2995183D00D9F099 /* KubesenseInternal.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseInternal.xcframework; path = Carthage/Build/KubesenseInternal.xcframework; sourceTree = "<group>"; };
+		D26F741729ACC61E00D25622 /* KubesenseLogs.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseLogs.xcframework; path = Carthage/Build/KubesenseLogs.xcframework; sourceTree = "<group>"; };
 		D290BA2D27CD09740019936D /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D290BA3927CD09A20019936D /* App tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "App tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D290BA4527CD09C70019936D /* App tvOS UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "App tvOS UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2966C2329CA1C5300FC6B3C /* DatadogTrace.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DatadogTrace.xcframework; path = Carthage/Build/DatadogTrace.xcframework; sourceTree = "<group>"; };
+		D2966C2329CA1C5300FC6B3C /* KubesenseTrace.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = KubesenseTrace.xcframework; path = Carthage/Build/KubesenseTrace.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,16 +170,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D26F741829ACC61E00D25622 /* DatadogLogs.xcframework in Frameworks */,
-				617803D22A6FF2EA005FE258 /* DatadogSessionReplay.xcframework in Frameworks */,
-				D2675BF52A019CF600190669 /* DatadogInternal.xcframework in Frameworks */,
-				D2966C2629CA1C5B00FC6B3C /* DatadogTrace.xcframework in Frameworks */,
-				5B828D5C2E7972B10088E11D /* DatadogFlags.xcframework in Frameworks */,
-				D20D6FEA29F6C2F200D2886E /* DatadogRUM.xcframework in Frameworks */,
-				3CB135E729F6B90F0000234F /* DatadogWebViewTracking.xcframework in Frameworks */,
-				9E9D5E8C25F90FC6002F12A0 /* DatadogCore.xcframework in Frameworks */,
+				D26F741829ACC61E00D25622 /* KubesenseLogs.xcframework in Frameworks */,
+				617803D22A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework in Frameworks */,
+				D2675BF52A019CF600190669 /* KubesenseInternal.xcframework in Frameworks */,
+				D2966C2629CA1C5B00FC6B3C /* KubesenseTrace.xcframework in Frameworks */,
+				5B828D5C2E7972B10088E11D /* KubesenseFlags.xcframework in Frameworks */,
+				D20D6FEA29F6C2F200D2886E /* KubesenseRUM.xcframework in Frameworks */,
+				3CB135E729F6B90F0000234F /* KubesenseWebViewTracking.xcframework in Frameworks */,
+				9E9D5E8C25F90FC6002F12A0 /* KubesenseCore.xcframework in Frameworks */,
 				3C0F8E222B768A05004948CD /* OpenTelemetryApi.xcframework in Frameworks */,
-				D2675BF32A019CF500190669 /* DatadogCrashReporting.xcframework in Frameworks */,
+				D2675BF32A019CF500190669 /* KubesenseCrashReporting.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,14 +201,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2B946AE29ACF6C20080CB40 /* DatadogLogs.xcframework in Frameworks */,
+				D2B946AE29ACF6C20080CB40 /* KubesenseLogs.xcframework in Frameworks */,
 				3C0F8E242B768A17004948CD /* OpenTelemetryApi.xcframework in Frameworks */,
-				D20D6FE829F6C2ED00D2886E /* DatadogTrace.xcframework in Frameworks */,
-				D2675BF92A019D0100190669 /* DatadogInternal.xcframework in Frameworks */,
-				D20D6FE629F6C2EB00D2886E /* DatadogRUM.xcframework in Frameworks */,
-				D290BA2127CD09740019936D /* DatadogCore.xcframework in Frameworks */,
-				5B828D5E2E79762B0088E11D /* DatadogFlags.xcframework in Frameworks */,
-				D2675BF72A019CFF00190669 /* DatadogCrashReporting.xcframework in Frameworks */,
+				D20D6FE829F6C2ED00D2886E /* KubesenseTrace.xcframework in Frameworks */,
+				D2675BF92A019D0100190669 /* KubesenseInternal.xcframework in Frameworks */,
+				D20D6FE629F6C2EB00D2886E /* KubesenseRUM.xcframework in Frameworks */,
+				D290BA2127CD09740019936D /* KubesenseCore.xcframework in Frameworks */,
+				5B828D5E2E79762B0088E11D /* KubesenseFlags.xcframework in Frameworks */,
+				D2675BF72A019CFF00190669 /* KubesenseCrashReporting.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,8 +232,8 @@
 		615519312461CDB4002A85CF /* xcconfigs */ = {
 			isa = PBXGroup;
 			children = (
-				615519322461CDB4002A85CF /* Datadog.xcconfig */,
-				615519332461CDB4002A85CF /* Datadog.local.xcconfig */,
+				615519322461CDB4002A85CF /* Kubesense.xcconfig */,
+				615519332461CDB4002A85CF /* Kubesense.local.xcconfig */,
 			);
 			name = xcconfigs;
 			path = ../../xcconfigs;
@@ -297,17 +297,17 @@
 		61C364492437547A00C4D4E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5B828D5B2E7972B10088E11D /* DatadogFlags.xcframework */,
-				D229FF692E3BC257009CCD62 /* DatadogProfiling.xcframework */,
+				5B828D5B2E7972B10088E11D /* KubesenseFlags.xcframework */,
+				D229FF692E3BC257009CCD62 /* KubesenseProfiling.xcframework */,
 				3C0F8E212B768A05004948CD /* OpenTelemetryApi.xcframework */,
-				617803D12A6FF2EA005FE258 /* DatadogSessionReplay.xcframework */,
-				D20D6FE329F6C2D600D2886E /* DatadogRUM.xcframework */,
-				D2966C2329CA1C5300FC6B3C /* DatadogTrace.xcframework */,
-				D26F741729ACC61E00D25622 /* DatadogLogs.xcframework */,
-				D240FC8B2995183D00D9F099 /* DatadogInternal.xcframework */,
-				615D9E6A2604B5B1006DC6D1 /* DatadogCrashReporting.xcframework */,
-				9E9D5E8725F90FC6002F12A0 /* DatadogCore.xcframework */,
-				3CB135E429F6B8F90000234F /* DatadogWebViewTracking.xcframework */,
+				617803D12A6FF2EA005FE258 /* KubesenseSessionReplay.xcframework */,
+				D20D6FE329F6C2D600D2886E /* KubesenseRUM.xcframework */,
+				D2966C2329CA1C5300FC6B3C /* KubesenseTrace.xcframework */,
+				D26F741729ACC61E00D25622 /* KubesenseLogs.xcframework */,
+				D240FC8B2995183D00D9F099 /* KubesenseInternal.xcframework */,
+				615D9E6A2604B5B1006DC6D1 /* KubesenseCrashReporting.xcframework */,
+				9E9D5E8725F90FC6002F12A0 /* KubesenseCore.xcframework */,
+				3CB135E429F6B8F90000234F /* KubesenseWebViewTracking.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -433,7 +433,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1310;
-				ORGANIZATIONNAME = Datadog;
+				ORGANIZATIONNAME = Kubesense;
 				TargetAttributes = {
 					61C36414243752A500C4D4E6 = {
 						CreatedOnToolsVersion = 11.4;
@@ -646,7 +646,7 @@
 /* Begin XCBuildConfiguration section */
 		61C3643D243752A600C4D4E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 615519322461CDB4002A85CF /* Datadog.xcconfig */;
+			baseConfigurationReference = 615519322461CDB4002A85CF /* Kubesense.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -710,7 +710,7 @@
 		};
 		61C3643E243752A600C4D4E6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 615519322461CDB4002A85CF /* Datadog.xcconfig */;
+			baseConfigurationReference = 615519322461CDB4002A85CF /* Kubesense.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -776,7 +776,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProject;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProject;
 				PRODUCT_NAME = App;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
@@ -794,7 +794,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProject;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProject;
 				PRODUCT_NAME = App;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
 				SWIFT_VERSION = 5.0;
@@ -814,7 +814,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -834,7 +834,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -853,7 +853,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -872,7 +872,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -890,7 +890,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProject;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProject;
 				PRODUCT_NAME = App;
 				SDKROOT = appletvos;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -908,7 +908,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProject;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProject;
 				PRODUCT_NAME = App;
 				SDKROOT = appletvos;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
@@ -928,7 +928,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;
@@ -948,7 +948,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;
@@ -967,7 +967,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;
@@ -986,7 +986,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.CTProjectUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.CTProjectUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 5.0;

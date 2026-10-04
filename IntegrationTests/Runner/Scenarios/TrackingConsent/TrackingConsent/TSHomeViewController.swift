@@ -5,8 +5,8 @@
  */
 
 import UIKit
-import DatadogCore
-import DatadogTrace
+import KubesenseCore
+import KubesenseTrace
 
 internal class TSHomeViewController: UIViewController {
     override func viewDidLoad() {
@@ -26,7 +26,7 @@ internal class TSHomeViewController: UIViewController {
             // Because user info is attached to events in all features, we use it
             // to record current consent value for each event. This is later used
             // for assertions in integration tests.
-            Datadog.setUserInfo(
+            Kubesense.setUserInfo(
                 id: "id",
                 name: "John Doe",
                 extraInfo: [

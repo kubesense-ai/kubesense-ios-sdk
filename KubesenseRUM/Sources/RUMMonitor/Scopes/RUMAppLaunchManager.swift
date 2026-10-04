@@ -1,0 +1,323 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+import KubesenseInternal
+import Foundation
+
+internal class RUMAppLaunchManager {
+    internal enum Constants {
+        // Maximum time for an erroneous TTID (Time to Initial Display)
+        static let maxTTIDDuration: TimeInterval = 60 // 1 minute
+        // Maximum time for an erroneous ttfd
+        static let maxTTFDDuration: TimeInterval = 90 // 90 seconds
+    }
+    // MARK: - Properties
+
+    private unowned let parent: RUMContextProvider
+    private let dependencies: RUMScopeDependencies
+    private let telemetryController: AppLaunchMetricController
+    private let sanitizer = RUMEventSanitizer()
+
+    private var timeToInitialDisplay: Double?
+    private var timeToFullDisplay: (
+        duration: TimeInterval,
+        vitalId: String,
+        attributes: [AttributeKey: AttributeValue]
+    )?
+    private var startupType: RUMVitalAppLaunchEvent.Vital.StartupType?
+
+    private lazy var startupTypeHandler = StartupTypeHandler(telemetryController: telemetryController)
+
+    // MARK: - Initialization
+
+    init(
+        parent: RUMContextProvider,
+        dependencies: RUMScopeDependencies,
+        telemetryController: AppLaunchMetricController
+    ) {
+        self.parent = parent
+        self.dependencies = dependencies
+        self.telemetryController = telemetryController
+    }
+
+    // MARK: - Internal Interface
+
+    func process(_ command: RUMCommand, context: KubesenseContext, writer: Writer, activeView: RUMViewScope? = nil) {
+        switch command {
+        case let command as RUMTimeToInitialDisplayCommand:
+            writeTTIDVitalEvent(from: command, context: context, writer: writer, activeView: activeView)
+        case let command as RUMTimeToFullDisplayCommand:
+            writeTTFDVitalEvent(from: command, context: context, writer: writer, activeView: activeView)
+        default: break
+        }
+    }
+}
+
+// MARK: - TTID
+
+private extension RUMAppLaunchManager {
+    func writeTTIDVitalEvent(from command: RUMTimeToInitialDisplayCommand, context: KubesenseContext, writer: Writer, activeView: RUMViewScope?) {
+        guard shouldProcess(command: command, context: context),
+              let ttid = time(from: command, context: context)
+        else {
+            return
+        }
+
+        self.timeToInitialDisplay = ttid
+        let ttidVitalId = dependencies.rumUUIDGenerator.generateUnique().toRUMDataFormat
+        let profiling = context.additionalContext(ofType: ProfilingContext.self)?.kubesenseProfiling
+
+        if let timeToFullDisplay {
+            let ttfdVital = Vital(
+                id: timeToFullDisplay.vitalId,
+                name: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric.ttfd.name,
+                date: context.launchInfo.processLaunchDate,
+                serverTimeOffset: context.serverTimeOffset,
+                duration: max(ttid, timeToFullDisplay.duration).dd.toInt64Nanoseconds
+            )
+
+            // TTID closes app-launch profiling, so only a TTFD reported earlier is sent here.
+            sendTTFDMessageToProfiler(vital: ttfdVital)
+        }
+
+        sendTTIDMessageToProfiler(
+            vital: .init(
+                id: ttidVitalId,
+                name: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric.ttid.name,
+                date: context.launchInfo.processLaunchDate,
+                serverTimeOffset: context.serverTimeOffset,
+                duration: ttid.dd.toInt64Nanoseconds
+            )
+        )
+
+        dependencies.appStateManager.previousAppStateInfo { [weak self] previousAppStateInfo in
+            self?.dependencies.appStateManager.currentAppStateInfo { [weak self] currentAppStateInfo in
+                guard let self else {
+                    return
+                }
+
+                let attributes = command.globalAttributes
+                    .merging(command.attributes) { $1 }
+
+                let startupType = self.startupTypeHandler.startupType(previousAppState: previousAppStateInfo, currentAppState: currentAppStateInfo)
+                self.startupType = startupType
+
+                self.writeVitalEvent(
+                    vitalId: ttidVitalId,
+                    duration: Double(ttid.dd.toInt64Nanoseconds),
+                    appLaunchMetric: .ttid,
+                    startupType: startupType,
+                    attributes: attributes,
+                    context: context,
+                    writer: writer,
+                    activeView: activeView,
+                    profiling: profiling
+                )
+
+                // The TTFD is always written after the TTID. If it exists already, means it was not written before.
+                if let timeToFullDisplay {
+                    let ttfd = max(ttid, timeToFullDisplay.duration)
+                    self.writeVitalEvent(
+                        vitalId: timeToFullDisplay.vitalId,
+                        duration: Double(ttfd.dd.toInt64Nanoseconds),
+                        appLaunchMetric: .ttfd,
+                        startupType: startupType,
+                        attributes: timeToFullDisplay.attributes,
+                        context: context,
+                        writer: writer,
+                        activeView: activeView,
+                        profiling: profiling
+                    )
+
+                    telemetryController.trackTTFD(duration: ttfd.dd.toInt64Nanoseconds)
+                }
+
+                telemetryController.sendMetric()
+            }
+        }
+    }
+
+    func shouldProcess(command: RUMTimeToInitialDisplayCommand, context: KubesenseContext) -> Bool {
+        // Ignore command if the time to initial display was already written
+        guard self.timeToInitialDisplay == nil else {
+            telemetryController.incrementTTIDCounter()
+            return false
+        }
+
+        // Ignore command if the time since the SDK load exceeds the limit
+        let launchPhase: LaunchPhase = context.launchInfo.launchReason == .userLaunch ? .processLaunch : .runtimeLoad
+        guard let runtimeLoadDate = context.launchInfo.launchPhaseDates[launchPhase],
+              (0..<Constants.maxTTIDDuration).contains(command.time.timeIntervalSince(runtimeLoadDate)) else {
+            telemetryController.send(metric: .largeTTID(
+                context: context,
+                duration: command.time.timeIntervalSince(context.launchInfo.processLaunchDate)
+            ))
+            return false
+        }
+
+        // Ignore app launched in the background by the system or uncertain launch reason
+        guard context.launchInfo.launchReason == .userLaunch || context.launchInfo.launchReason == .prewarming else {
+            telemetryController.send(metric: .launchNotSupported(
+                context: context,
+                duration: command.time.timeIntervalSince(context.launchInfo.processLaunchDate)
+            ))
+            return false
+        }
+
+        return true
+    }
+
+    func time(from command: RUMCommand, context: KubesenseContext) -> TimeInterval? {
+        switch context.launchInfo.launchReason {
+        case .userLaunch:
+            return command.time.timeIntervalSince(context.launchInfo.processLaunchDate)
+        case .prewarming:
+            guard let runtimeLoadDate = context.launchInfo.launchPhaseDates[.runtimeLoad] else {
+                telemetryController.telemetry.error("Prewarming app launch without runtime load date.")
+                return nil
+            }
+            return command.time.timeIntervalSince(runtimeLoadDate)
+        default:
+            return nil
+        }
+    }
+
+    func writeVitalEvent(
+        vitalId: String,
+        duration: TimeInterval,
+        appLaunchMetric: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric,
+        startupType: RUMVitalAppLaunchEvent.Vital.StartupType,
+        attributes: [AttributeKey: AttributeValue],
+        context: KubesenseContext,
+        writer: Writer,
+        activeView: RUMViewScope?,
+        profiling: KubesenseProfiling? = nil
+    ) {
+        let vital = RUMVitalAppLaunchEvent.Vital(
+            appLaunchMetric: appLaunchMetric,
+            duration: duration,
+            id: vitalId,
+            isPrewarmed: context.launchInfo.launchReason == .prewarming,
+            name: appLaunchMetric.name,
+            startupType: startupType
+        )
+
+        let vitalEvent = RUMVitalAppLaunchEvent(
+            dd: .init(profiling: profiling),
+            account: .init(context: context),
+            application: .init(id: parent.context.rumApplicationID),
+            buildId: context.buildId,
+            buildVersion: context.buildNumber,
+            ciTest: dependencies.ciTest,
+            connectivity: .init(context: context),
+            context: RUMEventAttributes(contextInfo: attributes),
+            date: context.launchInfo.processLaunchDate
+                .addingTimeInterval(context.serverTimeOffset)
+                .timeIntervalSince1970.dd.toInt64Milliseconds,
+            ktags: context.kubesenseTags,
+            device: context.normalizedDevice(),
+            os: context.os,
+            service: context.service,
+            session: .init(
+                hasReplay: context.hasReplay,
+                id: parent.context.sessionID.toRUMDataFormat,
+                type: dependencies.sessionType
+            ),
+            source: .init(rawValue: context.source) ?? .ios,
+            synthetics: dependencies.syntheticsTest,
+            usr: .init(context: context),
+            version: context.version,
+            view: .init(
+                id: (activeView?.viewUUID).orNull.toRUMDataFormat,
+                name: activeView?.viewName,
+                url: activeView?.viewPath ?? ""
+            ),
+            vital: vital
+        )
+
+        let sanitizedVitalEvent = sanitizer.sanitize(event: vitalEvent)
+        writer.write(value: sanitizedVitalEvent)
+        telemetryController.track(ttidEvent: sanitizedVitalEvent, context: context)
+    }
+
+    func sendTTIDMessageToProfiler(vital: Vital) {
+        let contextAttributes: [String: Encodable] = parent.rumContextAttributes
+        dependencies.featureScope.send(message: .payload(TTIDMessage(attributes: contextAttributes, ttid: vital)))
+    }
+}
+
+// MARK: - TTFD
+
+private extension RUMAppLaunchManager {
+    func writeTTFDVitalEvent(from command: RUMTimeToFullDisplayCommand, context: KubesenseContext, writer: Writer, activeView: RUMViewScope?) {
+        guard shouldProcess(command: command, context: context),
+              let ttfd = time(from: command, context: context) else { return }
+
+        let timeToFullDisplay = (
+            duration: timeToInitialDisplay.map { max($0, ttfd) } ?? ttfd,
+            vitalId: dependencies.rumUUIDGenerator.generateUnique().toRUMDataFormat,
+            attributes: command.globalAttributes.merging(command.attributes) { $1 }
+        )
+        self.timeToFullDisplay = timeToFullDisplay
+
+        if timeToInitialDisplay != nil {
+            let ttfdVital = Vital(
+                id: timeToFullDisplay.vitalId,
+                name: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric.ttfd.name,
+                date: context.launchInfo.processLaunchDate,
+                serverTimeOffset: context.serverTimeOffset,
+                duration: timeToFullDisplay.duration.dd.toInt64Nanoseconds
+            )
+            sendTTFDMessageToProfiler(vital: ttfdVital)
+
+            if let startupType {
+                let profiling = context.additionalContext(ofType: ProfilingContext.self)?.kubesenseProfiling
+
+                self.writeVitalEvent(
+                    vitalId: ttfdVital.id,
+                    duration: Double(timeToFullDisplay.duration.dd.toInt64Nanoseconds),
+                    appLaunchMetric: .ttfd,
+                    startupType: startupType,
+                    attributes: timeToFullDisplay.attributes,
+                    context: context,
+                    writer: writer,
+                    activeView: activeView,
+                    profiling: profiling
+                )
+            }
+        }
+    }
+
+    func shouldProcess(command: RUMTimeToFullDisplayCommand, context: KubesenseContext) -> Bool {
+        // Ignore command if the time to full display was already written
+        guard self.timeToFullDisplay == nil else {
+            return false
+        }
+
+        // Ignore command if the time since the SDK load is too big
+        let launchPhase: LaunchPhase = context.launchInfo.launchReason == .userLaunch ? .processLaunch : .runtimeLoad
+        guard let runtimeLoadDate = context.launchInfo.launchPhaseDates[launchPhase],
+              (0..<Constants.maxTTFDDuration).contains(command.time.timeIntervalSince(runtimeLoadDate)) else {
+            return false
+        }
+
+        return true
+    }
+
+    func sendTTFDMessageToProfiler(vital: Vital) {
+        let contextAttributes: [String: Encodable] = parent.rumContextAttributes
+        dependencies.featureScope.send(message: .payload(OperationMessage(attributes: contextAttributes, operation: vital)))
+    }
+}
+
+private extension RUMVitalAppLaunchEvent.Vital.AppLaunchMetric {
+    var name: String {
+        switch self {
+        case .ttid: return "time_to_initial_display"
+        case .ttfd: return "time_to_full_display"
+        }
+    }
+}

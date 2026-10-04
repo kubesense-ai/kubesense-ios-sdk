@@ -1,9 +1,9 @@
 ---
-name: dd-sdk-ios:git-commit
-description: Use when committing changes in dd-sdk-ios. Use when writing commit messages, signing commits, or staging files before a commit.
+name: kubesense-ios-sdk:git-commit
+description: Use when committing changes in kubesense-ios-sdk. Use when writing commit messages, signing commits, or staging files before a commit.
 ---
 
-# Committing in dd-sdk-ios
+# Committing in kubesense-ios-sdk
 
 ## Requirements
 
@@ -19,7 +19,7 @@ description: Use when committing changes in dd-sdk-ios. Use when writing commit 
 **Examples:**
 - `[RUM-1234] Add baggage header merging support`
 - `[FFL-213] Add Feature Flags support`
-- `[RUM-14655] Fix WebView log events attaching incomplete ddTags`
+- `[RUM-14655] Fix WebView log events attaching incomplete kubesenseTags`
 
 Third-party contributions skip the prefix.
 

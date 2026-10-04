@@ -1,5 +1,5 @@
 ---
-name: dd-sdk-ios:update-feature-docs
+name: kubesense-ios-sdk:update-feature-docs
 description: Use when public API changes have been made to review and update all *_FEATURE.md documentation files, or to audit whether they are still accurate.
 ---
 
@@ -19,7 +19,7 @@ All `*_FEATURE.md` files in the repo. Each doc's frontmatter is the source of tr
 - `verified_against_commit` — the commit the doc was last verified against
 - `tracked_files` — the public API source files whose changes should trigger a doc update
 
-To add a new feature doc to the system, create a `*_FEATURE.md` file following the spec in [`docs/LLM_FEATURE_DOCS_GUIDELINES.md`](../../../docs/LLM_FEATURE_DOCS_GUIDELINES.md) and modeling it on existing docs (e.g. `DatadogRUM/RUM_FEATURE.md`, `DatadogSessionReplay/SESSION_REPLAY_FEATURE.md`). Then run this skill — it will discover the new doc, audit `tracked_files` coverage, and register it in the required places. No script changes needed.
+To add a new feature doc to the system, create a `*_FEATURE.md` file following the spec in [`docs/LLM_FEATURE_DOCS_GUIDELINES.md`](../../../docs/LLM_FEATURE_DOCS_GUIDELINES.md) and modeling it on existing docs (e.g. `KubesenseRUM/RUM_FEATURE.md`, `KubesenseSessionReplay/SESSION_REPLAY_FEATURE.md`). Then run this skill — it will discover the new doc, audit `tracked_files` coverage, and register it in the required places. No script changes needed.
 
 ## Steps
 
@@ -56,7 +56,7 @@ To add a new feature doc to the system, create a `*_FEATURE.md` file following t
    - **Outdated code examples** — anything in the snippets that no longer reflects the API.
 
 5b. **Audit every code snippet for compile-readiness** — runs for every doc on every skill invocation, **even if step 3's diff was empty**. This is the only check that catches cross-feature drift (e.g. a RUM predicate change breaking Session Replay's Quick Start). For every constructor call, method call, and type reference in every code snippet (Quick Start and any inline examples):
-   - Locate the corresponding `init` / `func` / `struct` / `class` / `enum` declaration **anywhere in the SDK source**, not just this doc's `tracked_files`. Snippets often reference types from other features (e.g. Session Replay's Quick Start uses `RUM.Configuration` and `DefaultSwiftUIRUMViewsPredicate` from DatadogRUM). Use the "Feature Interactions" section of each doc as a hint for which other modules may be relevant, but resolve symbols against the actual source regardless.
+   - Locate the corresponding `init` / `func` / `struct` / `class` / `enum` declaration **anywhere in the SDK source**, not just this doc's `tracked_files`. Snippets often reference types from other features (e.g. Session Replay's Quick Start uses `RUM.Configuration` and `DefaultSwiftUIRUMViewsPredicate` from KubesenseRUM). Use the "Feature Interactions" section of each doc as a hint for which other modules may be relevant, but resolve symbols against the actual source regardless.
    - Confirm every parameter **without** a default value (`= ...`) is supplied in the snippet, with the correct label.
    - Confirm parameter labels and argument ordering match the source.
    - **Watch especially for newly-required parameters added to existing initializers.** A required parameter added to an existing `init` is the highest-risk drift — the constructor still looks "the same" at a glance, and the source diff is a one-line addition that is easy to skim past. Example regression: `DefaultSwiftUIRUMActionsPredicate(isLegacyDetectionEnabled:)` gained the required `isLegacyDetectionEnabled` argument and the snippet was not updated, causing a compile failure customers hit.
@@ -72,11 +72,11 @@ To add a new feature doc to the system, create a `*_FEATURE.md` file following t
 7. **Update the frontmatter** — runs on every skill invocation, **even when steps 4–6 were skipped**. A skill run is itself a verification event; bumping the frontmatter records that and keeps `verified_against_commit` pointing at a recently-pushed SHA (older SHAs may be unreachable on a fresh clone in CI). Set:
    - `tracked_files` → if it was missing or out of date, write the list derived in step 2
    - `verified_against_commit` → current HEAD commit hash (use `git rev-parse --short=9 HEAD`)
-   - `sdk_version` → current version from `DatadogCore.podspec`
+   - `sdk_version` → current version from `KubesenseCore.podspec`
    - `last_updated` → today's date (YYYY-MM-DD)
 
 8. **Update the registries** — when adding, renaming, or removing a `*_FEATURE.md` file, also update every place that hand-lists feature docs. `tools/feature-docs-verify.sh` enforces these and will fail CI otherwise:
-   - **`.github/workflows/changelog-to-confluence.yaml`** — both the `paths:` filter and the `cp` block. Use the relative path **without a leading slash** (`DatadogRUM/RUM_FEATURE.md`, not `/DatadogRUM/RUM_FEATURE.md`) — leading slashes silently never match in GitHub Actions `paths:` filters. The publish filename is kebab-case derived from the module + doc (`DatadogRUM/RUM_FEATURE.md` → `dd-sdk-ios-rum-feature.md`).
+   - **`.github/workflows/changelog-to-confluence.yaml`** — both the `paths:` filter and the `cp` block. Use the relative path **without a leading slash** (`KubesenseRUM/RUM_FEATURE.md`, not `/KubesenseRUM/RUM_FEATURE.md`) — leading slashes silently never match in GitHub Actions `paths:` filters. The publish filename is kebab-case derived from the module + doc (`KubesenseRUM/RUM_FEATURE.md` → `kubesense-ios-sdk-rum-feature.md`).
    - **`AGENTS.md`** — add the doc to the file tree under "Feature-specific docs" and to the routing table ("Where to Look First").
    - **`docs/LLM_FEATURE_DOCS_GUIDELINES.md`** — add the doc to the file inventory list.
 

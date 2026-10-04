@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogCore
+import KubesenseCore
 
 internal class RUMScrubbingViewController: UIViewController {
     override func viewDidLoad() {

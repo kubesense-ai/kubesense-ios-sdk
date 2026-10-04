@@ -18,19 +18,19 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(name: "Datadog", path: ".."),
+        .package(name: "Kubesense", path: ".."),
     ],
     targets: [
         .target(
             name: "TestUtilities",
             dependencies: [
-                .product(name: "DatadogCore", package: "Datadog"),
-                .product(name: "DatadogRUM", package: "Datadog"),
-                .product(name: "DatadogLogs",package: "Datadog"),
-                .product(name: "DatadogTrace",package: "Datadog"),
-                .product(name: "DatadogCrashReporting",package: "Datadog"),
-                .product(name: "DatadogSessionReplay", package: "Datadog"),
-                .product(name: "DatadogWebViewTracking",package: "Datadog")
+                .product(name: "KubesenseCore", package: "Kubesense"),
+                .product(name: "KubesenseRUM", package: "Kubesense"),
+                .product(name: "KubesenseLogs",package: "Kubesense"),
+                .product(name: "KubesenseTrace",package: "Kubesense"),
+                .product(name: "KubesenseCrashReporting",package: "Kubesense"),
+                .product(name: "KubesenseSessionReplay", package: "Kubesense"),
+                .product(name: "KubesenseWebViewTracking",package: "Kubesense")
             ],
             path: ".",
             sources: ["Sources"],

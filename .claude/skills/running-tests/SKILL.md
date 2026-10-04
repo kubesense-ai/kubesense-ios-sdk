@@ -1,9 +1,9 @@
 ---
-name: dd-sdk-ios:running-tests
-description: Use when asked to run tests in the dd-sdk-ios project — whether a full module suite, a specific test class, or a single test method. Use when choosing between make, xcodebuild, or Xcode MCP for running iOS/tvOS/visionOS tests.
+name: kubesense-ios-sdk:running-tests
+description: Use when asked to run tests in the kubesense-ios-sdk project — whether a full module suite, a specific test class, or a single test method. Use when choosing between make, xcodebuild, or Xcode MCP for running iOS/tvOS/visionOS tests.
 ---
 
-# Running Tests in dd-sdk-ios
+# Running Tests in kubesense-ios-sdk
 
 ## Two Approaches
 
@@ -74,7 +74,7 @@ RunSomeTests(
 **If the test is NOT in the active scheme**, use `xcodebuild -only-testing`:
 ```bash
 xcodebuild test \
-  -workspace Datadog.xcworkspace \
+  -workspace Kubesense.xcworkspace \
   -scheme "<Module> <Platform>" \
   -destination 'platform=<Platform> Simulator,name=<Device>' \
   -only-testing:<TargetName>/<TestClass>/<testMethod>
@@ -83,7 +83,7 @@ xcodebuild test \
 To find which module owns a test:
 ```
 XcodeGrep(tabIdentifier: <tabIdentifier>, pattern: "func <testName>", outputMode: "filesWithMatches")
-# path reveals the module: DatadogInternal/Tests/... → scheme "DatadogInternal iOS"
+# path reveals the module: KubesenseInternal/Tests/... → scheme "KubesenseInternal iOS"
 ```
 
 ## Decision Guide
@@ -106,4 +106,4 @@ Need to run tests?
 | Assuming `RunSomeTests` works for any module | It only sees targets in the active Xcode scheme — MCP cannot switch schemes |
 | Not knowing which scheme owns the test | Grep for the function — file path reveals the module |
 | Running full module when only one test needed | Use `RunSomeTests` or `xcodebuild -only-testing` |
-| Running integration tests under feature module scheme | Integration tests use target `DatadogIntegrationTests iOS/tvOS` |
+| Running integration tests under feature module scheme | Integration tests use target `KubesenseIntegrationTests iOS/tvOS` |

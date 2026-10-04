@@ -8,9 +8,9 @@ import Foundation
 import UIKit
 import SwiftUI
 
-import DatadogCore
-import DatadogRUM
-import DatadogSessionReplay
+import KubesenseCore
+import KubesenseRUM
+import KubesenseSessionReplay
 
 import CatalogSwiftUI
 
@@ -24,12 +24,12 @@ struct SessionReplaySwiftUIScenario: Scenario {
     var initialViewController: UIViewController {
         UIHostingController(
             rootView: CatalogSwiftUI.ContentView()
-                .environment(\.datadogMonitor, DatadogMonitor())
+                .environment(\.kubesenseMonitor, KubesenseMonitor())
         )
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )
@@ -72,7 +72,7 @@ struct SessionReplaySwiftUIScenario: Scenario {
     }
 }
 
-private struct DatadogMonitor: CatalogSwiftUI.DatadogMonitor {
+private struct KubesenseMonitor: CatalogSwiftUI.KubesenseMonitor {
     func viewModifier(name: String) -> AnyViewModifier {
         AnyViewModifier { content in
             content.trackRUMView(name: name)

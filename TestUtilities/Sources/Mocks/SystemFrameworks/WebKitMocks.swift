@@ -7,7 +7,7 @@
 #if canImport(WebKit)
 import Foundation
 import WebKit
-@testable import DatadogWebViewTracking
+@testable import KubesenseWebViewTracking
 
 public final class WKUserContentControllerMock: WKUserContentController {
     private var handlers: [String: WKScriptMessageHandler] = [:]
@@ -21,8 +21,8 @@ public final class WKUserContentControllerMock: WKUserContentController {
     }
 
     public func send(body: Any, from webView: WKWebView? = nil) {
-        let handler = handlers[DDScriptMessageHandler.name]
-        let message = WKScriptMessageMock(body: body, name: DDScriptMessageHandler.name, webView: webView)
+        let handler = handlers[KubesenseScriptMessageHandler.name]
+        let message = WKScriptMessageMock(body: body, name: KubesenseScriptMessageHandler.name, webView: webView)
         handler?.userContentController(self, didReceive: message)
     }
 
@@ -31,7 +31,7 @@ public final class WKUserContentControllerMock: WKUserContentController {
     }
 
     public func flush() {
-        let handler = handlers[DDScriptMessageHandler.name] as? DDScriptMessageHandler
+        let handler = handlers[KubesenseScriptMessageHandler.name] as? KubesenseScriptMessageHandler
         handler?.flush()
     }
 }

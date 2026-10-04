@@ -15,7 +15,7 @@ source "${REPO_ROOT:-.}/tools/secrets/get-secret.sh"
 # a higher rate limit."
 # Ref.: https://github.com/Carthage/Carthage/pull/605
 if [ "$CI" = "true" ]; then
-    export GITHUB_ACCESS_TOKEN=$(dd-octo-sts --disable-tracing token --scope DataDog/dd-sdk-ios --policy self.carthage)
+    export GITHUB_ACCESS_TOKEN=$(dd-octo-sts --disable-tracing token --scope kubesense-ai/kubesense-ios-sdk --policy self.carthage)
 
     # GitHub introduced rate limits for unauthenticated requests to raw.githubusercontent.com
     # (https://github.blog/changelog/2025-05-08-updated-rate-limits-for-unauthenticated-requests/).

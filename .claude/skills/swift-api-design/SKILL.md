@@ -1,5 +1,5 @@
 ---
-name: dd-sdk-ios:swift-api-design
+name: kubesense-ios-sdk:swift-api-design
 description: Use when writing, reviewing, or renaming Swift APIs, including declarations, call sites, argument labels, Boolean names, protocols, overloads, documentation comments, and small abstractions.
 ---
 

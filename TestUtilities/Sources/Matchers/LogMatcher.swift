@@ -15,7 +15,7 @@ public class LogMatcher: JSONDataMatcher {
         static let status = "status"
         static let message = "message"
         static let service = "service"
-        static let tags = "ddtags"
+        static let tags = "ktags"
 
         // MARK: - Application info
 
@@ -63,9 +63,9 @@ public class LogMatcher: JSONDataMatcher {
         public static let errorFingerprint = "error.fingerprint"
 
         // MARK: - Dd info
-        static let dd = "_dd"
-        static let ddDevice = "device"
-        static let ddDeviceArchitecture = "architecture"
+        static let dd = "_kubesense"
+        static let kubesenseDevice = "device"
+        static let kubesenseDeviceArchitecture = "architecture"
     }
 
     /// Allowed values for `network.client.available_interfaces` attribute.
@@ -208,8 +208,8 @@ public class LogMatcher: JSONDataMatcher {
 
     public func assertHasArchitecture() {
         var architecture: String?
-        if let device = json[JSONKey.ddDevice] as? [String: Any] {
-            architecture = device[JSONKey.ddDeviceArchitecture] as? String
+        if let device = json[JSONKey.kubesenseDevice] as? [String: Any] {
+            architecture = device[JSONKey.kubesenseDeviceArchitecture] as? String
         }
 
         XCTAssertNotNil(architecture)

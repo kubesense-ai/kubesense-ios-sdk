@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogRUM
+import KubesenseRUM
 
 internal class SendRUMFixture1ViewController: UIViewController {
     @IBOutlet weak var pushNextScreenButton: UIButton!

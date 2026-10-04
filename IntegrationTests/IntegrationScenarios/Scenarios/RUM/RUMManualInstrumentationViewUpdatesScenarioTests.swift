@@ -6,7 +6,7 @@
 
 // TODO: RUM-16908 Merge into `RUMManualInstrumentationScenarioTests` once `viewUpdates` feature flag is removed
 
-import DatadogInternal
+import KubesenseInternal
 import HTTPServerMock
 import TestUtilities
 import XCTest

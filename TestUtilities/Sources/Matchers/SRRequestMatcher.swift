@@ -15,7 +15,7 @@ private enum SRRequestException: Error {
 
 /// Matcher for asserting known elements of Session Replay (multipart) request.
 ///
-/// See: ``DatadogSessionReplay.RequestBuilder`` to understand the encoding of multipart data operated by this matcher.
+/// See: ``KubesenseSessionReplay.RequestBuilder`` to understand the encoding of multipart data operated by this matcher.
 public struct SRRequestMatcher {
     /// Creates matcher from Session Replay `URLRequest`.
     /// The `request` must be a valid Session Replay (multipart) request.
@@ -104,7 +104,7 @@ public struct SRRequestMatcher {
 
 /// Basic parser for HTTP multipart data.
 ///
-/// It supports multipart idoms used in ``DatadogSessionReplay.MultipartFormData``. Other generic capabilities of
+/// It supports multipart idoms used in ``KubesenseSessionReplay.MultipartFormData``. Other generic capabilities of
 /// multipart format may not work correctly. Ref.: https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html
 private class MultipartFormDataParser {
     private let cr: UInt8 = 13 // CR

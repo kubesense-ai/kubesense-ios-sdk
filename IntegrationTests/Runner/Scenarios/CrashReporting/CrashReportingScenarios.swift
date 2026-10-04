@@ -6,11 +6,11 @@
 
 import UIKit
 
-import DatadogCore
-import DatadogRUM
-import DatadogCrashReporting
+import KubesenseCore
+@testable import KubesenseRUM
+import KubesenseCrashReporting
 
-/// Scenario that launches single-view app which can cause a crash and/or upload the crash report to Datadog.
+/// Scenario that launches single-view app which can cause a crash and/or upload the crash report to Kubesense.
 /// It includes the condition determined by crash report file presence:
 /// * if the file is not there, the UI for crashing the app is presented,
 /// * if the file is there, the UI for crashing the app is presented and _"Sending crash report..."_ label is shown.

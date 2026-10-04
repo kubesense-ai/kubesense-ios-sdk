@@ -5,10 +5,10 @@
  */
 
 import UIKit
-import DatadogCore
-import DatadogRUM
-import DatadogLogs
-import DatadogSessionReplay
+import KubesenseCore
+@testable import KubesenseRUM
+@testable import KubesenseLogs
+@testable import KubesenseSessionReplay
 
 private struct WebViewTrackingScenarioPredicate: UIKitRUMViewsPredicate {
     private let defaultPredicate = DefaultUIKitRUMViewsPredicate()
@@ -29,25 +29,19 @@ final class WebViewTrackingScenario: TestScenario {
     static var storyboardName: String = "WebViewTrackingScenario"
 
     func configureFeatures() {
-        RUM.enable(
-            with: RUM.Configuration(
-                applicationID: "rum-application-id",
-                uiKitViewsPredicate: WebViewTrackingScenarioPredicate(),
-                customEndpoint: Environment.serverMockConfiguration()?.rumEndpoint
-            )
+        var rumConfig = RUM.Configuration(
+            applicationID: "rum-application-id",
+            uiKitViewsPredicate: WebViewTrackingScenarioPredicate()
         )
+        rumConfig.customEndpoint = Environment.serverMockConfiguration()?.rumEndpoint
+        RUM.enable(with: rumConfig)
 
-        SessionReplay.enable(
-            with: SessionReplay.Configuration(
-                replaySampleRate: 100,
-                customEndpoint: Environment.serverMockConfiguration()?.srEndpoint
-            )
-        )
+        var srConfig = SessionReplay.Configuration(replaySampleRate: 100)
+        srConfig.customEndpoint = Environment.serverMockConfiguration()?.srEndpoint
+        SessionReplay.enable(with: srConfig)
 
-        Logs.enable(
-            with: Logs.Configuration(
-                customEndpoint: Environment.serverMockConfiguration()?.logsEndpoint
-            )
-        )
+        var logsConfig = Logs.Configuration()
+        logsConfig.customEndpoint = Environment.serverMockConfiguration()?.logsEndpoint
+        Logs.enable(with: logsConfig)
     }
 }

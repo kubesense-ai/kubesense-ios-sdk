@@ -5,7 +5,7 @@
  */
 
 import Foundation
-import DatadogInternal
+import KubesenseInternal
 
 public enum JSONMatcherException: Error {
     case objectException(String)

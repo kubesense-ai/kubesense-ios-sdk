@@ -14,7 +14,7 @@ import Testing
 /// `DatadogSDKTesting` (https://github.com/DataDog/dd-sdk-swift-testing) requires iOS 15+,
 /// while this package's platform floor is iOS 12 — SwiftPM has no per-target deployment
 /// override, so it can't be declared as a `Package.swift` dependency. It is only ever
-/// resolved when building through `Datadog.xcworkspace`, which links it directly. When
+/// resolved when building through `Kubesense.xcworkspace`, which links it directly. When
 /// building via `Package.swift` (`swift build`/`swift test`), this stub is used instead so
 /// `@Suite(.datadogTesting)` still compiles, without observing anything.
 public struct DatadogSDKTestingStubTrait: TestTrait, SuiteTrait {

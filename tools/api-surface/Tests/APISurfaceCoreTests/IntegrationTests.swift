@@ -214,7 +214,7 @@ class IntegrationTests: XCTestCase {
 
     /// Creates a unique temporary directory
     private func createTemporaryDirectory() throws -> URL {
-        let tempDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("com.datadoghq.api-surface-" + UUID().uuidString)
+        let tempDirectory = FileManager.default.temporaryDirectory.appendingPathComponent("ai.kubesense.api-surface-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: tempDirectory, withIntermediateDirectories: true, attributes: nil)
         try FileManager.default.createDirectory(at: tempDirectory, withIntermediateDirectories: true, attributes: nil)
         return tempDirectory

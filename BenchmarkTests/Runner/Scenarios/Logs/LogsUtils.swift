@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogLogs
+import KubesenseLogs
 import Foundation
 
 var logLevels: [(String, LogLevel)] = [

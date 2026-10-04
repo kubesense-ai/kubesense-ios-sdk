@@ -1,8 +1,8 @@
 // Minimum supported Swift version
 SWIFT_VERSION=5.9
 
-// Add common settings from Datadog.xcconfig
-#include "../xcconfigs/Datadog.xcconfig"
+// Add common settings from Kubesense.xcconfig
+#include "../xcconfigs/Kubesense.xcconfig"
 
 // Add DatadogSDKTesting instrumentation (if available in current environment)
 #include? "../xcconfigs/DatadogSDKTesting.local.xcconfig"

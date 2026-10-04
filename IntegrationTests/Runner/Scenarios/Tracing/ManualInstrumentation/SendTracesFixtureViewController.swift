@@ -5,8 +5,8 @@
  */
 
 import UIKit
-import DatadogCore
-import DatadogTrace
+import KubesenseCore
+import KubesenseTrace
 
 internal class SendTracesFixtureViewController: UIViewController {
     private let backgroundQueue = DispatchQueue(label: "background-queue")

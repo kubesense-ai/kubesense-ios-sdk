@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogRUM
+import KubesenseRUM
 
 /// Handles the button taps from the main `RUMAlertScenario` storyboard screen, presenting several alerts and action sheets.
 ///

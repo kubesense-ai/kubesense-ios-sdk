@@ -16,7 +16,7 @@ public class RUMCodeDecorator: SwiftCodeDecorator {
     public init() {
         super.init(
             sharedTypeNames: [
-                "DDProfiling",
+                "KubesenseProfiling",
                 "RUMConnectivity",
                 "RUMUser",
                 "RUMMethod",
@@ -167,7 +167,7 @@ public class RUMCodeDecorator: SwiftCodeDecorator {
         }
 
         if fixedName == "Profiling" {
-            fixedName = "DDProfiling"
+            fixedName = "KubesenseProfiling"
         }
 
         return fixedName

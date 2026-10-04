@@ -6,7 +6,7 @@
 
 import Foundation
 import SwiftUI
-import DatadogCore
+import KubesenseCore
 
 /// A custom SwiftUI Hosting controller for `RootView`.
 ///
@@ -93,7 +93,7 @@ struct ScreenView: View {
         VStack(spacing: 32) {
             NavigationLink(
                 "Push to Next View",
-                destination: destination.dd_interactiveDismissDisabled()
+                destination: destination.kubesense_interactiveDismissDisabled()
             )
             .trackRUMTapAction(name: "Tap Push to Next View")
 
@@ -188,7 +188,7 @@ class UIScreenViewController: UIViewController {
 }
 
 extension View {
-    func dd_interactiveDismissDisabled(_ isDisabled: Bool = true) -> some View {
+    func kubesense_interactiveDismissDisabled(_ isDisabled: Bool = true) -> some View {
         if #available(iOS 15.0, *) {
             return interactiveDismissDisabled(isDisabled)
         } else {

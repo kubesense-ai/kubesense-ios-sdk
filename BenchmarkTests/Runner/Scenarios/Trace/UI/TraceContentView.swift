@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogTrace
+import KubesenseTrace
 import SwiftUI
 
 struct TraceContentView: View {
@@ -19,7 +19,7 @@ struct TraceContentView: View {
 
     var tracer: OTTracer { Tracer.shared() }
 
-    private let queue1 = DispatchQueue(label: "com.datadoghq.benchmark-tracing1")
+    private let queue1 = DispatchQueue(label: "ai.kubesense.benchmark-tracing1")
 
     init() {
         operationName = "iOS Benchmark span operation"

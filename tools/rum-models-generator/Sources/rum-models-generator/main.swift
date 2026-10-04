@@ -31,7 +31,7 @@ private struct RootCommand: ParsableCommand {
     struct GenerateSwift: ParsableCommand {
         static let configuration = CommandConfiguration(
             commandName: "generate-swift",
-            abstract: "Generates models for Datadog Swift."
+            abstract: "Generates models for Kubesense Swift."
         )
 
         @Option(help: "The path to the JSON schema.")
@@ -56,7 +56,7 @@ private struct RootCommand: ParsableCommand {
     struct GenerateObjc: ParsableCommand {
         static let configuration = CommandConfiguration(
             commandName: "generate-objc",
-            abstract: "Generates models for Datadog Objc."
+            abstract: "Generates models for Kubesense Objc."
         )
 
         @Option(help: "The path to the JSON schema.")

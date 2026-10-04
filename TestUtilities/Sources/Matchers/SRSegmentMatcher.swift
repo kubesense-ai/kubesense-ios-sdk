@@ -8,12 +8,12 @@ import Foundation
 
 /// Matcher for asserting known values of Session Replay Segment.
 ///
-/// See: ``DatadogSessionReplay.SRSegment`` to understand how underlying data is encoded.
+/// See: ``KubesenseSessionReplay.SRSegment`` to understand how underlying data is encoded.
 public class SRSegmentMatcher: JSONObjectMatcher {
     /// Enumerates SR record types.
     /// Raw values correspond to record types defined in SR JSON schema.
     ///
-    /// See: ``DatadogSessionReplay.SRRecord``
+    /// See: ``KubesenseSessionReplay.SRRecord``
     public enum RecordType: Int {
         case fullSnapshotRecord = 10
         case incrementalSnapshotRecord = 11
@@ -81,7 +81,7 @@ public class SRSegmentMatcher: JSONObjectMatcher {
 
 /// Matcher for asserting known values of Session Replay "full snapshot" record.
 ///
-/// See: ``DatadogSessionReplay.SRFullSnapshotRecord`` to understand how underlying data is encoded.
+/// See: ``KubesenseSessionReplay.SRFullSnapshotRecord`` to understand how underlying data is encoded.
 public class SRFullSnapshotRecordMatcher: JSONObjectMatcher {
     public init(jsonObject: [String: Any]) {
         super.init(object: jsonObject)
@@ -95,7 +95,7 @@ public class SRFullSnapshotRecordMatcher: JSONObjectMatcher {
 
 /// Matcher for asserting known values of Session Replay "incremental snapshot" record.
 ///
-/// See: ``DatadogSessionReplay.SRIncrementalSnapshotRecord`` to understand how underlying data is encoded.
+/// See: ``KubesenseSessionReplay.SRIncrementalSnapshotRecord`` to understand how underlying data is encoded.
 public class SRIncrementalSnapshotRecordMatcher: JSONObjectMatcher {
     public init(jsonObject: [String: Any]) {
         super.init(object: jsonObject)
@@ -104,7 +104,7 @@ public class SRIncrementalSnapshotRecordMatcher: JSONObjectMatcher {
     /// Enumerates data types in incremental snapshot.
     /// Raw values correspond to types defined in SR JSON schema.
     ///
-    /// See: ``DatadogSessionReplay.SRIncrementalSnapshotRecord.Data``
+    /// See: ``KubesenseSessionReplay.SRIncrementalSnapshotRecord.Data``
     public enum IncrementalDataType: Int {
         case mutationData = 0
         case touchData = 2

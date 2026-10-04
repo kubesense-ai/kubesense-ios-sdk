@@ -5,40 +5,40 @@
  */
 
 import Foundation
-import DatadogInternal
-import DatadogCore
+import KubesenseInternal
+import KubesenseCore
 
 /// Test info reads configuration from `Info.plist`.
 ///
 /// The expected format is as follow:
 ///
 ///     <dict>
-///         <key>DatadogConfiguration</key>
+///         <key>KubesenseConfiguration</key>
 ///         <dict>
 ///             <key>ClientToken</key>
 ///             <string>$(CLIENT_TOKEN)</string>
 ///             <key>ApplicationID</key>
 ///             <string>$(RUM_APPLICATION_ID)</string>
 ///             <key>Environment</key>
-///             <string>$(DD_ENV)</string>
+///             <string>$(KUBESENSE_ENV)</string>
 ///             <key>Site</key>
-///             <string>$(DD_SITE)</string>
+///             <string>$(KUBESENSE_SITE)</string>
 ///         </dict>
 ///     </dict>
 struct TestInfo {
     let clientToken: String
     let applicationID: String
-    let site: DatadogSite
+    let site: KubesenseSite
     let env: String
 }
 
 extension TestInfo {
     init(bundle: Bundle = .main) throws {
         guard
-            let obj = bundle.object(forInfoDictionaryKey: "DatadogConfiguration") as? [String: String],
+            let obj = bundle.object(forInfoDictionaryKey: "KubesenseConfiguration") as? [String: String],
             let clientToken = obj["ClientToken"],
             let applicationID = obj["ApplicationID"],
-            let site = obj["Site"].flatMap(DatadogSite.init(rawValue:)),
+            let site = obj["Site"].flatMap(KubesenseSite.init(rawValue:)),
             let env = obj["Environment"]
         else {
             throw ProgrammerError(description: "Missing required Info.plist keys")
@@ -53,13 +53,13 @@ extension TestInfo {
         .init(
             clientToken: "",
             applicationID: "",
-            site: .us1,
+            site: .prod,
             env: "e2e"
         )
     }
 }
 
-extension Datadog.Configuration {
+extension Kubesense.Configuration {
     static func e2e(info: TestInfo) -> Self {
         .init(
             clientToken: info.clientToken,

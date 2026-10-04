@@ -40,7 +40,7 @@ internal struct HTTPServerMockConfiguration: Codable {
 
 /// Defines the way of instrumenting `URLSession` for RUM and Tracing scenarios.
 internal struct URLSessionSetup: Codable {
-    /// The method of instrumenting `URLSession` with `DDURLSessionDelegate` and providing `firstPartyHosts`
+    /// The method of instrumenting `URLSession` with `KubesenseURLSessionDelegate` and providing `firstPartyHosts`
     /// information to RUM and Tracing.
     enum InstrumentationMethod: CaseIterable, Codable {
         /// Use a custom delegate.
@@ -51,10 +51,10 @@ internal struct URLSessionSetup: Codable {
         case delegateWithAdditionalFirstPartyHosts
     }
 
-    /// A method of instrumenting `URLSession` with `DDURLSessionDelegate`.
+    /// A method of instrumenting `URLSession` with `KubesenseURLSessionDelegate`.
     let instrumentationMethod: InstrumentationMethod
 
-    /// The moment of initializing `URLSession` (and `DDURLSessionDelegate`) in relation to starting SDK.
+    /// The moment of initializing `URLSession` (and `KubesenseURLSessionDelegate`) in relation to starting SDK.
     enum InitializationMethod: CaseIterable, Codable {
         /// Initialize `URLSession` (and delegate) before starting SDK.
         case beforeSDK
@@ -62,7 +62,7 @@ internal struct URLSessionSetup: Codable {
         case afterSDK
     }
 
-    /// A method of initializing `URLSession` (and `DDURLSessionDelegate`).
+    /// A method of initializing `URLSession` (and `KubesenseURLSessionDelegate`).
     let initializationMethod: InitializationMethod
 
     // MARK: - Coding
@@ -85,9 +85,9 @@ internal struct URLSessionSetup: Codable {
 internal struct Environment {
     /// ENV variables shared between UITests and Example targets.
     struct Variable {
-        static let testScenarioClassName = "DD_TEST_SCENARIO_CLASS_NAME"
-        static let serverMockConfiguration = "DD_TEST_SERVER_MOCK_CONFIGURATION"
-        static let urlSessionSetup = "DD_TEST_URL_SESSION_SETUP"
+        static let testScenarioClassName = "KUBESENSE_TEST_SCENARIO_CLASS_NAME"
+        static let serverMockConfiguration = "KUBESENSE_TEST_SERVER_MOCK_CONFIGURATION"
+        static let urlSessionSetup = "KUBESENSE_TEST_URL_SESSION_SETUP"
     }
     /// Launch arguments shared between UITests and Example targets.
     struct Argument {
@@ -101,7 +101,7 @@ internal struct Environment {
         static let rumSessionEndViewName = "RUMSessionEndView"
     }
     struct InfoPlistKey {
-        static let clientToken      = "DatadogClientToken"
+        static let clientToken      = "KubesenseClientToken"
         static let rumApplicationID = "RUMApplicationID"
 
         static let customLogsURL    = "CustomLogsURL"
@@ -154,8 +154,8 @@ internal struct Environment {
         guard let clientToken = Bundle.main.infoDictionary?[InfoPlistKey.clientToken] as? String, !clientToken.isEmpty else {
             fatalError("""
             ✋⛔️ Cannot read `\(InfoPlistKey.clientToken)` from `Info.plist` dictionary.
-            Please update `Datadog.xcconfig` in the repository root with your own
-            client token obtained on datadoghq.com.
+            Please update `Kubesense.xcconfig` in the repository root with your own
+            client token obtained on kubesense.ai.
             You might need to run `Product > Clean Build Folder` before retrying.
             """)
         }
@@ -166,8 +166,8 @@ internal struct Environment {
         guard let rumApplicationID = Bundle.main.infoDictionary![InfoPlistKey.rumApplicationID] as? String, !rumApplicationID.isEmpty else {
             fatalError("""
             ✋⛔️ Cannot read `\(InfoPlistKey.rumApplicationID)` from `Info.plist` dictionary.
-            Please update `Datadog.xcconfig` in the repository root with your own
-            RUM application id obtained on datadoghq.com.
+            Please update `Kubesense.xcconfig` in the repository root with your own
+            RUM application id obtained on kubesense.ai.
             You might need to run `Product > Clean Build Folder` before retrying.
             """)
         }

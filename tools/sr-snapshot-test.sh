@@ -39,7 +39,7 @@ REPO_ROOT=$(realpath .)
 
 SNAPSHOTS_CLI_PATH="$REPO_ROOT/tools/sr-snapshots"
 SNAPSHOTS_REPO_PATH="$REPO_ROOT/../dd-mobile-session-replay-snapshots"
-TEST_WORKSPACE="$REPO_ROOT/DatadogSessionReplay/SRSnapshotTests/SRSnapshotTests.xcworkspace"
+TEST_WORKSPACE="$REPO_ROOT/KubesenseSessionReplay/SRSnapshotTests/SRSnapshotTests.xcworkspace"
 
 case "$suite" in
     "view-tree")
@@ -47,12 +47,12 @@ case "$suite" in
             echo_err "Error:" "--snapshot-env is only supported with --suite layer-tree."
             exit 1
         fi
-        SNAPSHOTS_DIR="$REPO_ROOT/DatadogSessionReplay/SRSnapshotTests/SRSnapshotTests/_snapshots_"
+        SNAPSHOTS_DIR="$REPO_ROOT/KubesenseSessionReplay/SRSnapshotTests/SRSnapshotTests/_snapshots_"
         TEST_SCHEME="SRSnapshotTests"
         TEST_ARTIFACTS_SUBPATH="sr-snapshot-tests"
         ;;
     "layer-tree")
-        LAYER_TESTS_DIR="$REPO_ROOT/DatadogSessionReplay/SRSnapshotTests/SRLayerSnapshotTests"
+        LAYER_TESTS_DIR="$REPO_ROOT/KubesenseSessionReplay/SRSnapshotTests/SRLayerSnapshotTests"
         ENVIRONMENTS_FILE="$LAYER_TESTS_DIR/SnapshotEnvironments.json"
         if [[ -z "$snapshot_env" ]]; then
             snapshot_env=$(/usr/bin/plutil -extract defaultEnvironment raw -o - "$ENVIRONMENTS_FILE")
@@ -96,7 +96,7 @@ TEST_ARTIFACTS_PATH="$REPO_ROOT/$artifacts_path/$TEST_ARTIFACTS_SUBPATH"
 
 # On CI, get GitHub token for accessing snapshots repository
 if [ "$CI" = "true" ]; then
-    export GH_TOKEN=$(dd-octo-sts --disable-tracing token --scope DataDog/dd-mobile-session-replay-snapshots --policy dd-sdk-ios)
+    export GH_TOKEN=$(dd-octo-sts --disable-tracing token --scope DataDog/dd-mobile-session-replay-snapshots --policy kubesense-ios-sdk)
     # Set up trap to always revoke token on script exit (success, failure, or interruption)
     trap 'dd-octo-sts --disable-tracing revoke --token $GH_TOKEN' EXIT
 fi
@@ -132,7 +132,7 @@ test_snapshots() {
     rm -rf "$TEST_ARTIFACTS_PATH"
     mkdir -p "$TEST_ARTIFACTS_PATH"
 
-    export DD_TEST_UTILITIES_ENABLED=1 # it is used in `dd-sdk-ios/Package.swift` to enable `TestUtilities` module
+    export KUBESENSE_TEST_UTILITIES_ENABLED=1 # it is used in `kubesense-ios-sdk/Package.swift` to enable `TestUtilities` module
     xcodebuild -version
     # Tee the raw xcodebuild log to disk (flushed line-by-line) so it survives even if the
     # process gets killed mid-run, e.g. by RUNNER_SCRIPT_TIMEOUT on a hung test.
@@ -140,8 +140,8 @@ test_snapshots() {
 }
 
 open_snapshot_tests_project() {
-    echo_info "Opening SRSnapshotTests with DD_TEST_UTILITIES_ENABLED ..."
-    open --new --env DD_TEST_UTILITIES_ENABLED "$TEST_WORKSPACE"
+    echo_info "Opening SRSnapshotTests with KUBESENSE_TEST_UTILITIES_ENABLED ..."
+    open --new --env KUBESENSE_TEST_UTILITIES_ENABLED "$TEST_WORKSPACE"
 }
 
 if [ "$open_project" = "true" ]; then

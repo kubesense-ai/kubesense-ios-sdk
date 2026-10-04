@@ -5,7 +5,7 @@
 # Builds XCFrameworks from the specified repository and exports them to the designated output directory.
 
 # Options:
-#   --repo-path: The path to the root of the 'dd-sdk-ios' repository.
+#   --repo-path: The path to the root of the 'kubesense-ios-sdk' repository.
 #   --ios: Includes iOS platform slices in the exported XCFrameworks.
 #   --tvos: Includes tvOS platform slices in the exported XCFrameworks.
 #   --output-path: The path to the output directory where XCFrameworks will be stored.
@@ -15,7 +15,7 @@ source ./tools/utils/argparse.sh
 source ./tools/utils/echo-color.sh
 
 set_description "Builds XCFrameworks from the specified repository and exports them to the designated output directory."
-define_arg "repo-path" "" "The path to the root of the 'dd-sdk-ios' repository." "string" "true"
+define_arg "repo-path" "" "The path to the root of the 'kubesense-ios-sdk' repository." "string" "true"
 define_arg "ios" "false" "Includes iOS platform slices in the exported XCFrameworks." "store_true"
 define_arg "tvos" "false" "Includes tvOS platform slices in the exported XCFrameworks." "store_true"
 define_arg "output-path" "" "The path to the output directory where XCFrameworks will be stored." "string" "true"
@@ -44,7 +44,7 @@ archive() {
     echo_subtitle2 "➔ Archive scheme: '$scheme' for destination: '$destination'"
 
     xcodebuild archive \
-        -workspace "Datadog.xcworkspace" \
+        -workspace "Kubesense.xcworkspace" \
         -scheme $scheme \
         -destination $destination \
         -archivePath $archive_path \
@@ -108,20 +108,20 @@ export REPO_ROOT=$(realpath "$SCRIPT_DIR/../..")
 $REPO_ROOT/tools/carthage-shim.sh bootstrap --platform $PLATFORMS --use-xcframeworks
 cp -r "Carthage/Build/OpenTelemetryApi.xcframework" "$XCFRAMEWORKS_OUTPUT"
 
-# Build Datadog XCFrameworks
-build_xcframework DatadogInternal "$PLATFORMS"
-build_xcframework DatadogCore "$PLATFORMS"
-build_xcframework DatadogLogs "$PLATFORMS"
-build_xcframework DatadogTrace "$PLATFORMS"
-build_xcframework DatadogRUM "$PLATFORMS"
-build_xcframework DatadogCrashReporting "$PLATFORMS"
-build_xcframework DatadogFlags "$PLATFORMS"
-build_xcframework DatadogProfiling "$PLATFORMS"
+# Build Kubesense XCFrameworks
+build_xcframework KubesenseInternal "$PLATFORMS"
+build_xcframework KubesenseCore "$PLATFORMS"
+build_xcframework KubesenseLogs "$PLATFORMS"
+build_xcframework KubesenseTrace "$PLATFORMS"
+build_xcframework KubesenseRUM "$PLATFORMS"
+build_xcframework KubesenseCrashReporting "$PLATFORMS"
+build_xcframework KubesenseFlags "$PLATFORMS"
+build_xcframework KubesenseProfiling "$PLATFORMS"
 
-# Build iOS-only Datadog XCFrameworks
+# Build iOS-only Kubesense XCFrameworks
 if [[ "$ios" == "true" ]]; then
-    build_xcframework DatadogWebViewTracking "iOS"
-    build_xcframework DatadogSessionReplay "iOS"
+    build_xcframework KubesenseWebViewTracking "iOS"
+    build_xcframework KubesenseSessionReplay "iOS"
 fi
 
 rm -rf "$ARCHIVES_TEMP_OUTPUT"

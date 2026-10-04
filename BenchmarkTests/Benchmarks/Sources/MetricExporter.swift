@@ -11,7 +11,7 @@ enum MetricExporterError: Error {
     case unsupportedMetric(type: MetricDataType, dataType: Any.Type)
 }
 
-/// Replacement of otel `DatadogExporter` for metrics.
+/// Replacement of otel `KubesenseExporter` for metrics.
 ///
 /// This version does not store data to disk, it uploads to the intake directly.
 /// Additionally, it does not crash.
@@ -29,7 +29,7 @@ final class MetricExporter: OpenTelemetrySdk.MetricExporter {
         case gauge = 3
     }
 
-    /// https://docs.datadoghq.com/api/latest/metrics/#submit-metrics
+    /// https://docs.kubesense.ai/api/latest/metrics/#submit-metrics
     internal struct Serie: Codable {
         struct Point: Codable {
             let timestamp: Int64
@@ -55,7 +55,7 @@ final class MetricExporter: OpenTelemetrySdk.MetricExporter {
     let configuration: Configuration
 
     // swiftlint:disable force_unwrapping
-    let intake = URL(string: "https://api.datadoghq.com/api/v2/series")!
+    let intake = URL(string: "https://api.kubesense.ai/api/v2/series")!
     let prefix = "{ \"series\": [".data(using: .utf8)!
     let separator = ",".data(using: .utf8)!
     let suffix = "]}".data(using: .utf8)!
@@ -90,7 +90,7 @@ final class MetricExporter: OpenTelemetrySdk.MetricExporter {
         return .cumulative
     }
 
-    /// Transforms otel `MetricData` to Datadog `serie`.
+    /// Transforms otel `MetricData` to Kubesense `serie`.
     ///
     /// - Parameter metric: The otel metric data
     /// - Returns: The timeserie.
@@ -143,10 +143,10 @@ final class MetricExporter: OpenTelemetrySdk.MetricExporter {
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = [
             "Content-Type": "application/json",
-            "DD-API-KEY": configuration.apiKey,
-            "DD-EVP-ORIGIN": "ios",
-            "DD-EVP-ORIGIN-VERSION": configuration.version,
-            "DD-REQUEST-ID": UUID().uuidString,
+            "KUBESENSE-API-KEY": configuration.apiKey,
+            "KUBESENSE-EVP-ORIGIN": "ios",
+            "KUBESENSE-EVP-ORIGIN-VERSION": configuration.version,
+            "KUBESENSE-REQUEST-ID": UUID().uuidString,
         ]
 
         request.httpBody = prefix + data + suffix

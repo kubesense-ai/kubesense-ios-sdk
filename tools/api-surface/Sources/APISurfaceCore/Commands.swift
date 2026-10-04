@@ -165,7 +165,7 @@ private func generateAPISurface(
     // Shared workspace and derived data path so common dependencies compile once and are reused across modules.
     let workspace = try PatchedPackageWorkspace(originalPath: path)
     let derivedDataPath = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        .appendingPathComponent("com.datadoghq.api-surface-dd-\(UUID().uuidString)", isDirectory: true)
+        .appendingPathComponent("ai.kubesense.api-surface-kubesense-\(UUID().uuidString)", isDirectory: true)
         .path
     defer { try? FileManager.default.removeItem(atPath: derivedDataPath) }
 
@@ -270,7 +270,7 @@ private func parseModulesInParallel(
     }
 
     let tempDir = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        .appendingPathComponent("com.datadoghq.api-surface-parse-\(UUID().uuidString)", isDirectory: true)
+        .appendingPathComponent("ai.kubesense.api-surface-parse-\(UUID().uuidString)", isDirectory: true)
     try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
     defer { try? FileManager.default.removeItem(at: tempDir) }
 
@@ -280,7 +280,7 @@ private func parseModulesInParallel(
     let group = DispatchGroup()
     let maxConcurrent = max(1, min(surfaces.count, ProcessInfo.processInfo.activeProcessorCount))
     let semaphore = DispatchSemaphore(value: maxConcurrent)
-    let queue = DispatchQueue(label: "com.datadoghq.api-surface.parse", attributes: .concurrent)
+    let queue = DispatchQueue(label: "ai.kubesense.api-surface.parse", attributes: .concurrent)
 
     for (index, surface) in surfaces.enumerated() {
         semaphore.wait()

@@ -289,8 +289,8 @@ class PackageResolvedFileTestCase(unittest.TestCase):
     def test_v2_package_id_from_repository_url(self):
         self.assertEqual('abc', v2_package_id_from_repository_url(repository_url='https://github.com/A-org/abc.git'))
         self.assertEqual('abc', v2_package_id_from_repository_url(repository_url='https://github.com/A-org/abc'))
-        self.assertEqual('abc', v2_package_id_from_repository_url(repository_url='git@github.com:DataDog/abc.git'))
-        self.assertEqual('abc', v2_package_id_from_repository_url(repository_url='git@github.com:DataDog/abc'))
+        self.assertEqual('abc', v2_package_id_from_repository_url(repository_url='git@github.com:Kubesense/abc.git'))
+        self.assertEqual('abc', v2_package_id_from_repository_url(repository_url='git@github.com:Kubesense/abc'))
 
     def test_it_reads_version3_files(self):
         with NamedTemporaryFile() as file:

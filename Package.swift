@@ -3,11 +3,11 @@
 import PackageDescription
 import Foundation
 
-let internalSwiftSettings: [SwiftSetting] = ProcessInfo.processInfo.environment["DD_BENCHMARK"] != nil ?
-    [.define("DD_BENCHMARK")] : []
+let internalSwiftSettings: [SwiftSetting] = ProcessInfo.processInfo.environment["KUBESENSE_BENCHMARK"] != nil ?
+    [.define("KUBESENSE_BENCHMARK")] : []
 
 let package = Package(
-    name: "Datadog",
+    name: "Kubesense",
     platforms: [
         .iOS(.v15),
         .tvOS(.v15),
@@ -17,40 +17,40 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "DatadogCore",
-            targets: ["DatadogCore"]
+            name: "KubesenseCore",
+            targets: ["KubesenseCore"]
         ),
         .library(
-            name: "DatadogLogs",
-            targets: ["DatadogLogs"]
+            name: "KubesenseLogs",
+            targets: ["KubesenseLogs"]
         ),
         .library(
-            name: "DatadogTrace",
-            targets: ["DatadogTrace"]
+            name: "KubesenseTrace",
+            targets: ["KubesenseTrace"]
         ),
         .library(
-            name: "DatadogRUM",
-            targets: ["DatadogRUM"]
+            name: "KubesenseRUM",
+            targets: ["KubesenseRUM"]
         ),
         .library(
-            name: "DatadogSessionReplay",
-            targets: ["DatadogSessionReplay"]
+            name: "KubesenseSessionReplay",
+            targets: ["KubesenseSessionReplay"]
         ),
         .library(
-            name: "DatadogCrashReporting",
-            targets: ["DatadogCrashReporting"]
+            name: "KubesenseCrashReporting",
+            targets: ["KubesenseCrashReporting"]
         ),
         .library(
-            name: "DatadogWebViewTracking",
-            targets: ["DatadogWebViewTracking"]
+            name: "KubesenseWebViewTracking",
+            targets: ["KubesenseWebViewTracking"]
         ),
         .library(
-            name: "DatadogFlags",
-            targets: ["DatadogFlags"]
+            name: "KubesenseFlags",
+            targets: ["KubesenseFlags"]
         ),
         .library(
-            name: "DatadogProfiling",
-            targets: ["DatadogProfiling"]
+            name: "KubesenseProfiling",
+            targets: ["KubesenseProfiling"]
         ),
     ],
     dependencies: [
@@ -59,12 +59,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "DatadogCore",
+            name: "KubesenseCore",
             dependencies: [
-                .target(name: "DatadogInternal"),
-                .target(name: "DatadogPrivate"),
+                .target(name: "KubesenseInternal"),
+                .target(name: "KubesensePrivate"),
             ],
-            path: "DatadogCore",
+            path: "KubesenseCore",
             sources: ["Sources"],
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy")
@@ -72,70 +72,70 @@ let package = Package(
             swiftSettings: [.define("SPM_BUILD")] + internalSwiftSettings
         ),
         .target(
-            name: "DatadogPrivate",
-            path: "DatadogCore/Private"
+            name: "KubesensePrivate",
+            path: "KubesenseCore/Private"
         ),
 
         .target(
-            name: "DatadogInternal",
-            path: "DatadogInternal/Sources",
+            name: "KubesenseInternal",
+            path: "KubesenseInternal/Sources",
             swiftSettings: internalSwiftSettings
         ),
         .testTarget(
-            name: "DatadogInternalTests",
+            name: "KubesenseInternalTests",
             dependencies: [
-                .target(name: "DatadogInternal"),
+                .target(name: "KubesenseInternal"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogInternal/Tests"
+            path: "KubesenseInternal/Tests"
         ),
 
         .target(
-            name: "DatadogLogs",
+            name: "KubesenseLogs",
             dependencies: [
-                .target(name: "DatadogInternal"),
+                .target(name: "KubesenseInternal"),
             ],
-            path: "DatadogLogs/Sources"
+            path: "KubesenseLogs/Sources"
         ),
         .testTarget(
-            name: "DatadogLogsTests",
+            name: "KubesenseLogsTests",
             dependencies: [
-                .target(name: "DatadogLogs"),
+                .target(name: "KubesenseLogs"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogLogs/Tests"
+            path: "KubesenseLogs/Tests"
         ),
 
         .target(
-            name: "DatadogTrace",
+            name: "KubesenseTrace",
             dependencies: [
-                .target(name: "DatadogInternal"),
+                .target(name: "KubesenseInternal"),
                 .product(name: "OpenTelemetryApi", package: "opentelemetry-swift-core")
             ],
-            path: "DatadogTrace/Sources",
+            path: "KubesenseTrace/Sources",
             swiftSettings: [
                 .swiftLanguageMode(.v6)
             ]
         ),
         .testTarget(
-            name: "DatadogTraceTests",
+            name: "KubesenseTraceTests",
             dependencies: [
-                .target(name: "DatadogTrace"),
+                .target(name: "KubesenseTrace"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogTrace/Tests",
+            path: "KubesenseTrace/Tests",
             swiftSettings: [
                 .swiftLanguageMode(.v6)
             ]
         ),
 
         .target(
-            name: "DatadogRUM",
+            name: "KubesenseRUM",
             dependencies: [
-                .target(name: "DatadogInternal"),
-                .target(name: "DatadogRUMPrivate"),
+                .target(name: "KubesenseInternal"),
+                .target(name: "KubesenseRUMPrivate"),
             ],
-            path: "DatadogRUM",
+            path: "KubesenseRUM",
             sources: ["Sources"],
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy")
@@ -143,80 +143,80 @@ let package = Package(
             swiftSettings: [.define("SPM_BUILD")] + internalSwiftSettings
         ),
         .target(
-            name: "DatadogRUMPrivate",
-            path: "DatadogRUM/Private"
+            name: "KubesenseRUMPrivate",
+            path: "KubesenseRUM/Private"
         ),
         .testTarget(
-            name: "DatadogRUMTests",
+            name: "KubesenseRUMTests",
             dependencies: [
-                .target(name: "DatadogRUM"),
+                .target(name: "KubesenseRUM"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogRUM/Tests"
+            path: "KubesenseRUM/Tests"
         ),
 
         .target(
-            name: "DatadogCrashReporting",
+            name: "KubesenseCrashReporting",
             dependencies: [
-                .target(name: "DatadogInternal"),
+                .target(name: "KubesenseInternal"),
                 .product(name: "Recording", package: "KSCrash"),
                 .product(name: "Filters", package: "KSCrash")
             ],
-            path: "DatadogCrashReporting",
+            path: "KubesenseCrashReporting",
             sources: ["Sources"],
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy")
             ]
         ),
         .testTarget(
-            name: "DatadogCrashReportingTests",
+            name: "KubesenseCrashReportingTests",
             dependencies: [
-                .target(name: "DatadogCrashReporting"),
+                .target(name: "KubesenseCrashReporting"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogCrashReporting/Tests"
+            path: "KubesenseCrashReporting/Tests"
         ),
 
         .target(
-            name: "DatadogWebViewTracking",
+            name: "KubesenseWebViewTracking",
             dependencies: [
-                .target(name: "DatadogInternal"),
+                .target(name: "KubesenseInternal"),
             ],
-            path: "DatadogWebViewTracking/Sources"
+            path: "KubesenseWebViewTracking/Sources"
         ),
         .testTarget(
-            name: "DatadogWebViewTrackingTests",
+            name: "KubesenseWebViewTrackingTests",
             dependencies: [
-                .target(name: "DatadogWebViewTracking"),
+                .target(name: "KubesenseWebViewTracking"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogWebViewTracking/Tests"
+            path: "KubesenseWebViewTracking/Tests"
         ),
 
         .target(
-            name: "DatadogSessionReplay",
-            dependencies: ["DatadogInternal"],
-            path: "DatadogSessionReplay/Sources"
+            name: "KubesenseSessionReplay",
+            dependencies: ["KubesenseInternal"],
+            path: "KubesenseSessionReplay/Sources"
         ),
         .testTarget(
-            name: "DatadogSessionReplayTests",
+            name: "KubesenseSessionReplayTests",
             dependencies: [
-                .target(name: "DatadogSessionReplay"),
+                .target(name: "KubesenseSessionReplay"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogSessionReplay/Tests",
+            path: "KubesenseSessionReplay/Tests",
             resources: [
                 .process("Resources/Assets.xcassets")
             ]
         ),
         
         .target(
-            name: "DatadogProfiling",
+            name: "KubesenseProfiling",
             dependencies: [
-                .target(name: "DatadogInternal"),
-                .target(name: "DatadogMachProfiler")
+                .target(name: "KubesenseInternal"),
+                .target(name: "KubesenseMachProfiler")
             ],
-            path: "DatadogProfiling",
+            path: "KubesenseProfiling",
             sources: ["Sources"],
             resources: [
                 .copy("Resources/PrivacyInfo.xcprivacy")
@@ -224,49 +224,49 @@ let package = Package(
             swiftSettings: [.swiftLanguageMode(.v6)] + internalSwiftSettings
         ),
         .target(
-            name: "DatadogMachProfiler",
-            path: "DatadogProfiling/Mach"
+            name: "KubesenseMachProfiler",
+            path: "KubesenseProfiling/Mach"
         ),
         .testTarget(
-            name: "DatadogProfilingTests",
+            name: "KubesenseProfilingTests",
             dependencies: [
-                .target(name: "DatadogMachProfiler"),
-                .target(name: "DatadogProfiling"),
+                .target(name: "KubesenseMachProfiler"),
+                .target(name: "KubesenseProfiling"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogProfiling/Tests",
+            path: "KubesenseProfiling/Tests",
             swiftSettings: [.interoperabilityMode(.Cxx), .swiftLanguageMode(.v6)] + internalSwiftSettings
         ),
 
         .target(
-            name: "DatadogFlags",
+            name: "KubesenseFlags",
             dependencies: [
-                .target(name: "DatadogInternal"),
+                .target(name: "KubesenseInternal"),
             ],
-            path: "DatadogFlags/Sources"
+            path: "KubesenseFlags/Sources"
         ),
         .testTarget(
-            name: "DatadogFlagsTests",
+            name: "KubesenseFlagsTests",
             dependencies: [
-                .target(name: "DatadogFlags"),
+                .target(name: "KubesenseFlags"),
                 .target(name: "TestUtilities"),
             ],
-            path: "DatadogFlags/Tests"
+            path: "KubesenseFlags/Tests"
         ),
 
         .target(
             name: "TestUtilities",
             dependencies: [
-                .target(name: "DatadogCore"),
-                .target(name: "DatadogPrivate"),
-                .target(name: "DatadogInternal"),
-                .target(name: "DatadogLogs"),
-                .target(name: "DatadogRUM"),
-                .target(name: "DatadogSessionReplay"),
-                .target(name: "DatadogTrace"),
-                .target(name: "DatadogCrashReporting"),
-                .target(name: "DatadogWebViewTracking"),
-                .target(name: "DatadogFlags"),
+                .target(name: "KubesenseCore"),
+                .target(name: "KubesensePrivate"),
+                .target(name: "KubesenseInternal"),
+                .target(name: "KubesenseLogs"),
+                .target(name: "KubesenseRUM"),
+                .target(name: "KubesenseSessionReplay"),
+                .target(name: "KubesenseTrace"),
+                .target(name: "KubesenseCrashReporting"),
+                .target(name: "KubesenseWebViewTracking"),
+                .target(name: "KubesenseFlags"),
             ],
             path: "TestUtilities/Sources",
             swiftSettings: [.define("SPM_BUILD")] + internalSwiftSettings
@@ -276,9 +276,9 @@ let package = Package(
     cxxLanguageStandard: .cxx17
 )
 
-// If the `DD_TEST_UTILITIES_ENABLED` development ENV is set, export additional utility packages.
-// To set this ENV for Xcode projects that fetch this package locally, use `open --env DD_TEST_UTILITIES_ENABLED path/to/<project or workspace>`.
-if ProcessInfo.processInfo.environment["DD_TEST_UTILITIES_ENABLED"] != nil {
+// If the `KUBESENSE_TEST_UTILITIES_ENABLED` development ENV is set, export additional utility packages.
+// To set this ENV for Xcode projects that fetch this package locally, use `open --env KUBESENSE_TEST_UTILITIES_ENABLED path/to/<project or workspace>`.
+if ProcessInfo.processInfo.environment["KUBESENSE_TEST_UTILITIES_ENABLED"] != nil {
     package.products.append(
         .library(
             name: "TestUtilities",

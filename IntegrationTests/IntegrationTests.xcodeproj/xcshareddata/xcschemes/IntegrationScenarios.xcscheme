@@ -89,9 +89,9 @@
                   <BuildableReference
                      BuildableIdentifier = "primary"
                      BlueprintIdentifier = "61441C2924616F1D003D8BB8"
-                     BuildableName = "DatadogIntegrationTests.xctest"
-                     BlueprintName = "DatadogIntegrationTests"
-                     ReferencedContainer = "container:Datadog.xcodeproj">
+                     BuildableName = "KubesenseIntegrationTests.xctest"
+                     BlueprintName = "KubesenseIntegrationTests"
+                     ReferencedContainer = "container:Kubesense.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -99,37 +99,37 @@
       </PostActions>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = "DD_TEST_RUNNER"
-            value = "$(DD_TEST_RUNNER)"
+            key = "KUBESENSE_TEST_RUNNER"
+            value = "$(KUBESENSE_TEST_RUNNER)"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "DATADOG_CLIENT_TOKEN"
-            value = "$(DD_SDK_SWIFT_TESTING_CLIENT_TOKEN)"
+            key = "KUBESENSE_CLIENT_TOKEN"
+            value = "$(KUBESENSE_SDK_SWIFT_TESTING_CLIENT_TOKEN)"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "DD_ENV"
-            value = "$(DD_SDK_SWIFT_TESTING_ENV)"
+            key = "KUBESENSE_ENV"
+            value = "$(KUBESENSE_SDK_SWIFT_TESTING_ENV)"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "DD_SERVICE"
-            value = "$(DD_SDK_SWIFT_TESTING_SERVICE)"
+            key = "KUBESENSE_SERVICE"
+            value = "$(KUBESENSE_SDK_SWIFT_TESTING_SERVICE)"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "DD_DISABLE_SDKIOS_INTEGRATION"
+            key = "KUBESENSE_DISABLE_SDKIOS_INTEGRATION"
             value = "1"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "DD_DISABLE_HEADERS_INJECTION"
+            key = "KUBESENSE_DISABLE_HEADERS_INJECTION"
             value = "1"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
-            key = "DD_ENABLE_RECORD_PAYLOAD"
+            key = "KUBESENSE_ENABLE_RECORD_PAYLOAD"
             value = "1"
             isEnabled = "YES">
          </EnvironmentVariable>
@@ -163,9 +163,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "61133B81242393DE00786299"
-            BuildableName = "Datadog.framework"
-            BlueprintName = "Datadog iOS"
-            ReferencedContainer = "container:Datadog.xcodeproj">
+            BuildableName = "Kubesense.framework"
+            BlueprintName = "Kubesense iOS"
+            ReferencedContainer = "container:Kubesense.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <TestPlans>

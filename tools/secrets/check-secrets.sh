@@ -14,7 +14,7 @@ source ./tools/secrets/get-secret.sh
 
 echo_subtitle "Check if secret values are available"
 
-for key in ${(k)DD_IOS_SECRETS}; do
-    secret_name=${DD_IOS_SECRETS[$key]%% |*}
+for key in ${(k)KUBESENSE_IOS_SECRETS}; do
+    secret_name=${KUBESENSE_IOS_SECRETS[$key]%% |*}
     get_secret $secret_name > /dev/null && echo_succ "$secret_name - OK"
 done

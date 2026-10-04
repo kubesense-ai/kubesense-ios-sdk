@@ -5,8 +5,8 @@
  */
 
 import UIKit
-import DatadogCore
-import DatadogTrace
+import KubesenseCore
+import KubesenseTrace
 
 internal class CSHomeViewController: UIViewController {
     @IBAction func didTapTestLogging(_ sender: UIButton) {

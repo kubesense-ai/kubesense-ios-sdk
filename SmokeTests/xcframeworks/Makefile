@@ -6,45 +6,45 @@ include ../../tools/utils/common.mk
 ifeq ($(PLATFORM), iOS Simulator)
 SCHEME := App iOS
 BUILD_XCFRAMEWORKS_FLAG := --ios
-EXPECTED_XCFRAMEWORKS := DatadogInternal \
-						DatadogCore \
-						DatadogLogs \
-						DatadogTrace \
-						DatadogRUM \
-						DatadogSessionReplay \
-						DatadogCrashReporting \
-						DatadogWebViewTracking \
-						DatadogFlags \
+EXPECTED_XCFRAMEWORKS := KubesenseInternal \
+						KubesenseCore \
+						KubesenseLogs \
+						KubesenseTrace \
+						KubesenseRUM \
+						KubesenseSessionReplay \
+						KubesenseCrashReporting \
+						KubesenseWebViewTracking \
+						KubesenseFlags \
 						OpenTelemetryApi
 else ifeq ($(PLATFORM), tvOS Simulator)
 SCHEME := App tvOS
 BUILD_XCFRAMEWORKS_FLAG := --tvos
-EXPECTED_XCFRAMEWORKS := DatadogInternal \
-						DatadogCore \
-						DatadogLogs \
-						DatadogTrace \
-						DatadogRUM \
-						DatadogCrashReporting \
-						DatadogFlags \
+EXPECTED_XCFRAMEWORKS := KubesenseInternal \
+						KubesenseCore \
+						KubesenseLogs \
+						KubesenseTrace \
+						KubesenseRUM \
+						KubesenseCrashReporting \
+						KubesenseFlags \
 						OpenTelemetryApi
 endif
 
 clean:
 	@$(ECHO_SUBTITLE2) "make clean"
-	rm -rf dd-sdk-ios
+	rm -rf kubesense-ios-sdk
 
 install:
 	@$(call require_param,PLATFORM)
 	@$(ECHO_SUBTITLE2) "make install"
 	@$(ECHO_INFO) "Preparing for CURRENT_GIT_REF='${CURRENT_GIT_REF}'"
-	git clone --depth 1 --branch ${CURRENT_GIT_REF} --single-branch git@github.com:DataDog/dd-sdk-ios.git
+	git clone --depth 1 --branch ${CURRENT_GIT_REF} --single-branch git@github.com:kubesense-ai/kubesense-ios-sdk.git
 ifeq ($(BUILD_XCFRAMEWORKS_FLAG),)
 	@$(ECHO_ERROR) "No BUILD_XCFRAMEWORKS_FLAG is defined for PLATFORM='$(PLATFORM)'"
 	@exit 1
 endif
 	cd $(REPO_ROOT) && tools/release/build-xcframeworks.sh \
-		--repo-path SmokeTests/xcframeworks/dd-sdk-ios \
-		--output-path SmokeTests/xcframeworks/dd-sdk-ios/build/xcframeworks \
+		--repo-path SmokeTests/xcframeworks/kubesense-ios-sdk \
+		--output-path SmokeTests/xcframeworks/kubesense-ios-sdk/build/xcframeworks \
 		$(BUILD_XCFRAMEWORKS_FLAG)
 
 test:
@@ -62,9 +62,9 @@ ifeq ($(EXPECTED_XCFRAMEWORKS),)
 endif
 	@$(ECHO_INFO) "Using SCHEME='$(SCHEME)'"
 	@$(ECHO_INFO) "Using EXPECTED_XCFRAMEWORKS='$(EXPECTED_XCFRAMEWORKS)'"
-	@echo "Check XCFrameworks in $(PWD)/dd-sdk-ios/build/xcframeworks/"
+	@echo "Check XCFrameworks in $(PWD)/kubesense-ios-sdk/build/xcframeworks/"
 	@$(foreach xcf,$(EXPECTED_XCFRAMEWORKS),\
-		if [ -d "dd-sdk-ios/build/xcframeworks/$(xcf).xcframework" ]; then \
+		if [ -d "kubesense-ios-sdk/build/xcframeworks/$(xcf).xcframework" ]; then \
 			$(ECHO_SUCCESS) "$(xcf).xcframework exists"; \
 		else \
 			$(ECHO_ERROR) "$(xcf).xcframework is missing" && exit 1; \

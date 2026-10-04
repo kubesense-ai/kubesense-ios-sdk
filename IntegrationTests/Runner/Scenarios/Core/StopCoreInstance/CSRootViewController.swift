@@ -5,8 +5,8 @@
  */
 
 import UIKit
-import DatadogCore
-import DatadogTrace
+import KubesenseCore
+import KubesenseTrace
 
 internal class CSRootViewController: UIViewController {
     @IBAction func startCore(_ sender: UIButton) {

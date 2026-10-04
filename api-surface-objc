@@ -1,12 +1,12 @@
 # ----------------------------------
-# API surface for DatadogCore:
+# API surface for KubesenseCore:
 # ----------------------------------
 
 public final class objc_TrackingConsent: NSObject
     public static func granted() -> objc_TrackingConsent
     public static func notGranted() -> objc_TrackingConsent
     public static func pending() -> objc_TrackingConsent
-public final class objc_Datadog: NSObject
+public final class objc_Kubesense: NSObject
     public static func initialize(configuration: objc_Configuration,trackingConsent: objc_TrackingConsent)
     public static func initialize(configuration: objc_Configuration,trackingConsent: objc_TrackingConsent,instanceName: String)
     public static func setVerbosityLevel(_ verbosityLevel: objc_CoreLoggerLevel)
@@ -31,16 +31,9 @@ public final class objc_Datadog: NSObject
     public static func stopInstance(instanceName: String?)
     public static func clearAllData()
     public static func clearAllData(instanceName: String?)
-public final class objc_DatadogSite: NSObject
-    public static func us1() -> objc_DatadogSite
-    public static func us3() -> objc_DatadogSite
-    public static func us5() -> objc_DatadogSite
-    public static func eu1() -> objc_DatadogSite
-    public static func ap1() -> objc_DatadogSite
-    public static func ap2() -> objc_DatadogSite
-    public static func uk1() -> objc_DatadogSite
-    public static func us1_fed() -> objc_DatadogSite
-    public static func us2_fed() -> objc_DatadogSite
+public final class objc_KubesenseSite: NSObject
+    public static func prod() -> objc_KubesenseSite
+    public static func staging() -> objc_KubesenseSite
 public enum objc_BatchSize: Int
     case small
     case medium
@@ -58,14 +51,11 @@ public protocol objc_DataEncryption: AnyObject
     func decrypt(data: Data) throws -> Data
 public protocol objc_ServerDateProvider: AnyObject
     func synchronize(update: @escaping (TimeInterval) -> Void)
-public final class objc_RemoteConfiguration: NSObject
-    public var id: String
-    public var customURL: URL?
-    public init(id: String)
 public final class objc_Configuration: NSObject
     public var clientToken: String
     public var env: String
-    public var site: objc_DatadogSite
+    public var site: objc_KubesenseSite
+    public var kubesenseRumEndpoint: String?
     public var service: String?
     public var version: String?
     public var batchSize: objc_BatchSize
@@ -77,7 +67,8 @@ public final class objc_Configuration: NSObject
     public var bundle: Bundle
     public var additionalConfiguration: [String: Any]
     public var backgroundTasksEnabled: Bool
-    public func setRemoteConfiguration(_ remoteConfiguration: objc_RemoteConfiguration?)
+    public var remoteConfigurationEnabled: Bool
+    public var remoteConfigurationRefreshPeriod: TimeInterval
     public init(clientToken: String, env: String)
 public final class objc_URLSessionInstrumentationConfiguration: NSObject
     public init(delegateClass: URLSessionDataDelegate.Type)
@@ -95,7 +86,7 @@ public final class objc_URLSessionInstrumentation: NSObject
     public static func disable(delegateClass: URLSessionDataDelegate.Type, instanceName: String?)
 
 # ----------------------------------
-# API surface for DatadogLogs:
+# API surface for KubesenseLogs:
 # ----------------------------------
 
 public enum objc_LogLevel: Int
@@ -106,9 +97,7 @@ public enum objc_LogLevel: Int
     case error
     case critical
 public final class objc_LogsConfiguration: NSObject
-    public var customEndpoint: URL?
     override public init()
-    public init(customEndpoint: URL? = nil)
     public func setEventMapper(_ mapper: @escaping (objc_LogEvent) -> objc_LogEvent?)
 public final class objc_Logs: NSObject
     public static func enable(with configuration: objc_LogsConfiguration = .init())
@@ -291,7 +280,7 @@ public enum objc_LogEventRadioAccessTechnology: Int
     case unknown
 
 # ----------------------------------
-# API surface for DatadogTrace:
+# API surface for KubesenseTrace:
 # ----------------------------------
 
 public protocol objc_OTSpan
@@ -348,7 +337,6 @@ public final class objc_TraceConfiguration: NSObject
     public func setURLSessionTracking(_ tracking: objc_TraceURLSessionTracking)
     public var bundleWithRumEnabled: Bool
     public var networkInfoEnabled: Bool
-    public var customEndpoint: URL?
 public final class objc_TraceFirstPartyHostsTracing: NSObject
     public init(hostsWithHeaderTypes: [String: Set<objc_TracingHeaderType>])
     public init(hostsWithHeaderTypes: [String: Set<objc_TracingHeaderType>], sampleRate: Float)
@@ -374,7 +362,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer
     public func extractWithFormat(_ format: String, carrier: Any) throws
 
 # ----------------------------------
-# API surface for DatadogRUM:
+# API surface for KubesenseRUM:
 # ----------------------------------
 
 public class objc_RUMActionEvent: NSObject
@@ -391,7 +379,7 @@ public class objc_RUMActionEvent: NSObject
     public var container: objc_RUMActionEventContainer?
     public var context: objc_RUMActionEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMActionEventDevice?
     public var display: objc_RUMActionEventDisplay?
     public var executionContext: objc_RUMActionEventExecutionContext?
@@ -648,7 +636,7 @@ public class objc_RUMErrorEvent: NSObject
     public var container: objc_RUMErrorEventContainer?
     public var context: objc_RUMErrorEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMErrorEventDevice?
     public var display: objc_RUMErrorEventDisplay?
     public var error: objc_RUMErrorEventError
@@ -1054,7 +1042,7 @@ public class objc_RUMLongTaskEvent: NSObject
     public var container: objc_RUMLongTaskEventContainer?
     public var context: objc_RUMLongTaskEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMLongTaskEventDevice?
     public var display: objc_RUMLongTaskEventDisplay?
     public var executionContext: objc_RUMLongTaskEventExecutionContext?
@@ -1324,7 +1312,7 @@ public class objc_RUMResourceEvent: NSObject
     public var container: objc_RUMResourceEventContainer?
     public var context: objc_RUMResourceEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMResourceEventDevice?
     public var display: objc_RUMResourceEventDisplay?
     public var executionContext: objc_RUMResourceEventExecutionContext?
@@ -1663,7 +1651,7 @@ public class objc_RUMTimeseriesCpuEvent: NSObject
     public var connectivity: objc_RUMTimeseriesCpuEventRUMConnectivity?
     public var context: objc_RUMTimeseriesCpuEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMTimeseriesCpuEventDevice?
     public var display: objc_RUMTimeseriesCpuEventDisplay?
     public var executionContext: objc_RUMTimeseriesCpuEventExecutionContext?
@@ -1855,7 +1843,7 @@ public class objc_RUMTimeseriesMemoryEvent: NSObject
     public var connectivity: objc_RUMTimeseriesMemoryEventRUMConnectivity?
     public var context: objc_RUMTimeseriesMemoryEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMTimeseriesMemoryEventDevice?
     public var display: objc_RUMTimeseriesMemoryEventDisplay?
     public var executionContext: objc_RUMTimeseriesMemoryEventExecutionContext?
@@ -2049,7 +2037,7 @@ public class objc_RUMViewEvent: NSObject
     public var container: objc_RUMViewEventContainer?
     public var context: objc_RUMViewEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMViewEventDevice?
     public var display: objc_RUMViewEventDisplay?
     public var executionContext: objc_RUMViewEventExecutionContext?
@@ -2487,7 +2475,7 @@ public class objc_RUMViewUpdateEvent: NSObject
     public var container: objc_RUMViewUpdateEventContainer?
     public var context: objc_RUMViewUpdateEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMViewUpdateEventDevice?
     public var display: objc_RUMViewUpdateEventDisplay?
     public var executionContext: objc_RUMViewUpdateEventExecutionContext?
@@ -2925,7 +2913,7 @@ public class objc_RUMVitalAppLaunchEvent: NSObject
     public var container: objc_RUMVitalAppLaunchEventContainer?
     public var context: objc_RUMVitalAppLaunchEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMVitalAppLaunchEventDevice?
     public var display: objc_RUMVitalAppLaunchEventDisplay?
     public var executionContext: objc_RUMVitalAppLaunchEventExecutionContext?
@@ -3166,7 +3154,7 @@ public class objc_RUMVitalDurationEvent: NSObject
     public var container: objc_RUMVitalDurationEventContainer?
     public var context: objc_RUMVitalDurationEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMVitalDurationEventDevice?
     public var display: objc_RUMVitalDurationEventDisplay?
     public var executionContext: objc_RUMVitalDurationEventExecutionContext?
@@ -3396,7 +3384,7 @@ public class objc_RUMVitalOperationStepEvent: NSObject
     public var container: objc_RUMVitalOperationStepEventContainer?
     public var context: objc_RUMVitalOperationStepEventRUMEventAttributes?
     public var date: NSNumber
-    public var ddtags: String?
+    public var ktags: String?
     public var device: objc_RUMVitalOperationStepEventDevice?
     public var display: objc_RUMVitalOperationStepEventDisplay?
     public var executionContext: objc_RUMVitalOperationStepEventExecutionContext?
@@ -3790,7 +3778,7 @@ public class objc_TelemetryConfigurationEventTelemetryConfigurationRemoteConfigu
     public var versionId: String?
 public enum objc_TelemetryConfigurationEventTelemetryConfigurationSelectedTracingPropagators: Int
     case none
-    case datadog
+    case kubesense
     case b3
     case b3multi
     case tracecontext
@@ -4106,7 +4094,6 @@ public class objc_RUMConfiguration: NSObject
     public func setErrorEventMapper(_ mapper: @escaping (objc_RUMErrorEvent) -> objc_RUMErrorEvent?)
     public func setLongTaskEventMapper(_ mapper: @escaping (objc_RUMLongTaskEvent) -> objc_RUMLongTaskEvent?)
     public var onSessionStart: (@Sendable (String, Bool) -> Void)?
-    public var customEndpoint: URL?
     public var trackAnonymousUser: Bool
 public class objc_RUM: NSObject
     public static func enable(with configuration: objc_RUMConfiguration)
@@ -4156,13 +4143,13 @@ public class objc_RUMMonitor: NSObject
     public func _internal_sync_addError(_ error: Error,source: objc_RUMErrorSource,attributes: [String: Any])
 
 # ----------------------------------
-# API surface for DatadogCrashReporting:
+# API surface for KubesenseCrashReporting:
 # ----------------------------------
 
 
 
 # ----------------------------------
-# API surface for DatadogWebViewTracking:
+# API surface for KubesenseWebViewTracking:
 # ----------------------------------
 
 public final class objc_WebViewTracking: NSObject
@@ -4171,7 +4158,7 @@ public final class objc_WebViewTracking: NSObject
     public static func disable(webView: WKWebView)
 
 # ----------------------------------
-# API surface for DatadogSessionReplay:
+# API surface for KubesenseSessionReplay:
 # ----------------------------------
 
 public final class objc_SessionReplay: NSObject
@@ -4187,7 +4174,6 @@ public final class objc_SessionReplayConfiguration: NSObject
     @objc public var imagePrivacyLevel: objc_ImagePrivacyLevel
     @objc public var touchPrivacyLevel: objc_TouchPrivacyLevel
     @objc public var startRecordingImmediately: Bool
-    @objc public var customEndpoint: URL?
     @objc public var featureFlags: [String: Bool]
     public required init(replaySampleRate: Float,textAndInputPrivacyLevel: objc_TextAndInputPrivacyLevel,imagePrivacyLevel: objc_ImagePrivacyLevel,touchPrivacyLevel: objc_TouchPrivacyLevel,featureFlags: [String: Bool]?)
     public convenience init(replaySampleRate: Float,textAndInputPrivacyLevel: objc_TextAndInputPrivacyLevel,imagePrivacyLevel: objc_ImagePrivacyLevel,touchPrivacyLevel: objc_TouchPrivacyLevel)
@@ -4217,7 +4203,7 @@ public enum objc_TouchPrivacyLevelOverride: Int
     case show
     case hide
 public extension UIView
-    @objc var ddSessionReplayPrivacyOverrides: objc_SessionReplayPrivacyOverrides
+    @objc var kubesenseSessionReplayPrivacyOverrides: objc_SessionReplayPrivacyOverrides
 public final class objc_SessionReplayPrivacyOverrides: NSObject
     public init(view: UIView)
     @objc public var textAndInputPrivacy: objc_TextAndInputPrivacyLevelOverride
@@ -4226,13 +4212,13 @@ public final class objc_SessionReplayPrivacyOverrides: NSObject
     @objc public var hide: NSNumber?
 
 # ----------------------------------
-# API surface for DatadogFlags:
+# API surface for KubesenseFlags:
 # ----------------------------------
 
 
 
 # ----------------------------------
-# API surface for DatadogProfiling:
+# API surface for KubesenseProfiling:
 # ----------------------------------
 
 

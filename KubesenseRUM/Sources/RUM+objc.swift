@@ -1,0 +1,1102 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+import Foundation
+import UIKit
+@_spi(objc)
+import KubesenseInternal
+
+#if !os(watchOS)
+internal struct UIKitRUMViewsPredicateBridge: UIKitRUMViewsPredicate {
+    let objcPredicate: objc_UIKitRUMViewsPredicate
+
+    func rumView(for viewController: UIViewController) -> RUMView? {
+        return objcPredicate.rumView(for: viewController)?.swiftView
+    }
+}
+
+@objc(KubesenseRUMView)
+@objcMembers
+@_spi(objc)
+public class objc_RUMView: NSObject {
+    let swiftView: RUMView
+
+    public var name: String { swiftView.name }
+    public var attributes: [String: Any] { swiftView.attributes.dd.objCAttributes }
+
+    /// Initializes the RUM View description.
+    /// - Parameters:
+    ///   - name: the RUM View name, appearing as `VIEW NAME` in RUM Explorer.
+    ///   - attributes: additional attributes to associate with the RUM View.
+    public init(name: String, attributes: [String: Any]) {
+        swiftView = RUMView(
+            name: name,
+            attributes: attributes.dd.swiftAttributes
+        )
+    }
+}
+
+@objc(KubesenseUIKitRUMViewsPredicate)
+@_spi(objc)
+public protocol objc_UIKitRUMViewsPredicate: AnyObject {
+    /// The predicate deciding if the RUM View should be started or ended for given instance of the `UIViewController`.
+    /// - Parameter viewController: an instance of the view controller noticed by the SDK.
+    /// - Returns: RUM View parameters if received view controller should start/end the RUM View, `nil` otherwise.
+    func rumView(for viewController: UIViewController) -> objc_RUMView?
+}
+
+@objc(KubesenseDefaultUIKitRUMViewsPredicate)
+@objcMembers
+@_spi(objc)
+public class objc_DefaultUIKitRUMViewsPredicate: NSObject, objc_UIKitRUMViewsPredicate {
+    private let swiftPredicate = DefaultUIKitRUMViewsPredicate()
+
+    public func rumView(for viewController: UIViewController) -> objc_RUMView? {
+        return swiftPredicate.rumView(for: viewController).map {
+            objc_RUMView(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+        }
+    }
+}
+
+@objc(KubesenseDefaultUIKitRUMActionsPredicate)
+@objcMembers
+@_spi(objc)
+public class objc_DefaultUIKitRUMActionsPredicate: NSObject, objc_UIKitRUMActionsPredicate {
+    let swiftPredicate = DefaultUIKitRUMActionsPredicate()
+    #if os(tvOS)
+    public func rumAction(press type: UIPress.PressType, targetView: UIView) -> objc_RUMAction? {
+        swiftPredicate.rumAction(press: type, targetView: targetView).map {
+            objc_RUMAction(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+        }
+    }
+    #else
+    public func rumAction(targetView: UIView) -> objc_RUMAction? {
+        swiftPredicate.rumAction(targetView: targetView).map {
+            objc_RUMAction(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+        }
+    }
+    #endif
+}
+
+internal struct UIKitRUMActionsPredicateBridge: UITouchRUMActionsPredicate & UIPressRUMActionsPredicate {
+    let objcPredicate: AnyObject?
+
+    init(objcPredicate: objc_UITouchRUMActionsPredicate) {
+        self.objcPredicate = objcPredicate
+    }
+
+    init(objcPredicate: objc_UIPressRUMActionsPredicate) {
+        self.objcPredicate = objcPredicate
+    }
+
+    func rumAction(targetView: UIView) -> RUMAction? {
+        guard let objcPredicate = objcPredicate as? objc_UITouchRUMActionsPredicate else {
+            return nil
+        }
+        return objcPredicate.rumAction(targetView: targetView)?.swiftAction
+    }
+
+    func rumAction(press type: UIPress.PressType, targetView: UIView) -> RUMAction? {
+        guard let objcPredicate = objcPredicate as? objc_UIPressRUMActionsPredicate else {
+            return nil
+        }
+        return objcPredicate.rumAction(press: type, targetView: targetView)?.swiftAction
+    }
+}
+
+@objc(KubesenseRUMAction)
+@objcMembers
+@_spi(objc)
+public class objc_RUMAction: NSObject {
+    let swiftAction: RUMAction
+
+    public var name: String { swiftAction.name }
+    public var attributes: [String: Any] { swiftAction.attributes.dd.objCAttributes }
+
+    /// Initializes the RUM Action description.
+    /// - Parameters:
+    ///   - name: the RUM Action name, appearing as `ACTION NAME` in RUM Explorer.
+    ///   - attributes: additional attributes to associate with the RUM Action.
+    public init(name: String, attributes: [String: Any]) {
+        swiftAction = RUMAction(
+            name: name,
+            attributes: attributes.dd.swiftAttributes
+        )
+    }
+}
+
+#if os(tvOS)
+@objc(KubesenseUIKitRUMActionsPredicate)
+@_spi(objc)
+public protocol objc_UIKitRUMActionsPredicate: objc_UIPressRUMActionsPredicate {}
+#else
+@objc(KubesenseUIKitRUMActionsPredicate)
+@_spi(objc)
+public protocol objc_UIKitRUMActionsPredicate: objc_UITouchRUMActionsPredicate {}
+#endif
+
+@objc(KubesenseUITouchRUMActionsPredicate)
+@_spi(objc)
+public protocol objc_UITouchRUMActionsPredicate: AnyObject {
+    /// The predicate deciding if the RUM Action should be recorded.
+    /// - Parameter targetView: an instance of the `UIView` which received the action.
+    /// - Returns: RUM Action if it should be recorded, `nil` otherwise.
+    func rumAction(targetView: UIView) -> objc_RUMAction?
+}
+
+@objc(KubesenseUIPressRUMActionsPredicate)
+@_spi(objc)
+public protocol objc_UIPressRUMActionsPredicate: AnyObject {
+    /// The predicate deciding if the RUM Action should be recorded.
+    /// - Parameters:
+    ///   - type: the `UIPress.PressType` which received the action.
+    ///   - targetView: an instance of the `UIView` which received the action.
+    /// - Returns: RUM Action if it should be recorded, `nil` otherwise.
+    func rumAction(press type: UIPress.PressType, targetView: UIView) -> objc_RUMAction?
+}
+#endif
+
+// MARK: - NetworkSettledResourcePredicate
+
+@objc(KubesenseTNSResourceParams)
+@objcMembers
+@_spi(objc)
+public class objc_TNSResourceParams: NSObject {
+    /// The URL of the resource.
+    public let url: String
+
+    /// The time elapsed from when the view started to when the resource started.
+    public let timeSinceViewStart: TimeInterval
+
+    /// The name of the view in which the resource is tracked.
+    public let viewName: String
+
+    internal init(swiftParams: TNSResourceParams) {
+        self.url = swiftParams.url
+        self.timeSinceViewStart = swiftParams.timeSinceViewStart
+        self.viewName = swiftParams.viewName
+    }
+}
+
+@objc(KubesenseNetworkSettledResourcePredicate)
+@_spi(objc)
+public protocol objc_NetworkSettledResourcePredicate: AnyObject {
+    /// Determines if the provided resource should be included in the TNS metric calculation.
+    ///
+    /// - Parameter resourceParams: The parameters of the resource.
+    /// - Returns: `true` if the resource qualifies for TNS metric calculation, `false` otherwise.
+    func isInitialResource(from resourceParams: objc_TNSResourceParams) -> Bool
+}
+
+internal struct NetworkSettledResourcePredicateBridge: NetworkSettledResourcePredicate {
+    let objcPredicate: objc_NetworkSettledResourcePredicate
+
+    func isInitialResource(from resourceParams: TNSResourceParams) -> Bool {
+        objcPredicate.isInitialResource(from: objc_TNSResourceParams(swiftParams: resourceParams))
+    }
+}
+
+@objc(KubesenseTimeBasedTNSResourcePredicate)
+@objcMembers
+@_spi(objc)
+public class objc_TimeBasedTNSResourcePredicate: NSObject, objc_NetworkSettledResourcePredicate {
+    /// The default value of the threshold.
+    public static let defaultThreshold: TimeInterval = 0.1 // aligned with TimeBasedTNSResourcePredicate
+
+    internal let swiftPredicate: TimeBasedTNSResourcePredicate
+
+    /// Initializes a new predicate with a specified time threshold.
+    ///
+    /// - Parameter threshold: The time threshold (in seconds) used to classify resources. The default value is 0.1 seconds.
+    public init(threshold: TimeInterval = objc_TimeBasedTNSResourcePredicate.defaultThreshold) {
+        swiftPredicate = TimeBasedTNSResourcePredicate(threshold: threshold)
+    }
+
+    public func isInitialResource(from resourceParams: objc_TNSResourceParams) -> Bool {
+        swiftPredicate.isInitialResource(from: TNSResourceParams(
+            url: resourceParams.url,
+            timeSinceViewStart: resourceParams.timeSinceViewStart,
+            viewName: resourceParams.viewName
+        ))
+    }
+}
+
+// MARK: - NextViewActionPredicate
+
+@objc(KubesenseINVActionParams)
+@objcMembers
+@_spi(objc)
+public class objc_INVActionParams: NSObject {
+    /// The type of the action (e.g., tap, swipe, click).
+    public let type: objc_RUMActionType
+
+    /// The name of the action.
+    public let name: String
+
+    /// The time elapsed between this action and the start of the next view.
+    public let timeToNextView: TimeInterval
+
+    /// The name of the next view.
+    public let nextViewName: String
+
+    internal init(swiftParams: INVActionParams) {
+        self.type = objc_RUMActionType(swiftType: swiftParams.type)
+        self.name = swiftParams.name
+        self.timeToNextView = swiftParams.timeToNextView
+        self.nextViewName = swiftParams.nextViewName
+    }
+}
+
+@objc(KubesenseNextViewActionPredicate)
+@_spi(objc)
+public protocol objc_NextViewActionPredicate: AnyObject {
+    /// Determines whether the provided action should be classified as the "last interaction" in the previous view for INV calculation.
+    ///
+    /// - Parameter actionParams: The parameters of the action (type, name, time to next view, and next view name).
+    /// - Returns: `true` if this action is the "last interaction" for INV, `false` otherwise.
+    func isLastAction(from actionParams: objc_INVActionParams) -> Bool
+}
+
+internal struct NextViewActionPredicateBridge: NextViewActionPredicate {
+    let objcPredicate: objc_NextViewActionPredicate
+
+    func isLastAction(from actionParams: INVActionParams) -> Bool {
+        objcPredicate.isLastAction(from: objc_INVActionParams(swiftParams: actionParams))
+    }
+}
+
+@objc(KubesenseTimeBasedINVActionPredicate)
+@objcMembers
+@_spi(objc)
+public class objc_TimeBasedINVActionPredicate: NSObject, objc_NextViewActionPredicate {
+    /// The default maximum time interval for considering an action as the "last interaction."
+    public static let defaultMaxTimeToNextView: TimeInterval = 3 // aligned with TimeBasedINVActionPredicate
+
+    internal let swiftPredicate: TimeBasedINVActionPredicate
+
+    /// Initializes a new predicate with a specified maximum time interval.
+    ///
+    /// - Parameter maxTimeToNextView: The maximum time interval (in seconds) from the action to the next view's start. The default value is 3 seconds.
+    public init(maxTimeToNextView: TimeInterval = objc_TimeBasedINVActionPredicate.defaultMaxTimeToNextView) {
+        swiftPredicate = TimeBasedINVActionPredicate(maxTimeToNextView: maxTimeToNextView)
+    }
+
+    public func isLastAction(from actionParams: objc_INVActionParams) -> Bool {
+        swiftPredicate.isLastAction(from: INVActionParams(
+            type: actionParams.type.swiftType,
+            name: actionParams.name,
+            timeToNextView: actionParams.timeToNextView,
+            nextViewName: actionParams.nextViewName
+        ))
+    }
+}
+
+@objc(KubesenseRUMErrorSource)
+@_spi(objc)
+public enum objc_RUMErrorSource: Int {
+    /// Error originated in the source code.
+    case source
+    /// Error originated in the network layer.
+    case network
+    /// Error originated in a webview.
+    case webview
+    /// Error originated in a web console (used by bridges).
+    case console
+    /// Custom error source.
+    case custom
+    /// Error originated in a logger.
+    case logger
+
+    internal var swiftType: RUMErrorSource {
+        switch self {
+        case .source: return .source
+        case .network: return .network
+        case .webview: return .webview
+        case .custom: return .custom
+        case .console: return .console
+        case .logger: return .logger
+        default: return .custom
+        }
+    }
+}
+
+@objc(KubesenseRUMActionType)
+@_spi(objc)
+public enum objc_RUMActionType: Int {
+    case tap
+    case scroll
+    case swipe
+    case custom
+    case click
+
+    internal var swiftType: RUMActionType {
+        switch self {
+        case .tap: return .tap
+        case .scroll: return .scroll
+        case .swipe: return .swipe
+        case .custom: return .custom
+        case .click: return .click
+        default: return .custom
+        }
+    }
+
+    internal init(swiftType: RUMActionType) {
+        switch swiftType {
+        case .tap: self = .tap
+        case .click: self = .click
+        case .scroll: self = .scroll
+        case .swipe: self = .swipe
+        case .custom: self = .custom
+        }
+    }
+}
+
+@objc(KubesenseRUMResourceType)
+@_spi(objc)
+public enum objc_ResourceType: Int {
+    case image
+    case xhr
+    case beacon
+    case css
+    case document
+    case fetch
+    case font
+    case js
+    case media
+    case other
+    case native
+
+    internal var swiftType: RUMResourceType {
+        switch self {
+        case .image: return .image
+        case .xhr: return .xhr
+        case .beacon: return .beacon
+        case .css: return .css
+        case .document: return .document
+        case .fetch: return .fetch
+        case .font: return .font
+        case .js: return .js
+        case .media: return .media
+        case .native: return .native
+        default: return .other
+        }
+    }
+}
+
+@objc(KubesenseRUMMethod)
+@_spi(objc)
+public enum objc_RUMMethod: Int {
+    case post
+    case get
+    case head
+    case put
+    case delete
+    case patch
+    case connect
+    case trace
+    case options
+
+    internal var swiftType: RUMMethod {
+        switch self {
+        case .post: return .post
+        case .get: return .get
+        case .head: return .head
+        case .put: return .put
+        case .delete: return .delete
+        case .patch: return .patch
+        case .connect: return .connect
+        case .trace: return .trace
+        case .options: return .options
+        default: return .get
+        }
+    }
+}
+
+@objc(KubesenseRUMVitalsFrequency)
+@_spi(objc)
+public enum objc_VitalsFrequency: Int {
+    case frequent
+    case average
+    case rare
+    case never
+
+    internal init(swiftType: KubesenseRUM.RUM.Configuration.VitalsFrequency?) {
+        switch swiftType {
+        case .frequent: self = .frequent
+        case .average: self = .average
+        case .rare: self = .rare
+        case .none: self = .never
+        }
+    }
+
+    internal var swiftType: KubesenseRUM.RUM.Configuration.VitalsFrequency? {
+        switch self {
+        case .frequent: return .frequent
+        case .average: return .average
+        case .rare: return .rare
+        case .never: return nil
+        }
+    }
+}
+
+@objc(KubesenseRUMFeatureOperationFailureReason)
+@_spi(objc)
+public enum objc_RUMFeatureOperationFailureReason: Int {
+    case error
+    case abandoned
+    case other
+
+    internal var swiftType: RUMFeatureOperationFailureReason {
+        switch self {
+        case .error: return .error
+        case .abandoned: return .abandoned
+        case .other: return .other
+        }
+    }
+}
+
+@objc(KubesenseRUMTimeseriesType)
+@objcMembers
+@_spi(objc)
+public final class objc_RUMTimeseriesType: NSObject {
+    internal let swiftType: RUM.Configuration.TimeseriesType
+
+    private init(_ swiftType: RUM.Configuration.TimeseriesType) {
+        self.swiftType = swiftType
+    }
+
+    public static let memory = objc_RUMTimeseriesType(.memory)
+    public static let cpu = objc_RUMTimeseriesType(.cpu)
+}
+
+@objc(KubesenseRUMTimeseriesConfiguration)
+@objcMembers
+@_spi(objc)
+public final class objc_RUMTimeseriesConfiguration: NSObject {
+    internal let swiftConfig: RUM.Configuration.Timeseries
+
+    public init(collectTypes: [objc_RUMTimeseriesType]) {
+        swiftConfig = .init(collectTypes: Set(collectTypes.map(\.swiftType)))
+    }
+
+    public static let `default` = objc_RUMTimeseriesConfiguration(collectTypes: [.memory, .cpu])
+}
+
+@objc(KubesenseOperationOptions)
+@objcMembers
+@_spi(objc)
+public class objc_OperationOptions: NSObject {
+    internal let swiftType: OperationOptions
+
+    internal init(swiftType: OperationOptions) {
+        self.swiftType = swiftType
+    }
+}
+
+@objc(KubesenseProfilingOptions)
+@objcMembers
+@_spi(objc)
+public final class objc_ProfilingOptions: objc_OperationOptions {
+    public init(sampleRate: Float) {
+        super.init(swiftType: ProfilingOptions(sampleRate: sampleRate))
+    }
+}
+
+@objc(KubesenseRUMFirstPartyHostsTracing)
+@objcMembers
+@_spi(objc)
+public class objc_FirstPartyHostsTracing: NSObject {
+    internal var swiftType: RUM.Configuration.URLSessionTracking.FirstPartyHostsTracing
+
+    public init(hostsWithHeaderTypes: [String: Set<objc_TracingHeaderType>]) {
+        let swiftHostsWithHeaders = hostsWithHeaderTypes.mapValues { headerTypes in Set(headerTypes.map { $0.swiftType }) }
+        swiftType = .traceWithHeaders(hostsWithHeaders: swiftHostsWithHeaders)
+    }
+
+    public init(hostsWithHeaderTypes: [String: Set<objc_TracingHeaderType>], sampleRate: Float) {
+        let swiftHostsWithHeaders = hostsWithHeaderTypes.mapValues { headerTypes in Set(headerTypes.map { $0.swiftType }) }
+        swiftType = .traceWithHeaders(hostsWithHeaders: swiftHostsWithHeaders, sampleRate: sampleRate)
+    }
+
+    public init(hosts: Set<String>) {
+        swiftType = .trace(hosts: hosts)
+    }
+
+    public init(hosts: Set<String>, sampleRate: Float) {
+        swiftType = .trace(hosts: hosts, sampleRate: sampleRate)
+    }
+}
+
+@objc(KubesenseRUMURLSessionTracking)
+@objcMembers
+@_spi(objc)
+public class objc_URLSessionTracking: NSObject {
+    internal var swiftConfig: RUM.Configuration.URLSessionTracking
+
+    override public init() {
+        swiftConfig = .init()
+    }
+
+    public func setFirstPartyHostsTracing(_ firstPartyHostsTracing: objc_FirstPartyHostsTracing) {
+        swiftConfig.firstPartyHostsTracing = firstPartyHostsTracing.swiftType
+    }
+
+    public func setResourceAttributesProvider(_ provider: @escaping (URLRequest, URLResponse?, Data?, Error?) -> [String: Any]?) {
+        swiftConfig.resourceAttributesProvider = { request, response, data, error in
+            let objcAttributes = provider(request, response, data, error)
+            return objcAttributes?.dd.swiftAttributes
+        }
+    }
+
+    public func setTrackResourceHeaders(_ trackResourceHeaders: objc_TrackResourceHeaders) {
+        swiftConfig.trackResourceHeaders = trackResourceHeaders.swiftType
+    }
+
+    public func setDisallowList(_ disallowList: [String]) {
+        swiftConfig.disallowList = disallowList
+    }
+}
+
+@objc(KubesenseRUMHeaderCaptureRule)
+@objcMembers
+@_spi(objc)
+public final class objc_HeaderCaptureRule: NSObject {
+    internal let swiftType: RUM.Configuration.URLSessionTracking.HeaderCaptureRule
+
+    private init(_ swiftType: RUM.Configuration.URLSessionTracking.HeaderCaptureRule) {
+        self.swiftType = swiftType
+    }
+
+    /// Include the predefined set of default headers.
+    public static let defaults = objc_HeaderCaptureRule(.defaults)
+
+    /// Match headers by exact name (case-insensitive).
+    public static func matchHeaders(_ names: [String]) -> objc_HeaderCaptureRule {
+        objc_HeaderCaptureRule(.matchHeaders(names))
+    }
+}
+
+@objc(KubesenseRUMTrackResourceHeaders)
+@objcMembers
+@_spi(objc)
+public final class objc_TrackResourceHeaders: NSObject {
+    internal let swiftType: RUM.Configuration.URLSessionTracking.TrackResourceHeaders
+
+    private init(_ swiftType: RUM.Configuration.URLSessionTracking.TrackResourceHeaders) {
+        self.swiftType = swiftType
+    }
+
+    /// No header capture. This is the default.
+    public static let disabled = objc_TrackResourceHeaders(.disabled)
+
+    /// Capture a predefined set of common request and response headers.
+    public static let defaults = objc_TrackResourceHeaders(.defaults)
+
+    /// Capture headers based on custom rules.
+    public static func custom(_ rules: [objc_HeaderCaptureRule]) -> objc_TrackResourceHeaders {
+        objc_TrackResourceHeaders(.custom(rules.map { $0.swiftType }))
+    }
+}
+
+@objc(KubesenseRUMConfiguration)
+@objcMembers
+@_spi(objc)
+public class objc_RUMConfiguration: NSObject {
+    internal var swiftConfig: KubesenseRUM.RUM.Configuration
+
+    public init(applicationID: String) {
+        swiftConfig = .init(
+            applicationID: applicationID,
+            networkSettledResourcePredicate: NetworkSettledResourcePredicateBridge(objcPredicate: objc_TimeBasedTNSResourcePredicate()),
+            nextViewActionPredicate: NextViewActionPredicateBridge(objcPredicate: objc_TimeBasedINVActionPredicate())
+        )
+    }
+
+    public var applicationID: String {
+        swiftConfig.applicationID
+    }
+
+    public var sessionSampleRate: Float {
+        set { swiftConfig.sessionSampleRate = newValue }
+        get { swiftConfig.sessionSampleRate }
+    }
+
+    public var telemetrySampleRate: Float {
+        set { swiftConfig.telemetrySampleRate = newValue }
+        get { swiftConfig.telemetrySampleRate }
+    }
+
+    #if !os(watchOS)
+    public var uiKitViewsPredicate: objc_UIKitRUMViewsPredicate? {
+        set { swiftConfig.uiKitViewsPredicate = newValue.map { UIKitRUMViewsPredicateBridge(objcPredicate: $0) } }
+        get { (swiftConfig.uiKitViewsPredicate as? UIKitRUMViewsPredicateBridge)?.objcPredicate  }
+    }
+
+    public var uiKitActionsPredicate: objc_UIKitRUMActionsPredicate? {
+        set { swiftConfig.uiKitActionsPredicate = newValue.map { UIKitRUMActionsPredicateBridge(objcPredicate: $0) } }
+        get { (swiftConfig.uiKitActionsPredicate as? UIKitRUMActionsPredicateBridge)?.objcPredicate as? objc_UIKitRUMActionsPredicate  }
+    }
+
+    public var swiftUIViewsPredicate: objc_SwiftUIRUMViewsPredicate? {
+        set { swiftConfig.swiftUIViewsPredicate = newValue.map { SwiftUIRUMViewsPredicateBridge(objcPredicate: $0) } }
+        get { (swiftConfig.swiftUIViewsPredicate as? SwiftUIRUMViewsPredicateBridge)?.objcPredicate }
+    }
+
+    public var swiftUIActionsPredicate: objc_SwiftUIRUMActionsPredicate? {
+        set { swiftConfig.swiftUIActionsPredicate = newValue.map { SwiftUIRUMActionsPredicateBridge(objcPredicate: $0) } }
+        get { (swiftConfig.swiftUIActionsPredicate as? SwiftUIRUMActionsPredicateBridge)?.objcPredicate }
+    }
+
+    public var trackMemoryWarnings: Bool {
+        set { swiftConfig.trackMemoryWarnings = newValue }
+        get { swiftConfig.trackMemoryWarnings }
+    }
+
+    public var collectAccessibility: Bool {
+        set { swiftConfig.collectAccessibility = newValue }
+        get { swiftConfig.collectAccessibility }
+    }
+    #endif
+
+    public var networkSettledResourcePredicate: objc_NetworkSettledResourcePredicate {
+        set { swiftConfig.networkSettledResourcePredicate = NetworkSettledResourcePredicateBridge(objcPredicate: newValue) }
+        get { (swiftConfig.networkSettledResourcePredicate as? NetworkSettledResourcePredicateBridge)?.objcPredicate ?? objc_TimeBasedTNSResourcePredicate() }
+    }
+
+    public var nextViewActionPredicate: objc_NextViewActionPredicate? {
+        set { swiftConfig.nextViewActionPredicate = newValue.map { NextViewActionPredicateBridge(objcPredicate: $0) } }
+        get { (swiftConfig.nextViewActionPredicate as? NextViewActionPredicateBridge)?.objcPredicate }
+    }
+
+    public func setURLSessionTracking(_ tracking: objc_URLSessionTracking) {
+        swiftConfig.urlSessionTracking = tracking.swiftConfig
+    }
+
+    public var trackFrustrations: Bool {
+        set { swiftConfig.trackFrustrations = newValue }
+        get { swiftConfig.trackFrustrations }
+    }
+
+    public var trackBackgroundEvents: Bool {
+        set { swiftConfig.trackBackgroundEvents = newValue }
+        get { swiftConfig.trackBackgroundEvents }
+    }
+
+    public var trackWatchdogTerminations: Bool {
+        set { swiftConfig.trackWatchdogTerminations = newValue }
+        get { swiftConfig.trackWatchdogTerminations }
+    }
+
+    public var longTaskThreshold: TimeInterval {
+        set { swiftConfig.longTaskThreshold = newValue }
+        get { swiftConfig.longTaskThreshold ?? 0 }
+    }
+
+    public var appHangThreshold: TimeInterval {
+        set { swiftConfig.appHangThreshold = newValue == 0 ? nil : newValue }
+        get { swiftConfig.appHangThreshold ?? 0 }
+    }
+
+    public var vitalsUpdateFrequency: objc_VitalsFrequency {
+        set { swiftConfig.vitalsUpdateFrequency = newValue.swiftType }
+        get { objc_VitalsFrequency(swiftType: swiftConfig.vitalsUpdateFrequency) }
+    }
+
+    public func setTimeseriesConfiguration(_ configuration: objc_RUMTimeseriesConfiguration) {
+        swiftConfig.timeseries = configuration.swiftConfig
+    }
+
+    public func setViewEventMapper(_ mapper: @escaping (objc_RUMViewEvent) -> objc_RUMViewEvent) {
+        swiftConfig.viewEventMapper = { swiftEvent in
+            let objcEvent = objc_RUMViewEvent(swiftModel: swiftEvent)
+            return mapper(objcEvent).swiftModel
+        }
+    }
+
+    public func setResourceEventMapper(_ mapper: @escaping (objc_RUMResourceEvent) -> objc_RUMResourceEvent?) {
+        swiftConfig.resourceEventMapper = { swiftEvent in
+            let objcEvent = objc_RUMResourceEvent(swiftModel: swiftEvent)
+            return mapper(objcEvent)?.swiftModel
+        }
+    }
+
+    public func setActionEventMapper(_ mapper: @escaping (objc_RUMActionEvent) -> objc_RUMActionEvent?) {
+        swiftConfig.actionEventMapper = { swiftEvent in
+            let objcEvent = objc_RUMActionEvent(swiftModel: swiftEvent)
+            return mapper(objcEvent)?.swiftModel
+        }
+    }
+
+    public func setErrorEventMapper(_ mapper: @escaping (objc_RUMErrorEvent) -> objc_RUMErrorEvent?) {
+        swiftConfig.errorEventMapper = { swiftEvent in
+            let objcEvent = objc_RUMErrorEvent(swiftModel: swiftEvent)
+            return mapper(objcEvent)?.swiftModel
+        }
+    }
+
+    public func setLongTaskEventMapper(_ mapper: @escaping (objc_RUMLongTaskEvent) -> objc_RUMLongTaskEvent?) {
+        swiftConfig.longTaskEventMapper = { swiftEvent in
+            let objcEvent = objc_RUMLongTaskEvent(swiftModel: swiftEvent)
+            return mapper(objcEvent)?.swiftModel
+        }
+    }
+
+    public var onSessionStart: (@Sendable (String, Bool) -> Void)? {
+        set { swiftConfig.onSessionStart = newValue }
+        get { swiftConfig.onSessionStart }
+    }
+
+    public var trackAnonymousUser: Bool {
+        set { swiftConfig.trackAnonymousUser = newValue }
+        get { swiftConfig.trackAnonymousUser }
+    }
+}
+
+@objc(KubesenseRUM)
+@objcMembers
+@_spi(objc)
+public class objc_RUM: NSObject {
+    public static func enable(with configuration: objc_RUMConfiguration) {
+        RUM.enable(with: configuration.swiftConfig)
+    }
+
+    public static func enable(with configuration: objc_RUMConfiguration, instanceName: String?) {
+        RUM.enable(with: configuration.swiftConfig, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
+    }
+}
+
+@objc(KubesenseRUMMonitor)
+@objcMembers
+@_spi(objc)
+public class objc_RUMMonitor: NSObject {
+    // MARK: - Internal
+
+    internal let swiftRUMMonitor: KubesenseRUM.RUMMonitorProtocol
+
+    internal init(swiftRUMMonitor: KubesenseRUM.RUMMonitorProtocol) {
+        self.swiftRUMMonitor = swiftRUMMonitor
+    }
+
+    // MARK: - Public
+
+    public static func shared() -> objc_RUMMonitor {
+        objc_RUMMonitor(swiftRUMMonitor: RUMMonitor.shared())
+    }
+
+    public static func shared(instanceName: String?) -> objc_RUMMonitor {
+        objc_RUMMonitor(swiftRUMMonitor: RUMMonitor.shared(in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName)))
+    }
+
+    public func currentSessionID(completion: @escaping (String?) -> Void) {
+        swiftRUMMonitor.currentSessionID(completion: completion)
+    }
+
+    public func stopSession() {
+        swiftRUMMonitor.stopSession()
+    }
+
+    public func reportAppFullyDisplayed() {
+        swiftRUMMonitor.reportAppFullyDisplayed()
+    }
+
+    public func addViewAttribute(forKey key: String, value: Any) {
+        swiftRUMMonitor.addViewAttribute(forKey: key, value: AnyEncodable(value))
+    }
+
+    public func addViewAttributes(_ attributes: [String: Any]) {
+        swiftRUMMonitor.addViewAttributes(attributes.dd.swiftAttributes)
+    }
+
+    public func removeViewAttribute(forKey key: String) {
+        swiftRUMMonitor.removeViewAttribute(forKey: key)
+    }
+
+    public func removeViewAttributes(forKeys keys: [String]) {
+        swiftRUMMonitor.removeViewAttributes(forKeys: keys)
+    }
+
+    #if !os(watchOS)
+    public func startView(
+        viewController: UIViewController,
+        name: String?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.startView(viewController: viewController, name: name, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func stopView(
+        viewController: UIViewController,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopView(viewController: viewController, attributes: attributes.dd.swiftAttributes)
+    }
+    #endif
+
+    public func startView(
+        key: String,
+        name: String?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.startView(key: key, name: name, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func stopView(
+        key: String,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopView(key: key, attributes: attributes.dd.swiftAttributes)
+    }
+
+    @available(*, message: "This API is experimental and may change in future releases")
+    public func addViewLoadingTime(overwrite: Bool) {
+        swiftRUMMonitor.addViewLoadingTime(overwrite: overwrite)
+    }
+
+    public func addTiming(name: String) {
+        swiftRUMMonitor.addTiming(name: name)
+    }
+
+    public func addError(
+        message: String,
+        stack: String?,
+        source: objc_RUMErrorSource,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.addError(message: message, stack: stack, source: source.swiftType, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func addError(
+        error: Error,
+        source: objc_RUMErrorSource,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.addError(error: error, source: source.swiftType, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func startResource(
+        resourceKey: String,
+        request: URLRequest,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.startResource(resourceKey: resourceKey, request: request, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func startResource(
+        resourceKey: String,
+        url: URL,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.startResource(resourceKey: resourceKey, url: url, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func startResource(
+        resourceKey: String,
+        httpMethod: objc_RUMMethod,
+        urlString: String,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.startResource(resourceKey: resourceKey, httpMethod: httpMethod.swiftType, urlString: urlString, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func addResourceMetrics(
+        resourceKey: String,
+        metrics: URLSessionTaskMetrics,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.addResourceMetrics(resourceKey: resourceKey, metrics: metrics, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func stopResource(
+        resourceKey: String,
+        response: URLResponse,
+        size: NSNumber?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopResource(resourceKey: resourceKey, response: response, size: size?.int64Value, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func stopResource(
+        resourceKey: String,
+        statusCode: NSNumber?,
+        kind: objc_ResourceType,
+        size: NSNumber?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopResource(
+            resourceKey: resourceKey,
+            statusCode: statusCode?.intValue,
+            kind: kind.swiftType,
+            size: size?.int64Value,
+            attributes: attributes.dd.swiftAttributes
+        )
+    }
+
+    public func stopResourceWithError(
+        resourceKey: String,
+        error: Error,
+        response: URLResponse?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopResourceWithError(resourceKey: resourceKey, error: error, response: response, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func stopResourceWithError(
+        resourceKey: String,
+        message: String,
+        response: URLResponse?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopResourceWithError(resourceKey: resourceKey, message: message, response: response, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func startAction(
+        type: objc_RUMActionType,
+        name: String,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.startAction(type: type.swiftType, name: name, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func stopAction(
+        type: objc_RUMActionType,
+        name: String?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.stopAction(type: type.swiftType, name: name, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func addAction(
+        type: objc_RUMActionType,
+        name: String,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.addAction(type: type.swiftType, name: name, attributes: attributes.dd.swiftAttributes)
+    }
+
+    public func addAttribute(
+        forKey key: String,
+        value: Any
+    ) {
+        swiftRUMMonitor.addAttribute(forKey: key, value: AnyEncodable(value))
+    }
+
+    public func addAttributes(_ attributes: [String: Any]) {
+        swiftRUMMonitor.addAttributes(attributes.dd.swiftAttributes)
+    }
+
+    public func removeAttribute(forKey key: String) {
+        swiftRUMMonitor.removeAttribute(forKey: key)
+    }
+
+    public func removeAttributes(forKeys keys: [String]) {
+        swiftRUMMonitor.removeAttributes(forKeys: keys)
+    }
+
+    public func addFeatureFlagEvaluation(name: String, value: Any) {
+        swiftRUMMonitor.addFeatureFlagEvaluation(name: name, value: AnyEncodable(value))
+    }
+
+    public func startOperation(
+        name: String,
+        operationKey: String?,
+        attributes: [String: Any],
+        options: objc_OperationOptions?
+    ) {
+        swiftRUMMonitor.startOperation(
+            name: name,
+            operationKey: operationKey,
+            attributes: attributes.dd.swiftAttributes,
+            options: options?.swiftType
+        )
+    }
+
+    @available(*, deprecated, renamed: "startOperation(name:operationKey:attributes:options:)", message: "Use startOperation(name:operationKey:attributes:options:) instead.")
+    public func startFeatureOperation(
+        name: String,
+        operationKey: String?,
+        attributes: [String: Any]
+    ) {
+        startOperation(name: name, operationKey: operationKey, attributes: attributes, options: nil)
+    }
+
+    public func succeedOperation(
+        name: String,
+        operationKey: String?,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.succeedOperation(name: name, operationKey: operationKey, attributes: attributes.dd.swiftAttributes)
+    }
+
+    @available(*, deprecated, renamed: "succeedOperation(name:operationKey:attributes:)", message: "Use succeedOperation(name:operationKey:attributes:) instead.")
+    public func succeedFeatureOperation(
+        name: String,
+        operationKey: String?,
+        attributes: [String: Any]
+    ) {
+        succeedOperation(name: name, operationKey: operationKey, attributes: attributes)
+    }
+
+    public func failOperation(
+        name: String,
+        operationKey: String?,
+        reason: objc_RUMFeatureOperationFailureReason,
+        attributes: [String: Any]
+    ) {
+        swiftRUMMonitor.failOperation(
+            name: name,
+            operationKey: operationKey,
+            reason: reason.swiftType,
+            attributes: attributes.dd.swiftAttributes
+        )
+    }
+
+    @available(*, deprecated, renamed: "failOperation(name:operationKey:reason:attributes:)", message: "Use failOperation(name:operationKey:reason:attributes:) instead.")
+    public func failFeatureOperation(
+        name: String,
+        operationKey: String?,
+        reason: objc_RUMFeatureOperationFailureReason,
+        attributes: [String: Any]
+    ) {
+        failOperation(name: name, operationKey: operationKey, reason: reason, attributes: attributes)
+    }
+
+    public var debug: Bool {
+        set { swiftRUMMonitor.debug = newValue }
+        get { swiftRUMMonitor.debug }
+    }
+}
+
+extension objc_RUMMonitor {
+    /// **For Kubesense internal use only. Subject to changes.**
+    ///
+    /// Adds RUM error to current RUM view in sync.
+    ///
+    /// **This method will block the caller thread for maximum 2 seconds.**
+    ///
+    /// - Parameters:
+    ///   - error: the `Error` object. It will be used to infer error details.
+    ///   - source: the origin of the error.
+    ///   - attributes: custom attributes to attach to this error.
+    @objc
+    public func _internal_sync_addError(
+        _ error: Error,
+        source: objc_RUMErrorSource,
+        attributes: [String: Any]
+    ) {
+        let semaphore = DispatchSemaphore(value: 0)
+
+        swiftRUMMonitor.addError(
+            error: error,
+            source: source.swiftType,
+            attributes: attributes.dd.swiftAttributes,
+            completionHandler: {
+                semaphore.signal()
+            }
+        )
+
+        _ = semaphore.wait(timeout: .now() + .seconds(2))
+    }
+}

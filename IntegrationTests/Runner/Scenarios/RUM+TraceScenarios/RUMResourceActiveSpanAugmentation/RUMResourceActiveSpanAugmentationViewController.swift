@@ -5,9 +5,9 @@
  */
 
 import UIKit
-import DatadogCore
-import DatadogInternal
-@testable import DatadogTrace
+import KubesenseCore
+import KubesenseInternal
+@testable import KubesenseTrace
 
 class RUMResourceActiveSpanAugmentationViewController: UIViewController {
     private var testScenario: URLSessionBaseScenario!
@@ -24,7 +24,7 @@ class RUMResourceActiveSpanAugmentationViewController: UIViewController {
     }
 
     @IBAction func sendRequestWithNonSampledSpan(_ sender: Any) {
-        guard let span = Tracer.shared().startRootSpan(operationName: "some-active-span", customSampleRate: 0).setActive() as? DDSpan else {
+        guard let span = Tracer.shared().startRootSpan(operationName: "some-active-span", customSampleRate: 0).setActive() as? KubesenseSpan else {
             return
         }
         sendRequest(with: span)

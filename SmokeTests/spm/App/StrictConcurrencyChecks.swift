@@ -5,12 +5,12 @@
 */
 
 import UIKit
-@preconcurrency import DatadogTrace
-import DatadogCore
-@preconcurrency import DatadogLogs
-@preconcurrency import DatadogRUM
-@preconcurrency import DatadogFlags
-@preconcurrency import DatadogSessionReplay
+@preconcurrency import KubesenseTrace
+import KubesenseCore
+@preconcurrency import KubesenseLogs
+@preconcurrency import KubesenseRUM
+@preconcurrency import KubesenseFlags
+@preconcurrency import KubesenseSessionReplay
 @preconcurrency import OpenTelemetryApi
 
 /**

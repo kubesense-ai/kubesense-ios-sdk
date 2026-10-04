@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         appConfiguration = UITestsAppConfiguration()
 
-        // Initialize Datadog SDK
+        // Initialize Kubesense SDK
         appConfiguration.initializeSDK()
 
         return true

@@ -2,16 +2,16 @@
 
 # Methodology
 
-The following measures were collected by a [Benchmark Application](https://github.com/DataDog/dd-sdk-ios/tree/develop/BenchmarkTests) with Datadog iOS SDK ([d41d5dd](https://github.com/DataDog/dd-sdk-ios/commit/d41d5dd2a14c1533f1384b4a9d22801c68abad71)) running in [Datadog Synthetic Testing for Mobile Application](https://docs.datadoghq.com/synthetics/mobile_app_testing/) environment.
+The following measures were collected by a [Benchmark Application](https://github.com/kubesense-ai/kubesense-ios-sdk/tree/develop/BenchmarkTests) with Kubesense iOS SDK ([d41d5dd](https://github.com/kubesense-ai/kubesense-ios-sdk/commit/d41d5dd2a14c1533f1384b4a9d22801c68abad71)) running in [Kubesense Synthetic Testing for Mobile Application](https://docs.kubesense.ai/synthetics/mobile_app_testing/) environment.
 
-Each scenario execute **Baseline** and **Instrumented** runs: Baseline runs without the Datadog SDK initialized while **Instrumented** runs with RUM and Session Replay enabled.
+Each scenario execute **Baseline** and **Instrumented** runs: Baseline runs without the Kubesense SDK initialized while **Instrumented** runs with RUM and Session Replay enabled.
 The **Overhead** metrics are computed by comparing the Baseline with Instrumented values.
 
 # UIKit Catalog Scenario
 
 The scenario goes through the [UIKit Catalog](https://developer.apple.com/documentation/uikit/views_and_controls/uikit_catalog_creating_and_customizing_views_and_controls) during approximately 5m 30s at each run.
 
-The applied [configuration](https://github.com/DataDog/dd-sdk-ios/blob/d41d5dd2a14c1533f1384b4a9d22801c68abad71/BenchmarkTests/Runner/Scenarios/SessionReplay/SessionReplayScenario.swift#L23-L45) sets permissive masking.
+The applied [configuration](https://github.com/kubesense-ai/kubesense-ios-sdk/blob/d41d5dd2a14c1533f1384b4a9d22801c68abad71/BenchmarkTests/Runner/Scenarios/SessionReplay/SessionReplayScenario.swift#L23-L45) sets permissive masking.
 
 
 ## Synthetic Tests Runs
@@ -40,7 +40,7 @@ The applied [configuration](https://github.com/DataDog/dd-sdk-ios/blob/d41d5dd2a
 
 The scenario goes through the [SwiftUI Catalog](https://github.com/barbaramartina/swiftuicatalog) during approximately 4m 45s at each run.
 
-The applied [configuration](https://github.com/DataDog/dd-sdk-ios/blob/d41d5dd2a14c1533f1384b4a9d22801c68abad71/BenchmarkTests/Runner/Scenarios/SessionReplay/SessionReplaySwiftUIScenario.swift#L23-L44) sets permissive masking.
+The applied [configuration](https://github.com/kubesense-ai/kubesense-ios-sdk/blob/d41d5dd2a14c1533f1384b4a9d22801c68abad71/BenchmarkTests/Runner/Scenarios/SessionReplay/SessionReplaySwiftUIScenario.swift#L23-L44) sets permissive masking.
 
 
 ## Synthetic Tests Runs

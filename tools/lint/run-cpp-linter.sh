@@ -28,7 +28,7 @@ if [ -z "$CLANG_TIDY" ]; then
 fi
 
 SDK_PATH=$(xcrun --sdk iphoneos --show-sdk-path)
-CPP_SOURCE_DIR="./DatadogProfiling/Mach"
+CPP_SOURCE_DIR="./KubesenseProfiling/Mach"
 INCLUDE_DIR="${CPP_SOURCE_DIR}/include"
 
 # Collect source files, excluding generated protobuf code
@@ -49,7 +49,7 @@ EXTRA_ARGS=(
 	"--extra-arg=arm64-apple-ios12.0"
 )
 
-HEADER_FILTER=".*DatadogProfiling/Mach/include/(?!protobuf-c\.h|profile\.pb-c\.h).*"
+HEADER_FILTER=".*KubesenseProfiling/Mach/include/(?!protobuf-c\.h|profile\.pb-c\.h).*"
 
 if [[ -z "${XCODE_VERSION_ACTUAL}" ]]; then
 	# when run from command line

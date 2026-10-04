@@ -5,9 +5,9 @@
  */
 
 import Foundation
-import DatadogCore
-import DatadogTrace
-import DatadogRUM
+import KubesenseCore
+import KubesenseTrace
+import KubesenseRUM
 
 /// Base scenario for `URLSession` and `NSURLSession` instrumentation.  It makes
 /// both Swift and Objective-C tests share the same endpoints and SDK configuration.
@@ -71,9 +71,9 @@ class URLSessionBaseScenario: NSObject {
                 return request
             }()
         } else {
-            customGETResourceURL = URL(string: "https://status.datadoghq.com")!
+            customGETResourceURL = URL(string: "https://status.kubesense.ai")!
             customPOSTRequest = {
-                var request = URLRequest(url: URL(string: "https://status.datadoghq.com/bad/path")!)
+                var request = URLRequest(url: URL(string: "https://status.kubesense.ai/bad/path")!)
                 request.httpMethod = "POST"
                 request.addValue("dataTaskWithRequest", forHTTPHeaderField: "creation-method")
                 return request

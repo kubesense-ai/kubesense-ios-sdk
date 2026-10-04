@@ -5,17 +5,17 @@
  */
 
 import Foundation
-import DatadogInternal
+import KubesenseInternal
 
-@testable import DatadogLogs
-@testable import DatadogRUM
-@testable import DatadogCrashReporting
-@testable import DatadogCore
+@testable import KubesenseLogs
+@testable import KubesenseRUM
+@testable import KubesenseCrashReporting
+@testable import KubesenseCore
 
 extension CrashReportingFeature {
     /// Mocks the Crash Reporting feature instance which doesn't load crash reports.
     public static func mockNoOp(
-            core: DatadogCoreProtocol = NOPDatadogCore(),
+            core: KubesenseCoreProtocol = NOPKubesenseCore(),
             crashReportingPlugin: CrashReportingPlugin = NOPCrashReportingPlugin()
     ) -> Self {
         return .mockWith(
@@ -43,7 +43,7 @@ extension CrashReportingFeature {
 
 public class CrashReportingPluginMock: CrashReportingPlugin {
     /// The crash report loaded by this plugin.
-    public var pendingCrashReport: DDCrashReport?
+    public var pendingCrashReport: KubesenseCrashReport?
     /// If the plugin was asked to delete the crash report.
     @ReadWriteLock
     public var hasPurgedCrashReport: Bool?
@@ -54,7 +54,7 @@ public class CrashReportingPluginMock: CrashReportingPlugin {
 
     public init() {}
 
-    public func readPendingCrashReport(completion: (DDCrashReport?) -> Bool) {
+    public func readPendingCrashReport(completion: (KubesenseCrashReport?) -> Bool) {
         hasPurgedCrashReport = completion(pendingCrashReport)
         didReadPendingCrashReport?()
     }
@@ -74,7 +74,7 @@ public class CrashReportingPluginMock: CrashReportingPlugin {
 }
 
 public class NOPCrashReportingPlugin: CrashReportingPlugin {
-    public func readPendingCrashReport(completion: (DDCrashReport?) -> Bool) {}
+    public func readPendingCrashReport(completion: (KubesenseCrashReport?) -> Bool) {}
     public func inject(context: Data) {}
     public var backtraceReporter: BacktraceReporting? { nil }
 
@@ -92,12 +92,12 @@ public class CrashContextProviderMock: CrashContextProvider {
 }
 
 public class CrashReportSenderMock: CrashReportSender {
-    public var sentCrashReport: DDCrashReport?
+    public var sentCrashReport: KubesenseCrashReport?
     public var sentCrashContext: CrashContext?
 
     public init() {}
 
-    public func send(report: DDCrashReport, with context: CrashContext) {
+    public func send(report: KubesenseCrashReport, with context: CrashContext) {
         sentCrashReport = report
         sentCrashContext = context
         didSendCrashReport?()
@@ -105,13 +105,13 @@ public class CrashReportSenderMock: CrashReportSender {
 
     public var didSendCrashReport: (() -> Void)?
 
-    public func send(launch: DatadogInternal.LaunchReport) {}
+    public func send(launch: KubesenseInternal.LaunchReport) {}
 }
 
 public class CrashReceiverMock: FeatureMessageReceiver {
     public var receivedCrash: Crash?
 
-    public func receive(message: FeatureMessage, from core: DatadogCoreProtocol) -> Bool {
+    public func receive(message: FeatureMessage, from core: KubesenseCoreProtocol) -> Bool {
         guard case let .payload(crash as Crash) = message else {
             return false
         }

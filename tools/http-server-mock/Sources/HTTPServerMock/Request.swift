@@ -21,14 +21,14 @@ public struct Request {
 }
 
 extension Array where Element == URLQueryItem {
-    /// Returns the `ddtags` query item as a dictionary.
-    /// The `ddtags` query item is expected to be in the format `key:value,key:value`.
-    /// - Returns: The `ddtags` query item as a dictionary.
-    public func ddtags() -> [String: String]? {
-        guard let ddtags = first(where: { $0.name == "ddtags" })?.value else {
+    /// Returns the `ktags` query item as a dictionary.
+    /// The `ktags` query item is expected to be in the format `key:value,key:value`.
+    /// - Returns: The `ktags` query item as a dictionary.
+    public func ktags() -> [String: String]? {
+        guard let ktags = first(where: { $0.name == "ktags" })?.value else {
             return nil
         }
-        return ddtags.split(separator: ",", keyValueSeparator: ":")
+        return ktags.split(separator: ",", keyValueSeparator: ":")
     }
 
     /// Returns the value of the first query item with the given name.

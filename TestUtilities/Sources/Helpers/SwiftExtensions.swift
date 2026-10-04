@@ -9,7 +9,7 @@ import XCTest
 
 /*
  Set of general extensions over standard types for writing more readable tests.
- Extensions using Datadog domain objects should be put in `DatadogExtensions.swift`.
+ Extensions using Kubesense domain objects should be put in `KubesenseExtensions.swift`.
 */
 
 extension Optional {

@@ -1,9 +1,9 @@
 ---
-name: dd-sdk-ios:git-branch
-description: Use when creating a new branch in dd-sdk-ios for a JIRA ticket or feature. Use when choosing a branch name or base branch for development work.
+name: kubesense-ios-sdk:git-branch
+description: Use when creating a new branch in kubesense-ios-sdk for a JIRA ticket or feature. Use when choosing a branch name or base branch for development work.
 ---
 
-# Branching in dd-sdk-ios
+# Branching in kubesense-ios-sdk
 
 ## Convention
 
@@ -16,7 +16,7 @@ Branch names follow: `<author>/<JIRA-TICKET>/<descriptive-slug>`
 **Examples from the repo:**
 - `maxep/RUM-14622/visionos-integration-test`
 - `bplasovska/RUM-14563/lowercase-header-keys`
-- `kelvin/RUM-13420/cache-ddtags`
+- `kelvin/RUM-13420/cache-ktags`
 
 ## Branch Model
 

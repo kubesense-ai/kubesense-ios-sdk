@@ -7,9 +7,9 @@
 import Foundation
 import UIKit
 
-import DatadogCore
-import DatadogRUM
-import DatadogSessionReplay
+import KubesenseCore
+import KubesenseRUM
+import KubesenseSessionReplay
 
 import CatalogUIKit
 
@@ -26,7 +26,7 @@ struct SessionReplayScenario: Scenario {
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )

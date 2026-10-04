@@ -8,7 +8,7 @@ $ make
 ```
 This creates the `SPMProject.xcodeproj` from `SPMProject.xcodeproj.src` by replacing the `REMOTE_GIT_BRANCH` string with the name of the remote branch.
 
-Launch the `SPMProject.xcodeproj` to check if SPM is able to fetch the `Datadog` package from remote and build the project.
+Launch the `SPMProject.xcodeproj` to check if SPM is able to fetch the `Kubesense` package from remote and build the project.
 
 To update the setup in `SPMProject.xcodeproj`, use:
 ```bash

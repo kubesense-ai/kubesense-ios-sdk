@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogInternal
+import KubesenseInternal
 import HTTPServerMock
 
 protocol URLSessionTestsHelpers {
@@ -19,7 +19,7 @@ protocol URLSessionTestsHelpers {
 
 extension URLSessionTestsHelpers {
     func getTraceID(from request: Request) -> TraceID? {
-        guard let traceIDLoValue = request.httpHeaders["x-datadog-trace-id"] else {
+        guard let traceIDLoValue = request.httpHeaders["x-kubesense-trace-id"] else {
             return nil
         }
 
@@ -33,7 +33,7 @@ extension URLSessionTestsHelpers {
     }
 
     func getSpanID(from request: Request) -> SpanID? {
-        guard let spanId = request.httpHeaders["x-datadog-parent-id"] else {
+        guard let spanId = request.httpHeaders["x-kubesense-parent-id"] else {
             return nil
         }
         return .init(spanId, representation: .decimal)

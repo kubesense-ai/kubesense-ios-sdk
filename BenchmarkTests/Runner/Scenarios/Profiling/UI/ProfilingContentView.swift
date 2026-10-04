@@ -5,7 +5,7 @@
  */
 
 import Foundation
-import DatadogRUM
+import KubesenseRUM
 import SwiftUI
 
 struct ProfilingContentView: View {

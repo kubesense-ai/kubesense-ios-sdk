@@ -5,7 +5,7 @@
  */
 
 import Foundation
-import DatadogBenchmarks
+import KubesenseBenchmarks
 import OpenTelemetryApi
 import OpenTelemetrySdk
 
@@ -17,7 +17,7 @@ internal final class Vitals {
 
     private lazy var meter: MeterSdk = provider.get(name: "vitals")
 
-    let queue = DispatchQueue(label: "com.datadoghq.benchmarks.vitals", target: .global(qos: .utility))
+    let queue = DispatchQueue(label: "ai.kubesense.benchmarks.vitals", target: .global(qos: .utility))
 
     init(provider: MeterProviderSdk) {
         self.provider = provider

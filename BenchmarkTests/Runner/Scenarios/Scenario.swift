@@ -15,7 +15,7 @@ protocol Scenario {
     /// The initial view-controller of the scenario
     var initialViewController: UIViewController { get }
 
-    /// Start instrumenting the application by enabling the Datadog SDK and
+    /// Start instrumenting the application by enabling the Kubesense SDK and
     /// its Features.
     ///
     /// - Parameter info: The application information to use during SDK
