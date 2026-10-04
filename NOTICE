@@ -1,4 +1,11 @@
-Datadog dd-sdk-ios
-Copyright 2019 Datadog, Inc.
+KubeSense iOS SDK
+Copyright 2026 KubeSense Technologies.
 
-This product includes software developed at Datadog (https://www.datadoghq.com/).
+This product is derived from Datadog dd-sdk-ios
+(https://github.com/DataDog/dd-sdk-ios), licensed under the Apache License,
+Version 2.0, whose notice follows:
+
+    Datadog dd-sdk-ios
+    Copyright 2019 Datadog, Inc.
+
+    This product includes software developed at Datadog (https://www.datadoghq.com/).
