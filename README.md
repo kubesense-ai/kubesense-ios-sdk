@@ -1,12 +1,8 @@
 # Kubesense SDK for iOS and tvOS
 
 > Swift and Objective-C libraries to send RUM, logs, traces, Session Replay, crash reports and profiles
-> from iOS and tvOS applications to [Kubesense](https://www.kubesense.ai).
+> from iOS applications to [Kubesense](https://www.kubesense.ai).
 
-This SDK is a fork of [Datadog's dd-sdk-ios](https://github.com/DataDog/dd-sdk-ios) (Apache-2.0), rebranded
-and pointed at the Kubesense collector. It behaves like the Kubesense Android and browser SDKs on the wire.
-The upstream version it is based on is recorded in [`tools/kubesense-sync/upstream.json`](tools/kubesense-sync/upstream.json);
-how the fork is kept in sync with upstream is described in [`docs/UPSTREAM_SYNC.md`](docs/UPSTREAM_SYNC.md).
 
 ## Modules
 
@@ -61,5 +57,6 @@ with `remoteConfigurationEnabled: false`.
 
 ## License
 
-[Apache License, v2.0](LICENSE). This product includes software developed at Datadog
-(https://www.datadoghq.com/); see [NOTICE](NOTICE) and [LICENSE-3rdparty.csv](LICENSE-3rdparty.csv).
+Copyright 2026 KubeSense Technologies. Licensed under the [Apache License, Version 2.0](LICENSE).
+Attribution notices for the code this SDK builds on are in [NOTICE](NOTICE), and third-party licenses
+in [LICENSE-3rdparty.csv](LICENSE-3rdparty.csv).
