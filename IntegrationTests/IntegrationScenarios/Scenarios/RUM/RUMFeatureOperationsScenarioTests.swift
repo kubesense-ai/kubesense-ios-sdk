@@ -7,7 +7,7 @@
 import HTTPServerMock
 import TestUtilities
 import XCTest
-import DatadogInternal
+import KubesenseInternal
 
 private extension ExampleApplication {
     func tapStartLoginFlow() {

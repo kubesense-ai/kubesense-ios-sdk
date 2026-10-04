@@ -7,8 +7,8 @@
 import Foundation
 import SwiftUI
 
-import DatadogCore
-import DatadogTrace
+import KubesenseCore
+import KubesenseTrace
 
 struct TraceScenario: Scenario {
     var initialViewController: UIViewController {
@@ -16,7 +16,7 @@ struct TraceScenario: Scenario {
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )

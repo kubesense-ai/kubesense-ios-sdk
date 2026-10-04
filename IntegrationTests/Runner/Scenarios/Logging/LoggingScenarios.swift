@@ -4,25 +4,24 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogLogs
+@testable import KubesenseLogs
 
 /// Scenario which starts a view controller that sends bunch of logs to the server.
 final class LoggingManualInstrumentationScenario: TestScenario {
     static let storyboardName = "LoggingManualInstrumentationScenario"
 
     func configureFeatures() {
-        Logs.enable(
-            with: Logs.Configuration(
-                eventMapper: {
-                    var log = $0
-                    log.tags?.append("tag3:added")
-                    if log.attributes.userAttributes["some-url"] != nil {
-                        log.attributes.userAttributes["some-url"] = "redacted"
-                    }
-                    return log
-                },
-                customEndpoint: Environment.serverMockConfiguration()?.logsEndpoint
-            )
+        var configuration = Logs.Configuration(
+            eventMapper: {
+                var log = $0
+                log.tags?.append("tag3:added")
+                if log.attributes.userAttributes["some-url"] != nil {
+                    log.attributes.userAttributes["some-url"] = "redacted"
+                }
+                return log
+            }
         )
+        configuration.customEndpoint = Environment.serverMockConfiguration()?.logsEndpoint
+        Logs.enable(with: configuration)
     }
 }

@@ -16,8 +16,8 @@ class PackageID:
     """
     Identifies package in `package.resolved` file.
     It supports `version: 1` and `version: 2` of `package.resolved` format:
-    - v1 uses package name (e.g. `DatadogSDK`) as package identifier
-    - v2 uses package identity (e.g. `dd-sdk-ios`) as package identifier
+    - v1 uses package name (e.g. `KubesenseSDK`) as package identifier
+    - v2 uses package identity (e.g. `kubesense-ios-sdk`) as package identifier
     - v2 is not backward compatible with v1 - the v1 package name cannot be read from v2's `package.resolved`
     - v1 is forward compatible with v2 - the v2 package identity can be read from `repositoryURL` in v1's `package.resolved`
     """
@@ -153,8 +153,8 @@ class PackageResolvedContentV1(PackageResolvedContent):
             "object": {
                 "pins": [
                     {
-                        "package": "DatadogSDK",
-                        "repositoryURL": "https://github.com/DataDog/dd-sdk-ios",
+                        "package": "KubesenseSDK",
+                        "repositoryURL": "https://github.com/kubesense-ai/kubesense-ios-sdk",
                         "state": {
                             "branch": "dogfooding",
                             "revision": "4e93a8f1f662d9126074a0f355b4b6d20f9f30a7",
@@ -251,9 +251,9 @@ class PackageResolvedContentV2(PackageResolvedContent):
         {
             "pins" : [
                 {
-                    "identity" : "dd-sdk-ios",
+                    "identity" : "kubesense-ios-sdk",
                     "kind" : "remoteSourceControl",
-                    "location" : "https://github.com/DataDog/dd-sdk-ios",
+                    "location" : "https://github.com/kubesense-ai/kubesense-ios-sdk",
                     "state" : {
                         "branch" : "dogfooding",
                         "revision" : "6f662103771eb4523164e64f7f936bf9276f6bd0"
@@ -368,9 +368,9 @@ class PackageResolvedContentV3(PackageResolvedContentV2):
             "originHash" : "b47de6af98c4a9811a8d2af11d70b960dfc66b7c8e4944b35bb74c8f8bb9c487",
             "pins" : [
                 {
-                    "identity" : "dd-sdk-ios",
+                    "identity" : "kubesense-ios-sdk",
                     "kind" : "remoteSourceControl",
-                    "location" : "https://github.com/DataDog/dd-sdk-ios",
+                    "location" : "https://github.com/kubesense-ai/kubesense-ios-sdk",
                     "state" : {
                         "branch" : "dogfooding",
                         "revision" : "6f662103771eb4523164e64f7f936bf9276f6bd0"

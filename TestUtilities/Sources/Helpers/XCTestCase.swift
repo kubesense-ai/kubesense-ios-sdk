@@ -75,7 +75,7 @@ extension XCTestCase {
         closure()
     }
 
-    public func dd_fulfillment(
+    public func kubesense_fulfillment(
         for expectations: [XCTestExpectation],
         timeout seconds: TimeInterval = .infinity,
         enforceOrder enforceOrderOfFulfillment: Bool = false) async {
@@ -106,7 +106,7 @@ extension XCTestCase {
     /// `completionHandler` runs as part of `session.dataTask`'s completion handler. This is useful to finish
     /// active (or parent) spans in a more realistic way. Here's a description of problem this solves.
     ///
-    /// By the end of a request interception, the `DatadogURLSessionHandler.interceptionDidComplete(interception:)`
+    /// By the end of a request interception, the `KubesenseURLSessionHandler.interceptionDidComplete(interception:)`
     /// method is called. In situations where a span should be created to trace this request, that span is created inside this
     /// method. This span can be a child of a currently active span, or a root span if no active span is present.
     ///

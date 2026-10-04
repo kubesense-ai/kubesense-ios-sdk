@@ -52,11 +52,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "DD_DEBUG"
+            argument = "KUBESENSE_DEBUG"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "DD_DEBUG_RUM"
+            argument = "KUBESENSE_DEBUG_RUM"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>

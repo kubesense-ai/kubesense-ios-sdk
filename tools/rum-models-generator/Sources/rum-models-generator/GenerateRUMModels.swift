@@ -44,7 +44,7 @@ internal func generateRUMSwiftModels(from schema: URL) throws -> String {
 internal func generateRUMObjcInteropModels(from schema: URL, skip typesToSkip: Set<String>) throws -> String {
     let generator = ModelsGenerator()
     let objcRuntimeNameOverrides = [
-        "objc_RUMErrorEventErrorMeta": "DDRUMErrorEventErrorMetaInfo"
+        "objc_RUMErrorEventErrorMeta": "KubesenseRUMErrorEventErrorMetaInfo"
     ]
 
     let template = OutputTemplate(
@@ -56,7 +56,7 @@ internal func generateRUMObjcInteropModels(from schema: URL, skip typesToSkip: S
              */
 
             import Foundation
-            import DatadogInternal
+            import KubesenseInternal
 
             // This file was generated from JSON Schema. Do not modify it directly.
 

@@ -5,10 +5,10 @@
  */
 
 import Foundation
-import DatadogTrace
-import DatadogRUM
-import DatadogLogs
-import DatadogCore
+@testable import KubesenseTrace
+@testable import KubesenseRUM
+@testable import KubesenseLogs
+import KubesenseCore
 
 internal class StopCoreScenario: TestScenario {
     static let storyboardName = "StopCoreScenario"
@@ -31,11 +31,9 @@ internal class StopCoreScenario: TestScenario {
         Trace.enable(with: traceConfig)
 
         // Enable Logs
-        Logs.enable(
-            with: Logs.Configuration(
-                customEndpoint: Environment.serverMockConfiguration()?.logsEndpoint
-            )
-        )
+        var logsConfig = Logs.Configuration()
+        logsConfig.customEndpoint = Environment.serverMockConfiguration()?.logsEndpoint
+        Logs.enable(with: logsConfig)
 
         URLSessionInstrumentation.enableDurationBreakdown(with: .init(delegateClass: CustomURLSessionDelegate.self))
     }

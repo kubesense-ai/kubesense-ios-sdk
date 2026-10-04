@@ -7,9 +7,9 @@
 import Foundation
 import SwiftUI
 
-import DatadogCore
-import DatadogRUM
-import DatadogProfiling
+import KubesenseCore
+import KubesenseRUM
+import KubesenseProfiling
 
 struct ProfilingScenario: Scenario {
     var initialViewController: UIViewController {
@@ -17,7 +17,7 @@ struct ProfilingScenario: Scenario {
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )

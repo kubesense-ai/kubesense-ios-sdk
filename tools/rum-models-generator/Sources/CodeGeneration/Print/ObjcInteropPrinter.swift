@@ -25,7 +25,7 @@ private struct AssociatedTypeEnumPropertyIdentity: Hashable {
 /// it prints it's Obj-c interoperability wrapper:
 ///
 ///     @objc
-///     public class DDFoo: NSObject {
+///     public class KubesenseFoo: NSObject {
 ///         internal var foo: Foo
 ///
 ///         internal init(foo: Foo) {
@@ -64,7 +64,7 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
     /// The prefix used for types exposed to Obj-c.
     private let objcTypeNamesPrefix: String
     /// Overrides for generated `@objc(...)` runtime names.
-    /// Keys are generated type names (e.g. `objc_RUMErrorEventErrorMeta`), values are runtime names (e.g. `DDRUMErrorEventMeta`).
+    /// Keys are generated type names (e.g. `objc_RUMErrorEventErrorMeta`), values are runtime names (e.g. `KubesenseRUMErrorEventMeta`).
     private let objcRuntimeNameOverrides: [String: String]
     /// Overrides for preserving ObjC source compatibility when a schema changes a property into an associated-type enum.
     private static let legacyStringAccessorWrapperPropertyNames: [AssociatedTypeEnumPropertyIdentity: String] = [
@@ -390,8 +390,8 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
 
         // Generate accessor to the referenced wrapper, e.g.:
         // ```
-        // @objc public var bar: DDFooBar? {
-        //     root.swiftModel.bar != nil ? DDFooBar(root: root) : nil
+        // @objc public var bar: KubesenseFooBar? {
+        //     root.swiftModel.bar != nil ? KubesenseFooBar(root: root) : nil
         // }
         // ```
         let swiftProperty = propertyWrapper.bridgedSwiftProperty
@@ -403,13 +403,13 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
             if swiftProperty.isOptional {
                 // The property is optional, so the accessor must be returned only if the wrapped value is `!= nil`, e.g.:
                 // ```
-                // root.swiftModel.bar != nil ? DDFooBar(root: root) : nil
+                // root.swiftModel.bar != nil ? KubesenseFooBar(root: root) : nil
                 // ```
                 writeLine("root.swiftModel.\(propertyWrapper.keyPath) != nil ? \(objcClassName)(root: root) : nil")
             } else {
                 // The property is non-optional, so accessor can be provided without considering `nil` value:
                 // ```
-                // DDFooBar(root: root)
+                // KubesenseFooBar(root: root)
                 // ```
                 writeLine("\(objcClassName)(root: root)")
             }
@@ -422,7 +422,7 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
 
         // Generate getter and setter for managed enum, e.g.:
         // ```
-        // @objc public var enumeration: DDFooEnumeration {
+        // @objc public var enumeration: KubesenseFooEnumeration {
         //    set { root.swiftModel.enumeration = newValue.toSwift }
         //    get { .init(swift: root.swiftModel.enumeration) }
         // }
@@ -456,7 +456,7 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
         // representation (which is `Int` for all `@objc` enums), e.g.:
         // ```
         // @objc public var options: [Int] {
-        //     root.swiftModel.bar.options.map { DDFooOptions(swift: $0).rawValue }
+        //     root.swiftModel.bar.options.map { KubesenseFooOptions(swift: $0).rawValue }
         // }
         // ```
         let swiftProperty = propertyWrapper.bridgedSwiftProperty
@@ -480,8 +480,8 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
 
         // Generate getter for managed structs array.
         // ```
-        // @objc public var bars: [DDBar] {
-        //     root.swiftModel.bars.map { DDBar(swiftModel: $0) }
+        // @objc public var bars: [KubesenseBar] {
+        //     root.swiftModel.bars.map { KubesenseBar(swiftModel: $0) }
         // }
         // ```
         let swiftProperty = propertyWrapper.bridgedSwiftProperty
@@ -510,8 +510,8 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
 
         // Generate getter for managed associated type enums array.
         // ```
-        // @objc public var statuses: [DDFooStatus] {
-        //     root.swiftModel.statuses.map { DDFooStatus(swiftModel: $0) }
+        // @objc public var statuses: [KubesenseFooStatus] {
+        //     root.swiftModel.statuses.map { KubesenseFooStatus(swiftModel: $0) }
         // }
         // ```
         let swiftProperty = propertyWrapper.bridgedSwiftProperty
@@ -622,8 +622,8 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
     ) throws {
         // Generate accessor to the referenced wrapper, e.g.:
         // ```
-        // @objc public var bar: DDFooBar? {
-        //     root.swiftModel.bar != nil ? DDFooBar(root: root) : nil
+        // @objc public var bar: KubesenseFooBar? {
+        //     root.swiftModel.bar != nil ? KubesenseFooBar(root: root) : nil
         // }
         // ```
         let swiftProperty = propertyWrapper.bridgedSwiftProperty
@@ -634,13 +634,13 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
             if swiftProperty.isOptional {
                 // The property is optional, so the accessor must be returned only if the wrapped value is `!= nil`, e.g.:
                 // ```
-                // root.swiftModel.bar != nil ? DDFooBar(root: root) : nil
+                // root.swiftModel.bar != nil ? KubesenseFooBar(root: root) : nil
                 // ```
                 writeLine("root.swiftModel.\(propertyWrapper.keyPath) != nil ? \(objcClassName)(root: root) : nil")
             } else {
                 // The property is non-optional, so accessor can be provided without considering `nil` value:
                 // ```
-                // DDFooBar(root: root)
+                // KubesenseFooBar(root: root)
                 // ```
                 writeLine("\(objcClassName)(root: root)")
             }
@@ -718,7 +718,7 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
             // However our SDK bridges `[String: Any]` attributes passed in Objective-C API to their `[String: Encodable]` representation
             // in underlying Swift SDK. This is done with `AnyEncodable` type erasure. To return these attributes back
             // to the user, `AnyEncodable` must be unpacked to its original `Any` value. This is done in `.dd.objCAttributes` extension
-            // defined in `DatadogInternal` module. Here we just emit its invocation:
+            // defined in `KubesenseInternal` module. Here we just emit its invocation:
             return optionality + ".dd.objCAttributes"
         case let objcStruct as ObjcInteropNestedClass:
             let transitiveType = objcStruct.parentProperty as? ObjcInteropPropertyWrapperForTransitiveType

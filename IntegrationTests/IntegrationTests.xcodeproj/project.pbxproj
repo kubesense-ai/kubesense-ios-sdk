@@ -187,7 +187,7 @@
 		611EA14725810E2600BC0E56 /* TSPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSPictureViewController.swift; sourceTree = "<group>"; };
 		611EA14D25810E3700BC0E56 /* TSConsentSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSConsentSettingViewController.swift; sourceTree = "<group>"; };
 		611EA16525825FB300BC0E56 /* TrackingConsentScenarioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingConsentScenarioTests.swift; sourceTree = "<group>"; };
-		612C136D2A9CF1380086B5D1 /* SRFixtures */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SRFixtures; path = ../DatadogSessionReplay/SRSnapshotTests/SRFixtures; sourceTree = "<group>"; };
+		612C136D2A9CF1380086B5D1 /* SRFixtures */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SRFixtures; path = ../KubesenseSessionReplay/SRSnapshotTests/SRFixtures; sourceTree = "<group>"; };
 		612C136F2A9CF9140086B5D1 /* SRScenarios.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRScenarios.swift; sourceTree = "<group>"; };
 		612C13722A9DFE1C0086B5D1 /* SRMultipleViewsRecordingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRMultipleViewsRecordingViewController.swift; sourceTree = "<group>"; };
 		612C13742A9DFEF70086B5D1 /* SRMultipleViewsRecordingScenario.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SRMultipleViewsRecordingScenario.storyboard; sourceTree = "<group>"; };
@@ -938,7 +938,7 @@
 			packageProductDependencies = (
 				61441C43246174CE003D8BB8 /* HTTPServerMock */,
 			);
-			productName = DatadogIntegrationTests;
+			productName = KubesenseIntegrationTests;
 			productReference = 61441C2A24616F1D003D8BB8 /* IntegrationScenarios.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -950,7 +950,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1410;
-				ORGANIZATIONNAME = Datadog;
+				ORGANIZATIONNAME = Kubesense;
 				TargetAttributes = {
 					61441C0124616DE9003D8BB8 = {
 						CreatedOnToolsVersion = 11.4;
@@ -1369,7 +1369,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.Example;
 				PRODUCT_MODULE_NAME = Runner;
 				PRODUCT_NAME = "Integration Tests Runner";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1391,7 +1391,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.Example;
 				PRODUCT_MODULE_NAME = Runner;
 				PRODUCT_NAME = "Integration Tests Runner";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1412,7 +1412,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.Example;
 				PRODUCT_MODULE_NAME = Runner;
 				PRODUCT_NAME = "Integration Tests Runner";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -1432,10 +1432,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.DatadogIntegrationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.KubesenseIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DD_COMPILED_FOR_INTEGRATION_TESTS";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS";
 				TEST_TARGET_NAME = "Runner iOS";
 				VALIDATE_WORKSPACE = YES;
 			};
@@ -1452,10 +1452,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.DatadogIntegrationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.KubesenseIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DD_COMPILED_FOR_INTEGRATION_TESTS;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS;
 				TEST_TARGET_NAME = "Runner iOS";
 				VALIDATE_WORKSPACE = YES;
 			};
@@ -1472,10 +1472,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.datadogqh.DatadogIntegrationTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.kubesense.KubesenseIntegrationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DD_COMPILED_FOR_INTEGRATION_TESTS;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS;
 				TEST_TARGET_NAME = "Runner iOS";
 				VALIDATE_WORKSPACE = YES;
 			};

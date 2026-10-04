@@ -4,10 +4,10 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogCore
-import DatadogTrace
-import DatadogLogs
-import DatadogRUM
+import KubesenseCore
+@testable import KubesenseTrace
+import KubesenseLogs
+@testable import KubesenseRUM
 
 class RUMAndTracingURLSessionBaseScenario: URLSessionBaseScenario, TestScenario {
     static var storyboardName: String { "RUMAndTracingScenarios" }
@@ -46,7 +46,7 @@ class RUMAndTracingURLSessionBaseScenario: URLSessionBaseScenario, TestScenario 
             )
         case .delegateWithAdditionalFirstPartyHosts:
             rumConfig.urlSessionTracking = .init(
-                firstPartyHostsTracing: .trace(hosts: [], sampleRate: 100) // hosts will be set through `DDURLSessionDelegate`
+                firstPartyHostsTracing: .trace(hosts: [], sampleRate: 100) // hosts will be set through `KubesenseURLSessionDelegate`
             )
         }
         RUM.enable(with: rumConfig)

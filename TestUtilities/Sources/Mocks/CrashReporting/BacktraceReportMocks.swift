@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogInternal
+import KubesenseInternal
 
 extension BacktraceReport: AnyMockable, RandomMockable {
     public static func mockAny() -> BacktraceReport {
@@ -22,7 +22,7 @@ extension BacktraceReport: AnyMockable, RandomMockable {
 
     public static func mockWith(
         stack: String = .mockAny(),
-        threads: [DDThread] = .mockAny(),
+        threads: [KubesenseThread] = .mockAny(),
         binaryImages: [BinaryImage] = .mockAny(),
         wasTruncated: Bool = .mockAny()
     ) -> BacktraceReport {

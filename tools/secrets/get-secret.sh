@@ -12,7 +12,7 @@ source "${REPO_ROOT:-.}/tools/secrets/config.sh"
 get_secret() {
     local secret_name="$1"
 
-    export VAULT_ADDR=$DD_VAULT_ADDR
+    export VAULT_ADDR=$KUBESENSE_VAULT_ADDR
     if [ "$CI" = "true" ]; then
         vault login -method=aws -no-print
     else
@@ -24,7 +24,7 @@ get_secret() {
         fi
     fi
 
-    local secret_value=$(vault kv get -field=value "$DD_IOS_SECRETS_PATH_PREFIX/$secret_name")
+    local secret_value=$(vault kv get -field=value "$KUBESENSE_IOS_SECRETS_PATH_PREFIX/$secret_name")
 
     if [[ -z "$secret_value" ]]; then
         echo_err "Error" "Failed to retrieve the '$secret_name' secret or the secret is empty." >&2

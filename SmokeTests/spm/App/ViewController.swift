@@ -5,17 +5,17 @@
 */
 
 import UIKit
-import DatadogRUM
-import DatadogSessionReplay // it should compile for iOS and tvOS, but APIs are only available on iOS
-import DatadogTrace
-import DatadogFlags
-import DatadogProfiling
+import KubesenseRUM
+import KubesenseSessionReplay // it should compile for iOS and tvOS, but APIs are only available on iOS
+import KubesenseTrace
+import KubesenseFlags
+import KubesenseProfiling
 @preconcurrency import OpenTelemetryApi
 
 internal class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        DatadogSetup.initialize()
+        KubesenseSetup.initialize()
 
         // RUM APIs must be visible:
         RUM.enable(

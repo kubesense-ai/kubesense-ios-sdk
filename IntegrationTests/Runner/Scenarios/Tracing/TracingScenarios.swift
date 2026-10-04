@@ -4,9 +4,9 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogCore
-import DatadogTrace
-import DatadogLogs
+import KubesenseCore
+@testable import KubesenseTrace
+@testable import KubesenseLogs
 
 /// Scenario which starts a view controller that sends bunch of spans using manual API of `Tracer`.
 /// It also uses the `span.log()` to send logs.
@@ -15,20 +15,17 @@ final class TracingManualInstrumentationScenario: TestScenario {
 
     func configureFeatures() {
         // Enable Trace
-        Trace.enable(
-            with: Trace.Configuration(
-                sampleRate: 100,
-                networkInfoEnabled: true,
-                customEndpoint: Environment.serverMockConfiguration()?.tracesEndpoint
-            )
+        var traceConfig = Trace.Configuration(
+            sampleRate: 100,
+            networkInfoEnabled: true
         )
+        traceConfig.customEndpoint = Environment.serverMockConfiguration()?.tracesEndpoint
+        Trace.enable(with: traceConfig)
 
         // Enable Logs
-        Logs.enable(
-            with: Logs.Configuration(
-                customEndpoint: Environment.serverMockConfiguration()?.logsEndpoint
-            )
-        )
+        var logsConfig = Logs.Configuration()
+        logsConfig.customEndpoint = Environment.serverMockConfiguration()?.logsEndpoint
+        Logs.enable(with: logsConfig)
     }
 }
 
@@ -60,7 +57,7 @@ class TracingURLSessionBaseScenario: URLSessionBaseScenario {
             )
         case .delegateWithAdditionalFirstPartyHosts:
             config.urlSessionTracking = .init(
-                firstPartyHostsTracing: .trace(hosts: [], sampleRate: 100) // hosts will be set through `DDURLSessionDelegate`
+                firstPartyHostsTracing: .trace(hosts: [], sampleRate: 100) // hosts will be set through `KubesenseURLSessionDelegate`
             )
         }
         Trace.enable(with: config)

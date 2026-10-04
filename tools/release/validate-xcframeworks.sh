@@ -17,7 +17,7 @@ define_arg "artifacts-path" "" "The path to build artifacts." "string" "true"
 check_for_help "$@"
 parse_args "$@"
 
-XCF_ZIP_NAME="Datadog.xcframework.zip"
+XCF_ZIP_NAME="Kubesense.xcframework.zip"
 XCF_ZIP_PATH="$artifacts_path/$XCF_ZIP_NAME"
 
 unzip_archive() {
@@ -99,12 +99,12 @@ list_remaining_files() {
 # validated, and any remaining files are reported as unexpected.
 #
 # Arguments:
-#   $1 - Framework name (e.g., "DatadogInternal.xcframework")
+#   $1 - Framework name (e.g., "KubesenseInternal.xcframework")
 #   $2 - Comma-separated platform list (e.g., "iOS,tvOS" or "iOS")
 #
 # Examples:
-#   validate_xcframework "DatadogCore.xcframework" "iOS,tvOS"
-#   validate_xcframework "DatadogSessionReplay.xcframework" "iOS"
+#   validate_xcframework "KubesenseCore.xcframework" "iOS,tvOS"
+#   validate_xcframework "KubesenseSessionReplay.xcframework" "iOS"
 validate_xcframework() {
     local framework_name=$1
     local platforms=$2
@@ -167,21 +167,21 @@ echo_subtitle "Validate xcframeworks in '$XCF_ZIP_NAME'"
 unzip_archive "$XCF_ZIP_PATH" "$temp_dir"
 
 # Check if the main bundle exists in the archive
-XCF_PATH="$temp_dir/Datadog.xcframework"
+XCF_PATH="$temp_dir/Kubesense.xcframework"
 check_xcframework_bundle_exists "$XCF_PATH"
 
 # Validate xcframeworks from the archive
 # Each framework is validated for specified platforms (iOS, tvOS, or both)
-validate_xcframework "DatadogInternal.xcframework"          "iOS,tvOS"
-validate_xcframework "DatadogCore.xcframework"              "iOS,tvOS"
-validate_xcframework "DatadogLogs.xcframework"              "iOS,tvOS"
-validate_xcframework "DatadogTrace.xcframework"             "iOS,tvOS"
-validate_xcframework "DatadogRUM.xcframework"               "iOS,tvOS"
-validate_xcframework "DatadogCrashReporting.xcframework"    "iOS,tvOS"
-validate_xcframework "DatadogFlags.xcframework"             "iOS,tvOS"
-validate_xcframework "DatadogProfiling.xcframework"         "iOS,tvOS"
-validate_xcframework "DatadogSessionReplay.xcframework"     "iOS"
-validate_xcframework "DatadogWebViewTracking.xcframework"   "iOS"
+validate_xcframework "KubesenseInternal.xcframework"          "iOS,tvOS"
+validate_xcframework "KubesenseCore.xcframework"              "iOS,tvOS"
+validate_xcframework "KubesenseLogs.xcframework"              "iOS,tvOS"
+validate_xcframework "KubesenseTrace.xcframework"             "iOS,tvOS"
+validate_xcframework "KubesenseRUM.xcframework"               "iOS,tvOS"
+validate_xcframework "KubesenseCrashReporting.xcframework"    "iOS,tvOS"
+validate_xcframework "KubesenseFlags.xcframework"             "iOS,tvOS"
+validate_xcframework "KubesenseProfiling.xcframework"         "iOS,tvOS"
+validate_xcframework "KubesenseSessionReplay.xcframework"     "iOS"
+validate_xcframework "KubesenseWebViewTracking.xcframework"   "iOS"
 validate_xcframework "OpenTelemetryApi.xcframework"         "iOS,tvOS"
 
 # Check if archive has any remaining files

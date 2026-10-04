@@ -1,6 +1,6 @@
 # Benchmark Tests
 
-[Synthetics for Mobile](https://docs.datadoghq.com/mobile_app_testing/) runs Benchmark test scenarios to collect metrics of the SDK performances.
+[Synthetics for Mobile](https://docs.kubesense.ai/mobile_app_testing/) runs Benchmark test scenarios to collect metrics of the SDK performances.
 
 ## Setup
 
@@ -23,22 +23,22 @@ Here is a simple example of a scenario using Logs:
 import Foundation
 import UIKit
 
-import DatadogCore
-import DatadogLogs
+import KubesenseCore
+import KubesenseLogs
 
 struct LogsScenario: Scenario {
 
     /// The initial view-controller of the scenario
     let initialViewController: UIViewController = LoggerViewController()
 
-    /// Start instrumenting the application by enabling the Datadog SDK and
+    /// Start instrumenting the application by enabling the Kubesense SDK and
     /// its Features.
     ///
     /// - Parameter info: The application information to use during SDK
     /// initialisation.
     func instrument(with info: AppInfo) {
 
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info), // SDK init with the benchmark configuration
             trackingConsent: .granted
         )
@@ -107,7 +107,7 @@ To sign the runner application, the certificate and provision profile defined in
 The application version (build number) is set to the commit SHA of the current job, and the build is uploaded to Synthetics using the [datadog-ci](https://github.com/DataDog/datadog-ci) CLI. This step expects environment variables to authenticate with the `Mobile - Integration Org`:
 
 ```bash
-export DATADOG_API_KEY=
-export DATADOG_APP_KEY=
+export KUBESENSE_API_KEY=
+export KUBESENSE_APP_KEY=
 export S8S_APPLICATION_ID=
 ```

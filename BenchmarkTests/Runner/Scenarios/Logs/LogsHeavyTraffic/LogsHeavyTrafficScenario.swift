@@ -7,8 +7,8 @@
 import Foundation
 import SwiftUI
 
-import DatadogCore
-import DatadogLogs
+import KubesenseCore
+import KubesenseLogs
 
 struct LogsHeavyTrafficScenario: Scenario {
     var initialViewController: UIViewController {
@@ -16,7 +16,7 @@ struct LogsHeavyTrafficScenario: Scenario {
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )

@@ -2,16 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>DatadogConfiguration</key>
+	<key>KubesenseConfiguration</key>
 	<dict>
                 <key>ClientToken</key>
                 <string>$(CLIENT_TOKEN)</string>
                 <key>ApplicationID</key>
                 <string>$(RUM_APPLICATION_ID)</string>
                 <key>Environment</key>
-                <string>$(DD_ENV)</string>
+                <string>$(KUBESENSE_ENV)</string>
                 <key>Site</key>
-                <string>$(DD_SITE)</string> 
+                <string>$(KUBESENSE_SITE)</string> 
 	</dict>
 </dict>
 </plist>

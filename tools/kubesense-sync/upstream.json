@@ -1,0 +1,27 @@
+{
+  "repository": "https://github.com/DataDog/dd-sdk-ios",
+  "baseline": "3.18.0",
+  "baselineTag": "upstream/3.18.0",
+  "version": "1.0.0",
+  "modules": {
+    "KubesenseCore": { "upstream": "DatadogCore", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseInternal": { "upstream": "DatadogInternal", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseLogs": { "upstream": "DatadogLogs", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseTrace": { "upstream": "DatadogTrace", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseRUM": { "upstream": "DatadogRUM", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseSessionReplay": { "upstream": "DatadogSessionReplay", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseCrashReporting": { "upstream": "DatadogCrashReporting", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseWebViewTracking": { "upstream": "DatadogWebViewTracking", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseFlags": { "upstream": "DatadogFlags", "upstreamVersion": "3.18.0", "version": "1.0.0" },
+    "KubesenseProfiling": { "upstream": "DatadogProfiling", "upstreamVersion": "3.18.0", "version": "1.0.0" }
+  },
+  "package": {
+    "identity": "kubesense-ios-sdk",
+    "repository": "https://github.com/kubesense-ai/kubesense-ios-sdk"
+  },
+  "siblingSdks": {
+    "android": "ai.kubesense:kubesense-android-* 2.1.0 (Kubesense Android SDK, main)",
+    "browser": "Kubesense browser SDK 2.0.0, based on Datadog v7.13.0",
+    "flutter": "kubesense-flutter-sdk 1.0.0, based on dd-sdk-flutter 3.5.2, written against dd-sdk-ios 3.15.0"
+  }
+}

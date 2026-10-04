@@ -19,8 +19,8 @@ define_arg "scheme" "" "Identifies the scheme to build" "string" "true"
 check_for_help "$@"
 parse_args "$@"
 
-WORKSPACE="Datadog.xcworkspace"
-WORKSPACE_RENAMED="Datadog.xcworkspace.old"
+WORKSPACE="Kubesense.xcworkspace"
+WORKSPACE_RENAMED="Kubesense.xcworkspace.old"
 
 rename_workspace() {
     if [ ! -d "$WORKSPACE" ]; then

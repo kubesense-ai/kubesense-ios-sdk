@@ -14,7 +14,7 @@
 		</dict>
 		<dict/>
 	</array>
-	<key>DatadogConfiguration</key>
+	<key>KubesenseConfiguration</key>
 	<dict>
 		<key>ApiKey</key>
 		<string>$(API_KEY)</string>
@@ -23,9 +23,9 @@
 		<key>ClientToken</key>
 		<string>$(CLIENT_TOKEN)</string>
 		<key>Environment</key>
-		<string>$(DD_ENV)</string>
+		<string>$(KUBESENSE_ENV)</string>
 		<key>Site</key>
-		<string>$(DD_SITE)</string>
+		<string>$(KUBESENSE_SITE)</string>
 	</dict>
 </dict>
 </plist>

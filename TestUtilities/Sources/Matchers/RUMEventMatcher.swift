@@ -125,7 +125,7 @@ extension RUMEventMatcher: CustomStringConvertible {
 extension Array where Element == RUMEventMatcher {
     public func filterApplicationLaunchView() -> [RUMEventMatcher] {
         return filter {
-            (try? $0.attribute(forKeyPath: "view.url")) != "com/datadog/application-launch/view"
+            (try? $0.attribute(forKeyPath: "view.url")) != "com/kubesense/application-launch/view"
         }
     }
 

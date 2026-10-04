@@ -1,6 +1,6 @@
-# Swizzling in dd-sdk-ios
+# Swizzling in kubesense-ios-sdk
 
-This document captures the mandatory patterns, known pitfalls, and real production incidents related to Objective-C method swizzling in the Datadog iOS SDK. **Read this before writing or modifying any swizzle.**
+This document captures the mandatory patterns, known pitfalls, and real production incidents related to Objective-C method swizzling in the Kubesense iOS SDK. **Read this before writing or modifying any swizzle.**
 
 ---
 
@@ -14,7 +14,7 @@ The SDK installs into thousands of apps alongside frameworks like RxSwift, RxCoc
 
 ## How the SDK swizzles
 
-All swizzles use `MethodSwizzler<Signature, Override>` in `DatadogInternal/Sources/Swizzling/MethodSwizzler.swift`. This class:
+All swizzles use `MethodSwizzler<Signature, Override>` in `KubesenseInternal/Sources/Swizzling/MethodSwizzler.swift`. This class:
 
 - Captures the IMP that is current at install time as `previousImplementation`
 - Sets a new IMP that calls the override closure, which receives `previousImplementation`
@@ -227,9 +227,9 @@ guard let value = value else {
 
 **Symptom:** Apps using RxSwift's `rx.contentOffset` on `UICollectionView` crashed with a stack overflow after upgrading to 3.8.0.
 
-**Root cause:** `UIScrollViewSwizzler` swizzled `UIScrollView.delegate` setter. RxSwift's `DelegateProxy` also swizzles this setter. Due to swizzle installation order, Datadog's `previousImplementation` pointed to RxSwift's stored IMP. When Datadog called `previousImplementation(scrollView, DDProxy)`, RxSwift saw a non-RxSwift proxy and re-called the setter with its own proxy via full ObjC dispatch, re-entering Datadog's swizzle. Each re-entry created a new `DDProxy` and called `previousImplementation` again — infinite recursion.
+**Root cause:** `UIScrollViewSwizzler` swizzled `UIScrollView.delegate` setter. RxSwift's `DelegateProxy` also swizzles this setter. Due to swizzle installation order, Kubesense's `previousImplementation` pointed to RxSwift's stored IMP. When Kubesense called `previousImplementation(scrollView, KubesenseProxy)`, RxSwift saw a non-RxSwift proxy and re-called the setter with its own proxy via full ObjC dispatch, re-entering Kubesense's swizzle. Each re-entry created a new `KubesenseProxy` and called `previousImplementation` again — infinite recursion.
 
-The crash manifested in `responds(to:)` due to the circular delegation chain created by this loop: `DDProxy.originalDelegate = rxProxy` and `rxProxy.forwardTo = DDProxy`.
+The crash manifested in `responds(to:)` due to the circular delegation chain created by this loop: `KubesenseProxy.originalDelegate = rxProxy` and `rxProxy.forwardTo = KubesenseProxy`.
 
 **Fixes applied:**
 1. Re-entrancy guard in `UIScrollViewSwizzler.SetDelegate` using `scrollViewsBeingSet: Set<ObjectIdentifier>` — breaks cycles where a third-party swizzle re-calls the setter with its own proxy type

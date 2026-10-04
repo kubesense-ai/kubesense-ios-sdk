@@ -1,5 +1,36 @@
 # Unreleased
 
+# Kubesense 1.0.0
+
+First release of the Kubesense iOS SDK, forked from dd-sdk-ios 3.18.0. The entries below this one are
+upstream's history, kept as-is; see `docs/UPSTREAM_SYNC.md`.
+
+- [FEATURE] Modules, products and pods are renamed `Kubesense*` (`KubesenseCore`, `KubesenseRUM`, ...); the
+  entry point is `Kubesense` in Swift and `KubesenseSDK` in Objective-C, and Objective-C names use the
+  `Kubesense` prefix instead of `DD`.
+- [FEATURE] `KubesenseSite` has two sites, `.prod` (`us2.kubesense.ai`, default) and `.staging`
+  (`dev.kubesense.ai`), replacing Datadog's regions.
+- [FEATURE] `Kubesense.Configuration.kubesenseRumEndpoint` sends every feature to one collector host
+  (scheme and path ignored, always https), like the Android SDK's `useKubesenseRumEndpoint`.
+- [FEATURE] Uploads use the Kubesense collector routes: RUM `/rum/api/v1`, Logs `/rum/api/v1/logs`, traces
+  `/rum/api/v1/spans`, Session Replay `/rum/api/v1/replay`, profiles `/rum/api/v1/profile`, flag exposures
+  `/rum/api/v1/exposures`, flag evaluations `/rum/api/v1/flagevaluation`, flag assignments
+  `/precompute-assignments`.
+- [FEATURE] Dashboard-managed remote configuration from `GET /rum/api/v1/sdk-config`, on by default
+  (`remoteConfigurationEnabled`, `remoteConfigurationRefreshPeriod`), with the Android SDK's document:
+  feature switches, core, RUM, Session Replay, Logs, Trace, Flags and Profiling settings. It replaces
+  upstream's CDN-based `RemoteConfiguration(id:)`.
+- [FEATURE] Wire names follow the Kubesense SDKs: `KUBESENSE-*` headers, `ksource`/`ktags`,
+  `x-kubesense-*` tracing headers, `_kubesense` event attributes (including the cross-platform
+  `_kubesense.trace_id` / `_kubesense.span_id` RUM resource attributes), `window.KubeSenseEventBridge`.
+  Log correlation keeps `dd.trace_id` / `dd.span_id`, and the flags assignments request keeps
+  `dd-client-token` / `dd-application-id`, like the Android SDK.
+- [IMPROVEMENT] Profiling sends no quota request: every profile is admitted, as the Kubesense collector and the
+  Android SDK have no profiling quota service.
+- [IMPROVEMENT] The per-feature `customEndpoint` options (RUM, Logs, Trace, Session Replay, Profiling) and
+  the Flags `customFlagsEndpoint`, `customExposureEndpoint` and `customEvaluationEndpoint` are no longer
+  public: all features upload to the core collector endpoint.
+
 # 3.18.0 / 21-09-2026
 
 - [FEATURE] Add CPU-time samples alongside wall-time samples by default for application launch and Continuous Profiling. See [#3195][]

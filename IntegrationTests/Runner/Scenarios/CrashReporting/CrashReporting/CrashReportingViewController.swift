@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogCore
+import KubesenseCore
 
 internal class CrashReportingViewController: UIViewController {
     @IBOutlet weak var sendingCrashReportLabel: UILabel!
@@ -21,9 +21,9 @@ internal class CrashReportingViewController: UIViewController {
 
         if testScenario.hadPendingCrashReportDataOnStartup {
 
-#if DD_SDK_COMPILED_FOR_TESTING
+#if KUBESENSE_SDK_COMPILED_FOR_TESTING
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                Datadog.flushAndDeinitialize()
+                Kubesense.flushAndDeinitialize()
             }
 #endif
         } else {

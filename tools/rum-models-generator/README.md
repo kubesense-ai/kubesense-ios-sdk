@@ -4,7 +4,7 @@
 
 ## Usage
 
-To update the data models to the latest version, call this in the root directory of the `dd-sdk-ios`.
+To update the data models to the latest version, call this in the root directory of the `kubesense-ios-sdk`.
 ```
 # make rum-models-generate
 # make sr-models-generate

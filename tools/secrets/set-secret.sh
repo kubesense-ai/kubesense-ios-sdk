@@ -15,8 +15,8 @@ list_secrets() {
     RESET="\e[0m"
 
     echo "Available secrets:"
-    for key in ${(k)DD_IOS_SECRETS}; do
-        IFS=" | " read -r name description <<< "${DD_IOS_SECRETS[$key]}"
+    for key in ${(k)KUBESENSE_IOS_SECRETS}; do
+        IFS=" | " read -r name description <<< "${KUBESENSE_IOS_SECRETS[$key]}"
         echo "$key) ${GREEN}$name${RESET} - $description"
     done | sort -n
 
@@ -29,8 +29,8 @@ select_secret() {
     while true; do
         echo_info "Enter the number of the secret you want to set:"
         read "secret_number"
-        if [[ -n ${DD_IOS_SECRETS[$secret_number]} ]]; then
-            IFS=" | " read -r SECRET_NAME SECRET_DESC <<< "${DD_IOS_SECRETS[$secret_number]}"
+        if [[ -n ${KUBESENSE_IOS_SECRETS[$secret_number]} ]]; then
+            IFS=" | " read -r SECRET_NAME SECRET_DESC <<< "${KUBESENSE_IOS_SECRETS[$secret_number]}"
             break
         else
             echo_err "Invalid selection. Please enter a valid number."
@@ -99,9 +99,9 @@ select_input_method() {
 set_secret_value() {
     echo_info "You will now be authenticated with OIDC in your web browser. Press ENTER to continue."
     read
-    export VAULT_ADDR=$DD_VAULT_ADDR
+    export VAULT_ADDR=$KUBESENSE_VAULT_ADDR
     vault login -method=oidc -no-print
-    vault kv put "$DD_IOS_SECRETS_PATH_PREFIX/$SECRET_NAME" value="$SECRET_VALUE"
+    vault kv put "$KUBESENSE_IOS_SECRETS_PATH_PREFIX/$SECRET_NAME" value="$SECRET_VALUE"
     echo_succ "Secret '$SECRET_NAME' set successfully."
 }
 

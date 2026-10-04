@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc(DDObjcCar)
+@objc(KubesenseObjcCar)
 @objcMembers
 @_spi(objc)
 public class objc_Car: NSObject {
@@ -45,14 +45,14 @@ public class objc_Car: NSObject {
     }
 }
 
-@objc(DDCarDelegate)
+@objc(KubesenseCarDelegate)
 @_spi(objc)
 public protocol objc_CarDelegate: AnyObject {
     func carDidStart(_ car: objc_Car)
     func carDidStop(_ car: objc_Car)
 }
 
-@objc(DDCarConfiguration)
+@objc(KubesenseCarConfiguration)
 @objcMembers
 @_spi(objc)
 public class objc_CarConfiguration: NSObject {

@@ -1,38 +1,38 @@
 # ----------------------------------
-# API surface for DatadogCore:
+# API surface for KubesenseCore:
 # ----------------------------------
 
-public let DatadogNTPServers = ["0.datadog.pool.ntp.org","1.datadog.pool.ntp.org","2.datadog.pool.ntp.org","3.datadog.pool.ntp.org"]
+public let KubesenseNTPServers = ["0.kubesense.pool.ntp.org","1.kubesense.pool.ntp.org","2.kubesense.pool.ntp.org","3.kubesense.pool.ntp.org"]
 public protocol ServerDateProvider
     func synchronize(update: @escaping (TimeInterval) -> Void)
 public protocol DataEncryption
     func encrypt(data: Data) throws -> Data
     func decrypt(data: Data) throws -> Data
-[?] extension InternalExtension where ExtendedType == Datadog
+[?] extension InternalExtension where ExtendedType == Kubesense
     public static var telemetry: _TelemetryProxy
     public static func set(customVersion: String)
 public struct _TelemetryProxy
     public func debug(id: String, message: String)
     public func error(id: String, message: String, kind: String?, stack: String?)
-[?] extension InternalExtension where ExtendedType == Datadog.Configuration
+[?] extension InternalExtension where ExtendedType == Kubesense.Configuration
     public var additionalConfiguration: [String: Any]
-public enum Datadog
+public enum Kubesense
     public static var verbosityLevel: CoreLoggerLevel?
     public static func isInitialized(instanceName name: String = CoreRegistry.defaultInstanceName) -> Bool
-    public static func sdkInstance(named name: String) -> DatadogCoreProtocol
-    public static func setUserInfo(id: String,name: String? = nil,email: String? = nil,extraInfo: [AttributeKey: AttributeValue] = [:],in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func addUserExtraInfo(_ extraInfo: [AttributeKey: AttributeValue?],in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func clearUserInfo(in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func setAccountInfo(id: String,name: String? = nil,extraInfo: [AttributeKey: AttributeValue] = [:],in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func addAccountExtraInfo(_ extraInfo: [AttributeKey: AttributeValue?],in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func clearAccountInfo(in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func set(trackingConsent: TrackingConsent, in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func clearAllData(in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func sdkInstance(named name: String) -> KubesenseCoreProtocol
+    public static func setUserInfo(id: String,name: String? = nil,email: String? = nil,extraInfo: [AttributeKey: AttributeValue] = [:],in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func addUserExtraInfo(_ extraInfo: [AttributeKey: AttributeValue?],in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func clearUserInfo(in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func setAccountInfo(id: String,name: String? = nil,extraInfo: [AttributeKey: AttributeValue] = [:],in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func addAccountExtraInfo(_ extraInfo: [AttributeKey: AttributeValue?],in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func clearAccountInfo(in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func set(trackingConsent: TrackingConsent, in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func clearAllData(in core: KubesenseCoreProtocol = CoreRegistry.default)
     public static func stopInstance(named instanceName: String = CoreRegistry.defaultInstanceName)
-    public static func initialize(with configuration: Configuration,trackingConsent: TrackingConsent,instanceName: String = CoreRegistry.defaultInstanceName) -> DatadogCoreProtocol
-public extension Datadog
+    public static func initialize(with configuration: Configuration,trackingConsent: TrackingConsent,instanceName: String = CoreRegistry.defaultInstanceName) -> KubesenseCoreProtocol
+public extension Kubesense
     static func flush(instanceName: String = CoreRegistry.defaultInstanceName)
-[?] extension Datadog
+[?] extension Kubesense
     public struct Configuration
         public enum BatchSize: CaseIterable
             case small
@@ -48,7 +48,8 @@ public extension Datadog
             case high
         public var clientToken: String
         public var env: String
-        public var site: DatadogSite
+        public var site: KubesenseSite
+        public var kubesenseRumEndpoint: String?
         public var service: String?
         public var version: String?
         public var batchSize: BatchSize
@@ -59,12 +60,10 @@ public extension Datadog
         public var bundle: Bundle
         public var batchProcessingLevel: BatchProcessingLevel
         public var backgroundTasksEnabled: Bool
-        public struct RemoteConfiguration
-            public var id: String
-            public var customURL: URL?
-            public init(id: String, customURL: URL? = nil)
-        public var remoteConfiguration: RemoteConfiguration? = nil
-        public init(clientToken: String,env: String,site: DatadogSite = .us1,service: String? = nil,version: String? = nil,bundle: Bundle = .main,batchSize: BatchSize = .medium,uploadFrequency: UploadFrequency = .average,proxyConfiguration: [AnyHashable: Any]? = nil,encryption: DataEncryption? = nil,serverDateProvider: ServerDateProvider? = nil,batchProcessingLevel: BatchProcessingLevel = .medium,backgroundTasksEnabled: Bool = false,remoteConfiguration: RemoteConfiguration? = nil)
+        public var remoteConfigurationEnabled: Bool
+        public var remoteConfigurationRefreshPeriod: TimeInterval
+        public init(clientToken: String,env: String,site: KubesenseSite = .prod,service: String? = nil,version: String? = nil,bundle: Bundle = .main,batchSize: BatchSize = .medium,uploadFrequency: UploadFrequency = .average,proxyConfiguration: [AnyHashable: Any]? = nil,encryption: DataEncryption? = nil,serverDateProvider: ServerDateProvider? = nil,batchProcessingLevel: BatchProcessingLevel = .medium,backgroundTasksEnabled: Bool = false,kubesenseRumEndpoint: String? = nil,remoteConfigurationEnabled: Bool = true,remoteConfigurationRefreshPeriod: TimeInterval = Configuration.defaultRemoteConfigurationRefreshPeriod)
+        public static let defaultRemoteConfigurationRefreshPeriod: TimeInterval = 6 * 60 * 60
 public class SharedContext: NSObject
     public let userId: String?
     public let accountId: String?
@@ -73,7 +72,7 @@ public final class CrossPlatformExtension: NSObject
     public static func unsubscribeFromSharedContext()
 
 # ----------------------------------
-# API surface for DatadogLogs:
+# API surface for KubesenseLogs:
 # ----------------------------------
 
 public struct LogEvent: Encodable
@@ -126,7 +125,7 @@ public struct LogEvent: Encodable
     public let networkConnectionInfo: NetworkConnectionInfo?
     public let mobileCarrierInfo: CarrierInfo?
     public var attributes: LogEvent.Attributes
-    public let ddTags: String
+    public let kubesenseTags: String
     public var tags: [String]?
     public func encode(to encoder: Encoder) throws
 public struct Logger
@@ -143,7 +142,7 @@ public struct Logger
         public var remoteLogThreshold: LogLevel
         public var consoleLogFormat: ConsoleLogFormat?
         public init(service: String? = nil,name: String? = nil,networkInfoEnabled: Bool = false,bundleWithRumEnabled: Bool = true,bundleWithTraceEnabled: Bool = true,remoteSampleRate: Float = .maxSampleRate,remoteLogThreshold: LogLevel = .debug,consoleLogFormat: ConsoleLogFormat? = nil)
-    public static func create(with configuration: Configuration = .init(),in core: DatadogCoreProtocol = CoreRegistry.default) -> LoggerProtocol
+    public static func create(with configuration: Configuration = .init(),in core: KubesenseCoreProtocol = CoreRegistry.default) -> LoggerProtocol
 public protocol InternalLoggerProtocol
     func log(level: LogLevel,message: String,errorKind: String?,errorMessage: String?,stackTrace: String?,attributes: [String: Encodable]?)
     func critical(message: String,error: Error?,attributes: [String: Encodable]?,completionHandler: @escaping CompletionHandler)
@@ -174,26 +173,25 @@ public extension LoggerProtocol
     func error(_ message: String, error: Error? = nil, attributes: [AttributeKey: AttributeValue]? = nil)
     func critical(_ message: String, error: Error? = nil, attributes: [AttributeKey: AttributeValue]? = nil)
 [?] extension InternalExtension where ExtendedType == Logs
-    public static func isEnabled(in core: DatadogCoreProtocol = CoreRegistry.default) -> Bool
+    public static func isEnabled(in core: KubesenseCoreProtocol = CoreRegistry.default) -> Bool
 public enum Logs
     public struct Configuration
         public typealias EventMapper = (LogEvent) -> LogEvent?
         public var eventMapper: EventMapper?
-        public var customEndpoint: URL?
-        public init(eventMapper: EventMapper? = nil,customEndpoint: URL? = nil)
-    public static func enable(with configuration: Logs.Configuration = .init(),in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func addAttribute(forKey key: AttributeKey, value: AttributeValue, in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func removeAttribute(forKey key: AttributeKey, in core: DatadogCoreProtocol = CoreRegistry.default)
+        public init(eventMapper: EventMapper? = nil)
+    public static func enable(with configuration: Logs.Configuration = .init(),in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func addAttribute(forKey key: AttributeKey, value: AttributeValue, in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func removeAttribute(forKey key: AttributeKey, in core: KubesenseCoreProtocol = CoreRegistry.default)
 [?] extension Logs
     public struct Attributes
-        public static let errorFingerprint = "_dd.error.fingerprint"
+        public static let errorFingerprint = "_kubesense.error.fingerprint"
 [?] extension InternalExtension where ExtendedType == Logs.Configuration
     public mutating func setLogEventMapper(_ mapper: LogEventMapper)
 public protocol LogEventMapper
     func map(event: LogEvent, callback: @escaping (LogEvent) -> Void)
 
 # ----------------------------------
-# API surface for DatadogTrace:
+# API surface for KubesenseTrace:
 # ----------------------------------
 
 [?] extension TracePropagationHeadersWriter where Self: OTFormatWriter
@@ -203,7 +201,7 @@ public protocol LogEventMapper
 [?] extension OpenTelemetryApi.TraceState
     public func w3c() -> String
 public class OTelTracerProvider: OpenTelemetryApi.TracerProvider
-    public init(in core: DatadogCoreProtocol = CoreRegistry.default)
+    public init(in core: KubesenseCoreProtocol = CoreRegistry.default)
     public func get(instrumentationName: String,instrumentationVersion: String?,schemaUrl: String?,attributes: [String: OpenTelemetryApi.AttributeValue]?) -> any OpenTelemetryApi.Tracer
     public func get(instrumentationName: String, instrumentationVersion: String?) -> OpenTelemetryApi.Tracer
 public struct OTTags
@@ -307,7 +305,7 @@ public struct SpanEvent: Encodable
     public var tags: [String: String]
     public func encode(to encoder: Encoder) throws
 public enum Trace
-    public static func enable(with configuration: Trace.Configuration = .init(), in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func enable(with configuration: Trace.Configuration = .init(), in core: KubesenseCoreProtocol = CoreRegistry.default)
 [?] extension Trace
     public struct Configuration: SampledTelemetry, Sendable
         public typealias EventMapper = @Sendable (SpanEvent) -> SpanEvent
@@ -318,7 +316,6 @@ public enum Trace
         public var bundleWithRumEnabled: Bool
         public var networkInfoEnabled: Bool
         public var eventMapper: EventMapper?
-        public var customEndpoint: URL?
         public struct URLSessionTracking: Sendable
             public var firstPartyHostsTracing: FirstPartyHostsTracing
             public enum FirstPartyHostsTracing: Sendable
@@ -327,7 +324,7 @@ public enum Trace
             public static let defaultRedactedStatusCodes: Set<Int> = [404]
             public var redactedStatusCodes: Set<Int>
             public init(firstPartyHostsTracing: FirstPartyHostsTracing,redactedStatusCodes: Set<Int> = defaultRedactedStatusCodes)
-        public init(sampleRate: SampleRate = .maxSampleRate,service: String? = nil,tags: [String: OTTagValue]? = nil,urlSessionTracking: URLSessionTracking? = nil,bundleWithRumEnabled: Bool = true,networkInfoEnabled: Bool = false,eventMapper: EventMapper? = nil,customEndpoint: URL? = nil)
+        public init(sampleRate: SampleRate = .maxSampleRate,service: String? = nil,tags: [String: OTTagValue]? = nil,urlSessionTracking: URLSessionTracking? = nil,bundleWithRumEnabled: Bool = true,networkInfoEnabled: Bool = false,eventMapper: EventMapper? = nil)
 public enum SpanTags
     public static let resource = "resource.name"
     public static let operation = "operation.name"
@@ -335,10 +332,10 @@ public enum SpanTags
     public static let manualDrop = "manual.drop"
     public static let manualKeep = "manual.keep"
 public class Tracer
-    public static func shared(in core: DatadogCoreProtocol = CoreRegistry.default) -> OTTracer
+    public static func shared(in core: KubesenseCoreProtocol = CoreRegistry.default) -> OTTracer
 
 # ----------------------------------
-# API surface for DatadogRUM:
+# API surface for KubesenseRUM:
 # ----------------------------------
 
 public struct RUMAction
@@ -346,7 +343,7 @@ public struct RUMAction
     public var attributes: [AttributeKey: AttributeValue]
     public init(name: String, attributes: [AttributeKey: AttributeValue] = [:])
 public extension SwiftUI.View
-    func trackRUMTapAction(name: String,attributes: [String: Encodable] = [:],count: Int = 1,in core: DatadogCoreProtocol = CoreRegistry.default) -> some View
+    func trackRUMTapAction(name: String,attributes: [String: Encodable] = [:],count: Int = 1,in core: KubesenseCoreProtocol = CoreRegistry.default) -> some View
 public protocol SwiftUIRUMActionsPredicate
     func rumAction(with componentName: String) -> RUMAction?
 public struct DefaultSwiftUIRUMActionsPredicate
@@ -376,20 +373,20 @@ public struct DefaultSwiftUIRUMViewsPredicate: SwiftUIRUMViewsPredicate
     public init()
     public func rumView(for extractedViewName: String) -> RUMView?
 public extension SwiftUI.View
-    func trackRUMView(name: String,attributes: [AttributeKey: AttributeValue] = [:],in core: DatadogCoreProtocol = CoreRegistry.default) -> some View
+    func trackRUMView(name: String,attributes: [AttributeKey: AttributeValue] = [:],in core: KubesenseCoreProtocol = CoreRegistry.default) -> some View
 public protocol UIKitRUMViewsPredicate
     func rumView(for viewController: UIViewController) -> RUMView?
 public struct DefaultUIKitRUMViewsPredicate: UIKitRUMViewsPredicate
     public init ()
     public func rumView(for viewController: UIViewController) -> RUMView?
 [?] extension InternalExtension where ExtendedType == RUM
-    public static func isEnabled(in core: DatadogCoreProtocol = CoreRegistry.default) -> Bool
-    public static func enableURLSessionTracking(with configuration: RUM.Configuration.URLSessionTracking,in core: DatadogCoreProtocol = CoreRegistry.default) throws
+    public static func isEnabled(in core: KubesenseCoreProtocol = CoreRegistry.default) -> Bool
+    public static func enableURLSessionTracking(with configuration: RUM.Configuration.URLSessionTracking,in core: KubesenseCoreProtocol = CoreRegistry.default) throws
 public enum RUM
-    public static func enable(with configuration: RUM.Configuration,in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func enable(with configuration: RUM.Configuration,in core: KubesenseCoreProtocol = CoreRegistry.default)
 [?] extension RUM
     public struct Attributes
-        public static let errorFingerprint = "_dd.error.fingerprint"
+        public static let errorFingerprint = "_kubesense.error.fingerprint"
 [?] extension RUM
     public typealias ViewEventMapper = (RUMViewEvent) -> RUMViewEvent
     public typealias ResourceEventMapper = (RUMResourceEvent) -> RUMResourceEvent?
@@ -420,7 +417,6 @@ public enum RUM
         public var errorEventMapper: RUM.ErrorEventMapper?
         public var longTaskEventMapper: RUM.LongTaskEventMapper?
         public var onSessionStart: RUM.SessionListener?
-        public var customEndpoint: URL?
         public var trackAnonymousUser: Bool
         public var trackMemoryWarnings: Bool
         public var trackSlowFrames: Bool
@@ -457,7 +453,7 @@ public enum RUM
         case matchHeaders([String])
     public init(firstPartyHostsTracing: RUM.Configuration.URLSessionTracking.FirstPartyHostsTracing? = nil,resourceAttributesProvider: RUM.ResourceAttributesProvider? = nil,trackResourceHeaders: TrackResourceHeaders = .disabled,disallowList: [String] = [])
 [?] extension RUM.Configuration
-    public init(applicationID: String,sessionSampleRate: SampleRate = .maxSampleRate,uiKitViewsPredicate: UIKitRUMViewsPredicate? = nil,uiKitActionsPredicate: UIKitRUMActionsPredicate? = nil,swiftUIViewsPredicate: SwiftUIRUMViewsPredicate? = nil,swiftUIActionsPredicate: SwiftUIRUMActionsPredicate? = nil,urlSessionTracking: URLSessionTracking? = nil,trackFrustrations: Bool = true,trackBackgroundEvents: Bool = false,longTaskThreshold: TimeInterval? = 0.1,appHangThreshold: TimeInterval? = nil,trackWatchdogTerminations: Bool = false,vitalsUpdateFrequency: VitalsFrequency? = .average,networkSettledResourcePredicate: NetworkSettledResourcePredicate = TimeBasedTNSResourcePredicate(),nextViewActionPredicate: NextViewActionPredicate? = TimeBasedINVActionPredicate(),viewEventMapper: RUM.ViewEventMapper? = nil,resourceEventMapper: RUM.ResourceEventMapper? = nil,actionEventMapper: RUM.ActionEventMapper? = nil,errorEventMapper: RUM.ErrorEventMapper? = nil,longTaskEventMapper: RUM.LongTaskEventMapper? = nil,onSessionStart: RUM.SessionListener? = nil,customEndpoint: URL? = nil,trackAnonymousUser: Bool = true,trackMemoryWarnings: Bool = true,trackSlowFrames: Bool = true,telemetrySampleRate: SampleRate = 20,collectAccessibility: Bool = false,featureFlags: FeatureFlags = .defaults)
+    public init(applicationID: String,sessionSampleRate: SampleRate = .maxSampleRate,uiKitViewsPredicate: UIKitRUMViewsPredicate? = nil,uiKitActionsPredicate: UIKitRUMActionsPredicate? = nil,swiftUIViewsPredicate: SwiftUIRUMViewsPredicate? = nil,swiftUIActionsPredicate: SwiftUIRUMActionsPredicate? = nil,urlSessionTracking: URLSessionTracking? = nil,trackFrustrations: Bool = true,trackBackgroundEvents: Bool = false,longTaskThreshold: TimeInterval? = 0.1,appHangThreshold: TimeInterval? = nil,trackWatchdogTerminations: Bool = false,vitalsUpdateFrequency: VitalsFrequency? = .average,networkSettledResourcePredicate: NetworkSettledResourcePredicate = TimeBasedTNSResourcePredicate(),nextViewActionPredicate: NextViewActionPredicate? = TimeBasedINVActionPredicate(),viewEventMapper: RUM.ViewEventMapper? = nil,resourceEventMapper: RUM.ResourceEventMapper? = nil,actionEventMapper: RUM.ActionEventMapper? = nil,errorEventMapper: RUM.ErrorEventMapper? = nil,longTaskEventMapper: RUM.LongTaskEventMapper? = nil,onSessionStart: RUM.SessionListener? = nil,trackAnonymousUser: Bool = true,trackMemoryWarnings: Bool = true,trackSlowFrames: Bool = true,telemetrySampleRate: SampleRate = 20,collectAccessibility: Bool = false,featureFlags: FeatureFlags = .defaults)
 [?] extension InternalExtension where ExtendedType == RUM.Configuration
     public var configurationTelemetrySampleRate: Float
 [?] extension RUM.Configuration
@@ -491,7 +487,7 @@ public struct TimeBasedINVActionPredicate: NextViewActionPredicate
     public init(maxTimeToNextView: TimeInterval = TimeBasedINVActionPredicate.defaultMaxTimeToNextView)
     public func isLastAction(from actionParams: INVActionParams) -> Bool
 public class RUMMonitor
-    public static func shared(in core: DatadogCoreProtocol = CoreRegistry.default) -> RUMMonitorProtocol
+    public static func shared(in core: KubesenseCoreProtocol = CoreRegistry.default) -> RUMMonitorProtocol
 public extension RUMMonitorProtocol
     func startView(viewController: UIViewController,name: String? = nil,attributes: [AttributeKey: AttributeValue] = [:])
     func stopView(viewController: UIViewController,attributes: [AttributeKey: AttributeValue] = [:])
@@ -517,8 +513,8 @@ public extension RUMMonitorProtocol
     func failOperation(name: String,operationKey: String? = nil,reason: RUMFeatureOperationFailureReason,attributes: [AttributeKey: AttributeValue] = [:])
     func failFeatureOperation(name: String,operationKey: String? = nil,reason: RUMFeatureOperationFailureReason,attributes: [AttributeKey: AttributeValue] = [:])
 public extension RUMMonitorProtocol
-    var _internal: DatadogInternalInterface?
-public struct DatadogInternalInterface
+    var _internal: KubesenseInternalInterface?
+public struct KubesenseInternalInterface
     public func addLongTask(at time: Date,duration: TimeInterval,attributes: [AttributeKey: AttributeValue] = [:])
     public func updatePerformanceMetric(at time: Date,metric: PerformanceMetric,value: Double,attributes: [AttributeKey: AttributeValue] = [:])
     public func setInternalViewAttribute(at time: Date,key: AttributeKey,value: AttributeValue)
@@ -586,40 +582,40 @@ public enum PerformanceMetric
     case jsFrameTimeSeconds
 
 # ----------------------------------
-# API surface for DatadogCrashReporting:
+# API surface for KubesenseCrashReporting:
 # ----------------------------------
 
 public final class CrashReporting
     public struct Configuration
         public var appHangBacktraceEnabled: Bool
         public init(appHangBacktraceEnabled: Bool = true)
-    public static func enable(in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func enable(with configuration: Configuration, in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func enable(with plugin: @autoclosure () throws -> CrashReportingPlugin, in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func enable(with plugin: @autoclosure () throws -> CrashReportingPlugin,configuration: Configuration,in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func enable(in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func enable(with configuration: Configuration, in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func enable(with plugin: @autoclosure () throws -> CrashReportingPlugin, in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func enable(with plugin: @autoclosure () throws -> CrashReportingPlugin,configuration: Configuration,in core: KubesenseCoreProtocol = CoreRegistry.default)
 public static func enable()
 public static func enable(with configuration: objc_CrashReportingConfiguration)
 public var appHangBacktraceEnabled: Bool
 override public init()
 public protocol CrashReportingPlugin: AnyObject
-    func readPendingCrashReport(completion: @escaping (DDCrashReport?) -> Bool)
+    func readPendingCrashReport(completion: @escaping (KubesenseCrashReport?) -> Bool)
     func inject(context: Data)
     var backtraceReporter: BacktraceReporting?
 
 # ----------------------------------
-# API surface for DatadogWebViewTracking:
+# API surface for KubesenseWebViewTracking:
 # ----------------------------------
 
 public enum WebViewTracking
-    public static func enable(webView: WKWebView,hosts: Set<String> = [],logsSampleRate: SampleRate = .maxSampleRate,in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func enable(webView: WKWebView,hosts: Set<String> = [],logsSampleRate: SampleRate = .maxSampleRate,in core: KubesenseCoreProtocol = CoreRegistry.default)
     public static func disable(webView: WKWebView)
 [?] extension InternalExtension where ExtendedType == WebViewTracking
     public class AbstractMessageEmitter
         public func send(body: Any, slotId: String? = nil)
-    public static func messageEmitter(in core: DatadogCoreProtocol,logsSampleRate: SampleRate = .maxSampleRate) -> AbstractMessageEmitter
+    public static func messageEmitter(in core: KubesenseCoreProtocol,logsSampleRate: SampleRate = .maxSampleRate) -> AbstractMessageEmitter
 
 # ----------------------------------
-# API surface for DatadogSessionReplay:
+# API surface for KubesenseSessionReplay:
 # ----------------------------------
 
 [?] extension SRTextPosition.Alignment
@@ -1527,9 +1523,9 @@ public struct SessionReplaySpecificElement: SessionReplayNodeSemantics
     public let nodes: [SessionReplayNode]
     public init(subtreeStrategy: SessionReplayNodeSubtreeStrategy,nodes: [SessionReplayNode])
 public enum SessionReplay
-    public static func enable(with configuration: SessionReplay.Configuration,in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func startRecording(in core: DatadogCoreProtocol = CoreRegistry.default)
-    public static func stopRecording(in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func enable(with configuration: SessionReplay.Configuration,in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func startRecording(in core: KubesenseCoreProtocol = CoreRegistry.default)
+    public static func stopRecording(in core: KubesenseCoreProtocol = CoreRegistry.default)
 [?] extension SessionReplay
     public struct Configuration
         public var replaySampleRate: Float
@@ -1537,9 +1533,8 @@ public enum SessionReplay
         public var imagePrivacyLevel: ImagePrivacyLevel
         public var touchPrivacyLevel: TouchPrivacyLevel
         public var startRecordingImmediately: Bool
-        public var customEndpoint: URL?
         public var featureFlags: FeatureFlags
-        public init(replaySampleRate: SampleRate = .maxSampleRate,textAndInputPrivacyLevel: TextAndInputPrivacyLevel = .maskAll,imagePrivacyLevel: ImagePrivacyLevel = .maskAll,touchPrivacyLevel: TouchPrivacyLevel = .hide,startRecordingImmediately: Bool = true,customEndpoint: URL? = nil,featureFlags: FeatureFlags = .defaults)
+        public init(replaySampleRate: SampleRate = .maxSampleRate,textAndInputPrivacyLevel: TextAndInputPrivacyLevel = .maskAll,imagePrivacyLevel: ImagePrivacyLevel = .maskAll,touchPrivacyLevel: TouchPrivacyLevel = .hide,startRecordingImmediately: Bool = true,featureFlags: FeatureFlags = .defaults)
         public mutating func setAdditionalNodeRecorders(_ additionalNodeRecorders: [SessionReplayNodeRecorder])
 [?] extension SessionReplay.Configuration
     public typealias FeatureFlags = [FeatureFlag: Bool]
@@ -1551,7 +1546,7 @@ public enum SessionReplay
 [?] extension SessionReplay.Configuration.FeatureFlags
     public static var defaults: Self
     public subscript(flag: Key) -> Bool
-[?] extension DatadogExtension where ExtendedType: UIView
+[?] extension KubesenseExtension where ExtendedType: UIView
     public var sessionReplayPrivacyOverrides: SessionReplayPrivacyOverrides
 public final class SessionReplayPrivacyOverrides
     public var textAndInputPrivacy: TextAndInputPrivacyLevel?
@@ -1561,17 +1556,17 @@ public final class SessionReplayPrivacyOverrides
 [?] extension PrivacyOverrides: Equatable
     public static func == (lhs: SessionReplayPrivacyOverrides, rhs: SessionReplayPrivacyOverrides) -> Bool
 public struct SessionReplayPrivacyView<Content: View>: View
-    public init(isActive: Bool = true,textAndInputPrivacy: TextAndInputPrivacyLevel? = nil,imagePrivacy: ImagePrivacyLevel? = nil,touchPrivacy: TouchPrivacyLevel? = nil,hide: Bool? = nil,core: DatadogCoreProtocol = CoreRegistry.default,@ViewBuilder content: @escaping () -> Content)
+    public init(isActive: Bool = true,textAndInputPrivacy: TextAndInputPrivacyLevel? = nil,imagePrivacy: ImagePrivacyLevel? = nil,touchPrivacy: TouchPrivacyLevel? = nil,hide: Bool? = nil,core: KubesenseCoreProtocol = CoreRegistry.default,@ViewBuilder content: @escaping () -> Content)
     public var body: some View
 
 # ----------------------------------
-# API surface for DatadogFlags:
+# API surface for KubesenseFlags:
 # ----------------------------------
 
 public final class FlagsClient
     public static let defaultName = "default"
-    public static func create(name: String = FlagsClient.defaultName,in core: DatadogCoreProtocol = CoreRegistry.default) -> FlagsClientProtocol
-    public static func shared(named name: String = FlagsClient.defaultName,in core: DatadogCoreProtocol = CoreRegistry.default) -> FlagsClientProtocol
+    public static func create(name: String = FlagsClient.defaultName,in core: KubesenseCoreProtocol = CoreRegistry.default) -> FlagsClientProtocol
+    public static func shared(named name: String = FlagsClient.defaultName,in core: KubesenseCoreProtocol = CoreRegistry.default) -> FlagsClientProtocol
 [?] extension FlagsClient: FlagsClientProtocol
     public var state: FlagsStateObservable
     public func setEvaluationContext(_ context: FlagsEvaluationContext,completion: @escaping (Result<Void, FlagsError>) -> Void)
@@ -1623,17 +1618,14 @@ public protocol FlagsStateObservable: AnyObject
 public enum Flags
     public struct Configuration
         public var gracefulModeEnabled: Bool
-        public var customFlagsEndpoint: URL?
         public var customFlagsHeaders: [String: String]?
         public var initializationTimeout: TimeInterval?
-        public var customExposureEndpoint: URL?
         public var trackExposures: Bool
-        public var customEvaluationEndpoint: URL?
         public var trackEvaluations: Bool
         public var evaluationFlushInterval: TimeInterval
         public var rumIntegrationEnabled: Bool
-        public init(gracefulModeEnabled: Bool = true,customFlagsEndpoint: URL? = nil,customFlagsHeaders: [String: String]? = nil,initializationTimeout: TimeInterval? = 5,customExposureEndpoint: URL? = nil,trackExposures: Bool = true,customEvaluationEndpoint: URL? = nil,trackEvaluations: Bool = true,evaluationFlushInterval: TimeInterval = 10.0,rumIntegrationEnabled: Bool = true)
-    public static func enable(with configuration: Flags.Configuration = .init(),in core: DatadogCoreProtocol = CoreRegistry.default)
+        public init(gracefulModeEnabled: Bool = true,customFlagsHeaders: [String: String]? = nil,initializationTimeout: TimeInterval? = 5,trackExposures: Bool = true,trackEvaluations: Bool = true,evaluationFlushInterval: TimeInterval = 10.0,rumIntegrationEnabled: Bool = true)
+    public static func enable(with configuration: Flags.Configuration = .init(),in core: KubesenseCoreProtocol = CoreRegistry.default)
 public enum AnyValue: Equatable, Hashable
     case string(String)
     case bool(Bool)
@@ -1697,14 +1689,13 @@ public struct FlagsEvaluationContext: Equatable, Codable
     public init(targetingKey: String, attributes: [String: AnyValue] = [:])
 
 # ----------------------------------
-# API surface for DatadogProfiling:
+# API surface for KubesenseProfiling:
 # ----------------------------------
 
 public enum Profiling
-    public static func enable(with configuration: Configuration = .init(), in core: DatadogCoreProtocol = CoreRegistry.default)
+    public static func enable(with configuration: Configuration = .init(), in core: KubesenseCoreProtocol = CoreRegistry.default)
 [?] extension Profiling
     public struct Configuration: Sendable
-        public var customEndpoint: URL?
         public var applicationLaunchSampleRate: SampleRate
         public var continuousSampleRate: SampleRate
-        public init(customEndpoint: URL? = nil,applicationLaunchSampleRate: SampleRate = 5,continuousSampleRate: SampleRate = 5)
+        public init(applicationLaunchSampleRate: SampleRate = 5,continuousSampleRate: SampleRate = 5)

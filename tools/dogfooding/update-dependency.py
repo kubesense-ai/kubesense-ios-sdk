@@ -14,29 +14,29 @@ from src.dogfood.package_resolved import PackageResolvedFile, PackageID
 from src.utils import print_succ, print_err
 
 def dogfood(args):
-    # Read dd-sdk-ios `Package.resolved``
-    dd_sdk_ios_package = PackageResolvedFile(path=args.dogfooded_package_resolved_path)
-    dd_sdk_ios_package.print()
+    # Read kubesense-ios-sdk `Package.resolved``
+    kubesense_sdk_ios_package = PackageResolvedFile(path=args.dogfooded_package_resolved_path)
+    kubesense_sdk_ios_package.print()
 
-    if dd_sdk_ios_package.version > 3:
+    if kubesense_sdk_ios_package.version > 3:
         raise Exception(
-            f'The `{dd_sdk_ios_package.path}` uses version ({dd_sdk_ios_package.version}) not supported by dogfooding automation.'
+            f'The `{kubesense_sdk_ios_package.path}` uses version ({kubesense_sdk_ios_package.version}) not supported by dogfooding automation.'
         )
 
     # Read dependent `Package.resolved`
     dependent_package = PackageResolvedFile(path=args.repo_package_resolved_path)
     
-    # Update version of `dd-sdk-ios`:
+    # Update version of `kubesense-ios-sdk`:
     dependent_package.update_dependency(
-        package_id=PackageID(v1='DatadogSDK', v2='dd-sdk-ios'),
+        package_id=PackageID(v1='KubesenseSDK', v2='kubesense-ios-sdk'),
         new_branch=args.dogfooded_branch,
         new_revision=args.dogfooded_commit,
         new_version=None
     )
 
-    # Add or update `dd-sdk-ios` dependencies:
-    for dependency_id in dd_sdk_ios_package.read_dependency_ids():
-        dependency = dd_sdk_ios_package.read_dependency(package_id=dependency_id)
+    # Add or update `kubesense-ios-sdk` dependencies:
+    for dependency_id in kubesense_sdk_ios_package.read_dependency_ids():
+        dependency = kubesense_sdk_ios_package.read_dependency(package_id=dependency_id)
 
         if dependent_package.has_dependency(package_id=dependency_id):
             dependent_package.update_dependency(
@@ -57,13 +57,13 @@ def dogfood(args):
     dependent_package.save()
     dependent_package.print()
 
-    print_succ(f'dd-sdk-ios dependency was successfully updated in "{args.repo_package_resolved_path}" to:')
+    print_succ(f'kubesense-ios-sdk dependency was successfully updated in "{args.repo_package_resolved_path}" to:')
     print_succ(f'    → branch: {args.dogfooded_branch}')
     print_succ(f'    → commit: {args.dogfooded_commit}')
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Updates dd-sdk-ios dependency in "Package.resolved" of SDK-dependent project.')
-    parser.add_argument('--dogfooded-package-resolved-path', type=str, required=True, help='Path to "Package.resolved" from dd-sdk-ios')
+    parser = argparse.ArgumentParser(description='Updates kubesense-ios-sdk dependency in "Package.resolved" of SDK-dependent project.')
+    parser.add_argument('--dogfooded-package-resolved-path', type=str, required=True, help='Path to "Package.resolved" from kubesense-ios-sdk')
     parser.add_argument('--dogfooded-branch', type=str, required=True, help='Name of the branch to dogfood from')
     parser.add_argument('--dogfooded-commit', type=str, required=True, help='SHA of the commit to dogfood')
     parser.add_argument('--repo-package-resolved-path', type=str, required=True, help='Path to "Package.resolved" file in SDK-dependent project (the one to modify)')

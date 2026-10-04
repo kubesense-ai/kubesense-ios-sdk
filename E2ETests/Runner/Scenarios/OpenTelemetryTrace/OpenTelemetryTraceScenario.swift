@@ -6,15 +6,15 @@
 
 import Foundation
 import UIKit
-import DatadogTrace
-import DatadogCore
+import KubesenseTrace
+import KubesenseCore
 import OpenTelemetryApi
 
 struct TraceScenario: Scenario {
     func start(info: TestInfo) -> UIViewController {
-        Datadog.verbosityLevel = .debug
+        Kubesense.verbosityLevel = .debug
 
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .e2e(info: info),
             trackingConsent: .granted
         )

@@ -4,8 +4,8 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogCore
-import DatadogRUM
+import KubesenseCore
+import KubesenseRUM
 import SwiftUI
 
 struct RUMAutoScenario: Scenario {
@@ -14,7 +14,7 @@ struct RUMAutoScenario: Scenario {
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )

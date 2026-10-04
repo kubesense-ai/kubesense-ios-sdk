@@ -5,12 +5,12 @@
  */
 
 import Foundation
-import DatadogInternal
+import KubesenseInternal
 
 // MARK: - Global Dependencies Mocks
 
 /// Mock which can be used to intercept messages printed by `developerLogger` or
-/// `userLogger` by overwriting `Datadog.consolePrint` function:
+/// `userLogger` by overwriting `Kubesense.consolePrint` function:
 ///
 ///     let printFunction = PrintFunctionMock()
 ///     consolePrint = printFunction.print

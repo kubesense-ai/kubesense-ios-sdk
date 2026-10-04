@@ -96,7 +96,7 @@ custom_rules:
     excluded_match_kinds: 
       - comment
       - doccomment
-    message: "`URLRequest.allHTTPHeaderFields` is considered unsafe. Prefer using `URLRequest.value(forHTTPHeaderField:)`. See full context in https://github.com/DataDog/dd-sdk-ios/pull/1843"
+    message: "`URLRequest.allHTTPHeaderFields` is considered unsafe. Prefer using `URLRequest.value(forHTTPHeaderField:)`. See full context in https://github.com/kubesense-ai/kubesense-ios-sdk/pull/1843"
     severity: error
   required_reason_api_name: # prevents from declaring symbols that may conflict with Apple's Required Reason APIs
     included: Sources
@@ -158,17 +158,17 @@ excluded:
   - ../../**/*/.build
 
 included:
-  - ../../DatadogInternal/Sources
-  - ../../DatadogCore/Sources
-  - ../../DatadogLogs/Sources
-  - ../../DatadogTrace/Sources
-  - ../../DatadogRUM/Sources
-  - ../../DatadogSessionReplay/Sources
-  - ../../DatadogCrashReporting/Sources
-  - ../../DatadogWebViewTracking/Sources
-  - ../../DatadogFlags/Sources
-  - ../../DatadogProfiling/Sources
-  - ../../Datadog/E2E
+  - ../../KubesenseInternal/Sources
+  - ../../KubesenseCore/Sources
+  - ../../KubesenseLogs/Sources
+  - ../../KubesenseTrace/Sources
+  - ../../KubesenseRUM/Sources
+  - ../../KubesenseSessionReplay/Sources
+  - ../../KubesenseCrashReporting/Sources
+  - ../../KubesenseWebViewTracking/Sources
+  - ../../KubesenseFlags/Sources
+  - ../../KubesenseProfiling/Sources
+  - ../../Kubesense/E2E
   - ../../tools/http-server-mock/Sources
   - ../../tools/api-surface/Sources
   - ../../tools/api-surface/Fixtures/Sources

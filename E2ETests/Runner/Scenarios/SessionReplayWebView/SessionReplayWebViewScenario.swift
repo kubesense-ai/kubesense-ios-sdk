@@ -7,13 +7,13 @@
 import Foundation
 import UIKit
 
-import DatadogCore
-import DatadogRUM
-import DatadogSessionReplay
+import KubesenseCore
+import KubesenseRUM
+import KubesenseSessionReplay
 
 struct SessionReplayWebViewScenario: Scenario {
     func start(info: TestInfo) -> UIViewController {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .e2e(info: info),
             trackingConsent: .granted
         )

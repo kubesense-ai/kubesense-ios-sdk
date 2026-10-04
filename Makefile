@@ -12,7 +12,7 @@ all: env-check repo-setup dependencies templates
 		models-generate rum-models-generate sr-models-generate rc-models-generate models-verify rum-models-verify sr-models-verify rc-models-verify \
 		api-surface spi-docs-build \
 		profiling-protoc \
-		dogfood-shopist dogfood-datadog-app \
+		dogfood-shopist dogfood-kubesense-app \
 		release-build release-validate release-publish-github \
 		release-publish-podspec release-publish-internal-podspecs release-publish-dependent-podspecs \
 		set-ci-secret
@@ -109,17 +109,17 @@ test-ios:
 
 # Run unit tests for all iOS schemes
 test-ios-all:
-	@$(MAKE) test-ios SCHEME="DatadogCore"
-	@$(MAKE) test-ios SCHEME="DatadogInternal"
-	@$(MAKE) test-ios SCHEME="DatadogRUM"
-	@$(MAKE) test-ios SCHEME="DatadogSessionReplay"
-	@$(MAKE) test-ios SCHEME="DatadogLogs"
-	@$(MAKE) test-ios SCHEME="DatadogTrace"
-	@$(MAKE) test-ios SCHEME="DatadogCrashReporting"
-	@$(MAKE) test-ios SCHEME="DatadogWebViewTracking"
-	@$(MAKE) test-ios SCHEME="DatadogFlags"
-	@$(MAKE) test-ios SCHEME="DatadogProfiling"
-	@$(MAKE) test-ios SCHEME="DatadogIntegrationTests"
+	@$(MAKE) test-ios SCHEME="KubesenseCore"
+	@$(MAKE) test-ios SCHEME="KubesenseInternal"
+	@$(MAKE) test-ios SCHEME="KubesenseRUM"
+	@$(MAKE) test-ios SCHEME="KubesenseSessionReplay"
+	@$(MAKE) test-ios SCHEME="KubesenseLogs"
+	@$(MAKE) test-ios SCHEME="KubesenseTrace"
+	@$(MAKE) test-ios SCHEME="KubesenseCrashReporting"
+	@$(MAKE) test-ios SCHEME="KubesenseWebViewTracking"
+	@$(MAKE) test-ios SCHEME="KubesenseFlags"
+	@$(MAKE) test-ios SCHEME="KubesenseProfiling"
+	@$(MAKE) test-ios SCHEME="KubesenseIntegrationTests"
 
 # Run unit tests for specified SCHEME using tvOS Simulator
 test-tvos:
@@ -131,15 +131,15 @@ test-tvos:
 
 # Run unit tests for all tvOS schemes
 test-tvos-all:
-	@$(MAKE) test-tvos SCHEME="DatadogCore"
-	@$(MAKE) test-tvos SCHEME="DatadogInternal"
-	@$(MAKE) test-tvos SCHEME="DatadogRUM"
-	@$(MAKE) test-tvos SCHEME="DatadogLogs"
-	@$(MAKE) test-tvos SCHEME="DatadogTrace"
-	@$(MAKE) test-tvos SCHEME="DatadogCrashReporting"
-	@$(MAKE) test-tvos SCHEME="DatadogFlags"
-	@$(MAKE) test-tvos SCHEME="DatadogProfiling"
-	@$(MAKE) test-tvos SCHEME="DatadogIntegrationTests"
+	@$(MAKE) test-tvos SCHEME="KubesenseCore"
+	@$(MAKE) test-tvos SCHEME="KubesenseInternal"
+	@$(MAKE) test-tvos SCHEME="KubesenseRUM"
+	@$(MAKE) test-tvos SCHEME="KubesenseLogs"
+	@$(MAKE) test-tvos SCHEME="KubesenseTrace"
+	@$(MAKE) test-tvos SCHEME="KubesenseCrashReporting"
+	@$(MAKE) test-tvos SCHEME="KubesenseFlags"
+	@$(MAKE) test-tvos SCHEME="KubesenseProfiling"
+	@$(MAKE) test-tvos SCHEME="KubesenseIntegrationTests"
 
 # Run unit tests for specified SCHEME using watchOS Simulator
 test-watchos:
@@ -151,14 +151,14 @@ test-watchos:
 
 # Run unit tests for all watchOS schemes
 test-watchos-all:
-	@$(MAKE) test-watchos SCHEME="DatadogCore"
-	@$(MAKE) test-watchos SCHEME="DatadogInternal"
-	@$(MAKE) test-watchos SCHEME="DatadogRUM"
-	@$(MAKE) test-watchos SCHEME="DatadogLogs"
-	@$(MAKE) test-watchos SCHEME="DatadogTrace"
-	@$(MAKE) test-watchos SCHEME="DatadogCrashReporting"
-	@$(MAKE) test-watchos SCHEME="DatadogFlags"
-	@$(MAKE) test-watchos SCHEME="DatadogIntegrationTests"
+	@$(MAKE) test-watchos SCHEME="KubesenseCore"
+	@$(MAKE) test-watchos SCHEME="KubesenseInternal"
+	@$(MAKE) test-watchos SCHEME="KubesenseRUM"
+	@$(MAKE) test-watchos SCHEME="KubesenseLogs"
+	@$(MAKE) test-watchos SCHEME="KubesenseTrace"
+	@$(MAKE) test-watchos SCHEME="KubesenseCrashReporting"
+	@$(MAKE) test-watchos SCHEME="KubesenseFlags"
+	@$(MAKE) test-watchos SCHEME="KubesenseIntegrationTests"
 
 # Run unit tests for specified SCHEME using visionOS Simulator
 test-visionos:
@@ -170,16 +170,16 @@ test-visionos:
 
 # Run unit tests for all visionOS schemes
 test-visionos-all:
-	@$(MAKE) test-visionos SCHEME="DatadogCore"
-	@$(MAKE) test-visionos SCHEME="DatadogInternal"
-	@$(MAKE) test-visionos SCHEME="DatadogRUM"
-	@$(MAKE) test-visionos SCHEME="DatadogLogs"
-	@$(MAKE) test-visionos SCHEME="DatadogTrace"
-	@$(MAKE) test-visionos SCHEME="DatadogCrashReporting"
-	@$(MAKE) test-visionos SCHEME="DatadogWebViewTracking"
-	@$(MAKE) test-visionos SCHEME="DatadogFlags"
-	@$(MAKE) test-visionos SCHEME="DatadogProfiling"
-	@$(MAKE) test-visionos SCHEME="DatadogIntegrationTests"
+	@$(MAKE) test-visionos SCHEME="KubesenseCore"
+	@$(MAKE) test-visionos SCHEME="KubesenseInternal"
+	@$(MAKE) test-visionos SCHEME="KubesenseRUM"
+	@$(MAKE) test-visionos SCHEME="KubesenseLogs"
+	@$(MAKE) test-visionos SCHEME="KubesenseTrace"
+	@$(MAKE) test-visionos SCHEME="KubesenseCrashReporting"
+	@$(MAKE) test-visionos SCHEME="KubesenseWebViewTracking"
+	@$(MAKE) test-visionos SCHEME="KubesenseFlags"
+	@$(MAKE) test-visionos SCHEME="KubesenseProfiling"
+	@$(MAKE) test-visionos SCHEME="KubesenseIntegrationTests"
 
 # Run UI tests for specified TEST_PLAN
 ui-test:
@@ -257,30 +257,30 @@ spm-build:
 
 # Builds SPM package for iOS
 spm-build-ios:
-	@$(MAKE) spm-build SCHEME="Datadog-Package" DESTINATION="generic/platform=ios"
+	@$(MAKE) spm-build SCHEME="Kubesense-Package" DESTINATION="generic/platform=ios"
 
 # Builds SPM package for tvOS
 spm-build-tvos:
-	@$(MAKE) spm-build SCHEME="Datadog-Package" DESTINATION="generic/platform=tvOS"
+	@$(MAKE) spm-build SCHEME="Kubesense-Package" DESTINATION="generic/platform=tvOS"
 
 # Builds SPM package for visionOS
 spm-build-visionos:
-	@$(MAKE) spm-build SCHEME="Datadog-Package" DESTINATION="generic/platform=visionOS"
+	@$(MAKE) spm-build SCHEME="Kubesense-Package" DESTINATION="generic/platform=visionOS"
 
 # Builds SPM package for watchOS
 spm-build-watchos:
 	# Build only compatible schemes for watchOS:
-	@$(MAKE) spm-build SCHEME="Datadog-Package" DESTINATION="generic/platform=watchOS"
+	@$(MAKE) spm-build SCHEME="Kubesense-Package" DESTINATION="generic/platform=watchOS"
 
 # Builds SPM package for macOS (and Mac Catalyst)
 spm-build-macos:
 	# Whole package for Mac Catalyst:
-	@$(MAKE) spm-build SCHEME="Datadog-Package" DESTINATION="platform=macOS,variant=Mac Catalyst"
+	@$(MAKE) spm-build SCHEME="Kubesense-Package" DESTINATION="platform=macOS,variant=Mac Catalyst"
 	# Only compatible schemes for macOS:
-	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="DatadogCore"
-	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="DatadogLogs"
-	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="DatadogTrace"
-	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="DatadogCrashReporting"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseCore"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseLogs"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseTrace"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseCrashReporting"
 
 # Builds a new version of the E2E app and publishes it to synthetics.
 e2e-upload:
@@ -307,22 +307,22 @@ benchmark-tests-open:
 	@$(MAKE) -C BenchmarkTests open
 
 xcodeproj-session-replay:
-		@echo "⚙️  Generating 'DatadogSessionReplay.xcodeproj'..."
-		@cd DatadogSessionReplay/ && swift package generate-xcodeproj
+		@echo "⚙️  Generating 'KubesenseSessionReplay.xcodeproj'..."
+		@cd KubesenseSessionReplay/ && swift package generate-xcodeproj
 		@echo "OK 👌"
 
 templates:
 	@$(ECHO_TITLE) "make templates"
 	./tools/xcode-templates/install-xcode-templates.sh
 
-# Generate data models from rum-events-format ('rum', 'sr') or dd-go ('rc')
+# Generate data models from rum-events-format ('rum', 'sr') or kubesense-go ('rc')
 models-generate:
 	@$(call require_param,PRODUCT) # 'rum', 'sr', or 'rc'
 	@$(call require_param,GIT_REF)
 	@$(ECHO_TITLE) "make models-generate PRODUCT='$(PRODUCT)' GIT_REF='$(GIT_REF)'"
 	./tools/rum-models-generator/run.py generate $(PRODUCT) --git_ref=$(GIT_REF) --skip_objc $(SKIP_OBJC_TYPES)
 
-# Validate data models against rum-events-format ('rum', 'sr') or dd-go ('rc')
+# Validate data models against rum-events-format ('rum', 'sr') or kubesense-go ('rc')
 models-verify:
 	@$(call require_param,PRODUCT) # 'rum', 'sr', or 'rc'
 	@$(ECHO_TITLE) "make models-verify PRODUCT='$(PRODUCT)'"
@@ -346,19 +346,19 @@ sr-models-generate:
 sr-models-verify:
 	@$(MAKE) models-verify PRODUCT="sr"
 
-# Generate RC data models (uses gh CLI to authenticate against the private dd-go repo)
+# Generate RC data models (uses gh CLI to authenticate against the private kubesense-go repo)
 rc-models-generate:
 	@:$(eval GIT_REF ?= prod)
 	GITHUB_TOKEN="$$(gh auth token)" $(MAKE) models-generate PRODUCT="rc" GIT_REF="$(GIT_REF)"
 
-# Validate RC data models (uses gh CLI to authenticate against the private dd-go repo)
+# Validate RC data models (uses gh CLI to authenticate against the private kubesense-go repo)
 rc-models-verify:
 	GITHUB_TOKEN="$$(gh auth token)" $(MAKE) models-verify PRODUCT="rc"
 
 # Generate profiling protobuf-c files from pprof proto
 protoc-pprof:
 	@$(ECHO_TITLE) "protoc-pprof"
-	./tools/protoc-pprof.sh --proto-path DatadogProfiling/Protos/profile.proto --output-dir DatadogProfiling/Mach
+	./tools/protoc-pprof.sh --proto-path KubesenseProfiling/Protos/profile.proto --output-dir KubesenseProfiling/Mach
 
 # Pushes current SR snapshots to snapshots repo
 sr-snapshots-push:
@@ -414,10 +414,10 @@ ifeq ($(ENV),ci)
   OBJC_OUTPUT_PATH := api-surface-objc-generated
 endif
 
-# Define the list of Datadog modules for API surface generation
-DATADOG_MODULES := DatadogCore DatadogLogs DatadogTrace DatadogRUM DatadogCrashReporting DatadogWebViewTracking DatadogSessionReplay DatadogFlags DatadogProfiling
+# Define the list of Kubesense modules for API surface generation
+KUBESENSE_MODULES := KubesenseCore KubesenseLogs KubesenseTrace KubesenseRUM KubesenseCrashReporting KubesenseWebViewTracking KubesenseSessionReplay KubesenseFlags KubesenseProfiling
 
-# Generate api-surface files for Datadog APIs.
+# Generate api-surface files for Kubesense APIs.
 # Builds and parses each module once, emitting both the Swift and ObjC surfaces in a single run.
 api-surface:
 	@$(ECHO_TITLE) "make api-surface"
@@ -425,18 +425,18 @@ api-surface:
 	@cd tools/api-surface && \
 		swift run api-surface generate \
 		--path ../../ \
-		$(foreach module,$(DATADOG_MODULES),--library-name $(module)) \
+		$(foreach module,$(KUBESENSE_MODULES),--library-name $(module)) \
 		--language swift --output-file ../../$(SWIFT_OUTPUT_PATH) \
 		--language objc --output-file ../../$(OBJC_OUTPUT_PATH)
 
-# Verify API surface files for Datadog APIs (Swift + ObjC) in a single run.
+# Verify API surface files for Kubesense APIs (Swift + ObjC) in a single run.
 api-surface-verify:
 	@$(ECHO_TITLE) "make api-surface-verify"
 	@echo "Verifying api-surface (swift + objc)"
 	@cd tools/api-surface && \
 		swift run api-surface verify \
 		--path ../../ \
-		$(foreach module,$(DATADOG_MODULES),--library-name $(module)) \
+		$(foreach module,$(KUBESENSE_MODULES),--library-name $(module)) \
 		--language swift --output-file /tmp/api-surface-swift-generated --reference-file ../../api-surface-swift \
 		--language objc --output-file /tmp/api-surface-objc-generated --reference-file ../../api-surface-objc
 
@@ -456,11 +456,11 @@ dogfood-shopist:
 	@$(ECHO_TITLE) "make dogfood-shopist DRY_RUN='$(DRY_RUN)'"
 	DRY_RUN=$(DRY_RUN) ./tools/dogfooding/dogfood.sh --shopist
 
-# Creates dogfooding PR in datadog-ios
-dogfood-datadog-app:
+# Creates dogfooding PR in kubesense-ios
+dogfood-kubesense-app:
 	@:$(eval DRY_RUN ?= 1)
-	@$(ECHO_TITLE) "make dogfood-datadog-app DRY_RUN='$(DRY_RUN)'"
-	DRY_RUN=$(DRY_RUN) ./tools/dogfooding/dogfood.sh --datadog-app
+	@$(ECHO_TITLE) "make dogfood-kubesense-app DRY_RUN='$(DRY_RUN)'"
+	DRY_RUN=$(DRY_RUN) ./tools/dogfooding/dogfood.sh --kubesense-app
 
 # Builds release artifacts for given tag
 release-build:
@@ -498,21 +498,21 @@ release-publish-podspec:
 		 --artifacts-path "$(ARTIFACTS_PATH)" \
 		 --podspec-name "$(PODSPEC_NAME)"
 
-# Publish DatadogInternal podspec
+# Publish KubesenseInternal podspec
 release-publish-internal-podspecs:
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogInternal.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseInternal.podspec"
 
-# Publish podspecs that depend on DatadogInternal
+# Publish podspecs that depend on KubesenseInternal
 release-publish-dependent-podspecs:
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogCore.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogLogs.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogTrace.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogRUM.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogSessionReplay.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogCrashReporting.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogWebViewTracking.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogFlags.podspec"
-	@$(MAKE) release-publish-podspec PODSPEC_NAME="DatadogProfiling.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseCore.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseLogs.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseTrace.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseRUM.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseSessionReplay.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseCrashReporting.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseWebViewTracking.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseFlags.podspec"
+	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseProfiling.podspec"
 
 # Set ot update CI secrets
 set-ci-secret:
@@ -521,7 +521,7 @@ set-ci-secret:
 
 bump:
 	@read -p "Enter version number: " version;  \
-	echo "// GENERATED FILE: Do not edit directly\n\ninternal let __sdkVersion = \"$$version\"" > DatadogCore/Sources/Versioning.swift; \
+	echo "// GENERATED FILE: Do not edit directly\n\ninternal let __sdkVersion = \"$$version\"" > KubesenseCore/Sources/Versioning.swift; \
 	./tools/podspec_bump_version.sh $$version; \
 	git add . ; \
 	git commit -m "Bumped version to $$version"; \

@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogInternal
+import KubesenseInternal
 import HTTPServerMock
 import TestUtilities
 import XCTest
@@ -164,14 +164,14 @@ class RUMResourcesScenarioTests: IntegrationTests, RUMCommonAsserts, URLSessionT
             "Tracing information should be propagated to `firstPartyPOSTResourceURL`."
         )
         XCTAssertEqual(
-            firstPartyPOSTRequest.httpHeaders["x-datadog-sampling-priority"],
+            firstPartyPOSTRequest.httpHeaders["x-kubesense-sampling-priority"],
             "1",
-            "`x-datadog-sampling-priority: 1` header must be set for `firstPartyPOSTResourceURL`"
+            "`x-kubesense-sampling-priority: 1` header must be set for `firstPartyPOSTResourceURL`"
         )
         XCTAssertEqual(
-            firstPartyPOSTRequest.httpHeaders["x-datadog-origin"],
+            firstPartyPOSTRequest.httpHeaders["x-kubesense-origin"],
             "rum",
-            "`x-datadog-origin: rum` header must be set for `firstPartyPOSTResourceURL`"
+            "`x-kubesense-origin: rum` header must be set for `firstPartyPOSTResourceURL`"
         )
 
         // Get RUM Sessions with expected number of View visits and Resources

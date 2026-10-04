@@ -5,15 +5,15 @@
  */
 
 import Foundation
-import DatadogInternal
-import DatadogCore
+import KubesenseInternal
+import KubesenseCore
 
 /// Application info reads configuration from `Info.plist`.
 ///
 /// The expected format is as follow:
 ///
 ///     <dict>
-///         <key>DatadogConfiguration</key>
+///         <key>KubesenseConfiguration</key>
 ///         <dict>
 ///             <key>ClientToken</key>
 ///             <string>$(CLIENT_TOKEN)</string>
@@ -22,27 +22,27 @@ import DatadogCore
 ///             <key>ApiKey</key>
 ///             <string>$(API_KEY)</string>
 ///             <key>Environment</key>
-///             <string>$(DD_ENV)</string>
+///             <string>$(KUBESENSE_ENV)</string>
 ///             <key>Site</key>
-///             <string>$(DD_SITE)</string>
+///             <string>$(KUBESENSE_SITE)</string>
 ///         </dict>
 ///     </dict>
 struct AppInfo {
     let clientToken: String
     let applicationID: String
     let apiKey: String
-    let site: DatadogSite
+    let site: KubesenseSite
     let env: String
 }
 
 extension AppInfo {
     init(bundle: Bundle = .main) throws {
         guard
-            let obj = bundle.object(forInfoDictionaryKey: "DatadogConfiguration") as? [String: String],
+            let obj = bundle.object(forInfoDictionaryKey: "KubesenseConfiguration") as? [String: String],
             let clientToken = obj["ClientToken"],
             let applicationID = obj["ApplicationID"],
             let apiKey = obj["ApiKey"],
-            let site = obj["Site"].flatMap(DatadogSite.init(rawValue:)),
+            let site = obj["Site"].flatMap(KubesenseSite.init(rawValue:)),
             let env = obj["Environment"]
         else {
             throw ProgrammerError(description: "Missing required Info.plist keys")
@@ -64,13 +64,13 @@ extension AppInfo {
             clientToken: "",
             applicationID: "",
             apiKey: "",
-            site: .us1,
+            site: .prod,
             env: "benchmarks"
         )
     }
 }
 
-extension Datadog.Configuration {
+extension Kubesense.Configuration {
     static func benchmark(info: AppInfo) -> Self {
         .init(
             clientToken: info.clientToken,

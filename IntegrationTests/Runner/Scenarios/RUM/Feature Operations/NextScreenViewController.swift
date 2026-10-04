@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogRUM
+import KubesenseRUM
 
 final class RUMFeatureOperationsNextViewController: UIViewController {
 

@@ -22,17 +22,17 @@ SCHEMAS_REPO = 'https://github.com/DataDog/rum-events-format.git'
 RUM_SCHEMA_PATH = '/rum-events-format/schemas/rum-events-mobile-schema.json'
 SR_SCHEMA_PATH = '/rum-events-format/schemas/session-replay-mobile-schema.json'
 
-# RC schema lives in the private dd-go repo; cloned sparsely using GITHUB_TOKEN
-DD_GO_REPO = 'https://github.com/DataDog/dd-go.git'
+# RC schema lives in the private kubesense-go repo; cloned sparsely using GITHUB_TOKEN
+KUBESENSE_GO_REPO = 'https://github.com/DataDog/dd-go.git'
 RC_SCHEMA_REPO_PATH = 'remote-config/apps/rc-schema-validation/schemas/rum-sdk-config/ios.json'
 RC_SCHEMA_SPARSE_DIR = 'remote-config/apps/rc-schema-validation/schemas'
-RC_SCHEMA_LOCAL_PATH = f'dd-go/{RC_SCHEMA_REPO_PATH}'  # relative to cwd (script_dir)
+RC_SCHEMA_LOCAL_PATH = f'kubesense-go/{RC_SCHEMA_REPO_PATH}'  # relative to cwd (script_dir)
 
 # Generated file paths (relative to repository root)
-RUM_SWIFT_GENERATED_FILE_PATH = '/DatadogInternal/Sources/Models/RUM/RUMDataModels.swift'
-RUM_OBJC_GENERATED_FILE_PATH = '/DatadogRUM/Sources/DataModels/RUMDataModels+objc.swift'
-SR_SWIFT_GENERATED_FILE_PATH = '/DatadogSessionReplay/Sources/Models/SRDataModels.swift'
-RC_SWIFT_GENERATED_FILE_PATH = '/DatadogInternal/Sources/Models/RC/RCDataModels.swift'
+RUM_SWIFT_GENERATED_FILE_PATH = '/KubesenseInternal/Sources/Models/RUM/RUMDataModels.swift'
+RUM_OBJC_GENERATED_FILE_PATH = '/KubesenseRUM/Sources/DataModels/RUMDataModels+objc.swift'
+SR_SWIFT_GENERATED_FILE_PATH = '/KubesenseSessionReplay/Sources/Models/SRDataModels.swift'
+RC_SWIFT_GENERATED_FILE_PATH = '/KubesenseInternal/Sources/Models/RC/RCDataModels.swift'
 
 @dataclass
 class Context:
@@ -45,7 +45,7 @@ class Context:
     # Resolved path to JSON schema describing Session Replay events
     sr_schema_path: str
 
-    # Resolved path to JSON schema describing Remote Configuration events (fetched from dd-go)
+    # Resolved path to JSON schema describing Remote Configuration events (fetched from kubesense-go)
     rc_schema_path: str
 
     # Git reference to clone/fetch schemas at.
@@ -235,29 +235,29 @@ def validate_sr_models(ctx: Context):
 
 def clone_rc_schema_repo(git_ref: str):
     """
-    Sparsely clones the dd-go repo at the given git_ref, checking out only the RC schema directory.
+    Sparsely clones the kubesense-go repo at the given git_ref, checking out only the RC schema directory.
     Requires a GITHUB_TOKEN environment variable for authentication.
-    :param git_ref: branch name, tag, or commit SHA in dd-go (e.g. 'prod')
+    :param git_ref: branch name, tag, or commit SHA in kubesense-go (e.g. 'prod')
     :return: the SHA of the checked-out commit
     """
     token = os.environ.get('GITHUB_TOKEN')
     if not token:
-        raise Exception('GITHUB_TOKEN environment variable is required to clone the private dd-go repository.')
+        raise Exception('GITHUB_TOKEN environment variable is required to clone the private kubesense-go repository.')
 
-    print(f'⚙️ Cloning `dd-go` repository (sparse) at "{git_ref}"...')
+    print(f'⚙️ Cloning `kubesense-go` repository (sparse) at "{git_ref}"...')
     # Authenticate via a credential helper that reads `GITHUB_TOKEN` from the environment at
     # runtime, so the token itself never appears in the cloned URL, the process command line,
     # or `shell_output`'s failure output (which echoes the command it ran).
     credential_helper = '!f() { echo "username=x-access-token"; echo "password=$GITHUB_TOKEN"; }; f'
-    shell_output('rm -rf dd-go')
-    shell_output(f'git -c credential.helper={shlex.quote(credential_helper)} clone --depth=1 --filter=blob:none --sparse {DD_GO_REPO}')
-    shell_output(f'cd dd-go && git sparse-checkout set {RC_SCHEMA_SPARSE_DIR}')
-    shell_output(f'cd dd-go && git fetch origin {git_ref} && git checkout FETCH_HEAD')
-    sha = shell_output('cd dd-go && git rev-parse HEAD').strip()
+    shell_output('rm -rf kubesense-go')
+    shell_output(f'git -c credential.helper={shlex.quote(credential_helper)} clone --depth=1 --filter=blob:none --sparse {KUBESENSE_GO_REPO}')
+    shell_output(f'cd kubesense-go && git sparse-checkout set {RC_SCHEMA_SPARSE_DIR}')
+    shell_output(f'cd kubesense-go && git fetch origin {git_ref} && git checkout FETCH_HEAD')
+    sha = shell_output('cd kubesense-go && git rev-parse HEAD').strip()
     return sha
 
 
-def dd_go_source_url(sha: str):
+def kubesense_go_source_url(sha: str):
     return f'https://github.com/DataDog/dd-go/blob/{sha}/{RC_SCHEMA_REPO_PATH}'
 
 
@@ -267,7 +267,7 @@ def generate_rc_models(ctx: Context):
     os.makedirs(os.path.dirname(ctx.rc_swift_generated_file_path), exist_ok=True)
     with open(ctx.rc_swift_generated_file_path, 'w') as file:
         file.write(generate_code(ctx, language='swift', convention='rc', json_schema=ctx.rc_schema_path,
-                                 source_url=dd_go_source_url(sha)))
+                                 source_url=kubesense_go_source_url(sha)))
 
 
 def validate_rc_models(ctx: Context):
@@ -275,7 +275,7 @@ def validate_rc_models(ctx: Context):
     clone_rc_schema_repo(git_ref=sha)
 
     validate_code(ctx, language='swift', convention='rc', json_schema=ctx.rc_schema_path,
-                  target_file=ctx.rc_swift_generated_file_path, source_url=dd_go_source_url(sha))
+                  target_file=ctx.rc_swift_generated_file_path, source_url=kubesense_go_source_url(sha))
 
 
 if __name__ == "__main__":
@@ -289,7 +289,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=['generate', 'verify'], help="Run mode")
     parser.add_argument("product", choices=['rum', 'sr', 'rc'], help="'rum' (RUM), 'sr' (Session Replay), or 'rc' (Remote Configuration)")
-    parser.add_argument("--git_ref", help="Git reference to use: branch/tag/SHA in rum-events-format for 'rum'/'sr', or branch/tag/SHA in dd-go for 'rc' (e.g. 'prod').")
+    parser.add_argument("--git_ref", help="Git reference to use: branch/tag/SHA in rum-events-format for 'rum'/'sr', or branch/tag/SHA in kubesense-go for 'rc' (e.g. 'prod').")
     parser.add_argument("--skip_objc", help="List of type names to skip in Objective-C generation", nargs='*', type=str, default=[])
     args = parser.parse_args()
 

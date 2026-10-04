@@ -1,9 +1,9 @@
 ---
-name: dd-sdk-ios:open-pr
-description: Use when creating a pull request in dd-sdk-ios. Use when writing PR titles, PR body, or choosing the target branch.
+name: kubesense-ios-sdk:open-pr
+description: Use when creating a pull request in kubesense-ios-sdk. Use when writing PR titles, PR body, or choosing the target branch.
 ---
 
-# Pull Requests in dd-sdk-ios
+# Pull Requests in kubesense-ios-sdk
 
 ## PR Title Format
 
@@ -14,7 +14,7 @@ description: Use when creating a pull request in dd-sdk-ios. Use when writing PR
 **Examples:**
 - `[RUM-1234] Add baggage header merging support`
 - `[FFL-213] Add Feature Flags support`
-- `[RUM-14655] Fix WebView log events attaching incomplete ddTags`
+- `[RUM-14655] Fix WebView log events attaching incomplete kubesenseTags`
 
 ## Requirements
 

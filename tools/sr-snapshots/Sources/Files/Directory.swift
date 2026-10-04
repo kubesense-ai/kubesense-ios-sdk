@@ -91,6 +91,6 @@ public extension Directory {
 
 public func uniqueTemporaryDirectoryURL() -> URL {
     let osTemporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-    let testDirectoryName = "com.datadoghq.sr-snapshots-tests-\(UUID().uuidString)"
+    let testDirectoryName = "ai.kubesense.sr-snapshots-tests-\(UUID().uuidString)"
     return osTemporaryDirectoryURL.appending(component: testDirectoryName, directoryHint: .isDirectory)
 }

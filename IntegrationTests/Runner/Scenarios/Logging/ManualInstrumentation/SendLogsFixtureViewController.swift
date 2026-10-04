@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogLogs
+import KubesenseLogs
 
 internal class SendLogsFixtureViewController: UIViewController {
     class MockError: LocalizedError {

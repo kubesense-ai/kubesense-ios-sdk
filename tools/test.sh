@@ -25,54 +25,54 @@ define_arg "device" "" "Specifies the simulator device for running tests, e.g. '
 check_for_help "$@"
 parse_args "$@"
 
-WORKSPACE="Datadog.xcworkspace"
+WORKSPACE="Kubesense.xcworkspace"
 DESTINATION="platform=$platform,name=$device,OS=$os"
 SCHEME=$scheme
 
-# Enables Datadog Test Visibility to trace tests execution
-# Ref.: https://docs.datadoghq.com/tests/setup/swift/
+# Enables Kubesense Test Visibility to trace tests execution
+# Ref.: https://docs.kubesense.ai/tests/setup/swift/
 setup_test_visibility() {
-    export DD_TEST_RUNNER=1
+    export KUBESENSE_TEST_RUNNER=1
 
     # Base:
-    export DD_API_KEY=$(get_secret $DD_IOS_SECRET__TEST_VISIBILITY_API_KEY)
-    export DD_ENV=$([[ "$CI" = "true" ]] && echo "ci" || echo "local")
-    export DD_SERVICE=dd-sdk-ios
+    export KUBESENSE_API_KEY=$(get_secret $KUBESENSE_IOS_SECRET__TEST_VISIBILITY_API_KEY)
+    export KUBESENSE_ENV=$([[ "$CI" = "true" ]] && echo "ci" || echo "local")
+    export KUBESENSE_SERVICE=kubesense-ios-sdk
     export SRCROOT="$\(SRCROOT\)"
 
     # Auto-instrumentation:
-    export DD_ENABLE_STDOUT_INSTRUMENTATION=0
-    export DD_ENABLE_STDERR_INSTRUMENTATION=0
-    export DD_DISABLE_NETWORK_INSTRUMENTATION=1
-    export DD_DISABLE_RUM_INTEGRATION=1
-    export DD_DISABLE_SOURCE_LOCATION=0
-    # Disabled: contends with some targets' own crash handler (e.g. DatadogCrashReporting's
+    export KUBESENSE_ENABLE_STDOUT_INSTRUMENTATION=0
+    export KUBESENSE_ENABLE_STDERR_INSTRUMENTATION=0
+    export KUBESENSE_DISABLE_NETWORK_INSTRUMENTATION=1
+    export KUBESENSE_DISABLE_RUM_INTEGRATION=1
+    export KUBESENSE_DISABLE_SOURCE_LOCATION=0
+    # Disabled: contends with some targets' own crash handler (e.g. KubesenseCrashReporting's
     # KSCrash instance) and breaks their tests. Needs per-target opt-in before re-enabling.
-    export DD_DISABLE_CRASH_HANDLER=1
+    export KUBESENSE_DISABLE_CRASH_HANDLER=1
 
     # Debugging:
-    # - If `DD_TRACE_DEBUG` is enabled, the `dd-sdk-swift-testing` will print extra debug logs.
-    export DD_TRACE_DEBUG=0
+    # - If `KUBESENSE_TRACE_DEBUG` is enabled, the `dd-sdk-swift-testing` will print extra debug logs.
+    export KUBESENSE_TRACE_DEBUG=0
 
     # Git metadata:
     # - While `dd-sdk-swift-testing` can read Git metadata from `.git` folder, following info must be overwritten
     # due to our GH → GitLab mirroring configuration (otherwise it will point to GitLab mirror not GH repo).
-    export DD_GIT_REPOSITORY_URL="git@github.com:DataDog/dd-sdk-ios.git"
+    export KUBESENSE_GIT_REPOSITORY_URL="git@github.com:kubesense-ai/kubesense-ios-sdk.git"
 
     echo_info "CI Test Visibility setup:"
-    echo "▸ DD_TEST_RUNNER=$DD_TEST_RUNNER"
-    echo "▸ DD_API_KEY=$([[ -n "$DD_API_KEY" ]] && echo '***' || echo '')"
-    echo "▸ DD_ENV=$DD_ENV"
-    echo "▸ DD_SERVICE=$DD_SERVICE"
+    echo "▸ KUBESENSE_TEST_RUNNER=$KUBESENSE_TEST_RUNNER"
+    echo "▸ KUBESENSE_API_KEY=$([[ -n "$KUBESENSE_API_KEY" ]] && echo '***' || echo '')"
+    echo "▸ KUBESENSE_ENV=$KUBESENSE_ENV"
+    echo "▸ KUBESENSE_SERVICE=$KUBESENSE_SERVICE"
     echo "▸ SRCROOT=$SRCROOT"
-    echo "▸ DD_ENABLE_STDOUT_INSTRUMENTATION=$DD_ENABLE_STDOUT_INSTRUMENTATION"
-    echo "▸ DD_ENABLE_STDERR_INSTRUMENTATION=$DD_ENABLE_STDERR_INSTRUMENTATION"
-    echo "▸ DD_DISABLE_NETWORK_INSTRUMENTATION=$DD_DISABLE_NETWORK_INSTRUMENTATION"
-    echo "▸ DD_DISABLE_RUM_INTEGRATION=$DD_DISABLE_RUM_INTEGRATION"
-    echo "▸ DD_DISABLE_SOURCE_LOCATION=$DD_DISABLE_SOURCE_LOCATION"
-    echo "▸ DD_DISABLE_CRASH_HANDLER=$DD_DISABLE_CRASH_HANDLER"
-    echo "▸ DD_GIT_REPOSITORY_URL=$DD_GIT_REPOSITORY_URL"
-    echo "▸ DD_TRACE_DEBUG=$DD_TRACE_DEBUG"
+    echo "▸ KUBESENSE_ENABLE_STDOUT_INSTRUMENTATION=$KUBESENSE_ENABLE_STDOUT_INSTRUMENTATION"
+    echo "▸ KUBESENSE_ENABLE_STDERR_INSTRUMENTATION=$KUBESENSE_ENABLE_STDERR_INSTRUMENTATION"
+    echo "▸ KUBESENSE_DISABLE_NETWORK_INSTRUMENTATION=$KUBESENSE_DISABLE_NETWORK_INSTRUMENTATION"
+    echo "▸ KUBESENSE_DISABLE_RUM_INTEGRATION=$KUBESENSE_DISABLE_RUM_INTEGRATION"
+    echo "▸ KUBESENSE_DISABLE_SOURCE_LOCATION=$KUBESENSE_DISABLE_SOURCE_LOCATION"
+    echo "▸ KUBESENSE_DISABLE_CRASH_HANDLER=$KUBESENSE_DISABLE_CRASH_HANDLER"
+    echo "▸ KUBESENSE_GIT_REPOSITORY_URL=$KUBESENSE_GIT_REPOSITORY_URL"
+    echo "▸ KUBESENSE_TRACE_DEBUG=$KUBESENSE_TRACE_DEBUG"
     echo "▸ GITLAB_CI=$GITLAB_CI"
     echo "▸ CI_PROJECT_DIR=$CI_PROJECT_DIR"
     echo "▸ CI_JOB_STAGE=$CI_JOB_STAGE"

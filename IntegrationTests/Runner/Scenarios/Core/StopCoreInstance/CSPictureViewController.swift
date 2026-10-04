@@ -26,7 +26,7 @@ internal class CSPictureViewController: UIViewController {
     @IBAction func didTapDownloadImage(_ sender: UIButton) {
         let enableSender = sender.disableUntilCompletion()
 
-        let imageURL = URL(string: "https://imgix.datadoghq.com/img/about/presskit/usage/logousage_white.png")!
+        let imageURL = URL(string: "https://imgix.kubesense.ai/img/about/presskit/usage/logousage_white.png")!
         var imageRequest = URLRequest(url: imageURL)
         imageRequest.cachePolicy = .reloadIgnoringLocalCacheData
 

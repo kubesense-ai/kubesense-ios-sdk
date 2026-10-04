@@ -5,12 +5,12 @@
  */
 
 import Foundation
-#if !DD_COMPILED_FOR_INTEGRATION_TESTS
+#if !KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS
 /// This file is compiled both for Unit and Integration tests.
-/// * The Unit Tests target can see `Datadog` by `@testable import DatadogCore`.
-/// * In Integration Tests target we want to compile `Datadog` in "Release" configuration, so testability is not possible.
+/// * The Unit Tests target can see `Kubesense` by `@testable import KubesenseCore`.
+/// * In Integration Tests target we want to compile `Kubesense` in "Release" configuration, so testability is not possible.
 /// This compiler statement gives both targets the visibility of `RUMDataModels.swift` either by import or direct compilation.
-@testable import DatadogInternal
+@testable import KubesenseInternal
 #endif
 
 /// An error thrown by the `RUMSessionMatcher` if it spots an inconsistency in tracked RUM Session, e.g. when
@@ -449,7 +449,7 @@ private func validate(device: Device?) throws {
             description: "All RUM events must include device information"
         )
     }
-    #if DD_COMPILED_FOR_INTEGRATION_TESTS
+    #if KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS
     try strictValidate(device: device)
     #endif
 }
@@ -460,7 +460,7 @@ private func validate(os: OperatingSystem?) throws {
             description: "All RUM events must include OS information"
         )
     }
-    #if DD_COMPILED_FOR_INTEGRATION_TESTS
+    #if KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS
     try strictValidate(os: os)
     #endif
 }
@@ -571,12 +571,12 @@ extension Array where Element == RUMSessionMatcher.View {
 extension RUMSessionMatcher.View {
     /// Whether this is "application launch" view.
     public func isApplicationLaunchView() -> Bool {
-        return name == "ApplicationLaunch" && path == "com/datadog/application-launch/view"
+        return name == "ApplicationLaunch" && path == "com/kubesense/application-launch/view"
     }
 
     /// Whether this is "background" view.
     public func isBackgroundView() -> Bool {
-        return name == "Background" && path == "com/datadog/background/view"
+        return name == "Background" && path == "com/kubesense/background/view"
     }
 }
 
@@ -618,7 +618,7 @@ extension RUMSessionMatcher.View {
     }
 
     /// The duration of this view, in seconds.
-    public var duration: TimeInterval? { durationNs.map { TimeInterval.ddFromNanoseconds( $0) } }
+    public var duration: TimeInterval? { durationNs.map { TimeInterval.kubesenseFromNanoseconds( $0) } }
 }
 
 extension RUMSessionMatcher: CustomStringConvertible {
@@ -654,7 +654,7 @@ extension RUMSessionMatcher: CustomStringConvertible {
     }
 
     /// The duration of this session, in seconds.
-    public var duration: TimeInterval? { durationNs.map { TimeInterval.ddFromNanoseconds( $0) } }
+    public var duration: TimeInterval? { durationNs.map { TimeInterval.kubesenseFromNanoseconds( $0) } }
 
     /// The application start action.
     public var ttidEvent: RUMVitalAppLaunchEvent? {
@@ -666,7 +666,7 @@ extension RUMSessionMatcher: CustomStringConvertible {
     /// The application startup time (nanoseconds).
     public var timeToInitialDisplay: TimeInterval? {
         if let ttidEvent {
-            return TimeInterval.ddFromNanoseconds(Int64(ttidEvent.vital.duration))
+            return TimeInterval.kubesenseFromNanoseconds(Int64(ttidEvent.vital.duration))
         }
         return nil
     }

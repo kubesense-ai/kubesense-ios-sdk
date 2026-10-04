@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-# Uploads smoke-test JUnit reports to Datadog Test Visibility.
+# Uploads smoke-test JUnit reports to Kubesense Test Visibility.
 
 set -eo pipefail
 source ./tools/utils/echo-color.sh
@@ -14,10 +14,10 @@ if (( ${#report_files} == 0 )); then
     exit 0
 fi
 
-export DATADOG_API_KEY="$(get_secret "$DD_IOS_SECRET__TEST_VISIBILITY_API_KEY")"
-export DD_ENV="ci"
+export KUBESENSE_API_KEY="$(get_secret "$KUBESENSE_IOS_SECRET__TEST_VISIBILITY_API_KEY")"
+export KUBESENSE_ENV="ci"
 
 datadog-ci junit upload \
-    --service "dd-sdk-ios" \
-    --git-repository-url "git@github.com:DataDog/dd-sdk-ios.git" \
+    --service "kubesense-ios-sdk" \
+    --git-repository-url "git@github.com:kubesense-ai/kubesense-ios-sdk.git" \
     "${report_files[@]}"

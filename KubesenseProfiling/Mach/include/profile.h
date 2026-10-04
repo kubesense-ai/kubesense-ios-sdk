@@ -1,0 +1,310 @@
+/*
+ * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
+ * This product includes software developed at Datadog (https://www.datadoghq.com/).
+ * Copyright 2019-Present Datadog, Inc.
+ */
+
+/**
+ * @file profile.h
+ * @brief Core profiling data structures and aggregation engine
+ * 
+ * This module provides efficient data structures for collecting, deduplicating,
+ * and aggregating profiling samples. The design optimizes for:
+ * 
+ * - Memory efficiency through string/mapping/location deduplication
+ * - Fast sample ingestion with O(1) lookups for existing entities
+ * - Clean separation from serialization concerns
+ * 
+ * The profile class serves as the main aggregation engine that processes
+ * raw stack traces and converts them into a deduplicated, efficient format
+ * suitable for serialization to pprof format.
+ */
+
+#ifndef KUBESENSE_PROFILER_PROFILE_H_
+#define KUBESENSE_PROFILER_PROFILE_H_
+
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if !TARGET_OS_WATCH
+
+#include "kubesense_profiler.h"
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <cstdint>
+#include <time.h>
+
+namespace dd::profiler {
+
+class binary_image_cache;
+
+/**
+ * @brief Represents a deduplicated binary mapping in the profile
+ * 
+ * Maps a contiguous region of memory to a binary file. Each mapping
+ * corresponds to a loaded binary (executable, library, etc.) and contains
+ * the information needed to symbolicate addresses within that region.
+ * 
+ * All strings are deduplicated and stored as IDs referencing the profile's
+ * string table for memory efficiency.
+ */
+struct mapping_t {
+    uint64_t memory_start;
+    uint32_t filename_id;
+    uint32_t build_id;
+};
+
+/**
+ * @brief Represents a deduplicated code location in the profile
+ * 
+ * A location corresponds to a specific instruction address within a binary
+ * mapping. Locations are deduplicated across samples to minimize memory usage
+ * and enable efficient aggregation of samples from the same code location.
+ * 
+ * @note The address is an offset within the mapping, not an absolute memory address
+ */
+struct location_t {
+    uint32_t mapping_id;
+    uint64_t address;
+};
+
+/**
+ * @brief Key-value metadata attached to profiling samples
+ * 
+ * Labels provide additional context for samples, such as timestamps,
+ * thread IDs, or custom application metadata. They support both string
+ * and numeric values with optional units.
+ * 
+ * String values are deduplicated and stored as IDs referencing the
+ * profile's string table for memory efficiency.
+ */
+struct label_t {
+    uint32_t key_id;
+    uint32_t str_id;
+    int64_t num;
+    uint32_t num_unit_id;
+};
+
+/**
+ * @brief Individual profiling sample with stack trace and metadata
+ * 
+ * Represents a single profiling sample containing:
+ * - Stack trace as a sequence of location IDs (leaf-to-root order)
+ * - Sample timestamp as uptime nanoseconds
+ * - Associated labels (e.g., thread info)
+ * - Sample values (e.g., CPU time, wall time, memory allocation)
+ * 
+ * Samples are not aggregated at this level - aggregation happens during
+ * serialization if needed.
+ */
+struct sample_t {
+    std::vector<uint32_t> location_ids;
+    uint64_t timestamp_uptime_ns;
+    std::vector<label_t> labels;
+    std::vector<int64_t> values;
+};
+
+/**
+ * @brief Calculate uptime to epoch time offset
+ * @return Offset to convert uptime nanoseconds to epoch time
+ */
+int64_t uptime_epoch_offset();
+
+/**
+ * @brief Convert binary UUID to formatted string representation
+ * @param uuid 16-byte UUID array
+ * @return Formatted UUID string in standard hyphenated format
+ */
+std::string uuid_string(const uuid_t uuid);
+
+/**
+ * @brief Efficient profiling data aggregator with automatic deduplication
+ * 
+ * The profile class is the core engine for processing profiling data. It provides:
+ * 
+ * **Key Features:**
+ * - String deduplication with O(1) lookup via hash table
+ * - Binary mapping deduplication by memory address
+ * - Code location deduplication by instruction address  
+ * - Fast sample ingestion from stack traces
+ * - Memory-efficient storage optimized for large datasets
+ * 
+ * **Thread Safety:**
+ * - Not thread-safe by design for performance
+ * - Callers must ensure external synchronization if needed
+ * 
+ * **Usage Pattern:**
+ * 1. Create profile with sampling interval
+ * 2. Call add_samples() with stack traces
+ * 3. Use external serializer (e.g., profile_pprof_pack) for output
+ * 
+ * The class maintains internal deduplication tables and exposes the
+ * deduplicated data through public member variables for serialization.
+ */
+class profile {
+public:
+    /**
+     * @brief Construct a new profile aggregator
+     * @param sampling_interval_ns Sampling interval in nanoseconds
+     */
+    explicit profile(uint64_t sampling_interval_ns, bool record_cpu_time = false);
+    ~profile() = default;
+    
+    profile(const profile&) = delete;
+    profile& operator=(const profile&) = delete;
+    
+    /**
+     * @brief Process multiple stack traces into deduplicated samples
+     * @param traces Array of stack traces to process
+     * @param count Number of traces in the array
+     */
+    void add_samples(const stack_trace_t* traces, size_t count);
+
+    /**
+     * @brief Process multiple stack traces and lazily resolve first-seen locations.
+     *
+     * Existing locations reuse their interned mapping and location IDs without
+     * re-resolving binary image data.
+     *
+     * @param traces Array of stack traces to process
+     * @param count Number of traces in the array
+     * @param image_cache Optional binary image cache used to resolve first-seen locations
+     */
+    void add_samples(const stack_trace_t* traces, size_t count, binary_image_cache* image_cache);
+
+    /** @brief Get read-only access to deduplicated string table */
+    const std::vector<std::string>& strings() const { return _strings; }
+    
+    /** @brief Get read-only access to deduplicated binary mappings */
+    const std::vector<mapping_t>& mappings() const { return _mappings; }
+    
+    /** @brief Get read-only access to deduplicated code locations */
+    const std::vector<location_t>& locations() const { return _locations; }
+    
+    /** @brief Get read-only access to collected samples */
+    const std::vector<sample_t>& samples() const { return _samples; }
+    
+    /** @brief Get profile sampling interval in nanoseconds */
+    uint64_t sampling_interval_ns() const { return _sampling_interval_ns; }
+    
+    /** @brief Get cached string ID for "wall-time" */
+    uint32_t wall_time_str_id() const { return _wall_time_str_id; }
+
+    /** @brief Get cached string ID for "cpu-time" */
+    uint32_t cpu_time_str_id() const { return _cpu_time_str_id; }
+    
+    /** @brief Get cached string ID for "nanoseconds" */
+    uint32_t nanoseconds_str_id() const { return _nanoseconds_str_id; }
+
+    /** @brief Whether samples include a CPU-time value in addition to wall-time */
+    bool cpu_time_enabled() const { return _record_cpu_time; }
+
+    /** @brief Number of labels exported for the sample */
+    size_t label_count(const sample_t& sample) const { return sample.labels.size() + 1; }
+
+    /** @brief Visit labels exported for the sample */
+    template <typename LabelVisitor>
+    void for_each_label(const sample_t& sample, LabelVisitor&& visitor) const {
+        label_t timestamp_label{};
+        timestamp_label.key_id = _end_timestamp_ns_str_id;
+        timestamp_label.str_id = 0;
+        timestamp_label.num = uptime_ns_to_epoch_ns(sample.timestamp_uptime_ns);
+        timestamp_label.num_unit_id = _nanoseconds_str_id;
+        visitor(timestamp_label);
+
+        for (const auto& label : sample.labels) {
+            visitor(label);
+        }
+    }
+
+    /** @brief Get profile start timestamp (uptime nanoseconds converted to epoch) */
+    int64_t start_timestamp() const { return uptime_ns_to_epoch_ns(_start_timestamp); };
+
+    /** @brief Get profile end timestamp (uptime nanoseconds converted to epoch) */
+    int64_t end_timestamp() const { return uptime_ns_to_epoch_ns(_end_timestamp); };
+
+    /**
+     * @brief Set the server time correction used for exported timestamps.
+     * @param offset_ns Server time offset in nanoseconds
+     */
+    void set_server_time_offset_ns(int64_t offset_ns) { _server_time_offset_ns = offset_ns; };
+
+private:
+    /** @brief Deduplicated string table (index 0 is always empty string) */
+    std::vector<std::string> _strings;
+    
+    /** @brief Deduplicated binary mappings (1-based IDs) */
+    std::vector<mapping_t> _mappings;
+    
+    /** @brief Deduplicated code locations (1-based IDs) */
+    std::vector<location_t> _locations;
+    
+    /** @brief All collected samples */
+    std::vector<sample_t> _samples;
+    
+    /** @brief Profile sampling interval in nanoseconds */
+    uint64_t _sampling_interval_ns;
+
+    /** @brief Whether samples include CPU time as a second value */
+    bool _record_cpu_time;
+    
+    /** @brief Cached string ID for empty string */
+    uint32_t _empty_str_id;
+    
+    /** @brief Cached string ID for "wall-time" */
+    uint32_t _wall_time_str_id;
+
+    /** @brief Cached string ID for "cpu-time" */
+    uint32_t _cpu_time_str_id;
+    
+    /** @brief Cached string ID for "nanoseconds" */
+    uint32_t _nanoseconds_str_id;
+    
+    /** @brief Cached string ID for "end_timestamp_ns" */
+    uint32_t _end_timestamp_ns_str_id;
+    
+    /** @brief Cached string ID for "tid" */
+    uint32_t _thread_id_str_id;
+    
+    /** @brief Cached string ID for "thread name" */
+    uint32_t _thread_name_str_id;
+
+    /** @brief Offset to convert uptime nanoseconds to epoch time */
+    int64_t _epoch_offset;
+
+    /** @brief Offset to convert device epoch timestamps to server epoch timestamps */
+    int64_t _server_time_offset_ns;
+
+    /** @brief Profile start timestamp (uptime nanoseconds, 0 if no samples) */
+    uint64_t _start_timestamp;
+
+    /** @brief Profile end timestamp (uptime nanoseconds, 0 if no samples) */
+    uint64_t _end_timestamp;
+
+    /** @brief Hash table for string deduplication: string -> string_id */
+    std::unordered_map<std::string, uint32_t> _string_lookup;
+
+    /** @brief Convert uptime nanoseconds to epoch time in nanoseconds */
+    int64_t uptime_ns_to_epoch_ns(uint64_t uptime_ns) const;
+    
+    /** @brief Hash table for mapping deduplication: memory_start -> mapping_id */
+    std::unordered_map<uint64_t, uint32_t> _mapping_lookup;
+    
+    /** @brief Hash table for location deduplication: instruction_addr -> location_id */
+    std::unordered_map<uint64_t, uint32_t> _location_lookup;
+    
+    // Helper methods
+    uint32_t intern_string(const std::string& str);
+    uint32_t intern_frame(const stack_frame_t& frame);
+    // Resolves binary image data for first-seen locations before interning.
+    uint32_t intern_frame(const stack_frame_t& frame, binary_image_cache* image_cache);
+    uint32_t intern_binary(const binary_image_t& image);
+    uint32_t intern_location(const location_t& location);
+};
+
+} // namespace dd::profiler
+
+#endif // !TARGET_OS_WATCH
+#endif // __APPLE__
+
+#endif // KUBESENSE_PROFILER_PROFILE_H_

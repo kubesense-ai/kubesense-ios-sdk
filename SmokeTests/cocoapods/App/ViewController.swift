@@ -5,14 +5,14 @@
 */
 
 import UIKit
-import DatadogCore
-import DatadogLogs
-import DatadogTrace
-import DatadogRUM
-import DatadogCrashReporting
-import DatadogSessionReplay  // it should compile for iOS and tvOS, but APIs are only available on iOS
-import DatadogFlags
-import DatadogProfiling
+import KubesenseCore
+import KubesenseLogs
+import KubesenseTrace
+import KubesenseRUM
+import KubesenseCrashReporting
+import KubesenseSessionReplay  // it should compile for iOS and tvOS, but APIs are only available on iOS
+import KubesenseFlags
+import KubesenseProfiling
 import OpenTelemetryApi
 
 internal class ViewController: UIViewController {
@@ -21,8 +21,8 @@ internal class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        Datadog.initialize(
-            with: Datadog.Configuration(clientToken: "abc", env: "tests"),
+        Kubesense.initialize(
+            with: Kubesense.Configuration(clientToken: "abc", env: "tests"),
             trackingConsent: .granted
         )
 

@@ -6,14 +6,14 @@
 - Use `TestUtilities` for mocks and helpers
 - Do not test Apple frameworks
 - Do not test purely generated code
-- Do not mock DatadogCore incorrectly (use provided helpers)
+- Do not mock KubesenseCore incorrectly (use provided helpers)
 - No `sleep()` in unit tests — use expectations or synchronous test queues
 
 ## Mock Infrastructure
 
 | Convention | Usage | Example |
 |------------|-------|---------|
-| `.mockAny()` | Deterministic default — use when specific value doesn't matter | `DatadogContext.mockAny()` |
+| `.mockAny()` | Deterministic default — use when specific value doesn't matter | `KubesenseContext.mockAny()` |
 | `.mockRandom()` | Randomized value — use for fuzz/property testing | `String.mockRandom()` |
 | `.mockWith(...)` | Customizable mock with named parameters for specific fields | `.mockWith(service: "test")` |
 
@@ -21,17 +21,17 @@
 
 | Type | Purpose | Location |
 |------|---------|----------|
-| `DatadogCoreProxy` | In-memory SDK instance that intercepts all events for assertions | `TestUtilities/Sources/Proxies/DatadogCoreProxy.swift` |
+| `KubesenseCoreProxy` | In-memory SDK instance that intercepts all events for assertions | `TestUtilities/Sources/Proxies/KubesenseCoreProxy.swift` |
 | `ServerMock` | HTTP mock server for network tests | `TestUtilities/Sources/Proxies/ServerMock.swift` |
-| `HTTPClientMock` | Mock HTTP client | `TestUtilities/Sources/Mocks/DatadogCore/` |
-| `PassthroughCoreMock` | Lightweight core mock that passes events through | `TestUtilities/Sources/Mocks/DatadogInternal/` |
-| `FeatureScopeMock` | Mock feature scope for isolated testing | `TestUtilities/Sources/Mocks/DatadogInternal/` |
+| `HTTPClientMock` | Mock HTTP client | `TestUtilities/Sources/Mocks/KubesenseCore/` |
+| `PassthroughCoreMock` | Lightweight core mock that passes events through | `TestUtilities/Sources/Mocks/KubesenseInternal/` |
+| `FeatureScopeMock` | Mock feature scope for isolated testing | `TestUtilities/Sources/Mocks/KubesenseInternal/` |
 | `RUMSessionMatcher` | Groups RUM events by session, validates consistency | `TestUtilities/Sources/Matchers/` |
 
-## DatadogCoreProxy Usage Pattern
+## KubesenseCoreProxy Usage Pattern
 
 ```swift
-let core = DatadogCoreProxy(context: .mockWith(service: "test-service"))
+let core = KubesenseCoreProxy(context: .mockWith(service: "test-service"))
 defer { core.flushAndTearDown() }  // MUST be in defer
 
 RUM.enable(with: config, in: core)
@@ -62,7 +62,7 @@ let userViews = Array(session.views.dropFirst())
 ```
 
 Related helpers on `RUMSessionMatcher.View`:
-- `isApplicationLaunchView()` — checks `name == "ApplicationLaunch"` and `path == "com/datadog/application-launch/view"`
+- `isApplicationLaunchView()` — checks `name == "ApplicationLaunch"` and `path == "com/kubesense/application-launch/view"`
 - `isBackgroundView()` — checks for the synthetic "Background" view
 
 ## SwiftLint for Tests

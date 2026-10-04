@@ -6,9 +6,9 @@
 
 import UIKit
 
-import DatadogInternal
-import DatadogCore
-import DatadogBenchmarks
+import KubesenseInternal
+import KubesenseCore
+import KubesenseBenchmarks
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         if run != .baseline {
-            // instrument the application with Datadog SDK
+            // instrument the application with Kubesense SDK
             // when not in baseline run
             scenario.instrument(with: applicationInfo)
         }
@@ -85,9 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// It is important to stop current instruments before starting a new run.
     private func stop() {
         vitals = nil // stop collecting vitals
-        Datadog.stopInstance() // stop runner instrumentation
-#if DD_BENCHMARK
-        DatadogInternal.bench = (NOPBench(), NOPBench()) // stop profiling the sdk
+        Kubesense.stopInstance() // stop runner instrumentation
+#if KUBESENSE_BENCHMARK
+        KubesenseInternal.bench = (NOPBench(), NOPBench()) // stop profiling the sdk
 #endif
         window?.rootViewController = UIViewController()
     }
@@ -147,8 +147,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 )
             )
         )
-#if DD_BENCHMARK
-        DatadogInternal.bench = (profiler, meter) // Inject profiler and meter to collect telemetry
+#if KUBESENSE_BENCHMARK
+        KubesenseInternal.bench = (profiler, meter) // Inject profiler and meter to collect telemetry
 #endif
     }
 }

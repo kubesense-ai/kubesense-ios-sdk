@@ -6,9 +6,9 @@
 
 import UIKit
 import WebKit
-import DatadogCore
-import DatadogWebViewTracking
-import class DatadogInternal.CoreRegistry
+import KubesenseCore
+import KubesenseWebViewTracking
+import class KubesenseInternal.CoreRegistry
 
 class WebViewTrackingFixtureViewController: UIViewController, WKNavigationDelegate {
     override func viewDidAppear(_ animated: Bool) {

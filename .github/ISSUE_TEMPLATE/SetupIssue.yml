@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before creating an issue, please ensure you go through the [troubleshooting page](https://docs.datadoghq.com/real_user_monitoring/mobile_and_tv_monitoring/troubleshooting/#debugging-1).
+        Before creating an issue, please ensure you go through the [troubleshooting page](https://docs.kubesense.ai/real_user_monitoring/mobile_and_tv_monitoring/troubleshooting/#debugging-1).
   - type: textarea
     id: issue
     attributes:

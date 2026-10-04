@@ -4,12 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "DatadogBenchmarks",
+    name: "KubesenseBenchmarks",
     platforms: [.iOS(.v13), .tvOS(.v13)],
     products: [
         .library(
-            name: "DatadogBenchmarks",
-            targets: ["DatadogBenchmarks"]
+            name: "KubesenseBenchmarks",
+            targets: ["KubesenseBenchmarks"]
         )
     ],
     dependencies: [
@@ -17,7 +17,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "DatadogBenchmarks",
+            name: "KubesenseBenchmarks",
             dependencies: [
                 .product(name: "OpenTelemetryApi", package: "opentelemetry-swift-core"),
                 .product(name: "OpenTelemetrySdk", package: "opentelemetry-swift-core"),

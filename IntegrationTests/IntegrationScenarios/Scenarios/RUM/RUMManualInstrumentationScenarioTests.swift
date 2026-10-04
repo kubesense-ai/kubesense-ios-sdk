@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogInternal
+import KubesenseInternal
 import HTTPServerMock
 import TestUtilities
 import XCTest

@@ -5,9 +5,9 @@
  */
 
 import UIKit
-import DatadogInternal
-import DatadogRUM
-import DatadogCore
+import KubesenseInternal
+@testable import KubesenseRUM
+import KubesenseCore
 
 /// Scenario which starts a navigation controller. Each view controller pushed to this navigation
 /// uses the RUM manual instrumentation API to send RUM events to the server.
@@ -217,7 +217,7 @@ class RUMResourcesBaseScenario: URLSessionBaseScenario {
         if Environment.isRunningUITests() {
             return Environment.serverMockConfiguration()!.instrumentedEndpoints[5]
         }
-        return URL(string: "https://status.datadoghq.com/cache-test/resource-1")!
+        return URL(string: "https://status.kubesense.ai/cache-test/resource-1")!
     }
 
     private let cacheEnabledSessionDelegate = CustomURLSessionDelegate()
@@ -254,7 +254,7 @@ class RUMResourcesBaseScenario: URLSessionBaseScenario {
             )
         case .delegateWithAdditionalFirstPartyHosts:
             config.urlSessionTracking = .init(
-                firstPartyHostsTracing: .trace(hosts: [], sampleRate: 100), // hosts will be set through `DDURLSessionDelegate`
+                firstPartyHostsTracing: .trace(hosts: [], sampleRate: 100), // hosts will be set through `KubesenseURLSessionDelegate`
                 resourceAttributesProvider: rumResourceAttributesProvider(request:response:data:error:)
             )
         }
@@ -275,7 +275,7 @@ final class RUMNSURLSessionResourcesScenario: RUMResourcesBaseScenario, TestScen
 }
 
 /// Scenario which uses RUM manual instrumentation API to send bunch of RUM events. Each event contains some
-/// "sensitive" information which is scrubbed as configured in `Datadog.Configuration`.
+/// "sensitive" information which is scrubbed as configured in `Kubesense.Configuration`.
 final class RUMScrubbingScenario: TestScenario {
     static var storyboardName: String = "RUMScrubbingScenario"
 
@@ -462,7 +462,7 @@ final class RUMFeatureOperationsScenario: TestScenario {
 private class SwiftUIPredicate: SwiftUIRUMViewsPredicate {
     let `default` = DefaultSwiftUIRUMViewsPredicate()
 
-    func rumView(for extractedViewName: String) -> DatadogRUM.RUMView? {
+    func rumView(for extractedViewName: String) -> KubesenseRUM.RUMView? {
         if extractedViewName == "RUMSessionEndView" {
             return nil
         }

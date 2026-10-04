@@ -27,7 +27,7 @@ disable_apple_crash_reporter() {
     launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
     echo_warn "Disabling Apple Crash Reporter before running UI tests."
     echo "This action disables the system prompt ('Runner quit unexpectedly') if an app crashes in the simulator, which"
-    echo "is expected behavior when running UI tests for 'DatadogCrashReporting'."
+    echo "is expected behavior when running UI tests for 'KubesenseCrashReporting'."
 }
 
 enable_apple_crash_reporter() {

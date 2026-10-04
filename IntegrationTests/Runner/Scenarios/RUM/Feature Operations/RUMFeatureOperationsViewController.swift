@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogRUM
+import KubesenseRUM
 
 enum Operation: String {
     case login = "login_flow"

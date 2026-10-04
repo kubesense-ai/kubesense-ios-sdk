@@ -1,70 +1,65 @@
-<p>
-    <a href="https://swiftpackageindex.com/DataDog/dd-sdk-ios">
-        <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FDataDog%2Fdd-sdk-ios%2Fbadge%3Ftype%3Dplatforms" />
-    </a>
-    <a href="https://swiftpackageindex.com/DataDog/dd-sdk-ios">
-        <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FDataDog%2Fdd-sdk-ios%2Fbadge%3Ftype%3Dswift-versions" />
-    </a>
-    <a href="https://swiftpackageindex.com/DataDog/dd-sdk-ios">
-        <img src="https://img.shields.io/github/v/release/DataDog/dd-sdk-ios?style=flat&label=Swift%20Package%20Index&color=red" />
-    </a>
-    <a href="https://cocoapods.org/pods/DatadogCore">
-        <img src="https://img.shields.io/github/v/release/DataDog/dd-sdk-ios?style=flat&label=CocoaPods" />
-    </a>
-</p>
+# Kubesense SDK for iOS and tvOS
 
+> Swift and Objective-C libraries to send RUM, logs, traces, Session Replay, crash reports and profiles
+> from iOS and tvOS applications to [Kubesense](https://www.kubesense.ai).
 
-# Datadog SDK for iOS and tvOS
+This SDK is a fork of [Datadog's dd-sdk-ios](https://github.com/DataDog/dd-sdk-ios) (Apache-2.0), rebranded
+and pointed at the Kubesense collector. It behaves like the Kubesense Android and browser SDKs on the wire.
+The upstream version it is based on is recorded in [`tools/kubesense-sync/upstream.json`](tools/kubesense-sync/upstream.json);
+how the fork is kept in sync with upstream is described in [`docs/UPSTREAM_SYNC.md`](docs/UPSTREAM_SYNC.md).
 
-> Swift and Objective-C libraries to interact with Datadog on iOS and tvOS.
+## Modules
 
-## Getting Started
+| Module | Purpose |
+| --- | --- |
+| `KubesenseCore` | SDK initialization, storage, upload, remote configuration (required) |
+| `KubesenseRUM` | Real User Monitoring |
+| `KubesenseLogs` | Log collection |
+| `KubesenseTrace` | Distributed tracing (OpenTracing / OpenTelemetry) |
+| `KubesenseSessionReplay` | Session Replay |
+| `KubesenseCrashReporting` | Crash reporting (KSCrash) |
+| `KubesenseWebViewTracking` | Tracks web views instrumented with the Kubesense browser SDK |
+| `KubesenseFlags` | Feature flags |
+| `KubesenseProfiling` | Application launch and continuous profiling |
 
-### Log Collection
+## Installation
 
-See the dedicated [Datadog iOS Log Collection][1] documentation to learn how to send logs from your iOS application to Datadog.
+Swift Package Manager:
 
-![Datadog iOS Log Collection](docs/images/logging.png)
+```swift
+.package(url: "https://github.com/kubesense-ai/kubesense-ios-sdk.git", from: "1.0.0")
+```
 
-### Trace Collection
+CocoaPods: `pod 'KubesenseCore'`, `pod 'KubesenseRUM'`, …
 
-See [Datadog iOS Trace Collection][2] documentation to try it out.
+## Getting started
 
-![Datadog iOS Log Collection](docs/images/tracing.png)
+```swift
+import KubesenseCore
+import KubesenseRUM
 
-### RUM Events Collection
+Kubesense.initialize(
+    with: Kubesense.Configuration(
+        clientToken: "<client token>",
+        env: "<environment>",
+        site: .prod                         // us2.kubesense.ai (default); `.staging` is dev.kubesense.ai
+        // kubesenseRumEndpoint: "collector.example.com"   // your own collector host, optional
+    ),
+    trackingConsent: .granted
+)
 
-See [Datadog iOS RUM Collection][3] documentation to try it out.
+RUM.enable(with: RUM.Configuration(applicationID: "<rum application id>"))
+```
 
-![Datadog iOS RUM Collection](docs/images/rum.png)
+Objective-C uses the same API with the `Kubesense` prefix: `[KubesenseSDK initializeWithConfiguration:…]`,
+`KubesenseConfiguration`, `KubesenseRUMConfiguration`, …
 
-#### WebView Tracking
-
-RUM allows you to monitor web views and eliminate blind spots in your hybrid mobile applications. See [WebView Tracking][5] documentation to try it out.
-
-## Integrations
-
-If you use [Alamofire][7], [Apollo GraphQL][8], [SDWebImage][9], or [OpenAPI Generator][10], see [Integrated Libraries][4] to learn how to instrument requests automatically.
-
-## Contributing
-
-Pull requests are welcome. First, open an issue to discuss what you would like to change. For more information, read the [Contributing Guide](CONTRIBUTING.md).
+Every feature uploads to one collector host, under `https://<host>/rum/api/v1/...`. The dashboard-managed
+remote configuration (`GET /rum/api/v1/sdk-config`) is enabled by default: the document cached by the
+previous launch is applied at initialization and a fresh one is fetched for the next launch. Turn it off
+with `remoteConfigurationEnabled: false`.
 
 ## License
 
-[Apache License, v2.0](LICENSE)
-
-## Supported Versions
-
-See the [Supported Versions][6] documentation for more details.
-
-[1]: https://docs.datadoghq.com/logs/log_collection/ios
-[2]: https://docs.datadoghq.com/tracing/setup_overview/setup/ios
-[3]: https://docs.datadoghq.com/real_user_monitoring/ios
-[4]: https://docs.datadoghq.com/real_user_monitoring/mobile_and_tv_monitoring/integrated_libraries/ios
-[5]: https://docs.datadoghq.com/real_user_monitoring/mobile_and_tv_monitoring/web_view_tracking?tab=ios
-[6]: https://docs.datadoghq.com/real_user_monitoring/mobile_and_tv_monitoring/supported_versions/ios/
-[7]: https://github.com/Alamofire/Alamofire
-[8]: https://github.com/apollographql/apollo-ios
-[9]: https://github.com/SDWebImage/SDWebImage
-[10]: https://github.com/OpenAPITools/openapi-generator
+[Apache License, v2.0](LICENSE). This product includes software developed at Datadog
+(https://www.datadoghq.com/); see [NOTICE](NOTICE) and [LICENSE-3rdparty.csv](LICENSE-3rdparty.csv).

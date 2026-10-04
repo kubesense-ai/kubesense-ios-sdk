@@ -17,7 +17,7 @@ endif
 build:
 	@$(ECHO_SUBTITLE2) "make build"
 	set -eo pipefail; \
-	DD_BENCHMARK=1 OTEL_SWIFT=1 xcodebuild \
+	KUBESENSE_BENCHMARK=1 OTEL_SWIFT=1 xcodebuild \
 		-project BenchmarkTests.xcodeproj \
 		-scheme Runner \
 		-sdk iphonesimulator \
@@ -31,7 +31,7 @@ archive:
 	@$(ECHO_SUBTITLE2) "make archive VERSION='$(VERSION)'"
 	@xcrun agvtool new-version "$(VERSION)"
 	set -eo pipefail; \
-	DD_BENCHMARK=1 OTEL_SWIFT=1 xcodebuild \
+	KUBESENSE_BENCHMARK=1 OTEL_SWIFT=1 xcodebuild \
 		-project BenchmarkTests.xcodeproj \
 		-scheme Runner \
 		-sdk iphoneos \
@@ -57,8 +57,8 @@ export:
 
 upload:
 	@$(call require_param,ARTIFACTS_PATH)
-	@$(call require_param,DATADOG_API_KEY)
-	@$(call require_param,DATADOG_APP_KEY)
+	@$(call require_param,KUBESENSE_API_KEY)
+	@$(call require_param,KUBESENSE_APP_KEY)
 	@$(call require_param,S8S_APPLICATION_ID)
 	@:$(eval VERSION ?= $(CURRENT_GIT_COMMIT_SHORT))
 	@$(ECHO_SUBTITLE2) "make upload VERSION='$(VERSION)' ARTIFACTS_PATH='$(ARTIFACTS_PATH)'"
@@ -70,4 +70,4 @@ upload:
 
 open:
 	@$(ECHO_SUBTITLE2) "make open"
-	@open --env DD_BENCHMARK --new BenchmarkTests.xcodeproj
+	@open --env KUBESENSE_BENCHMARK --new BenchmarkTests.xcodeproj

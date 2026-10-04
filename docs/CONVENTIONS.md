@@ -4,7 +4,7 @@
 
 **Types:** `PascalCase` for classes, structs, enums, protocols
 **Functions/Properties:** `camelCase`
-**Protocols:** Named as capabilities or contracts (e.g., `DatadogCoreProtocol`, `FeatureScope`, `MessageBusReceiver`)
+**Protocols:** Named as capabilities or contracts (e.g., `KubesenseCoreProtocol`, `FeatureScope`, `MessageBusReceiver`)
 **Internal types:** Prefixed with module context (e.g., `RUMCommand`, `RUMViewScope`)
 **Mock types:** Suffixed with `Mock` or `Spy` (e.g., `HTTPClientMock`, `SnapshotProcessorSpy`)
 **Test files:** Mirror source path with `Tests` suffix (e.g., `RUMViewScopeTests.swift`)
@@ -37,7 +37,7 @@ let app = UIApplication.shared
 let app = UIApplication.dd.managedShared
 ```
 
-`UIApplication.dd.managedShared` (defined in `DatadogInternal/Sources/Utils/UIKitExtensions.swift`) uses KVC (`value(forKeyPath:)`) to bypass the compiler restriction. It returns `UIApplication?` — `nil` in app extension context, the shared instance in a full app.
+`UIApplication.dd.managedShared` (defined in `KubesenseInternal/Sources/Utils/UIKitExtensions.swift`) uses KVC (`value(forKeyPath:)`) to bypass the compiler restriction. It returns `UIApplication?` — `nil` in app extension context, the shared instance in a full app.
 
 This restriction applies only to `UIApplication.shared`. `UIDevice.current` is safe in extensions and has no lint rule.
 
@@ -62,13 +62,13 @@ Do not disable lint rules except where the rule is incorrect and a Jira ticket e
 ## Conditional Compilation
 
 - `SPM_BUILD` — defined when building via Swift Package Manager
-- `DD_BENCHMARK` — defined for benchmark builds
-- `DD_COMPILED_FOR_INTEGRATION_TESTS` — toggles `@testable` imports for integration tests
+- `KUBESENSE_BENCHMARK` — defined for benchmark builds
+- `KUBESENSE_COMPILED_FOR_INTEGRATION_TESTS` — toggles `@testable` imports for integration tests
 - Platform checks: `#if os(iOS)`, `#if canImport(UIKit)`, `#if os(tvOS)`
 
 ## Generated Models — DO NOT EDIT
 
-Files in `DatadogInternal/Sources/Models/` are auto-generated from the [rum-events-format](https://github.com/DataDog/rum-events-format) schema. Never hand-edit. Regenerate with `make rum-models-generate GIT_REF=master`, verify with `make rum-models-verify`.
+Files in `KubesenseInternal/Sources/Models/` are auto-generated from the [rum-events-format](https://github.com/DataDog/rum-events-format) schema. Never hand-edit. Regenerate with `make rum-models-generate GIT_REF=master`, verify with `make rum-models-verify`.
 
 ## File Headers
 

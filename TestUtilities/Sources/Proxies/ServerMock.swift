@@ -6,14 +6,14 @@
 
 import XCTest
 import ObjectiveC
-import DatadogInternal
+import KubesenseInternal
 
 /// An utility header, added to each request by the `ServerMock` and removed while intercepting through `ServerMockProtocol`.
 /// It transmits an unique identifier of the `URLSession` instance obtained from `ServerMock`. It is used for consistency check
 /// installed in `ServerMockProtocol`, to ensure that the request completion is delivered to the right instance of `ServerMock`.
 ///
 /// Added in RUMM-1381 to fix a range of flakiness caused by leaking asynchronous upload tasks.
-private let ddURLSessionUUIDHeaderField = "dd-urlsession-uuid"
+private let kubesenseURLSessionUUIDHeaderField = "kubesense-urlsession-uuid"
 
 #if os(watchOS)
 /// On watchOS, `URLProtocol` subclasses (https://developer.apple.com/documentation/foundation/urlprotocol)
@@ -49,7 +49,7 @@ private final class NSCFLocalSessionTaskResumeSwizzler: MethodSwizzler<
     }
 
     private init(klass: AnyClass) throws {
-        self.method = try dd_class_getInstanceMethod(klass, Self.selector)
+        self.method = try kubesense_class_getInstanceMethod(klass, Self.selector)
         super.init()
     }
 
@@ -123,10 +123,10 @@ public class ServerMockProtocol: URLProtocol {
         server = ServerMock.activeInstance
 
         // Get utility header value to match it with an active instance of `ServerMock`
-        let urlSessionUUID = UUID(uuidString: request.allHTTPHeaderFields![ddURLSessionUUIDHeaderField]!)!
+        let urlSessionUUID = UUID(uuidString: request.allHTTPHeaderFields![kubesenseURLSessionUUIDHeaderField]!)!
 
         super.init(
-            request: request.removing(httpHeaderField: ddURLSessionUUIDHeaderField), // remove utility header
+            request: request.removing(httpHeaderField: kubesenseURLSessionUUIDHeaderField), // remove utility header
             cachedResponse: cachedResponse,
             client: client
         )
@@ -200,7 +200,7 @@ public class ServerMock {
         self.skipIsMainThreadCheck = skipIsMainThreadCheck
         precondition(skipIsMainThreadCheck || Thread.isMainThread, "`ServerMock` should be initialized on the main thread.")
         precondition(ServerMock.activeInstance == nil, "Only one active instance of `ServerMock` is allowed at a time.")
-        self.queue = DispatchQueue(label: "com.datadoghq.ServerMock-\(urlSessionUUID.uuidString)")
+        self.queue = DispatchQueue(label: "ai.kubesense.ServerMock-\(urlSessionUUID.uuidString)")
 
         ServerMock.activeInstance = self
     }
@@ -251,7 +251,7 @@ public class ServerMock {
         let configuration: URLSessionConfiguration = .ephemeral
         // Tag every request emitted by this session with our UUID. `ServerMockProtocol` uses it
         // for delivery routing; `isMyRequest(_:)` uses it to scope test handlers to this session.
-        configuration.httpAdditionalHeaders = [ddURLSessionUUIDHeaderField: urlSessionUUID.uuidString]
+        configuration.httpAdditionalHeaders = [kubesenseURLSessionUUIDHeaderField: urlSessionUUID.uuidString]
 
         #if os(watchOS)
         // On watchOS, `URLProtocol` is non-functional. We swizzle `__NSCFLocalSessionTask._onqueue_resume`
@@ -270,7 +270,7 @@ public class ServerMock {
     /// Test handlers can use this to ignore traffic from foreign URLSessions sharing the
     /// process-global `__NSCFLocalSessionTask.resume` swizzle.
     public func isMyRequest(_ request: URLRequest) -> Bool {
-        return request.value(forHTTPHeaderField: ddURLSessionUUIDHeaderField) == urlSessionUUID.uuidString
+        return request.value(forHTTPHeaderField: kubesenseURLSessionUUIDHeaderField) == urlSessionUUID.uuidString
     }
 
     // MARK: - Waiting for total number of requests

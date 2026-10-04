@@ -4,7 +4,7 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-import DatadogInternal
+import KubesenseInternal
 import HTTPServerMock
 import TestUtilities
 import XCTest
@@ -160,11 +160,11 @@ class TracingURLSessionScenarioTests: IntegrationTests, TracingCommonAsserts {
 
         let firstPartyRequest = firstPartyRequests[0]
         let traceId = try taskWithRequest.traceID() ?? .invalid
-        XCTAssertEqual(firstPartyRequest.httpHeaders["x-datadog-trace-id"], String(traceId.idLo))
-        XCTAssertEqual(firstPartyRequest.httpHeaders["x-datadog-parent-id"], try taskWithRequest.spanID()?.toString(representation: .decimal))
-        XCTAssertEqual(firstPartyRequest.httpHeaders["x-datadog-sampling-priority"], "1")
-        XCTAssertNil(firstPartyRequest.httpHeaders["x-datadog-origin"])
+        XCTAssertEqual(firstPartyRequest.httpHeaders["x-kubesense-trace-id"], String(traceId.idLo))
+        XCTAssertEqual(firstPartyRequest.httpHeaders["x-kubesense-parent-id"], try taskWithRequest.spanID()?.toString(representation: .decimal))
+        XCTAssertEqual(firstPartyRequest.httpHeaders["x-kubesense-sampling-priority"], "1")
+        XCTAssertNil(firstPartyRequest.httpHeaders["x-kubesense-origin"])
         let tid = try taskWithRequest.meta.tid()
-        XCTAssertEqual(firstPartyRequest.httpHeaders["x-datadog-tags"], "_dd.p.tid=\(tid),_dd.p.dm=-1")
+        XCTAssertEqual(firstPartyRequest.httpHeaders["x-kubesense-tags"], "_kubesense.p.tid=\(tid),_kubesense.p.dm=-1")
     }
 }

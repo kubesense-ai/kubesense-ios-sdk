@@ -46,8 +46,8 @@ export:
 
 upload:
 	@$(call require_param,ARTIFACTS_PATH)
-	@$(call require_param,DATADOG_API_KEY)
-	@$(call require_param,DATADOG_APP_KEY)
+	@$(call require_param,KUBESENSE_API_KEY)
+	@$(call require_param,KUBESENSE_APP_KEY)
 	@$(call require_param,S8S_APPLICATION_ID)
 	@:$(eval VERSION ?= $(CURRENT_GIT_COMMIT_SHORT))
 	@$(ECHO_SUBTITLE2) "make upload VERSION='$(VERSION)' ARTIFACTS_PATH='$(ARTIFACTS_PATH)'"

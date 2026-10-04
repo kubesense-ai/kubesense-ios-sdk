@@ -1,4 +1,4 @@
-# AI Agents Guide for dd-sdk-ios
+# AI Agents Guide for kubesense-ios-sdk
 
 > This file is a **map**, not an encyclopedia. It provides the entry point and pointers to deeper documentation. Start here, then follow the links relevant to your task.
 
@@ -28,7 +28,7 @@ docs/
 ├── DEVELOPMENT.md       ← Recipes for adding features/commands/providers,
 │                          RFC process, build & test quick reference
 ├── TESTING.md           ← Test conventions, mock infrastructure (.mockAny(),
-│                          .mockRandom(), .mockWith()), DatadogCoreProxy usage
+│                          .mockRandom(), .mockWith()), KubesenseCoreProxy usage
 ├── KNOWN_CONCERNS.md    ← Fragile areas requiring extra caution
 ├── SWIZZLING.md         ← Mandatory swizzling patterns and real incidents
 ├── LLM_FEATURE_DOCS_GUIDELINES.md  ← How to update *_FEATURE.md files
@@ -36,11 +36,11 @@ docs/
 └── session_replay_performance.md   ← Session Replay performance benchmarks
 
 Feature-specific docs (in each module directory):
-├── DatadogRUM/RUM_FEATURE.md
-├── DatadogSessionReplay/SESSION_REPLAY_FEATURE.md
-├── DatadogTrace/TRACE_FEATURE.md
-├── DatadogProfiling/PROFILING_FEATURE.md
-└── DatadogLogs/LOGS_FEATURE.md
+├── KubesenseRUM/RUM_FEATURE.md
+├── KubesenseSessionReplay/SESSION_REPLAY_FEATURE.md
+├── KubesenseTrace/TRACE_FEATURE.md
+├── KubesenseProfiling/PROFILING_FEATURE.md
+└── KubesenseLogs/LOGS_FEATURE.md
 ```
 
 ## Where to Look First
@@ -54,19 +54,19 @@ Feature-specific docs (in each module directory):
 | Touch swizzling code | `docs/SWIZZLING.md` |
 | Report an error to internal telemetry | `docs/ERROR_HANDLING.md` |
 | Modify a fragile area | `docs/KNOWN_CONCERNS.md` |
-| Work on RUM specifically | `DatadogRUM/RUM_FEATURE.md` |
-| Work on Session Replay specifically | `DatadogSessionReplay/SESSION_REPLAY_FEATURE.md` |
-| Work on Trace (APM) specifically | `DatadogTrace/TRACE_FEATURE.md` |
-| Work on Profiling specifically | `DatadogProfiling/PROFILING_FEATURE.md` |
-| Work on Logs specifically | `DatadogLogs/LOGS_FEATURE.md` |
+| Work on RUM specifically | `KubesenseRUM/RUM_FEATURE.md` |
+| Work on Session Replay specifically | `KubesenseSessionReplay/SESSION_REPLAY_FEATURE.md` |
+| Work on Trace (APM) specifically | `KubesenseTrace/TRACE_FEATURE.md` |
+| Work on Profiling specifically | `KubesenseProfiling/PROFILING_FEATURE.md` |
+| Work on Logs specifically | `KubesenseLogs/LOGS_FEATURE.md` |
 | Update a `*_FEATURE.md` file | `docs/LLM_FEATURE_DOCS_GUIDELINES.md` |
 
 ## Critical Rules (always apply)
 
 - **Never crash customer apps.** Use NOP implementations when the SDK is not initialized.
-- **Feature modules must not import each other.** Only `DatadogCore` orchestrates.
-- **Always search for usages across the entire codebase** before considering a change complete — update call sites in `DatadogCore`, `DatadogInternal`, encoders, ObjC bridges, and `.pbxproj`.
-- **Do NOT modify generated files** (RUM and Session Replay models in `DatadogInternal/Sources/Models/`).
+- **Feature modules must not import each other.** Only `KubesenseCore` orchestrates.
+- **Always search for usages across the entire codebase** before considering a change complete — update call sites in `KubesenseCore`, `KubesenseInternal`, encoders, ObjC bridges, and `.pbxproj`.
+- **Do NOT modify generated files** (RUM and Session Replay models in `KubesenseInternal/Sources/Models/`).
 - **Do NOT add new dependencies** without explicit approval.
 - **Do NOT change networking formats or endpoints.**
 - **Do NOT introduce new public API** without RFC review.

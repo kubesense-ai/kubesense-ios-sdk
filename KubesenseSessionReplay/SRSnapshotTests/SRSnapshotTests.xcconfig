@@ -1,0 +1,6 @@
+// Add common settings from Kubesense.xcconfig
+#include "../../xcconfigs/Kubesense.xcconfig"
+
+// Add DatadogSDKTesting instrumentation (if available in current environment)
+KUBESENSE_SDK_TESTING_OVERRIDE_PATH=$(SRCROOT)/../../instrumented-tests/
+#include? "../../xcconfigs/DatadogSDKTesting.local.xcconfig"

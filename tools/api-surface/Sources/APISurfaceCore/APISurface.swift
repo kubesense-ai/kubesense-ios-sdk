@@ -14,7 +14,7 @@ public struct APISurfaceError: Error, CustomStringConvertible {
 /// Builds a module interface for an SPM library.
 ///
 /// Building is split from parsing so that all modules can be compiled serially into a single, shared derived data
-/// path (so common dependencies such as `DatadogInternal` compile only once and each leaf module compiles once),
+/// path (so common dependencies such as `KubesenseInternal` compile only once and each leaf module compiles once),
 /// keeping the expensive SourceKit parsing as a separate, clearly-bounded step.
 public struct APISurface {
     /// The name of the SPM library this surface was generated for.
@@ -106,7 +106,7 @@ internal final class PatchedPackageWorkspace {
 
         func tempURL() throws -> URL {
             let osTemporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-            let testDirectoryName = "com.datadoghq.api-surface-\(UUID().uuidString)"
+            let testDirectoryName = "ai.kubesense.api-surface-\(UUID().uuidString)"
             let url = osTemporaryDirectoryURL.appending(component: testDirectoryName, directoryHint: .isDirectory)
             try fm.createDirectory(at: url, withIntermediateDirectories: true)
             return url

@@ -6,8 +6,8 @@
 
 import SwiftUI
 
-import DatadogCore
-import DatadogRUM
+import KubesenseCore
+import KubesenseRUM
 
 struct RUMManualScenario: Scenario {
     var initialViewController: UIViewController {
@@ -15,7 +15,7 @@ struct RUMManualScenario: Scenario {
     }
 
     func instrument(with info: AppInfo) {
-        Datadog.initialize(
+        Kubesense.initialize(
             with: .benchmark(info: info),
             trackingConsent: .granted
         )

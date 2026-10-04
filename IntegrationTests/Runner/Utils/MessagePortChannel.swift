@@ -7,13 +7,13 @@
 import Foundation
 
 /// Establishes a communications channel from UITests runner to the app under tests (allows sending messages
-/// from `DatadogIntegrationTests` to `Example` app).
+/// from `KubesenseIntegrationTests` to `Example` app).
 ///
 /// Ref.: https://developer.apple.com/documentation/corefoundation/cfmessageport-rs2
 ///
-/// Note: this class is used by two targets: `DatadogIntegrationTests` (sender) and `Example` (receiver).
+/// Note: this class is used by two targets: `KubesenseIntegrationTests` (sender) and `Example` (receiver).
 internal class MessagePortChannel {
-    private static let portName = "DDExampleAppPort" as CFString
+    private static let portName = "KubesenseExampleAppPort" as CFString
 
     enum Message: Int32 {
         case endRUMSession = 0x1111

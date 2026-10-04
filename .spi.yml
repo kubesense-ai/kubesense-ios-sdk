@@ -3,12 +3,12 @@ builder:
   configs:
     - platform: ios
       documentation_targets:
-        - DatadogCore
-        - DatadogLogs
-        - DatadogTrace
-        - DatadogRUM
-        - DatadogSessionReplay
-        - DatadogCrashReporting
-        - DatadogWebViewTracking
-        - DatadogFlags
-        - DatadogProfiling
+        - KubesenseCore
+        - KubesenseLogs
+        - KubesenseTrace
+        - KubesenseRUM
+        - KubesenseSessionReplay
+        - KubesenseCrashReporting
+        - KubesenseWebViewTracking
+        - KubesenseFlags
+        - KubesenseProfiling

@@ -22,19 +22,19 @@ extension RUMCommonAsserts {
         requests.forEach { request in
             XCTAssertEqual(request.httpMethod, "POST")
 
-            // Example path here: `/36882784-420B-494F-910D-CBAC5897A309?ddsource=ios`
+            // Example path here: `/36882784-420B-494F-910D-CBAC5897A309?ksource=ios`
             XCTAssertNotNil(request.path, file: file, line: line)
             XCTAssertNotNil(request.queryItems)
             XCTAssertEqual(request.queryItems!.count, 1)
-            XCTAssertEqual(request.queryItems?.value(name: "ddsource"), "ios", file: file, line: line)
+            XCTAssertEqual(request.queryItems?.value(name: "ksource"), "ios", file: file, line: line)
 
             XCTAssertEqual(request.httpHeaders["Content-Type"], "text/plain;charset=UTF-8", file: file, line: line)
             XCTAssertEqual(request.httpHeaders["User-Agent"]?.matches(regex: userAgentRegex), true, file: file, line: line)
-            XCTAssertEqual(request.httpHeaders["DD-API-KEY"], "ui-tests-client-token", file: file, line: line)
-            XCTAssertEqual(request.httpHeaders["DD-EVP-ORIGIN"], "ios", file: file, line: line)
-            XCTAssertEqual(request.httpHeaders["DD-EVP-ORIGIN-VERSION"]?.matches(regex: semverRegex), true, file: file, line: line)
-            XCTAssertEqual(request.httpHeaders["DD-REQUEST-ID"]?.matches(regex: ddRequestIDRegex), true, file: file, line: line)
-            XCTAssertEqual(request.httpHeaders["DD-IDEMPOTENCY-KEY"]?.matches(regex: sha1Regex), true, file: file, line: line)
+            XCTAssertEqual(request.httpHeaders["KUBESENSE-API-KEY"], "ui-tests-client-token", file: file, line: line)
+            XCTAssertEqual(request.httpHeaders["KUBESENSE-EVP-ORIGIN"], "ios", file: file, line: line)
+            XCTAssertEqual(request.httpHeaders["KUBESENSE-EVP-ORIGIN-VERSION"]?.matches(regex: semverRegex), true, file: file, line: line)
+            XCTAssertEqual(request.httpHeaders["KUBESENSE-REQUEST-ID"]?.matches(regex: kubesenseRequestIDRegex), true, file: file, line: line)
+            XCTAssertEqual(request.httpHeaders["KUBESENSE-IDEMPOTENCY-KEY"]?.matches(regex: sha1Regex), true, file: file, line: line)
         }
     }
 }

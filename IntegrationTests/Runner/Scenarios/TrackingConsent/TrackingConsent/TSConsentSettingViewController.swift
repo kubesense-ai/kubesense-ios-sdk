@@ -5,7 +5,7 @@
  */
 
 import UIKit
-import DatadogCore
+import KubesenseCore
 
 internal class TSConsentSettingViewController: UIViewController {
 
@@ -25,13 +25,13 @@ internal class TSConsentSettingViewController: UIViewController {
     @IBAction func didChangeConsentValue(_ sender: Any) {
         switch consentValueControl.selectedSegmentIndex {
         case 0:
-            Datadog.set(trackingConsent: .granted)
+            Kubesense.set(trackingConsent: .granted)
             homeViewController.currentConsentValue = .granted
         case 1:
-            Datadog.set(trackingConsent: .notGranted)
+            Kubesense.set(trackingConsent: .notGranted)
             homeViewController.currentConsentValue = .notGranted
         case 2:
-            Datadog.set(trackingConsent: .pending)
+            Kubesense.set(trackingConsent: .pending)
             homeViewController.currentConsentValue = .pending
         default: fatalError()
         }

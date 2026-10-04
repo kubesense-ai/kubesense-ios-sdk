@@ -20,4 +20,4 @@ xcuserdata
 /cocoapods/**/Podfile
 
 # XCFramework test
-/xcframeworks/dd-sdk-ios
+/xcframeworks/kubesense-ios-sdk
