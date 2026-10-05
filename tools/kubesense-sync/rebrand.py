@@ -15,8 +15,8 @@ Usage:
     python3 tools/kubesense-sync/rebrand.py attribution --ref <tag> # prove the notices survived
     python3 tools/kubesense-sync/rebrand.py spec --ref <tag>       # print the fork's customizations
 
-`apply` rewrites the content of every tracked text file, then renames paths with `git mv` so that
-history follows the files. It is idempotent: running it twice changes nothing the second time.
+`apply` deletes the upstream paths the fork does not ship (`REMOVED_PATHS`), rewrites the content of
+every other tracked text file, then renames paths with `git mv` so that history follows the files. It is idempotent: running it twice changes nothing the second time.
 Paths are renamed with the very same rules as contents, so that references to files from
 `Package.swift`, the podspecs and the Xcode projects keep matching the files on disk.
 """
@@ -47,10 +47,23 @@ PRESERVED_LINE = re.compile(
     # credit Datadog as the author of their changes (the symbol prefixing of the vendored protobuf-c).
     r'|(?:altered|modified) by Datadog'
     r'|\\authors Datadog Inc\.'
+    # The header of the fork's own files names the upstream project it adds to.
+    r'|Kubesense addition to the fork of dd-sdk-ios'
 )
 
 # Whole files that are legal notices.
 PRESERVED_FILES = re.compile(r'(^|/)(LICENSE|NOTICE|LICENSE-3rdparty\.csv)$')
+
+# Upstream paths this fork does not ship: Datadog's internal CI (GitLab pipeline, Chainguard tokens, code
+# owners, Synthetics end-to-end and benchmark apps, dogfooding into Datadog's apps, Vault-backed upload
+# and runner scripts, the Confluence publisher) and the documents that only make sense with them. `apply` deletes them, so every upgrade drops them again;
+# `spec` therefore never sees them, and `attribution` does not expect their notices, since a file that is
+# not distributed carries no notice to keep. Matched against upstream's and the rebranded spelling.
+REMOVED_PATHS = re.compile(
+    r'^(E2ETests|BenchmarkTests|tools/dogfooding|\.github/chainguard)/'
+    r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
+    r'|tools/(e2e-build-upload|benchmark-build-upload|runner-setup|upload-smoke-test-reports)\.sh)$'
+)
 
 # Files this fork owns outright. They talk about upstream on purpose, so the rules never touch them;
 # `spec` still carries them over as part of the customization layer.
@@ -250,6 +263,23 @@ def skipped(path):
     )
 
 
+def removed(path):
+    return bool(REMOVED_PATHS.search(path) or REMOVED_PATHS.search(rename_path(path)))
+
+
+def remove_paths(paths, dry_run, root, use_git):
+    if dry_run or not paths:
+        return
+    if use_git:
+        subprocess.run(
+            ['git', 'rm', '-q', '--pathspec-from-file=-', '--pathspec-file-nul'],
+            cwd=root, input='\0'.join(paths).encode(), check=True,
+        )
+    else:
+        for path in paths:
+            os.remove(os.path.join(root, path))
+
+
 def read_text(absolute):
     if os.path.islink(absolute) or not os.path.isfile(absolute):
         return None
@@ -269,6 +299,11 @@ SOURCE_FILE = re.compile(r'\.(swift|m|mm|h|c|cpp)$')
 def apply(dry_run, root=REPO_ROOT, quiet=False):
     use_git = os.path.isdir(os.path.join(root, '.git'))
     files = tracked_files(root)
+    dropped = [path for path in files if removed(path)]
+    remove_paths(dropped, dry_run, root, use_git)
+    if not quiet:
+        print(f'removed: {len(dropped)} file(s) {"would be deleted" if dry_run else "deleted"}')
+    files = [path for path in files if not removed(path)]
     changed = 0
     for path in files:
         if skipped(path):
@@ -341,7 +376,8 @@ def apply(dry_run, root=REPO_ROOT, quiet=False):
 
 def remove_empty_directories(root=REPO_ROOT):
     for directory, _, _ in os.walk(root, topdown=False):
-        if f'{os.sep}.git' in directory + os.sep:
+        # The .git directory itself, not every path containing ".git" (.github, .gitlab).
+        if '.git' in os.path.relpath(directory, root).split(os.sep):
             continue
         # Listed afresh: the walk's own listing predates the removal of this directory's children.
         if directory != root and not os.path.islink(directory) and not os.listdir(directory):
@@ -483,12 +519,15 @@ def attribution(ref):
         export_ref(ref, upstream)
         expected = collections.Counter()
         for path in tracked_files(upstream):
+            if removed(path):
+                continue
             text = read_text(os.path.join(upstream, path))
             if text is None:
                 continue
+            # Compared without surrounding whitespace: NOTICE quotes upstream's notice indented.
             for line in text.splitlines():
                 if PRESERVED_LINE.search(line):
-                    expected[line] += 1
+                    expected[line.strip()] += 1
         actual = collections.Counter()
         for path in tracked_files():
             text = read_text(os.path.join(REPO_ROOT, path))
@@ -496,7 +535,7 @@ def attribution(ref):
                 continue
             for line in text.splitlines():
                 if PRESERVED_LINE.search(line):
-                    actual[line] += 1
+                    actual[line.strip()] += 1
         missing = {line: count - actual[line] for line, count in expected.items() if actual[line] < count}
         for line, count in sorted(missing.items()):
             print(f'missing x{count}: {line.strip()[:140]}')
