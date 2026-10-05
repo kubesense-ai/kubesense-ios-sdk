@@ -120,7 +120,7 @@ Every change to a file that came from upstream is replayed onto each new upstrea
 
 - [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): subject`, for example `feat(samples): Kubesense Shop sample app for iOS` or `chore(podspecs): declare iOS only`. Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`; the scope, the area touched, is optional.
 - Subject in the imperative, starting lowercase after the colon, no trailing period, at most 72 characters. The body explains what changed and why, wrapped at 72.
-- **No "Datadog" and no "dd" in commit messages, pull request titles or descriptions.** The check is a case-insensitive substring match, so it also rules out words such as *add*, *address*, *hidden*, *embedded* and *middle*, and paths such as `xcshareddata`. Say "upstream" for the upstream project and its company, and reword the rest. Check a message before committing:
+- **No "Datadog" and no "dd" in commit messages, branch names, pull request titles or descriptions.** Branch names count because GitHub writes them into the merge commit message (`Merge pull request #1 from kubesense-ai/<branch>`). The check is a case-insensitive substring match, so it also rules out words such as *add*, *address*, *hidden*, *embedded* and *middle*, and paths such as `xcshareddata`. Say "upstream" for the upstream project and its company, and reword the rest. Check a message before committing:
 
   ```bash
   grep -inE 'dd|datadog' <<< "$message"   # must print nothing
