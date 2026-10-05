@@ -55,18 +55,27 @@ PRESERVED_LINE = re.compile(
 PRESERVED_FILES = re.compile(r'(^|/)(LICENSE|NOTICE|LICENSE-3rdparty\.csv)$')
 
 # Upstream paths this fork does not ship: Datadog's internal CI (GitLab pipeline, Chainguard tokens, code
-# owners, Synthetics end-to-end and benchmark apps, dogfooding into Datadog's apps, Vault-backed upload
-# and runner scripts, the Confluence publisher), the Session Replay snapshot tests (their reference
-# images live in Datadog's private snapshots repository; their SRFixtures package stays) and the documents that only make sense with
-# them. `apply` deletes them, so every upgrade drops them again;
-# `spec` therefore never sees them, and `attribution` does not expect their notices, since a file that is
-# not distributed carries no notice to keep. Matched against upstream's and the rebranded spelling.
+# owners, Synthetics end-to-end and benchmark apps, dogfooding into Datadog's apps, the Vault client and
+# the scripts built on it, the CI environment check, the Confluence publisher); the Session Replay
+# snapshot tests, whose reference images live in Datadog's private snapshots repository (their
+# SRFixtures package stays); the Xcode file templates, which stamp new files with Datadog's copyright;
+# the profiling protobuf and Swift Package Index doc generators; the Xcode project's performance
+# baselines, recorded on Datadog's devices for test classes that no longer exist; Datadog's GitHub issue
+# and PR templates, Dependabot and stale-issue settings, and the agent skills for its branch, commit, PR
+# and feature-docs workflow; and the documents that only make sense with them. The fork must not reuse
+# these paths for files of its own: `apply` would delete them. `apply` deletes them, so every upgrade drops them again; `spec` therefore never sees them,
+# and `attribution` does not expect their notices, since a file that is not distributed carries no
+# notice to keep. Matched against upstream's and the rebranded spelling.
 REMOVED_PATHS = re.compile(
-    r'^(E2ETests|BenchmarkTests|tools/dogfooding|tools/sr-snapshots|\.github/chainguard)/'
+    r'^(E2ETests|BenchmarkTests|tools/dogfooding|tools/sr-snapshots|tools/secrets|tools/xcode-templates'
+    r'|\.github/chainguard|\.github/ISSUE_TEMPLATE|Kubesense/Kubesense\.xcodeproj/xcshareddata/xcbaselines'
+    r'|\.claude/skills/(git-branch|git-commit|open-pr|update-feature-docs))/'
     # Everything of the snapshot tests but SRFixtures, a package the IntegrationTests runner imports.
     r'|^KubesenseSessionReplay/SRSnapshotTests/(?!SRFixtures/)'
-    r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
-    r'|tools/(e2e-build-upload|benchmark-build-upload|runner-setup|upload-smoke-test-reports|sr-snapshot-test)\.sh)$'
+    r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|\.github/PULL_REQUEST_TEMPLATE\.md|\.github/dependabot\.yml'
+    r'|\.github/workflows/stale\.yml|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
+    r'|tools/(e2e-build-upload|benchmark-build-upload|runner-setup|upload-smoke-test-reports|sr-snapshot-test'
+    r'|env-check|protoc-pprof|doc-build)\.sh)$'
 )
 
 # Files this fork owns outright. They talk about upstream on purpose, so the rules never touch them;
@@ -409,6 +418,11 @@ def read_lines(path):
     return data.decode('utf-8', 'replace').splitlines(keepends=True)
 
 
+def file_mode(path):
+    """The git mode of a file, so the patch keeps executable scripts executable."""
+    return '100755' if not os.path.islink(path) and os.access(path, os.X_OK) else '100644'
+
+
 def spec(ref):
     """Prints, as a patch, everything this fork changes on top of the rebranded `ref`.
 
@@ -426,7 +440,8 @@ def spec(ref):
         ).stdout.decode().split('\0')
         fork_files |= {path for path in untracked if path}
         for path in sorted(upstream_files | fork_files):
-            if path.startswith('tools/kubesense-sync/'):
+            # Step 2 of the procedure checks these out of the fork before the patch is applied.
+            if path.startswith('tools/kubesense-sync/') or path == 'docs/UPSTREAM_SYNC.md':
                 continue
             upstream_path = os.path.join(upstream, path)
             fork_path = os.path.join(REPO_ROOT, path)
@@ -442,15 +457,19 @@ def spec(ref):
                 elif in_upstream != in_fork:
                     print(f'# binary file {"added" if in_fork else "removed"}: {path}')
                 continue
-            if before == after:
+            old_mode = file_mode(upstream_path) if in_upstream else None
+            new_mode = file_mode(fork_path) if in_fork else None
+            if before == after and old_mode == new_mode:
                 continue
             source = f'a/{path}' if in_upstream else '/dev/null'
             target = f'b/{path}' if in_fork else '/dev/null'
             sys.stdout.write(f'diff --git a/{path} b/{path}\n')
             if not in_upstream:
-                sys.stdout.write('new file mode 100644\n')
+                sys.stdout.write(f'new file mode {new_mode}\n')
             elif not in_fork:
-                sys.stdout.write('deleted file mode 100644\n')
+                sys.stdout.write(f'deleted file mode {old_mode}\n')
+            elif old_mode != new_mode:
+                sys.stdout.write(f'old mode {old_mode}\nnew mode {new_mode}\n')
             for line in difflib.unified_diff(before, after, source, target):
                 sys.stdout.write(line if line.endswith('\n') else line + '\n\\ No newline at end of file\n')
 

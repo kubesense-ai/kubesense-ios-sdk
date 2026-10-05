@@ -2,7 +2,7 @@
 
 This document provides guidelines for LLMs updating feature documentation files (`*_FEATURE.md`) in the Kubesense iOS SDK repository.
 
-> For the *workflow* around these docs (verification, publishing, the update skill), see the *Feature Docs System* page in Confluence. The canonical update procedure lives in [`.claude/skills/update-feature-docs/SKILL.md`](../.claude/skills/update-feature-docs/SKILL.md).
+> Each doc's frontmatter (`verified_against_commit`, `tracked_files`) drives `make feature-docs-verify` (`tools/feature-docs-verify.sh`), which reports docs whose tracked files changed since they were last verified.
 
 ## Purpose
 
@@ -96,7 +96,7 @@ The Quick Start snippet should be valid Swift against the current SDK version. P
 Cases marked `@available(*, deprecated, message:)` — enum cases, methods, properties — must appear in the doc with a clear deprecation note. They remain on the public API and customers can still encounter them.
 
 ### Coverage
-Every public API or configuration source file referenced in the "Key Files" section should also appear in `tracked_files` (the `update-feature-docs` skill audits this). Internal implementation files in "Key Files" are navigation references and do not need to be frontmatter drift triggers.
+Every public API or configuration source file referenced in the "Key Files" section should also appear in `tracked_files`. Internal implementation files in "Key Files" are navigation references and do not need to be frontmatter drift triggers.
 
 ### What to skip
 - Don't replicate customer-facing public documentation verbatim — these files are LLM-optimized, not customer-facing.
