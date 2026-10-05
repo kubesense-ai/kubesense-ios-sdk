@@ -1,0 +1,8 @@
+{
+  "KUBESENSE_CLIENT_TOKEN": "",
+  "KUBESENSE_APPLICATION_ID": "",
+  "KUBESENSE_RUM_ENDPOINT": "",
+  "KUBESENSE_ENV": "dev",
+  "SAMPLE_API_BASE_URL": "https://taji.tyke.ai",
+  "FLAVOR": "example"
+}
