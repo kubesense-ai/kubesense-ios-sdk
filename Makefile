@@ -207,6 +207,13 @@ tools-test:
 	@$(ECHO_TITLE) "make tools-test"
 	./tools/tools-test.sh
 
+# SDK overhead benchmarks on the Kubesense Shop sample (launch and scrolling with the SDK off, RUM only,
+# and every feature). DESTINATION defaults to the iPhone 17 Pro simulator.
+.PHONY: benchmark
+benchmark:
+	@$(ECHO_TITLE) "make benchmark"
+	@$(MAKE) -C Samples/KubesenseShop benchmark $(if $(DESTINATION),DESTINATION='$(DESTINATION)')
+
 # Run smoke tests
 smoke-test:
 	@$(call require_param,TEST_DIRECTORY)

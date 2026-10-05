@@ -93,6 +93,17 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
 
+  KubesenseShopBenchmarks:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: KubesenseShopBenchmarks
+    dependencies:
+      - target: KubesenseShop
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
 schemes:
   KubesenseShop:
     build:
@@ -104,3 +115,15 @@ schemes:
       targets:
         - KubesenseShopTests
         - KubesenseShopUITests
+
+  # Run with `make benchmark`. A separate scheme in Release, so performance is measured on
+  # optimized code and the shop's tests stay quick.
+  KubesenseShopBenchmarks:
+    build:
+      targets:
+        KubesenseShop: all
+        KubesenseShopBenchmarks: [test]
+    test:
+      config: Release
+      targets:
+        - KubesenseShopBenchmarks

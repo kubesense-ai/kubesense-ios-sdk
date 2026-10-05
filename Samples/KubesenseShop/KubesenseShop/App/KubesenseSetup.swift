@@ -14,16 +14,18 @@ import KubesenseSessionReplay
 import KubesenseTrace
 import OpenTelemetryApi
 
-/// Starts every Kubesense feature the sample exercises. Without credentials the app runs in
-/// preview mode: the shop works, nothing is uploaded.
+/// Starts the Kubesense features of the configured `SDKProfile`. Without credentials, or with the `.off`
+/// profile, the app runs in preview mode: the shop works, nothing is uploaded.
 enum KubesenseSetup {
     private(set) static var sdkEnabled = false
     private(set) static var logger: LoggerProtocol?
 
     static func start(with config: ShopConfig) {
-        guard config.hasCredentials else { return }
+        guard config.hasCredentials, config.sdkProfile != .off else { return }
 
-        Kubesense.verbosityLevel = .debug
+        if config.sdkVerbose {
+            Kubesense.verbosityLevel = .debug
+        }
         Kubesense.initialize(
             with: Kubesense.Configuration(
                 clientToken: config.clientToken,
@@ -56,12 +58,17 @@ enum KubesenseSetup {
         )
         URLSessionInstrumentation.enableDurationBreakdown(with: .init(delegateClass: ShopURLSessionDelegate.self))
         RUMMonitor.shared().addAttribute(forKey: "variant", value: config.flavor)
+        sdkEnabled = true
+        guard config.sdkProfile != .rum else { return }
 
-        Logs.enable()
-        Trace.enable(with: Trace.Configuration(networkInfoEnabled: true))
-        OpenTelemetry.registerTracerProvider(tracerProvider: OTelTracerProvider())
-        Flags.enable()
-        CrashReporting.enable()
+        let full = config.sdkProfile == .full
+        if full {
+            Logs.enable()
+            Trace.enable(with: Trace.Configuration(networkInfoEnabled: true))
+            OpenTelemetry.registerTracerProvider(tracerProvider: OTelTracerProvider())
+            Flags.enable()
+            CrashReporting.enable()
+        }
         SessionReplay.enable(
             with: SessionReplay.Configuration(
                 replaySampleRate: 100,
@@ -73,9 +80,13 @@ enum KubesenseSetup {
             )
         )
 
+        guard full else { return }
         logger = Logger.create(
-            with: Logger.Configuration(name: "kubesense-shop", networkInfoEnabled: true, consoleLogFormat: .short)
+            with: Logger.Configuration(
+                name: "kubesense-shop",
+                networkInfoEnabled: true,
+                consoleLogFormat: config.sdkVerbose ? .short : nil
+            )
         )
-        sdkEnabled = true
     }
 }

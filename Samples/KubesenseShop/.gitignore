@@ -2,3 +2,5 @@
 KubesenseShop.xcodeproj/
 # Holds SDK credentials.
 Config/local.json
+# Benchmark results and their DerivedData.
+build/
