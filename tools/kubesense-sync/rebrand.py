@@ -80,7 +80,7 @@ REMOVED_PATHS = re.compile(
 
 # Files this fork owns outright. They talk about upstream on purpose, so the rules never touch them;
 # `spec` still carries them over as part of the customization layer.
-FORK_OWNED_FILES = re.compile(r'^(README\.md|CLAUDE\.md|docs/UPSTREAM_SYNC\.md)$|(^|/)CHANGELOG\.md$')
+FORK_OWNED_FILES = re.compile(r'^(README\.md|CLAUDE\.md|docs/UPSTREAM_SYNC\.md|docs/CONVENTIONS\.md)$|(^|/)CHANGELOG\.md$')
 
 # Tokens that must keep their upstream spelling: they name things that exist outside this repository
 # (external projects and tools, a Datadog-hosted test page), or wire names the Kubesense Android SDK
