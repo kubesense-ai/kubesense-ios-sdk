@@ -3,16 +3,12 @@ all: env-check repo-setup dependencies templates
 		lint lint-cpp license-check \
 		test test-ios test-ios-all test-tvos test-tvos-all test-visionos test-visionos-all \
 		ui-test ui-test-all ui-test-podinstall \
-		sr-snapshot-test sr-snapshots-pull sr-snapshots-push sr-layer-snapshot-test sr-layer-snapshots-pull sr-layer-snapshots-push sr-snapshot-tests-open \
 		tools-test \
 		smoke-test smoke-test-ios smoke-test-ios-all smoke-test-tvos smoke-test-tvos-all \
 		spm-build spm-build-ios spm-build-tvos spm-build-visionos spm-build-macos spm-build-watchos \
-		e2e-upload \
-		benchmark-build benchmark-upload \
 		models-generate rum-models-generate sr-models-generate rc-models-generate models-verify rum-models-verify sr-models-verify rc-models-verify \
 		api-surface spi-docs-build \
 		profiling-protoc \
-		dogfood-shopist dogfood-kubesense-app \
 		release-build release-validate release-publish-github \
 		release-publish-podspec release-publish-internal-podspecs release-publish-dependent-podspecs \
 		set-ci-secret
@@ -75,11 +71,6 @@ DEFAULT_WATCHOS_DEVICE := Apple Watch Series 11 (46mm)
 DEFAULT_VISIONOS_OS := latest
 DEFAULT_VISIONOS_PLATFORM := visionOS Simulator
 DEFAULT_VISIONOS_DEVICE := Apple Vision Pro
-
-# Test env for running SR snapshot tests in local:
-DEFAULT_SR_SNAPSHOT_TESTS_OS := 17.5
-DEFAULT_SR_SNAPSHOT_TESTS_PLATFORM := iOS Simulator
-DEFAULT_SR_SNAPSHOT_TESTS_DEVICE := iPhone 15
 
 # Default location for deploying artifacts
 DEFAULT_ARTIFACTS_PATH := artifacts
@@ -282,30 +273,6 @@ spm-build-macos:
 	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseTrace"
 	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseCrashReporting"
 
-# Builds a new version of the E2E app and publishes it to synthetics.
-e2e-upload:
-	@$(call require_param,ARTIFACTS_PATH)
-	@:$(eval DRY_RUN ?= 1)
-	@$(ECHO_TITLE) "make e2e-upload ARTIFACTS_PATH='$(ARTIFACTS_PATH)' DRY_RUN='$(DRY_RUN)'"
-	DRY_RUN=$(DRY_RUN) ./tools/e2e-build-upload.sh --artifacts-path "$(ARTIFACTS_PATH)"
-
-# Builds the Benchmark app.
-benchmark-build:
-	@$(ECHO_TITLE) "make benchmark-build"
-	@$(MAKE) -C BenchmarkTests build
-
-# Builds a new version of the Benchmark app and publishes it to synthetics.
-benchmark-upload:
-	@$(call require_param,ARTIFACTS_PATH)
-	@:$(eval DRY_RUN ?= 1)
-	@$(ECHO_TITLE) "make benchmark-upload ARTIFACTS_PATH='$(ARTIFACTS_PATH)' DRY_RUN='$(DRY_RUN)'"
-	DRY_RUN=$(DRY_RUN) ./tools/benchmark-build-upload.sh --artifacts-path "$(ARTIFACTS_PATH)"
-
-# Opens `BenchmarkTests` project with passing required ENV variables
-benchmark-tests-open:
-	@$(ECHO_TITLE) "make benchmark-tests-open"
-	@$(MAKE) -C BenchmarkTests open
-
 xcodeproj-session-replay:
 		@echo "⚙️  Generating 'KubesenseSessionReplay.xcodeproj'..."
 		@cd KubesenseSessionReplay/ && swift package generate-xcodeproj
@@ -360,50 +327,6 @@ protoc-pprof:
 	@$(ECHO_TITLE) "protoc-pprof"
 	./tools/protoc-pprof.sh --proto-path KubesenseProfiling/Protos/profile.proto --output-dir KubesenseProfiling/Mach
 
-# Pushes current SR snapshots to snapshots repo
-sr-snapshots-push:
-	@$(ECHO_TITLE) "make sr-snapshots-push"
-	./tools/sr-snapshot-test.sh --push
-
-# Pulls SR snapshots from snapshots repo
-sr-snapshots-pull:
-	@$(ECHO_TITLE) "make sr-snapshots-pull"
-	./tools/sr-snapshot-test.sh --pull
-
-# Pushes current SR layer snapshots to snapshots repo
-sr-layer-snapshots-push:
-	@$(ECHO_TITLE) "make sr-layer-snapshots-push"
-	./tools/sr-snapshot-test.sh --suite layer-tree --push $(if $(SNAPSHOT_ENV),--snapshot-env "$(SNAPSHOT_ENV)")
-
-# Pulls SR layer snapshots from snapshots repo
-sr-layer-snapshots-pull:
-	@$(ECHO_TITLE) "make sr-layer-snapshots-pull"
-	./tools/sr-snapshot-test.sh --suite layer-tree --pull $(if $(SNAPSHOT_ENV),--snapshot-env "$(SNAPSHOT_ENV)")
-
-# Run Session Replay snapshot tests
-sr-snapshot-test:
-	@:$(eval OS ?= $(DEFAULT_SR_SNAPSHOT_TESTS_OS))
-	@:$(eval PLATFORM ?= $(DEFAULT_SR_SNAPSHOT_TESTS_PLATFORM))
-	@:$(eval DEVICE ?= $(DEFAULT_SR_SNAPSHOT_TESTS_DEVICE))
-	@:$(eval ARTIFACTS_PATH ?= $(DEFAULT_ARTIFACTS_PATH))
-	@$(ECHO_TITLE) "make sr-snapshot-test OS='$(OS)' PLATFORM='$(PLATFORM)' DEVICE='$(DEVICE)' ARTIFACTS_PATH='$(ARTIFACTS_PATH)'"
-	./tools/sr-snapshot-test.sh \
-		--test --os "$(OS)" --device "$(DEVICE)" --platform "$(PLATFORM)" --artifacts-path "$(ARTIFACTS_PATH)"
-
-# Run Session Replay layer snapshot tests
-sr-layer-snapshot-test:
-	@:$(eval ARTIFACTS_PATH ?= $(DEFAULT_ARTIFACTS_PATH))
-	@$(ECHO_TITLE) "make sr-layer-snapshot-test SNAPSHOT_ENV='$(SNAPSHOT_ENV)' ARTIFACTS_PATH='$(ARTIFACTS_PATH)'"
-	./tools/sr-snapshot-test.sh \
-		--suite layer-tree --test $(if $(SNAPSHOT_ENV),--snapshot-env "$(SNAPSHOT_ENV)") \
-		$(if $(OS),--os "$(OS)") $(if $(DEVICE),--device "$(DEVICE)") $(if $(PLATFORM),--platform "$(PLATFORM)") \
-		--artifacts-path "$(ARTIFACTS_PATH)"
-
-# Opens `SRSnapshotTests` project with passing required ENV variables
-sr-snapshot-tests-open:
-	@$(ECHO_TITLE) "make sr-snapshot-tests-open"
-	./tools/sr-snapshot-test.sh --open-project
-
 # Define default paths for API output files
 SWIFT_OUTPUT_PATH ?= api-surface-swift
 OBJC_OUTPUT_PATH ?= api-surface-objc
@@ -449,18 +372,6 @@ feature-docs-verify:
 spi-docs-build:
 	@$(ECHO_TITLE) "make spi-docs-build"
 	./tools/doc-build.sh --spi-path .spi.yml
-
-# Creates dogfooding PR in shopist-ios
-dogfood-shopist:
-	@:$(eval DRY_RUN ?= 1)
-	@$(ECHO_TITLE) "make dogfood-shopist DRY_RUN='$(DRY_RUN)'"
-	DRY_RUN=$(DRY_RUN) ./tools/dogfooding/dogfood.sh --shopist
-
-# Creates dogfooding PR in kubesense-ios
-dogfood-kubesense-app:
-	@:$(eval DRY_RUN ?= 1)
-	@$(ECHO_TITLE) "make dogfood-kubesense-app DRY_RUN='$(DRY_RUN)'"
-	DRY_RUN=$(DRY_RUN) ./tools/dogfooding/dogfood.sh --kubesense-app
 
 # Builds release artifacts for given tag
 release-build:

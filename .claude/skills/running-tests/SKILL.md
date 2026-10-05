@@ -23,7 +23,6 @@ xcrun simctl list devices available | grep -E "iPhone|Apple TV"
 | One module with specific device | `make test-ios SCHEME="<Scheme>" DEVICE="<Device>"` |
 | All tvOS unit tests | `make test-tvos-all` |
 | UI / integration tests | `make ui-test TEST_PLAN="<Plan>"` |
-| Session Replay snapshots | `make sr-snapshot-test` |
 
 **Default devices** (authoritative values from Makefile):
 ```bash

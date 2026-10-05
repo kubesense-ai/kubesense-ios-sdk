@@ -1,8 +1,0 @@
-CLIENT_TOKEN = // the Client Token on Mobile Integration Org
-RUM_APPLICATION_ID = // the RUM Application ID on Mobile Integration Org
-
-KUBESENSE_ENV[config=*] = e2e
-KUBESENSE_ENV[config=Debug] = development
-KUBESENSE_SITE = prod
-
-#include? "E2E.local.xcconfig"
