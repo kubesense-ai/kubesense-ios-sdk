@@ -18,8 +18,8 @@ failed = False
 def print_fix_instructions(full_clone=False):
     """Print the standard recipe for fixing a feature-doc verification failure."""
     on_full_clone = " on a full clone" if full_clone else ""
-    print(f"   Run the '/kubesense-ios-sdk:update-feature-docs' skill in Claude Code{on_full_clone} to refresh the doc,")
-    print(f"   then `make feature-docs-verify` to confirm, and push the update.")
+    print(f"   Review the doc against the changes to its tracked files{on_full_clone}, update it and its")
+    print(f"   `verified_against_commit`, then `make feature-docs-verify` to confirm, and push the update.")
 
 def parse_frontmatter(path):
     """Return (verified_against_commit, tracked_files) from a doc's YAML frontmatter."""

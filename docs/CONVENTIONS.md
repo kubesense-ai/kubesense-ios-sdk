@@ -89,7 +89,6 @@ All source files must include the Apache License header:
 - Example: `[RUM-1234] Add baggage header merging support`, `[FFL-213] Add Feature Flags support`
 
 ### PR Requirements
-- **Always follow `.github/PULL_REQUEST_TEMPLATE.md`** when creating PRs
 - **Title prefix**: `[PROJECT-XXXX]` matching the JIRA ticket
 - Include thorough test coverage
 - Pass all CI checks (lint, tests, API surface verification)

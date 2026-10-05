@@ -60,16 +60,20 @@ PRESERVED_FILES = re.compile(r'(^|/)(LICENSE|NOTICE|LICENSE-3rdparty\.csv)$')
 # snapshot tests, whose reference images live in Datadog's private snapshots repository (their
 # SRFixtures package stays); the Xcode file templates, which stamp new files with Datadog's copyright;
 # the profiling protobuf and Swift Package Index doc generators; the Xcode project's performance
-# baselines, recorded on Datadog's devices for test classes that no longer exist; and the documents
-# that only make sense with them. `apply` deletes them, so every upgrade drops them again; `spec` therefore never sees them,
+# baselines, recorded on Datadog's devices for test classes that no longer exist; Datadog's GitHub issue
+# and PR templates, Dependabot and stale-issue settings, and the agent skills for its branch, commit, PR
+# and feature-docs workflow; and the documents that only make sense with them. The fork must not reuse
+# these paths for files of its own: `apply` would delete them. `apply` deletes them, so every upgrade drops them again; `spec` therefore never sees them,
 # and `attribution` does not expect their notices, since a file that is not distributed carries no
 # notice to keep. Matched against upstream's and the rebranded spelling.
 REMOVED_PATHS = re.compile(
     r'^(E2ETests|BenchmarkTests|tools/dogfooding|tools/sr-snapshots|tools/secrets|tools/xcode-templates'
-    r'|\.github/chainguard|Kubesense/Kubesense\.xcodeproj/xcshareddata/xcbaselines)/'
+    r'|\.github/chainguard|\.github/ISSUE_TEMPLATE|Kubesense/Kubesense\.xcodeproj/xcshareddata/xcbaselines'
+    r'|\.claude/skills/(git-branch|git-commit|open-pr|update-feature-docs))/'
     # Everything of the snapshot tests but SRFixtures, a package the IntegrationTests runner imports.
     r'|^KubesenseSessionReplay/SRSnapshotTests/(?!SRFixtures/)'
-    r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
+    r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|\.github/PULL_REQUEST_TEMPLATE\.md|\.github/dependabot\.yml'
+    r'|\.github/workflows/stale\.yml|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
     r'|tools/(e2e-build-upload|benchmark-build-upload|runner-setup|upload-smoke-test-reports|sr-snapshot-test'
     r'|env-check|protoc-pprof|doc-build)\.sh)$'
 )
