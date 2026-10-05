@@ -59,13 +59,14 @@ PRESERVED_FILES = re.compile(r'(^|/)(LICENSE|NOTICE|LICENSE-3rdparty\.csv)$')
 # the scripts built on it, the CI environment check, the Confluence publisher); the Session Replay
 # snapshot tests, whose reference images live in Datadog's private snapshots repository (their
 # SRFixtures package stays); the Xcode file templates, which stamp new files with Datadog's copyright;
-# the profiling protobuf and Swift Package Index doc generators; and the documents that only make sense
-# with them. `apply` deletes them, so every upgrade drops them again; `spec` therefore never sees them,
+# the profiling protobuf and Swift Package Index doc generators; the Xcode project's performance
+# baselines, recorded on Datadog's devices for test classes that no longer exist; and the documents
+# that only make sense with them. `apply` deletes them, so every upgrade drops them again; `spec` therefore never sees them,
 # and `attribution` does not expect their notices, since a file that is not distributed carries no
 # notice to keep. Matched against upstream's and the rebranded spelling.
 REMOVED_PATHS = re.compile(
     r'^(E2ETests|BenchmarkTests|tools/dogfooding|tools/sr-snapshots|tools/secrets|tools/xcode-templates'
-    r'|\.github/chainguard)/'
+    r'|\.github/chainguard|Kubesense/Kubesense\.xcodeproj/xcshareddata/xcbaselines)/'
     # Everything of the snapshot tests but SRFixtures, a package the IntegrationTests runner imports.
     r'|^KubesenseSessionReplay/SRSnapshotTests/(?!SRFixtures/)'
     r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
