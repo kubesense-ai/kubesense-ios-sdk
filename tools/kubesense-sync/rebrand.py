@@ -94,6 +94,8 @@ PRESERVED_TOKENS = [
     'github.com/DataDog/dd-sdk-swift-testing',
     'github.com/DataDog/dd-sdk-ios-apollo-interceptor',
     'DataDog/dd-mobile-session-replay-snapshots',
+    # Hosts the prebuilt OpenTelemetryApi binary the Cartfile depends on, for Carthage users.
+    'DataDog/opentelemetry-swift-packages',
     'dd-mobile-session-replay-snapshots',
     'dd-sdk-ios-apollo-interceptor',
     'dd-openfeature-provider-swift',
