@@ -201,5 +201,5 @@ extension CrashContext {
         )
     }
 
-    public var data: Data { try! JSONEncoder.dd.default().encode(self) }
+    public var data: Data { try! JSONEncoder.kubesense.default().encode(self) }
 }

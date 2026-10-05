@@ -73,7 +73,7 @@ struct StrictConcurrencyChecks {
     #if os(iOS)
     @MainActor
     func sessionReplay() {
-        let overrides = UIView().dd.sessionReplayPrivacyOverrides
+        let overrides = UIView().kubesense.sessionReplayPrivacyOverrides
         Task.detached {
             overrides.hide = true
         }

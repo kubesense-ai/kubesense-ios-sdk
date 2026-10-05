@@ -590,7 +590,7 @@ static void stack_trace_sample_thread(
     walk_frames(trace, fp, pc, stack_base, stack_buf, bytes_read, max_depth, true);
 }
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 /**
  * Constructs a profiler instance.
@@ -914,7 +914,7 @@ void mach_sampling_profiler::main() {
     worker->finish_producer(sample_buffer);
 }
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 extern "C" {
 

@@ -376,14 +376,14 @@ extension RUMAccount {
     public static func == (lhs: RUMAccount, rhs: RUMAccount) -> Bool {
         lhs.id == rhs.id &&
         lhs.name == rhs.name &&
-        lhs.accountInfo.dd == rhs.accountInfo.dd
+        lhs.accountInfo.kubesense == rhs.accountInfo.kubesense
     }
 }
 
 /// Schema of all properties of an Action event
 public struct RUMActionEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public var dd: DD
+    public var kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -461,7 +461,7 @@ public struct RUMActionEvent: RUMDataModel, Equatable {
     public var view: View
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case action = "action"
         case application = "application"
@@ -492,7 +492,7 @@ public struct RUMActionEvent: RUMDataModel, Equatable {
     /// Schema of all properties of an Action event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - action: Action properties
     ///   - application: Application properties
@@ -518,7 +518,7 @@ public struct RUMActionEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         action: Action,
         application: Application,
@@ -544,7 +544,7 @@ public struct RUMActionEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.action = action
         self.application = application
@@ -572,7 +572,7 @@ public struct RUMActionEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Action properties
         public var action: Action?
 
@@ -1520,7 +1520,7 @@ public struct RUMConnectivity: Codable, Equatable {
 /// Schema of all properties of an Error event
 public struct RUMErrorEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -1607,7 +1607,7 @@ public struct RUMErrorEvent: RUMDataModel, Equatable {
     public var view: View
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case action = "action"
         case application = "application"
@@ -1641,7 +1641,7 @@ public struct RUMErrorEvent: RUMDataModel, Equatable {
     /// Schema of all properties of an Error event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - action: Action properties
     ///   - application: Application properties
@@ -1670,7 +1670,7 @@ public struct RUMErrorEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         action: Action? = nil,
         application: Application,
@@ -1699,7 +1699,7 @@ public struct RUMErrorEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.action = action
         self.application = application
@@ -1730,7 +1730,7 @@ public struct RUMErrorEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -2892,7 +2892,7 @@ extension RUMErrorEvent.FeatureFlags {
     }
 
     public static func == (lhs: RUMErrorEvent.FeatureFlags, rhs: RUMErrorEvent.FeatureFlags) -> Bool {
-        lhs.featureFlagsInfo.dd == rhs.featureFlagsInfo.dd
+        lhs.featureFlagsInfo.kubesense == rhs.featureFlagsInfo.kubesense
     }
 }
 
@@ -2938,7 +2938,7 @@ extension RUMEventAttributes {
     }
 
     public static func == (lhs: RUMEventAttributes, rhs: RUMEventAttributes) -> Bool {
-        lhs.contextInfo.dd == rhs.contextInfo.dd
+        lhs.contextInfo.kubesense == rhs.contextInfo.kubesense
     }
 }
 
@@ -3116,7 +3116,7 @@ public struct RUMGraphql: Codable, Equatable {
 /// Schema of all properties of a Long Task event
 public struct RUMLongTaskEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -3197,7 +3197,7 @@ public struct RUMLongTaskEvent: RUMDataModel, Equatable {
     public var view: View
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case action = "action"
         case application = "application"
@@ -3229,7 +3229,7 @@ public struct RUMLongTaskEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a Long Task event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - action: Action properties
     ///   - application: Application properties
@@ -3256,7 +3256,7 @@ public struct RUMLongTaskEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         action: Action? = nil,
         application: Application,
@@ -3283,7 +3283,7 @@ public struct RUMLongTaskEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.action = action
         self.application = application
@@ -3312,7 +3312,7 @@ public struct RUMLongTaskEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -4023,7 +4023,7 @@ public enum RUMMethod: String, Codable {
 /// Schema of all properties of a Resource event
 public struct RUMResourceEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -4104,7 +4104,7 @@ public struct RUMResourceEvent: RUMDataModel, Equatable {
     public var view: View
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case action = "action"
         case application = "application"
@@ -4136,7 +4136,7 @@ public struct RUMResourceEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a Resource event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - action: Action properties
     ///   - application: Application properties
@@ -4163,7 +4163,7 @@ public struct RUMResourceEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         action: Action? = nil,
         application: Application,
@@ -4190,7 +4190,7 @@ public struct RUMResourceEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.action = action
         self.application = application
@@ -4219,7 +4219,7 @@ public struct RUMResourceEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -5421,7 +5421,7 @@ extension RUMSyntheticsTest {
         lhs.injected == rhs.injected &&
         lhs.resultId == rhs.resultId &&
         lhs.testId == rhs.testId &&
-        lhs.syntheticsInfo.dd == rhs.syntheticsInfo.dd
+        lhs.syntheticsInfo.kubesense == rhs.syntheticsInfo.kubesense
     }
 }
 
@@ -5517,7 +5517,7 @@ public struct RUMTelemetryOperatingSystem: Codable, Equatable {
 /// Schema for a CPU timeseries event.
 public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -5592,7 +5592,7 @@ public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
     public var view: View?
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -5622,7 +5622,7 @@ public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
     /// Schema for a CPU timeseries event.
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -5647,7 +5647,7 @@ public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -5672,7 +5672,7 @@ public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View? = nil
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -5699,7 +5699,7 @@ public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -6176,7 +6176,7 @@ public struct RUMTimeseriesCpuEvent: RUMDataModel, Equatable {
 /// Schema for a memory timeseries event.
 public struct RUMTimeseriesMemoryEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -6251,7 +6251,7 @@ public struct RUMTimeseriesMemoryEvent: RUMDataModel, Equatable {
     public var view: View?
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -6281,7 +6281,7 @@ public struct RUMTimeseriesMemoryEvent: RUMDataModel, Equatable {
     /// Schema for a memory timeseries event.
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -6306,7 +6306,7 @@ public struct RUMTimeseriesMemoryEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -6331,7 +6331,7 @@ public struct RUMTimeseriesMemoryEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View? = nil
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -6358,7 +6358,7 @@ public struct RUMTimeseriesMemoryEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -6935,14 +6935,14 @@ extension RUMUser {
         lhs.email == rhs.email &&
         lhs.id == rhs.id &&
         lhs.name == rhs.name &&
-        lhs.usrInfo.dd == rhs.usrInfo.dd
+        lhs.usrInfo.kubesense == rhs.usrInfo.kubesense
     }
 }
 
 /// Schema of all properties of a View event
 public struct RUMViewEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -7023,7 +7023,7 @@ public struct RUMViewEvent: RUMDataModel, Equatable {
     public var view: View
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -7055,7 +7055,7 @@ public struct RUMViewEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a View event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -7082,7 +7082,7 @@ public struct RUMViewEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -7109,7 +7109,7 @@ public struct RUMViewEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -7138,7 +7138,7 @@ public struct RUMViewEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -9155,7 +9155,7 @@ extension RUMViewEvent.FeatureFlags {
     }
 
     public static func == (lhs: RUMViewEvent.FeatureFlags, rhs: RUMViewEvent.FeatureFlags) -> Bool {
-        lhs.featureFlagsInfo.dd == rhs.featureFlagsInfo.dd
+        lhs.featureFlagsInfo.kubesense == rhs.featureFlagsInfo.kubesense
     }
 }
 
@@ -9193,7 +9193,7 @@ extension RUMViewEvent.View.CustomTimings {
 /// Schema of all properties of a View Update event
 public struct RUMViewUpdateEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -9274,7 +9274,7 @@ public struct RUMViewUpdateEvent: RUMDataModel, Equatable {
     public var view: View
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -9306,7 +9306,7 @@ public struct RUMViewUpdateEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a View Update event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -9333,7 +9333,7 @@ public struct RUMViewUpdateEvent: RUMDataModel, Equatable {
     ///   - version: The version for this application
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -9360,7 +9360,7 @@ public struct RUMViewUpdateEvent: RUMDataModel, Equatable {
         version: String? = nil,
         view: View
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -9389,7 +9389,7 @@ public struct RUMViewUpdateEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -11406,7 +11406,7 @@ extension RUMViewUpdateEvent.FeatureFlags {
     }
 
     public static func == (lhs: RUMViewUpdateEvent.FeatureFlags, rhs: RUMViewUpdateEvent.FeatureFlags) -> Bool {
-        lhs.featureFlagsInfo.dd == rhs.featureFlagsInfo.dd
+        lhs.featureFlagsInfo.kubesense == rhs.featureFlagsInfo.kubesense
     }
 }
 
@@ -11444,7 +11444,7 @@ extension RUMViewUpdateEvent.View.CustomTimings {
 /// Schema for app launch metrics.
 public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -11522,7 +11522,7 @@ public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
     public let vital: Vital
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -11553,7 +11553,7 @@ public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
     /// Schema for app launch metrics.
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -11579,7 +11579,7 @@ public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
     ///   - view: View properties
     ///   - vital: Vital properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -11605,7 +11605,7 @@ public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
         view: View,
         vital: Vital
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -11633,7 +11633,7 @@ public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -12168,7 +12168,7 @@ public struct RUMVitalAppLaunchEvent: RUMDataModel, Equatable {
 /// Schema for a duration vital event.
 public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -12246,7 +12246,7 @@ public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
     public let vital: Vital
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -12277,7 +12277,7 @@ public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
     /// Schema for a duration vital event.
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -12303,7 +12303,7 @@ public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
     ///   - view: View properties
     ///   - vital: Vital properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -12329,7 +12329,7 @@ public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
         view: View,
         vital: Vital
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -12357,7 +12357,7 @@ public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -12852,7 +12852,7 @@ public struct RUMVitalDurationEvent: RUMDataModel, Equatable {
 /// Schema for a vital operation step event.
 public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Account properties
     public var account: RUMAccount?
@@ -12930,7 +12930,7 @@ public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
     public let vital: Vital
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case account = "account"
         case application = "application"
         case buildId = "build_id"
@@ -12961,7 +12961,7 @@ public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
     /// Schema for a vital operation step event.
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - account: Account properties
     ///   - application: Application properties
     ///   - buildId: Generated unique ID of the application build. Unlike version or build_version this field is not meant to be coming from the user, but rather generated by the tooling for each build.
@@ -12987,7 +12987,7 @@ public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
     ///   - view: View properties
     ///   - vital: Vital properties
     public init(
-        dd: DD,
+        kubesense: KS,
         account: RUMAccount? = nil,
         application: Application,
         buildId: String? = nil,
@@ -13013,7 +13013,7 @@ public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
         view: View,
         vital: Vital
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.account = account
         self.application = application
         self.buildId = buildId
@@ -13041,7 +13041,7 @@ public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Browser SDK version
         public let browserSdkVersion: String?
 
@@ -13565,7 +13565,7 @@ public struct RUMVitalOperationStepEvent: RUMDataModel, Equatable {
 /// Schema of all properties of a telemetry configuration event
 public struct TelemetryConfigurationEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Action properties
     public let action: Action?
@@ -13604,7 +13604,7 @@ public struct TelemetryConfigurationEvent: RUMDataModel, Equatable {
     public let view: View?
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case action = "action"
         case application = "application"
         case date = "date"
@@ -13622,7 +13622,7 @@ public struct TelemetryConfigurationEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a telemetry configuration event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - action: Action properties
     ///   - application: Application properties
     ///   - date: Start of the event in ms from epoch
@@ -13635,7 +13635,7 @@ public struct TelemetryConfigurationEvent: RUMDataModel, Equatable {
     ///   - version: The version of the SDK generating the telemetry event
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         action: Action? = nil,
         application: Application? = nil,
         date: Int64,
@@ -13648,7 +13648,7 @@ public struct TelemetryConfigurationEvent: RUMDataModel, Equatable {
         version: String,
         view: View? = nil
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.action = action
         self.application = application
         self.date = date
@@ -13663,7 +13663,7 @@ public struct TelemetryConfigurationEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Version of the RUM event format
         public let formatVersion: Int64 = 2
 
@@ -14792,7 +14792,7 @@ extension TelemetryConfigurationEvent.Telemetry {
         lhs.device == rhs.device &&
         lhs.os == rhs.os &&
         lhs.type == rhs.type &&
-        lhs.telemetryInfo.dd == rhs.telemetryInfo.dd
+        lhs.telemetryInfo.kubesense == rhs.telemetryInfo.kubesense
     }
 }
 
@@ -14837,14 +14837,14 @@ extension TelemetryConfigurationEvent.Telemetry.Configuration.Plugins {
 
     public static func == (lhs: TelemetryConfigurationEvent.Telemetry.Configuration.Plugins, rhs: TelemetryConfigurationEvent.Telemetry.Configuration.Plugins) -> Bool {
         lhs.name == rhs.name &&
-        lhs.pluginsInfo.dd == rhs.pluginsInfo.dd
+        lhs.pluginsInfo.kubesense == rhs.pluginsInfo.kubesense
     }
 }
 
 /// Schema of all properties of a telemetry debug event
 public struct TelemetryDebugEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Action properties
     public let action: Action?
@@ -14883,7 +14883,7 @@ public struct TelemetryDebugEvent: RUMDataModel, Equatable {
     public let view: View?
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case action = "action"
         case application = "application"
         case date = "date"
@@ -14901,7 +14901,7 @@ public struct TelemetryDebugEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a telemetry debug event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - action: Action properties
     ///   - application: Application properties
     ///   - date: Start of the event in ms from epoch
@@ -14914,7 +14914,7 @@ public struct TelemetryDebugEvent: RUMDataModel, Equatable {
     ///   - version: The version of the SDK generating the telemetry event
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         action: Action? = nil,
         application: Application? = nil,
         date: Int64,
@@ -14927,7 +14927,7 @@ public struct TelemetryDebugEvent: RUMDataModel, Equatable {
         version: String,
         view: View? = nil
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.action = action
         self.application = application
         self.date = date
@@ -14942,7 +14942,7 @@ public struct TelemetryDebugEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Version of the RUM event format
         public let formatVersion: Int64 = 2
 
@@ -15147,14 +15147,14 @@ extension TelemetryDebugEvent.Telemetry {
         lhs.os == rhs.os &&
         lhs.status == rhs.status &&
         lhs.type == rhs.type &&
-        lhs.telemetryInfo.dd == rhs.telemetryInfo.dd
+        lhs.telemetryInfo.kubesense == rhs.telemetryInfo.kubesense
     }
 }
 
 /// Schema of all properties of a telemetry error event
 public struct TelemetryErrorEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Action properties
     public let action: Action?
@@ -15193,7 +15193,7 @@ public struct TelemetryErrorEvent: RUMDataModel, Equatable {
     public let view: View?
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case action = "action"
         case application = "application"
         case date = "date"
@@ -15211,7 +15211,7 @@ public struct TelemetryErrorEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a telemetry error event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - action: Action properties
     ///   - application: Application properties
     ///   - date: Start of the event in ms from epoch
@@ -15224,7 +15224,7 @@ public struct TelemetryErrorEvent: RUMDataModel, Equatable {
     ///   - version: The version of the SDK generating the telemetry event
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         action: Action? = nil,
         application: Application? = nil,
         date: Int64,
@@ -15237,7 +15237,7 @@ public struct TelemetryErrorEvent: RUMDataModel, Equatable {
         version: String,
         view: View? = nil
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.action = action
         self.application = application
         self.date = date
@@ -15252,7 +15252,7 @@ public struct TelemetryErrorEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Version of the RUM event format
         public let formatVersion: Int64 = 2
 
@@ -15494,14 +15494,14 @@ extension TelemetryErrorEvent.Telemetry {
         lhs.os == rhs.os &&
         lhs.status == rhs.status &&
         lhs.type == rhs.type &&
-        lhs.telemetryInfo.dd == rhs.telemetryInfo.dd
+        lhs.telemetryInfo.kubesense == rhs.telemetryInfo.kubesense
     }
 }
 
 /// Schema of all properties of a telemetry usage event
 public struct TelemetryUsageEvent: RUMDataModel, Equatable {
     /// Internal properties
-    public let dd: DD
+    public let kubesense: KS
 
     /// Action properties
     public let action: Action?
@@ -15540,7 +15540,7 @@ public struct TelemetryUsageEvent: RUMDataModel, Equatable {
     public let view: View?
 
     public enum CodingKeys: String, CodingKey {
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
         case action = "action"
         case application = "application"
         case date = "date"
@@ -15558,7 +15558,7 @@ public struct TelemetryUsageEvent: RUMDataModel, Equatable {
     /// Schema of all properties of a telemetry usage event
     ///
     /// - Parameters:
-    ///   - dd: Internal properties
+    ///   - kubesense: Internal properties
     ///   - action: Action properties
     ///   - application: Application properties
     ///   - date: Start of the event in ms from epoch
@@ -15571,7 +15571,7 @@ public struct TelemetryUsageEvent: RUMDataModel, Equatable {
     ///   - version: The version of the SDK generating the telemetry event
     ///   - view: View properties
     public init(
-        dd: DD,
+        kubesense: KS,
         action: Action? = nil,
         application: Application? = nil,
         date: Int64,
@@ -15584,7 +15584,7 @@ public struct TelemetryUsageEvent: RUMDataModel, Equatable {
         version: String,
         view: View? = nil
     ) {
-        self.dd = dd
+        self.kubesense = kubesense
         self.action = action
         self.application = application
         self.date = date
@@ -15599,7 +15599,7 @@ public struct TelemetryUsageEvent: RUMDataModel, Equatable {
     }
 
     /// Internal properties
-    public struct DD: Codable, Equatable {
+    public struct KS: Codable, Equatable {
         /// Version of the RUM event format
         public let formatVersion: Int64 = 2
 
@@ -16531,7 +16531,7 @@ extension TelemetryUsageEvent.Telemetry {
         lhs.os == rhs.os &&
         lhs.type == rhs.type &&
         lhs.usage == rhs.usage &&
-        lhs.telemetryInfo.dd == rhs.telemetryInfo.dd
+        lhs.telemetryInfo.kubesense == rhs.telemetryInfo.kubesense
     }
 }
 

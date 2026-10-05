@@ -717,9 +717,9 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
             // Normally, `[Key: Any]` <> `[Key: Any]` interoperability wouldn't require casting.
             // However our SDK bridges `[String: Any]` attributes passed in Objective-C API to their `[String: Encodable]` representation
             // in underlying Swift SDK. This is done with `AnyEncodable` type erasure. To return these attributes back
-            // to the user, `AnyEncodable` must be unpacked to its original `Any` value. This is done in `.dd.objCAttributes` extension
+            // to the user, `AnyEncodable` must be unpacked to its original `Any` value. This is done in `.kubesense.objCAttributes` extension
             // defined in `KubesenseInternal` module. Here we just emit its invocation:
-            return optionality + ".dd.objCAttributes"
+            return optionality + ".kubesense.objCAttributes"
         case let objcStruct as ObjcInteropNestedClass:
             let transitiveType = objcStruct.parentProperty as? ObjcInteropPropertyWrapperForTransitiveType
             let objcTypeName = (transitiveType?.objcTransitiveType as? ObjcInteropAssociatedTypeEnum)?.objcTypeName
@@ -755,7 +755,7 @@ public class ObjcInteropPrinter: BasePrinter, CodePrinter {
         case let swiftDictionary as SwiftDictionary where swiftDictionary.value is SwiftPrimitive<String>:
             return nil // `[Key: String]` <> `[Key: NSString]` interoperability doesn't require casting
         case let swiftDictionary as SwiftDictionary where swiftDictionary.value is SwiftPrimitiveNoObjcInteropType:
-            return ".dd.swiftAttributes"
+            return ".kubesense.swiftAttributes"
         case let swiftArray as SwiftArray:
             let elementCast = try objcToSwiftCast(for: swiftArray.element)
                 .unwrapOrThrow(.illegal("Cannot print `objcToSwiftCast()` for `SwiftArray` with elements of type: \(type(of: swiftArray.element))"))
@@ -777,7 +777,7 @@ private extension String {
     var objcNaming: String {
         let objcPrefix = "objc_"
         if self.hasPrefix(objcPrefix) {
-            return "DD" + self.dropFirst(objcPrefix.count)
+            return "KS" + self.dropFirst(objcPrefix.count)
         }
         return self
     }

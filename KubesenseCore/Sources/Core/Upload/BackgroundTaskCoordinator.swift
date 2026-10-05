@@ -45,7 +45,7 @@ internal class AppBackgroundTaskCoordinator: BackgroundTaskCoordinator {
     private var currentTaskId: UIBackgroundTaskIdentifier?
 
     internal init(
-        app: UIKitAppBackgroundTaskCoordinator? = UIApplication.dd.managedShared
+        app: UIKitAppBackgroundTaskCoordinator? = UIApplication.kubesense.managedShared
     ) {
         self.app = app
     }

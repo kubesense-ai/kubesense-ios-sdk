@@ -599,8 +599,8 @@ class WebViewTrackingTests: XCTestCase {
     }
 
     func testWhenAddingMessageHandlerMultipleTimes_itIgnoresExtraOnesAndPrintsWarning() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let mockSanitizer = HostsSanitizerMock()
         let config = WKWebViewConfiguration()
@@ -630,14 +630,14 @@ class WebViewTrackingTests: XCTestCase {
         XCTAssertEqual(sanitization.warningMessage, "The allowed WebView host configured for Kubesense SDK is not valid")
 
         XCTAssertEqual(
-            dd.logger.warnLogs.map({ $0.message }),
+            kubesense.logger.warnLogs.map({ $0.message }),
             Array(repeating: "`WebViewTracking.enable(webView:hosts:)` was called more than once for the same WebView. Second call will be ignored. Make sure you call it only once.", count: multipleTimes - 1)
         )
     }
 
     func testWhenAddingMessageHandlerMultipleTimes_afterExternalRemovalOfUserScripts_itHandlesCorrectlyTheInstrumentation() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock()
         let configuration = WKWebViewConfiguration()
@@ -654,7 +654,7 @@ class WebViewTrackingTests: XCTestCase {
         WebViewTracking.enable(webView: webView, in: core)
 
         XCTAssertEqual(controller.userScripts.count, 1)
-        XCTAssertEqual(dd.logger.warnLogs.count, 0)
+        XCTAssertEqual(kubesense.logger.warnLogs.count, 0)
     }
 
     func testWhenStoppingTracking_itCanBeEnabledAgain() throws {

@@ -44,9 +44,9 @@ internal struct TracingWithLoggingIntegration: Sendable {
         var userAttributes = fields
 
         // get the log message and optional error kind
-        let errorKind: String? = userAttributes.removeValue(forKey: OTLogFields.errorKind)?.dd.decode()
-        let message = userAttributes.removeValue(forKey: OTLogFields.message)?.dd.decode() ?? message ?? Constants.defaultLogMessage
-        let errorStack: String? = userAttributes.removeValue(forKey: OTLogFields.stack)?.dd.decode()
+        let errorKind: String? = userAttributes.removeValue(forKey: OTLogFields.errorKind)?.kubesense.decode()
+        let message = userAttributes.removeValue(forKey: OTLogFields.message)?.kubesense.decode() ?? message ?? Constants.defaultLogMessage
+        let errorStack: String? = userAttributes.removeValue(forKey: OTLogFields.stack)?.kubesense.decode()
 
         // infer the log level
         let isErrorEvent = fields[OTLogFields.event] as? String == "error"
@@ -70,7 +70,7 @@ internal struct TracingWithLoggingIntegration: Sendable {
                     message: message,
                     error: extractedError,
                     level: level,
-                    thread: Thread.current.dd.name,
+                    thread: Thread.current.kubesense.name,
                     networkInfoEnabled: networkInfoEnabled,
                     userAttributes: userAttributes,
                     internalAttributes: [

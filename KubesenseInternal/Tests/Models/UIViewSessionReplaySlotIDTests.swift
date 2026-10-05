@@ -21,7 +21,7 @@ struct UIViewSessionReplaySlotIDTests {
         let view = UIView()
 
         // when
-        let slotID = view.dd.sessionReplaySlotID
+        let slotID = view.kubesense.sessionReplaySlotID
 
         // then
         #expect(slotID == nil)
@@ -34,24 +34,24 @@ struct UIViewSessionReplaySlotIDTests {
         let otherView = UIView()
 
         // when
-        view.dd.setSessionReplaySlotID("renderer-slot")
+        view.kubesense.setSessionReplaySlotID("renderer-slot")
 
         // then
-        #expect(view.dd.sessionReplaySlotID == "renderer-slot")
-        #expect(otherView.dd.sessionReplaySlotID == nil)
+        #expect(view.kubesense.sessionReplaySlotID == "renderer-slot")
+        #expect(otherView.kubesense.sessionReplaySlotID == nil)
     }
 
     @Test
     func settingSlotIDToNilClearsIt() {
         // given
         let view = UIView()
-        view.dd.setSessionReplaySlotID("renderer-slot")
+        view.kubesense.setSessionReplaySlotID("renderer-slot")
 
         // when
-        view.dd.setSessionReplaySlotID(nil)
+        view.kubesense.setSessionReplaySlotID(nil)
 
         // then
-        #expect(view.dd.sessionReplaySlotID == nil)
+        #expect(view.kubesense.sessionReplaySlotID == nil)
     }
 
     @Test
@@ -62,7 +62,7 @@ struct UIViewSessionReplaySlotIDTests {
         view.setNeedsLayoutCount = 0
 
         // when
-        view.dd.setSessionReplaySlotID("renderer-slot")
+        view.kubesense.setSessionReplaySlotID("renderer-slot")
 
         // then
         #expect(view.setNeedsLayoutCount == 1)
@@ -72,12 +72,12 @@ struct UIViewSessionReplaySlotIDTests {
     func settingSameSlotIDDoesNotMarkTheViewAsNeedingLayout() {
         // given
         let view = LayoutSpyView()
-        view.dd.setSessionReplaySlotID("renderer-slot")
+        view.kubesense.setSessionReplaySlotID("renderer-slot")
         view.layoutIfNeeded()
         view.setNeedsLayoutCount = 0
 
         // when
-        view.dd.setSessionReplaySlotID("renderer-slot")
+        view.kubesense.setSessionReplaySlotID("renderer-slot")
 
         // then
         #expect(view.setNeedsLayoutCount == 0)
@@ -87,12 +87,12 @@ struct UIViewSessionReplaySlotIDTests {
     func clearingSlotIDMarksTheViewAsNeedingLayout() {
         // given
         let view = LayoutSpyView()
-        view.dd.setSessionReplaySlotID("renderer-slot")
+        view.kubesense.setSessionReplaySlotID("renderer-slot")
         view.layoutIfNeeded()
         view.setNeedsLayoutCount = 0
 
         // when
-        view.dd.setSessionReplaySlotID(nil)
+        view.kubesense.setSessionReplaySlotID(nil)
 
         // then
         #expect(view.setNeedsLayoutCount == 1)

@@ -18,7 +18,7 @@ internal struct FlagsDataStore {
             let data = try Self.encoder.encode(flagsData)
             featureScope.dataStore.setValue(data, forKey: clientName)
         } catch let error {
-            DD.logger.error("Failed to encode \(type(of: flagsData)) in Flags Data Store", error: error)
+            KS.logger.error("Failed to encode \(type(of: flagsData)) in Flags Data Store", error: error)
             featureScope.telemetry.error("Failed to encode \(type(of: flagsData)) in Flags Data Store", error: error)
         }
     }
@@ -34,7 +34,7 @@ internal struct FlagsDataStore {
                 let flagsData = try Self.decoder.decode(FlagsData.self, from: data)
                 callback(flagsData)
             } catch let error {
-                DD.logger.error("Failed to decode \(FlagsData.self) from Flags Data Store", error: error)
+                KS.logger.error("Failed to decode \(FlagsData.self) from Flags Data Store", error: error)
                 featureScope.telemetry.error("Failed to decode \(FlagsData.self) from Flags Data Store", error: error)
                 callback(nil)
             }

@@ -75,7 +75,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(event.vital.name, "time_to_initial_display")
         XCTAssertNotNil(event.vital.id)
         XCTAssertEqual(event.vital.isPrewarmed, false)
-        XCTAssertEqual(event.vital.duration, Double(ttid.dd.toInt64Nanoseconds))
+        XCTAssertEqual(event.vital.duration, Double(ttid.kubesense.toInt64Nanoseconds))
         XCTAssertEqual(event.vital.startupType, .coldStart)
 
         // Common properties
@@ -97,8 +97,8 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertNotNil(event.version)
 
         // Profiling Status
-        XCTAssertEqual(event.dd.profiling?.status, .running)
-        XCTAssertEqual(event.dd.profiling?.quotaReason, quotaReason)
+        XCTAssertEqual(event.kubesense.profiling?.status, .running)
+        XCTAssertEqual(event.kubesense.profiling?.quotaReason, quotaReason)
     }
 
     func testTTIDCommand_sanitizesContextAttributesBeforeWriting() throws {
@@ -144,7 +144,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
             mockContext.launchInfo.processLaunchDate
                 .addingTimeInterval(mockContext.serverTimeOffset)
                 .timeIntervalSince1970
-                .dd
+                .kubesense
                 .toInt64Milliseconds
         )
 
@@ -182,7 +182,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(event.vital.appLaunchMetric, .ttid)
         XCTAssertEqual(event.vital.name, "time_to_initial_display")
         XCTAssertEqual(event.vital.isPrewarmed, true)
-        XCTAssertEqual(event.vital.duration, Double(ttid.dd.toInt64Nanoseconds))
+        XCTAssertEqual(event.vital.duration, Double(ttid.kubesense.toInt64Nanoseconds))
         XCTAssertEqual(event.vital.startupType, .coldStart)
     }
 
@@ -208,7 +208,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(event.vital.appLaunchMetric, .ttid)
         XCTAssertEqual(event.vital.name, "time_to_initial_display")
         XCTAssertEqual(event.vital.isPrewarmed, false)
-        XCTAssertEqual(event.vital.duration, Double(ttid.dd.toInt64Nanoseconds))
+        XCTAssertEqual(event.vital.duration, Double(ttid.kubesense.toInt64Nanoseconds))
         XCTAssertEqual(event.vital.startupType, .warmStart)
     }
 
@@ -334,7 +334,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(event.vital.name, "time_to_full_display")
         XCTAssertNotNil(event.vital.id)
         XCTAssertEqual(event.vital.isPrewarmed, false)
-        XCTAssertEqual(event.vital.duration, Double(ttfd.dd.toInt64Nanoseconds))
+        XCTAssertEqual(event.vital.duration, Double(ttfd.kubesense.toInt64Nanoseconds))
         XCTAssertEqual(event.vital.startupType, .coldStart)
 
         // Common properties
@@ -385,9 +385,9 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         // Then
         let event = try XCTUnwrap(mockWriter.events(ofType: RUMVitalAppLaunchEvent.self).last)
         XCTAssertEqual(event.vital.appLaunchMetric, .ttfd)
-        XCTAssertEqual(event.dd.profiling?.status, .error)
-        XCTAssertEqual(event.dd.profiling?.errorReason, .unexpectedException)
-        XCTAssertEqual(event.dd.profiling?.quotaReason, .quotaExceeded)
+        XCTAssertEqual(event.kubesense.profiling?.status, .error)
+        XCTAssertEqual(event.kubesense.profiling?.errorReason, .unexpectedException)
+        XCTAssertEqual(event.kubesense.profiling?.quotaReason, .quotaExceeded)
 
         let message = try XCTUnwrap(
             featureScope.messagesSent().compactMap { $0.asPayload as? OperationMessage }.first
@@ -395,7 +395,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(message.operation.id, event.vital.id)
         XCTAssertEqual(message.operation.name, "time_to_full_display")
         XCTAssertNil(message.operation.stepType)
-        XCTAssertEqual(message.operation.duration, ttfd.dd.toInt64Nanoseconds)
+        XCTAssertEqual(message.operation.duration, ttfd.kubesense.toInt64Nanoseconds)
         XCTAssertNotNil(message.attributes[RUMCoreContext.IDs.applicationID])
         XCTAssertNotNil(message.attributes[RUMCoreContext.IDs.sessionID])
     }
@@ -438,7 +438,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(ttfdMessage.operation.id, ttfdEvent.vital.id)
         XCTAssertEqual(ttfdMessage.operation.name, "time_to_full_display")
         XCTAssertNil(ttfdMessage.operation.stepType)
-        XCTAssertEqual(ttfdMessage.operation.duration, ttfd.dd.toInt64Nanoseconds)
+        XCTAssertEqual(ttfdMessage.operation.duration, ttfd.kubesense.toInt64Nanoseconds)
         XCTAssertNotNil(ttfdMessage.attributes[RUMCoreContext.IDs.applicationID])
         XCTAssertNotNil(ttfdMessage.attributes[RUMCoreContext.IDs.sessionID])
         XCTAssertEqual(ttidMessage.ttid.name, "time_to_initial_display")
@@ -489,7 +489,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(ttidMessage.ttid.name, "time_to_initial_display")
         XCTAssertEqual(ttfdMessage.operation.name, "time_to_full_display")
         XCTAssertNil(ttfdMessage.operation.stepType)
-        XCTAssertEqual(ttfdMessage.operation.duration, ttfd.dd.toInt64Nanoseconds)
+        XCTAssertEqual(ttfdMessage.operation.duration, ttfd.kubesense.toInt64Nanoseconds)
         XCTAssertNotNil(ttfdMessage.attributes[RUMCoreContext.IDs.applicationID])
         XCTAssertNotNil(ttfdMessage.attributes[RUMCoreContext.IDs.sessionID])
 
@@ -545,7 +545,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(event.vital.appLaunchMetric, .ttfd)
         XCTAssertEqual(event.vital.name, "time_to_full_display")
         XCTAssertEqual(event.vital.isPrewarmed, true)
-        XCTAssertEqual(event.vital.duration, Double(ttfd.dd.toInt64Nanoseconds))
+        XCTAssertEqual(event.vital.duration, Double(ttfd.kubesense.toInt64Nanoseconds))
         XCTAssertEqual(event.vital.startupType, .coldStart)
     }
 
@@ -578,7 +578,7 @@ final class RUMAppLaunchManagerTests: XCTestCase {
         XCTAssertEqual(event.vital.appLaunchMetric, .ttfd)
         XCTAssertEqual(event.vital.name, "time_to_full_display")
         XCTAssertEqual(event.vital.isPrewarmed, false)
-        XCTAssertEqual(event.vital.duration, Double(ttfd.dd.toInt64Nanoseconds))
+        XCTAssertEqual(event.vital.duration, Double(ttfd.kubesense.toInt64Nanoseconds))
         XCTAssertEqual(event.vital.startupType, .warmStart)
     }
 

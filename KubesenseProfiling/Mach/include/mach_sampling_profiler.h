@@ -41,7 +41,7 @@ void set_main_thread(pthread_t thread);
 }
 #endif
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 class aggregation_worker;
 
@@ -204,7 +204,7 @@ private:
     std::unordered_map<uint64_t, cpu_time_baseline> cpu_time_baselines;
 };
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // !TARGET_OS_WATCH
 #endif // __APPLE__

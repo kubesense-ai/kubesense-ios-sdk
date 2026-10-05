@@ -316,7 +316,7 @@ internal struct TracingURLSessionHandler: KubesenseURLSessionHandler {
         if let history = contextReceiver.context.applicationStateHistory {
             let fetchDuration = startTime...safeEndTime
             let foregroundDuration = history.foregroundDuration(during: fetchDuration)
-            span.setTag(key: SpanTags.foregroundDuration, value: foregroundDuration.dd.toNanoseconds)
+            span.setTag(key: SpanTags.foregroundDuration, value: foregroundDuration.kubesense.toNanoseconds)
 
             let didStartInBackground = history.state(at: startTime) == .background
             let doesEndInBackground = history.state(at: safeEndTime) == .background

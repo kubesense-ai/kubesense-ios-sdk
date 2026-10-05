@@ -49,8 +49,8 @@ class ServerOffsetPublisherTests: XCTestCase {
     }
 
     func testWhenSyncCompletesSuccessfully_itPublishesOffset() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let expectation = expectation(description: "kronos publisher publishes offset")
         expectation.expectedFulfillmentCount = 2
@@ -72,7 +72,7 @@ class ServerOffsetPublisherTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.debugLog?.message,
+            kubesense.logger.debugLog?.message,
             """
             NTP time synchronization completed.
             Server time will be used for signing events (-1.0s difference with device time).
@@ -84,8 +84,8 @@ class ServerOffsetPublisherTests: XCTestCase {
     }
 
     func testWhenSyncFails_itPublishesZero() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let expectation = expectation(description: "kronos publisher publishes 0")
 
@@ -105,7 +105,7 @@ class ServerOffsetPublisherTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.errorLog?.message,
+            kubesense.logger.errorLog?.message,
             """
             NTP time synchronization failed.
             Device time will be used for signing events.

@@ -99,7 +99,7 @@ internal final class URLSessionSwizzler {
                         completionHandler(data, response, error)
                     }
                     _task = task
-                    _task?.dd.hasCompletion = true
+                    _task?.kubesense.hasCompletion = true
                     return task
                 }
             }
@@ -153,7 +153,7 @@ internal final class URLSessionSwizzler {
                         completionHandler(data, response, error)
                     }
                     _task = task
-                    _task?.dd.hasCompletion = true
+                    _task?.kubesense.hasCompletion = true
                     return task
                 }
             }

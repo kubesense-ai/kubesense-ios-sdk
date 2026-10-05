@@ -302,8 +302,8 @@ class DeterministicSamplingIntegrationTests: XCTestCase {
         let traceMatchers = try core.waitAndReturnSpanMatchers()
         XCTAssert(traceMatchers.isEmpty != spansExist)
 
-        let dd = try XCTUnwrap(span.context.dd)
-        XCTAssert(dd.samplingDecision.samplingPriority.isKept == spansExist)
+        let kubesense = try XCTUnwrap(span.context.kubesense)
+        XCTAssert(kubesense.samplingDecision.samplingPriority.isKept == spansExist)
     }
 }
 

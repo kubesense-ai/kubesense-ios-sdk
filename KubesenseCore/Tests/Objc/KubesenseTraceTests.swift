@@ -26,11 +26,11 @@ class KubesenseTraceTests: XCTestCase {
     }
 
     func testWhenNotEnabled() {
-        XCTAssertTrue(objc_Tracer.shared().dd?.swiftTracer is KubesenseNoopTracer)
+        XCTAssertTrue(objc_Tracer.shared().kubesense?.swiftTracer is KubesenseNoopTracer)
     }
 
     func testWhenEnabled() {
         objc_Trace.enable(with: objc_TraceConfiguration())
-        XCTAssertTrue(objc_Tracer.shared().dd?.swiftTracer is KubesenseTracer)
+        XCTAssertTrue(objc_Tracer.shared().kubesense?.swiftTracer is KubesenseTracer)
     }
 }

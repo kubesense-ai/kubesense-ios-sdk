@@ -45,7 +45,7 @@ final class ExposureLoggerTests: XCTestCase {
                     timestamp: Date.mockAny()
                         .addingTimeInterval(serverTimeOffset)
                         .timeIntervalSince1970
-                        .dd.toInt64Milliseconds,
+                        .kubesense.toInt64Milliseconds,
                     allocation: .init(key: "allocation-123"),
                     flag: .init(key: "some-flag"),
                     variant: .init(key: "variation-123"),
@@ -82,7 +82,7 @@ final class ExposureLoggerTests: XCTestCase {
             featureScope.exposureEventsWritten,
             [
                 .init(
-                    timestamp: Date.mockAny().timeIntervalSince1970.dd.toInt64Milliseconds,
+                    timestamp: Date.mockAny().timeIntervalSince1970.kubesense.toInt64Milliseconds,
                     allocation: .init(key: "allocation-123"),
                     flag: .init(key: "some-flag"),
                     variant: .init(key: "variation-123"),

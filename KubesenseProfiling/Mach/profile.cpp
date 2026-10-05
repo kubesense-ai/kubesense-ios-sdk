@@ -30,7 +30,7 @@
 #include <time.h>
 #include <algorithm>
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 /**
  * @brief Calculate uptime to epoch time offset
@@ -304,6 +304,6 @@ uint32_t profile::intern_location(const location_t& location) {
     return id;
 }
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // __APPLE__ && !TARGET_OS_WATCH

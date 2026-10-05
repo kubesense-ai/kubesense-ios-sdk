@@ -169,7 +169,7 @@ internal final class KubesenseSpan: OTSpan, @unchecked Sendable {
 
     private func sendSpanLogs(message: String?, fields: [String: Encodable], date: Date) {
         loggingIntegration.writeLog(withSpanContext: kubesenseContext, message: message, fields: fields, date: date, else: {
-            DD.logger.warn("The log for span \"\(self.operationName)\" will not be send, because the Logs feature is not enabled.")
+            KS.logger.warn("The log for span \"\(self.operationName)\" will not be send, because the Logs feature is not enabled.")
         })
     }
 

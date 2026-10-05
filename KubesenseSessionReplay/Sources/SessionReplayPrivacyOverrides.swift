@@ -17,7 +17,7 @@ internal var associatedOverridesKey: UInt8 = 3
 /// Extension to provide access to `SessionReplayPrivacyOverrides` for any `UIView`.
 extension KubesenseExtension where ExtendedType: UIView {
     /// Provides access to Session Replay override settings for the view.
-    /// Usage: `myView.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskNone`.
+    /// Usage: `myView.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskNone`.
     public var sessionReplayPrivacyOverrides: SessionReplayPrivacyOverrides {
         if let overrides = _privacyOverrides {
             return overrides

@@ -27,8 +27,8 @@ class UIViewSessionReplayTests: XCTestCase {
         darkView.traitCollection = .init(userInterfaceStyle: .dark)
 
         // Then
-        XCTAssertFalse(lightView.dd.usesDarkMode)
-        XCTAssertTrue(darkView.dd.usesDarkMode)
+        XCTAssertFalse(lightView.kubesense.usesDarkMode)
+        XCTAssertTrue(darkView.kubesense.usesDarkMode)
     }
 
     // swiftlint:disable opening_brace
@@ -41,12 +41,12 @@ class UIViewSessionReplayTests: XCTestCase {
         // Given
         let sensitiveTextMock = Mock()
         let nonSensitiveTextMock = Mock()
-        let nonSensitiveContentTypes = UITextContentType.allCases.subtracting(Mock.dd.sensitiveTypes)
+        let nonSensitiveContentTypes = UITextContentType.allCases.subtracting(Mock.kubesense.sensitiveTypes)
 
         // When
         oneOrMoreOf([
             { sensitiveTextMock.isSecureTextEntry = true },
-            { sensitiveTextMock.textContentType = Mock.dd.sensitiveTypes.randomElement() },
+            { sensitiveTextMock.textContentType = Mock.kubesense.sensitiveTypes.randomElement() },
         ])
         oneOrMoreOf([
             { nonSensitiveTextMock.isSecureTextEntry = false },
@@ -55,8 +55,8 @@ class UIViewSessionReplayTests: XCTestCase {
         ])
 
         // Then
-        XCTAssertTrue(sensitiveTextMock.dd.isSensitiveText)
-        XCTAssertFalse(nonSensitiveTextMock.dd.isSensitiveText)
+        XCTAssertTrue(sensitiveTextMock.kubesense.isSensitiveText)
+        XCTAssertFalse(nonSensitiveTextMock.kubesense.isSensitiveText)
     }
     // swiftlint:enable opening_brace
 }

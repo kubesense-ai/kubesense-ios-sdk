@@ -29,7 +29,7 @@ class RUMViewUpdateEventTests: XCTestCase {
         }
     }
 
-    /// `dd`, `application`, and `session` are always forwarded wholesale from `event`, never
+    /// `kubesense`, `application`, and `session` are always forwarded wholesale from `event`, never
     /// diffed against `self`.
     func testUpdate_kubesenseApplicationAndSessionAreForwardedWholesaleNotDiffed() throws {
         let base = RUMViewEvent.mockRandom()
@@ -38,7 +38,7 @@ class RUMViewUpdateEventTests: XCTestCase {
 
         // Values come from `target` (the new event), not `base` — proving these are forwarded
         // from `event`, not accidentally left as `self`'s own value.
-        XCTAssertEqual(update.dd.documentVersion, target.dd.documentVersion)
+        XCTAssertEqual(update.kubesense.documentVersion, target.kubesense.documentVersion)
         XCTAssertEqual(update.application.id, target.application.id)
         XCTAssertEqual(update.session.id, target.session.id)
         XCTAssertEqual(update.session.type, target.session.type)
@@ -47,7 +47,7 @@ class RUMViewUpdateEventTests: XCTestCase {
     /// `usr` and `account` are identity fields: unlike diffed fields, `nil` on the wire must
     /// unambiguously mean "the target event has no usr/account", never "unchanged" — otherwise
     /// `clearUserInfo()`/`clearAccountInfo()` mid-view would be silently dropped from the delta.
-    /// They must therefore be forwarded wholesale from `event`, like `dd`, and never diffed.
+    /// They must therefore be forwarded wholesale from `event`, like `kubesense`, and never diffed.
     func testUpdate_usrAndAccountAreForwardedWholesaleNotDiffed() throws {
         var base = RUMViewEvent.mockRandom()
         base.usr = .mockRandom()
@@ -81,13 +81,13 @@ private extension RUMViewEvent {
     /// Nil fields in the update (meaning "unchanged") keep the value from `self`; non-nil fields
     /// override it. This is the inverse of `RUMViewEvent.update(from:)`.
     ///
-    /// The explicit `RUMViewEvent.init(...)`, `RUMViewEvent.DD.apply(update:)`, and
+    /// The explicit `RUMViewEvent.init(...)`, `RUMViewEvent.KS.apply(update:)`, and
     /// `RUMViewEvent.View.apply(update:)` calls are intentional: when a new field is added to those
     /// types, this method won't compile until it's handled here — the same structural guarantee that
     /// `mockRandom()` and `update(from:)` provide.
     func apply(update: RUMViewUpdateEvent) -> RUMViewEvent {
         RUMViewEvent(
-            dd: dd.apply(update: update.dd),
+            kubesense: kubesense.apply(update: update.kubesense),
             account: update.account,
             application: .init(update.application),
             buildId: update.buildId ?? buildId,
@@ -116,11 +116,11 @@ private extension RUMViewEvent {
     }
 }
 
-private extension RUMViewEvent.DD {
-    // dd is always forwarded wholesale from the target in update(from:), so all fields come
+private extension RUMViewEvent.KS {
+    // kubesense is always forwarded wholesale from the target in update(from:), so all fields come
     // from the update — nil means the target field was nil, not that it was unchanged.
-    func apply(update: RUMViewUpdateEvent.DD) -> RUMViewEvent.DD {
-        RUMViewEvent.DD(
+    func apply(update: RUMViewUpdateEvent.KS) -> RUMViewEvent.KS {
+        RUMViewEvent.KS(
             browserSdkVersion: update.browserSdkVersion,
             cls: update.cls.map { .init($0) },
             configuration: update.configuration.map { .init($0) },
@@ -317,14 +317,14 @@ private extension RUMViewEvent.TAB {
     init(_ s: RUMViewUpdateEvent.TAB) { self.init(id: s.id) }
 }
 
-// MARK: - DD sub-type extensions
+// MARK: - KS sub-type extensions
 
-private extension RUMViewEvent.DD.CLS {
-    init(_ s: RUMViewUpdateEvent.DD.CLS) { self.init(devicePixelRatio: s.devicePixelRatio) }
+private extension RUMViewEvent.KS.CLS {
+    init(_ s: RUMViewUpdateEvent.KS.CLS) { self.init(devicePixelRatio: s.devicePixelRatio) }
 }
 
-private extension RUMViewEvent.DD.Configuration {
-    init(_ s: RUMViewUpdateEvent.DD.Configuration) {
+private extension RUMViewEvent.KS.Configuration {
+    init(_ s: RUMViewUpdateEvent.KS.Configuration) {
         self.init(
             profilingSampleRate: s.profilingSampleRate,
             remoteConfigurationId: s.remoteConfigurationId,
@@ -337,12 +337,12 @@ private extension RUMViewEvent.DD.Configuration {
     }
 }
 
-private extension RUMViewEvent.DD.PageStates {
-    init(_ s: RUMViewUpdateEvent.DD.PageStates) { self.init(start: s.start, state: .init(s.state)) }
+private extension RUMViewEvent.KS.PageStates {
+    init(_ s: RUMViewUpdateEvent.KS.PageStates) { self.init(start: s.start, state: .init(s.state)) }
 }
 
-private extension RUMViewEvent.DD.PageStates.State {
-    init(_ s: RUMViewUpdateEvent.DD.PageStates.State) {
+private extension RUMViewEvent.KS.PageStates.State {
+    init(_ s: RUMViewUpdateEvent.KS.PageStates.State) {
         switch s {
         case .active: self = .active
         case .passive: self = .passive
@@ -353,8 +353,8 @@ private extension RUMViewEvent.DD.PageStates.State {
     }
 }
 
-private extension RUMViewEvent.DD.ReplayStats {
-    init(_ s: RUMViewUpdateEvent.DD.ReplayStats) {
+private extension RUMViewEvent.KS.ReplayStats {
+    init(_ s: RUMViewUpdateEvent.KS.ReplayStats) {
         self.init(
             recordsCount: s.recordsCount,
             segmentsCount: s.segmentsCount,
@@ -363,14 +363,14 @@ private extension RUMViewEvent.DD.ReplayStats {
     }
 }
 
-private extension RUMViewEvent.DD.Session {
-    init(_ s: RUMViewUpdateEvent.DD.Session) {
+private extension RUMViewEvent.KS.Session {
+    init(_ s: RUMViewUpdateEvent.KS.Session) {
         self.init(plan: s.plan.map { .init($0) }, sessionPrecondition: s.sessionPrecondition)
     }
 }
 
-private extension RUMViewEvent.DD.Session.Plan {
-    init(_ s: RUMViewUpdateEvent.DD.Session.Plan) {
+private extension RUMViewEvent.KS.Session.Plan {
+    init(_ s: RUMViewUpdateEvent.KS.Session.Plan) {
         switch s {
         case .plan1: self = .plan1
         case .plan2: self = .plan2

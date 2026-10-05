@@ -124,7 +124,7 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
                 // Skip internal OS task wrappers. On watchOS, a single user-created task results
                 // in multiple internal URLSessionTask wrapper objects sharing the same taskIdentifier.
                 // Internal wrappers have `_internalDelegateWrapper` set; the user-facing task does not.
-                if task.dd.isInternalTask {
+                if task.kubesense.isInternalTask {
                     return
                 }
                 #endif
@@ -140,7 +140,7 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
 
                 let configuredFirstPartyHosts = FirstPartyHosts(firstPartyHosts: configuration?.firstPartyHostsTracing) ?? .init()
                 let (request, traceContexts) = self.intercept(request: currentRequest, additionalFirstPartyHosts: configuredFirstPartyHosts)
-                task.dd.override(currentRequest: request)
+                task.kubesense.override(currentRequest: request)
                 injectedTraceContexts = traceContexts
 
                 self.intercept(task: task, with: injectedTraceContexts, additionalFirstPartyHosts: configuredFirstPartyHosts, trackingMode: trackingMode)
@@ -192,13 +192,13 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
                 // Determine if this swizzler should process this task
                 if let delegateClass = configuration?.delegateClass {
                     // Registered delegate mode: only process if task has our registered delegate
-                    guard let delegate = task.dd.delegate, delegate.isKind(of: delegateClass) else {
+                    guard let delegate = task.kubesense.delegate, delegate.isKind(of: delegateClass) else {
                         return
                     }
                     self.task(task, didCompleteWithError: error)
                 } else {
                     // Automatic mode: skip if task has a registered delegate
-                    if let delegate = task.dd.delegate, self.isRegisteredDelegate(delegate) {
+                    if let delegate = task.kubesense.delegate, self.isRegisteredDelegate(delegate) {
                         return
                     }
                     self.task(task, didCompleteWithError: error)
@@ -211,13 +211,13 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
                 // Determine if this swizzler should process this task
                 if let delegateClass = configuration?.delegateClass {
                     // Registered delegate mode: only process if task has our registered delegate
-                    guard let delegate = task.dd.delegate, delegate.isKind(of: delegateClass) else {
+                    guard let delegate = task.kubesense.delegate, delegate.isKind(of: delegateClass) else {
                         return
                     }
                     self.task(task, didReceive: data)
                 } else {
                     // Automatic mode: skip if task has a registered delegate
-                    if let delegate = task.dd.delegate, self.isRegisteredDelegate(delegate) {
+                    if let delegate = task.kubesense.delegate, self.isRegisteredDelegate(delegate) {
                         return
                     }
                     self.task(task, didReceive: data)
@@ -278,7 +278,7 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
         // Require automatic mode to be enabled first
         let automaticModeIdentifier = ObjectIdentifier(NetworkInstrumentationFeature.self)
         guard swizzlers[automaticModeIdentifier] != nil else {
-            DD.logger.error(
+            KS.logger.error(
                 """
                 Duration breakdown requires automatic network instrumentation to be enabled first.
                 Please enable RUM or Trace with `urlSessionTracking` parameter before enabling duration breakdown.
@@ -295,7 +295,7 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
 
         // If already instrumented, unswizzle the previous instance
         if let existingSwizzler = swizzlers[identifier] {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 The delegate class \(delegateClass) is already instrumented.
                 The previous instrumentation will be disabled in favor of the new one.
@@ -315,7 +315,7 @@ internal final class NetworkInstrumentationFeature: KubesenseFeature {
         let identifier = ObjectIdentifier(NetworkInstrumentationFeature.self)
 
         if swizzlers[identifier] != nil {
-            DD.logger.debug("Automatic network instrumentation is already enabled.")
+            KS.logger.debug("Automatic network instrumentation is already enabled.")
             return nil
         }
 
@@ -350,10 +350,10 @@ extension NetworkInstrumentationFeature {
     private func shouldInterceptTask( _ task: URLSessionTask, for configuration: URLSessionInstrumentation.Configuration?) -> Bool {
         if let delegateClass = configuration?.delegateClass {
             // Registered delegate mode: only intercept tasks with our registered delegate
-            return task.dd.delegate?.isKind(of: delegateClass) == true
+            return task.kubesense.delegate?.isKind(of: delegateClass) == true
         } else {
             // Automatic mode: skip tasks with registered delegates
-            if let delegate = task.dd.delegate, isRegisteredDelegate(delegate) {
+            if let delegate = task.kubesense.delegate, isRegisteredDelegate(delegate) {
                 return false
             }
             return true
@@ -522,7 +522,7 @@ extension NetworkInstrumentationFeature {
             self.captureResponseSize(for: interception, from: task, metrics: resourceMetrics)
 
             // Don't finish yet if task has completion handler - let completion handler finish after capturing data
-            if interception.isDone && !task.dd.hasCompletion {
+            if interception.isDone && !task.kubesense.hasCompletion {
                 // Registered delegate mode: `endDate` is `nil` because `URLSessionTaskMetrics` provides accurate timing
                 self.finish(task: task, interception: interception, endDate: nil)
             }
@@ -622,7 +622,7 @@ extension NetworkInstrumentationFeature {
         if truncatedInterceptions.remove(task) != nil {
             // Log host+path only — query parameters may contain sensitive tokens.
             let url = interception.request.url.map { "\($0.host ?? "")\($0.path)" } ?? "(unknown)"
-            DD.logger.warn(
+            KS.logger.warn(
                 "resourceAttributesProvider: response body for \(url) exceeded \(NetworkInstrumentationFeature.maxBufferedBodySize / 1_024) KB and was not captured."
             )
         }
@@ -672,7 +672,7 @@ extension NetworkInstrumentationFeature {
             // However, if the task has a completion handler, wait for it to fire instead of finishing here.
             // This ensures we capture the response data through completion handler swizzling before finishing.
             // The completion handler will call finish() after capturing the data.
-            if interception.isDone && !task.dd.hasCompletion {
+            if interception.isDone && !task.kubesense.hasCompletion {
                 self.finish(task: task, interception: interception, endDate: endTime, endMediaTime: endMediaTime)
             }
         }

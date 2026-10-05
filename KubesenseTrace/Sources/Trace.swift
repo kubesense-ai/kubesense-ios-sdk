@@ -93,7 +93,7 @@ public enum Trace {
         }
 
         core.set(context: TraceCoreContext.ActiveSpanProvider { [weak tracer = trace.tracer] in
-            tracer?.activeSpan?.context.dd.map {
+            tracer?.activeSpan?.context.kubesense.map {
                 ActiveSpanContext(
                     traceID: $0.traceID,
                     activeSpanID: $0.spanID,

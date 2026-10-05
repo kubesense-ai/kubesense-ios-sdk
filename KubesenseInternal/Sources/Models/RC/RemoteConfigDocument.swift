@@ -180,7 +180,7 @@ extension KubesenseCoreProtocol {
         guard remoteConfigDocument.bool(RemoteConfigSection.features, featureKey) == false else {
             return false
         }
-        DD.logger.warn("\(featureName) was not enabled: it is switched off in the remote configuration")
+        KS.logger.warn("\(featureName) was not enabled: it is switched off in the remote configuration")
         return true
     }
 }

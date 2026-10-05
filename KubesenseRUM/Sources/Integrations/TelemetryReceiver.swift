@@ -117,15 +117,15 @@ internal final class TelemetryReceiver: FeatureMessageReceiver {
         record(event: id) { context, writer in
             let rum = context.additionalContext(ofType: RUMCoreContext.self)
 
-            let uptimeMs = date.timeIntervalSince(context.launchInfo.processLaunchDate).dd.toInt64Milliseconds
+            let uptimeMs = date.timeIntervalSince(context.launchInfo.processLaunchDate).kubesense.toInt64Milliseconds
             var attributes = attributes ?? [:]
             attributes[TelemetryReceiver.uptimeAttributeName] = uptimeMs
 
             let event = TelemetryDebugEvent(
-                dd: .init(),
+                kubesense: .init(),
                 action: rum?.userActionID.map { .init(id: .string(value: $0)) },
                 application: rum.map { .init(id: $0.applicationID) },
-                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 effectiveSampleRate: Double(self.sampler.samplingRate),
                 experimentalFeatures: nil,
                 service: "kubesense-ios-sdk",
@@ -162,16 +162,16 @@ internal final class TelemetryReceiver: FeatureMessageReceiver {
         record(event: id) { context, writer in
             let rum = context.additionalContext(ofType: RUMCoreContext.self)
 
-            let uptimeMs = date.timeIntervalSince(context.launchInfo.processLaunchDate).dd.toInt64Milliseconds
+            let uptimeMs = date.timeIntervalSince(context.launchInfo.processLaunchDate).kubesense.toInt64Milliseconds
             let attributes: [String: Encodable] = [
                 TelemetryReceiver.uptimeAttributeName: uptimeMs
             ]
 
             let event = TelemetryErrorEvent(
-                dd: .init(),
+                kubesense: .init(),
                 action: rum?.userActionID.map { .init(id: .string(value: $0)) },
                 application: rum.map { .init(id: $0.applicationID) },
-                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 effectiveSampleRate: Double(self.sampler.samplingRate),
                 experimentalFeatures: nil,
                 service: "kubesense-ios-sdk",
@@ -199,10 +199,10 @@ internal final class TelemetryReceiver: FeatureMessageReceiver {
             let rum = context.additionalContext(ofType: RUMCoreContext.self)
 
             let event = TelemetryUsageEvent(
-                dd: .init(),
+                kubesense: .init(),
                 action: rum?.userActionID.map { .init(id: .string(value: $0)) },
                 application: rum.map { .init(id: $0.applicationID) },
-                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 effectiveSampleRate: Double(usage.sampleRate.composed(with: self.sampler.samplingRate)),
                 experimentalFeatures: nil,
                 service: "kubesense-ios-sdk",
@@ -239,10 +239,10 @@ internal final class TelemetryReceiver: FeatureMessageReceiver {
             let rum = context.additionalContext(ofType: RUMCoreContext.self)
 
             let event = TelemetryConfigurationEvent(
-                dd: .init(),
+                kubesense: .init(),
                 action: rum?.userActionID.map { .init(id: .string(value: $0)) },
                 application: rum.map { .init(id: $0.applicationID) },
-                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 effectiveSampleRate: Double(self.configurationExtraSampler.samplingRate.composed(with: self.sampler.samplingRate)),
                 experimentalFeatures: nil,
                 service: "kubesense-ios-sdk",
@@ -270,7 +270,7 @@ internal final class TelemetryReceiver: FeatureMessageReceiver {
 
             // Override sessionID using standard `SDKMetricFields`, otherwise use current RUM session ID:
             var attributes = metric.attributes
-            let sessionIDOverride: String? = attributes.removeValue(forKey: SDKMetricFields.sessionIDOverrideKey)?.dd.decode()
+            let sessionIDOverride: String? = attributes.removeValue(forKey: SDKMetricFields.sessionIDOverrideKey)?.kubesense.decode()
             let sessionID = sessionIDOverride ?? rum?.sessionID
 
             // Calculates the composition of sample rates. The metric can have up to 3 layers of sampling.
@@ -279,14 +279,14 @@ internal final class TelemetryReceiver: FeatureMessageReceiver {
                 effectiveSampleRate = effectiveSampleRate.composed(with: headSampleRate)
             }
 
-            let uptimeMs = date.timeIntervalSince(context.launchInfo.processLaunchDate).dd.toInt64Milliseconds
+            let uptimeMs = date.timeIntervalSince(context.launchInfo.processLaunchDate).kubesense.toInt64Milliseconds
             attributes[TelemetryReceiver.uptimeAttributeName] = uptimeMs
 
             let event = TelemetryDebugEvent(
-                dd: .init(),
+                kubesense: .init(),
                 action: rum?.userActionID.map { .init(id: .string(value: $0)) },
                 application: rum.map { .init(id: $0.applicationID) },
-                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                date: date.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 effectiveSampleRate: Double(effectiveSampleRate),
                 experimentalFeatures: nil,
                 service: "kubesense-ios-sdk",
@@ -490,9 +490,9 @@ private extension TelemetryConfigurationEvent.Telemetry.Configuration.RemoteConf
     init(_ remoteConfiguration: KubesenseInternal.ConfigurationTelemetry.RemoteConfiguration) {
         self.init(
             configId: remoteConfiguration.configId,
-            firstApplied: remoteConfiguration.firstApplied?.timeIntervalSince1970.dd.toInt64Milliseconds,
-            lastModified: remoteConfiguration.lastModified?.timeIntervalSince1970.dd.toInt64Milliseconds,
-            lastSynced: remoteConfiguration.lastSynced?.timeIntervalSince1970.dd.toInt64Milliseconds,
+            firstApplied: remoteConfiguration.firstApplied?.timeIntervalSince1970.kubesense.toInt64Milliseconds,
+            lastModified: remoteConfiguration.lastModified?.timeIntervalSince1970.kubesense.toInt64Milliseconds,
+            lastSynced: remoteConfiguration.lastSynced?.timeIntervalSince1970.kubesense.toInt64Milliseconds,
             syncId: remoteConfiguration.syncId,
             versionId: remoteConfiguration.versionId
         )

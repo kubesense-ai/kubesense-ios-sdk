@@ -422,7 +422,7 @@ struct CALayerSnapshotImageSnapshotRequestTests {
     func skipsButtonImageSublayerWhenButtonImagePrivacyOverrideMasksAll() throws {
         // Given
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
-        button.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
+        button.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
 
         let imageView = UIImageView(image: UIImage())
         imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
@@ -637,7 +637,7 @@ struct CALayerSnapshotImageSnapshotRequestTests {
     func skipsPrivateLayer() throws {
         // Given
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
-        view.dd.sessionReplayPrivacyOverrides.hide = true
+        view.kubesense.sessionReplayPrivacyOverrides.hide = true
         view.layer.contents = NSObject()
         let snapshot = try #require(CALayerSnapshot(from: view.layer, in: .mockAny()))
         let cache = ImageSnapshotCache()

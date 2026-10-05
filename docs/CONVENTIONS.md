@@ -34,10 +34,10 @@ Config: `tools/lint/sources.swiftlint.yml` (sources), `tools/lint/tests.swiftlin
 let app = UIApplication.shared
 
 // CORRECT — returns nil in extension context, safe everywhere
-let app = UIApplication.dd.managedShared
+let app = UIApplication.kubesense.managedShared
 ```
 
-`UIApplication.dd.managedShared` (defined in `KubesenseInternal/Sources/Utils/UIKitExtensions.swift`) uses KVC (`value(forKeyPath:)`) to bypass the compiler restriction. It returns `UIApplication?` — `nil` in app extension context, the shared instance in a full app.
+`UIApplication.kubesense.managedShared` (defined in `KubesenseInternal/Sources/Utils/UIKitExtensions.swift`) uses KVC (`value(forKeyPath:)`) to bypass the compiler restriction. It returns `UIApplication?` — `nil` in app extension context, the shared instance in a full app.
 
 This restriction applies only to `UIApplication.shared`. `UIDevice.current` is safe in extensions and has no lint rule.
 

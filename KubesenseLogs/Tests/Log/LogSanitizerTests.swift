@@ -148,8 +148,8 @@ class LogSanitizerTests: XCTestCase {
     }
 
     func testReservedAttributesAreSanitized() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let log = LogEvent.mockWith(
             attributes: .mockWith(
@@ -168,9 +168,9 @@ class LogSanitizerTests: XCTestCase {
         let sanitized = LogEventSanitizer().sanitize(log: log)
 
         XCTAssertEqual(sanitized.attributes.userAttributes.count, 1)
-        let logs = dd.logger.errorLogs
+        let logs = kubesense.logger.errorLogs
         XCTAssertEqual(logs.count, 6)
-        dd.logger.errorLogs.forEach {
+        kubesense.logger.errorLogs.forEach {
             XCTAssertTrue($0.message.matches(regex: "'.*' is a reserved attribute name. This attribute will be ignored."))
         }
     }

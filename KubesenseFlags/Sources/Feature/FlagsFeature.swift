@@ -57,10 +57,10 @@ internal struct FlagsFeature: KubesenseRemoteFeature {
         evaluationAggregator = configuration.trackEvaluations ? {
             var flushInterval = configuration.evaluationFlushInterval
             if flushInterval < Constants.minEvaluationFlushInterval {
-                DD.logger.warn("`Flags.Configuration.evaluationFlushInterval` cannot be less than \(Constants.minEvaluationFlushInterval)s. A value of \(Constants.minEvaluationFlushInterval)s will be used.")
+                KS.logger.warn("`Flags.Configuration.evaluationFlushInterval` cannot be less than \(Constants.minEvaluationFlushInterval)s. A value of \(Constants.minEvaluationFlushInterval)s will be used.")
                 flushInterval = Constants.minEvaluationFlushInterval
             } else if flushInterval > Constants.maxEvaluationFlushInterval {
-                DD.logger.warn("`Flags.Configuration.evaluationFlushInterval` cannot exceed \(Constants.maxEvaluationFlushInterval)s. A value of \(Constants.maxEvaluationFlushInterval)s will be used.")
+                KS.logger.warn("`Flags.Configuration.evaluationFlushInterval` cannot exceed \(Constants.maxEvaluationFlushInterval)s. A value of \(Constants.maxEvaluationFlushInterval)s will be used.")
                 flushInterval = Constants.maxEvaluationFlushInterval
             }
 

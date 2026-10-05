@@ -142,8 +142,8 @@ class KubesenseSpanTests: XCTestCase {
     // MARK: - Usage
 
     func testGivenFinishedSpan_whenCallingItsAPI_itPrintsErrors() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock(messageReceiver: FeatureMessageReceiverMock())
         let tracer: KubesenseTracer = .mockWith(core: core)
@@ -167,15 +167,15 @@ class KubesenseSpanTests: XCTestCase {
 
         fixtures.forEach { tracerMethod, expectedConsoleWarning in
             tracerMethod()
-            XCTAssertEqual(dd.logger.warnLog?.message, expectedConsoleWarning)
+            XCTAssertEqual(kubesense.logger.warnLog?.message, expectedConsoleWarning)
         }
     }
 
     // MARK: Sampling convenience methods
 
     func testKeepTraceFunctionSetsExpectedSamplingDecision() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock(messageReceiver: FeatureMessageReceiverMock())
         let tracer: KubesenseTracer = .mockWith(core: core)
@@ -192,8 +192,8 @@ class KubesenseSpanTests: XCTestCase {
     }
 
     func testDropTraceFunctionSetsExpectedSamplingDecision() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock(messageReceiver: FeatureMessageReceiverMock())
         let tracer: KubesenseTracer = .mockWith(core: core)
@@ -220,8 +220,8 @@ class KubesenseSpanTests: XCTestCase {
 
     func testWhenMultipleSpanTagsFailToEncode_itSkipsAllMalformedTags() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock()
         let tracer: KubesenseTracer = .mockWith(core: core)
@@ -254,15 +254,15 @@ class KubesenseSpanTests: XCTestCase {
 
         // And all errors logged
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute") }.count,
             3
         )
     }
 
     func testWhenOnlyMalformedSpanTagsAdded_itSendsSpanWithoutCustomTags() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock()
         let tracer: KubesenseTracer = .mockWith(core: core)
@@ -290,7 +290,7 @@ class KubesenseSpanTests: XCTestCase {
 
         // And errors logged
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute") }.count,
             2
         )
     }

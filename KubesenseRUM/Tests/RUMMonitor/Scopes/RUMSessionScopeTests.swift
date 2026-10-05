@@ -155,7 +155,7 @@ class RUMSessionScopeTests: XCTestCase {
 
         // Then - the view is added to the cache
         let firstViewID = try XCTUnwrap(scope.viewScopes.first?.context.activeViewID?.toRUMDataFormat)
-        XCTAssertEqual(viewCache.lastView(before: dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds), firstViewID)
+        XCTAssertEqual(viewCache.lastView(before: dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds), firstViewID)
 
         // When - updating the view
         dateProvider.advance(bySeconds: ttl)
@@ -169,7 +169,7 @@ class RUMSessionScopeTests: XCTestCase {
         )
 
         // Then - it updates the timestamp in cache
-        XCTAssertEqual(viewCache.lastView(before: dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds), firstViewID)
+        XCTAssertEqual(viewCache.lastView(before: dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds), firstViewID)
     }
 
     // MARK: - Background Events Tracking
@@ -613,15 +613,15 @@ class RUMSessionScopeTests: XCTestCase {
             )
             XCTAssertEqual(scope.viewScopes.count, 0)
 
-            let dd = DD.mockWith(logger: CoreLoggerMock())
-            defer { dd.reset() }
+            let kubesense = KS.mockWith(logger: CoreLoggerMock())
+            defer { kubesense.reset() }
 
             // When
             _ = scope.process(command: command, context: context, writer: writer)
 
             // Then
             XCTAssertEqual(scope.viewScopes.count, 0)
-            return dd.logger.warnLog?.message
+            return kubesense.logger.warnLog?.message
         }
 
         let randomCommand = RUMCommandMock(time: Date(), canStartBackgroundView: false)
@@ -645,15 +645,15 @@ class RUMSessionScopeTests: XCTestCase {
             )
             XCTAssertEqual(scope.viewScopes.count, 0)
 
-            let dd = DD.mockWith(logger: CoreLoggerMock())
-            defer { dd.reset() }
+            let kubesense = KS.mockWith(logger: CoreLoggerMock())
+            defer { kubesense.reset() }
 
             // When
             _ = scope.process(command: command, context: context, writer: writer)
 
             // Then
             XCTAssertEqual(scope.viewScopes.count, 0)
-            return dd.logger.warnLog?.message
+            return kubesense.logger.warnLog?.message
         }
 
         let silentCommands: [RUMCommand] = [

@@ -17,7 +17,7 @@ extension B3HTTPHeadersWriter: OTFormatWriter {}
 
 extension TracePropagationHeadersWriter where Self: OTFormatWriter {
     public func inject(spanContext: OTSpanContext) {
-        guard let spanContext = spanContext.dd else {
+        guard let spanContext = spanContext.kubesense else {
             return
         }
         write(

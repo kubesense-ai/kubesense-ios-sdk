@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <new>
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 aggregation_worker::aggregation_worker(
     size_t initial_buffer_size,
@@ -326,6 +326,6 @@ uint64_t aggregation_worker::batch_footprint_bytes(const std::vector<stack_trace
     return trace_storage_bytes + frame_storage_bytes + thread_name_bytes;
 }
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // __APPLE__ && !TARGET_OS_WATCH

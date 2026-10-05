@@ -282,7 +282,7 @@ private extension LongTaskObserver {
         }
 
         guard threshold > RUMInstrumentation.Constants.minLongTaskThreshold else {
-            DD.logger.error("`RUM.Configuration.longTaskThreshold` cannot be less than 0s. Long Tasks monitoring will be disabled.")
+            KS.logger.error("`RUM.Configuration.longTaskThreshold` cannot be less than 0s. Long Tasks monitoring will be disabled.")
             return nil
         }
 
@@ -310,7 +310,7 @@ private extension AppHangsMonitor {
 
         if appHangThreshold < RUMInstrumentation.Constants.minAppHangThreshold {
             appHangThreshold = RUMInstrumentation.Constants.minAppHangThreshold
-            DD.logger.warn("`RUM.Configuration.appHangThreshold` cannot be less than \(RUMInstrumentation.Constants.minAppHangThreshold)s. A value of \(RUMInstrumentation.Constants.minAppHangThreshold)s will be used.")
+            KS.logger.warn("`RUM.Configuration.appHangThreshold` cannot be less than \(RUMInstrumentation.Constants.minAppHangThreshold)s. A value of \(RUMInstrumentation.Constants.minAppHangThreshold)s will be used.")
         }
 
         self.init(

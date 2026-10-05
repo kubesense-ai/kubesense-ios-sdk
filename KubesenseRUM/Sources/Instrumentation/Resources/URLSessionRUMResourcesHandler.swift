@@ -138,7 +138,7 @@ internal final class URLSessionRUMResourcesHandler: KubesenseURLSessionHandlerSu
         }
 
         guard let subscriber = subscriber else {
-            return DD.logger.warn(
+            return KS.logger.warn(
                 """
                 RUM Resource was completed, but no `RUMMonitor` is initialized in the core. RUM auto instrumentation will not work.
                 Make sure `RUMMonitor.initialize()` is called before any network request is send.
@@ -258,7 +258,7 @@ internal final class URLSessionRUMResourcesHandler: KubesenseURLSessionHandlerSu
             let errorsData = try JSONEncoder().encode(errors)
             return String(data: errorsData, encoding: .utf8)
         } catch {
-            DD.logger.debug("Failed to encode GraphQL errors array: \(error)")
+            KS.logger.debug("Failed to encode GraphQL errors array: \(error)")
             return nil
         }
     }

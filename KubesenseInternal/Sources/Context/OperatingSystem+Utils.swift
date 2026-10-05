@@ -31,7 +31,7 @@ extension OperatingSystem {
     ///   - device: The device description.
     ///   - sysctl: Utilities around the `Darwin.sysctl` function.
     public init(
-        device: _UIDevice = .dd.current,
+        device: _UIDevice = .kubesense.current,
         sysctl: SysctlProviding = Sysctl()
     ) {
         let build = try? sysctl.osBuild()

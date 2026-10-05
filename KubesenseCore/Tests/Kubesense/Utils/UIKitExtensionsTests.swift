@@ -36,8 +36,8 @@ class UIKitExtensionsTests: XCTestCase {
             OperationQueue.self,
         ]
 
-        someUIKitClasses.forEach { XCTAssertTrue(Bundle(for: $0).dd.isUIKit) }
-        someNonUIKitClasses.forEach { XCTAssertFalse(Bundle(for: $0).dd.isUIKit) }
+        someUIKitClasses.forEach { XCTAssertTrue(Bundle(for: $0).kubesense.isUIKit) }
+        someNonUIKitClasses.forEach { XCTAssertFalse(Bundle(for: $0).kubesense.isUIKit) }
     }
 }
 

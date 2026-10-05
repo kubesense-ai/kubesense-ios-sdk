@@ -19,12 +19,12 @@
 #pragma clang diagnostic ignored "-Wunused-value"
 #pragma clang diagnostic ignored "-Wunused-variable"
 
-- (void)testDDTraceAPI {
+- (void)testKubesenseTraceAPI {
     KubesenseTraceConfiguration *config = [[KubesenseTraceConfiguration alloc] init];
     [KubesenseTrace enableWith:config];
 }
 
-- (void)testDDTraceInstanceNameAPI {
+- (void)testKubesenseTraceInstanceNameAPI {
     KubesenseTraceConfiguration *config = [[KubesenseTraceConfiguration alloc] init];
     NSString *instanceName = @"trace-test-instance";
     [KubesenseTrace enableWith:config instanceName:instanceName];
@@ -32,7 +32,7 @@
     (void)tracer;
 }
 
-- (void)testDDTraceConfigurationAPI {
+- (void)testKubesenseTraceConfigurationAPI {
     KubesenseTraceConfiguration *config = [[KubesenseTraceConfiguration alloc] init];
 
     XCTAssertEqual(config.sampleRate, 100);
@@ -61,7 +61,7 @@
     XCTAssertTrue(config.networkInfoEnabled);
 }
 
-- (void)testDDTracerAPI {
+- (void)testKubesenseTracerAPI {
     id<OTSpan> rootSpan = [[KubesenseTracer shared] startRootSpan:@"" tags:NULL startTime:NULL customSampleRate:NULL];
     [rootSpan setActive];
     [[KubesenseTracer shared] startSpan:@""];

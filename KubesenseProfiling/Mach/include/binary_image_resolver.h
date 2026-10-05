@@ -56,7 +56,7 @@ bool binary_image_lookup_pc(binary_image_t* info, void* pc);
 
 #ifdef __cplusplus
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 /**
  * Cached binary image entry with pre-extracted Mach-O metadata.
@@ -144,7 +144,7 @@ private:
  */
 void resolve_stack_trace_frames(stack_trace_t* traces, size_t count, binary_image_cache* cache);
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // __cplusplus
 

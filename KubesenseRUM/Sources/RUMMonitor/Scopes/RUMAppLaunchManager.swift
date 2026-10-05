@@ -76,7 +76,7 @@ private extension RUMAppLaunchManager {
                 name: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric.ttfd.name,
                 date: context.launchInfo.processLaunchDate,
                 serverTimeOffset: context.serverTimeOffset,
-                duration: max(ttid, timeToFullDisplay.duration).dd.toInt64Nanoseconds
+                duration: max(ttid, timeToFullDisplay.duration).kubesense.toInt64Nanoseconds
             )
 
             // TTID closes app-launch profiling, so only a TTFD reported earlier is sent here.
@@ -89,7 +89,7 @@ private extension RUMAppLaunchManager {
                 name: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric.ttid.name,
                 date: context.launchInfo.processLaunchDate,
                 serverTimeOffset: context.serverTimeOffset,
-                duration: ttid.dd.toInt64Nanoseconds
+                duration: ttid.kubesense.toInt64Nanoseconds
             )
         )
 
@@ -107,7 +107,7 @@ private extension RUMAppLaunchManager {
 
                 self.writeVitalEvent(
                     vitalId: ttidVitalId,
-                    duration: Double(ttid.dd.toInt64Nanoseconds),
+                    duration: Double(ttid.kubesense.toInt64Nanoseconds),
                     appLaunchMetric: .ttid,
                     startupType: startupType,
                     attributes: attributes,
@@ -122,7 +122,7 @@ private extension RUMAppLaunchManager {
                     let ttfd = max(ttid, timeToFullDisplay.duration)
                     self.writeVitalEvent(
                         vitalId: timeToFullDisplay.vitalId,
-                        duration: Double(ttfd.dd.toInt64Nanoseconds),
+                        duration: Double(ttfd.kubesense.toInt64Nanoseconds),
                         appLaunchMetric: .ttfd,
                         startupType: startupType,
                         attributes: timeToFullDisplay.attributes,
@@ -132,7 +132,7 @@ private extension RUMAppLaunchManager {
                         profiling: profiling
                     )
 
-                    telemetryController.trackTTFD(duration: ttfd.dd.toInt64Nanoseconds)
+                    telemetryController.trackTTFD(duration: ttfd.kubesense.toInt64Nanoseconds)
                 }
 
                 telemetryController.sendMetric()
@@ -206,7 +206,7 @@ private extension RUMAppLaunchManager {
         )
 
         let vitalEvent = RUMVitalAppLaunchEvent(
-            dd: .init(profiling: profiling),
+            kubesense: .init(profiling: profiling),
             account: .init(context: context),
             application: .init(id: parent.context.rumApplicationID),
             buildId: context.buildId,
@@ -216,7 +216,7 @@ private extension RUMAppLaunchManager {
             context: RUMEventAttributes(contextInfo: attributes),
             date: context.launchInfo.processLaunchDate
                 .addingTimeInterval(context.serverTimeOffset)
-                .timeIntervalSince1970.dd.toInt64Milliseconds,
+                .timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             os: context.os,
@@ -269,7 +269,7 @@ private extension RUMAppLaunchManager {
                 name: RUMVitalAppLaunchEvent.Vital.AppLaunchMetric.ttfd.name,
                 date: context.launchInfo.processLaunchDate,
                 serverTimeOffset: context.serverTimeOffset,
-                duration: timeToFullDisplay.duration.dd.toInt64Nanoseconds
+                duration: timeToFullDisplay.duration.kubesense.toInt64Nanoseconds
             )
             sendTTFDMessageToProfiler(vital: ttfdVital)
 
@@ -278,7 +278,7 @@ private extension RUMAppLaunchManager {
 
                 self.writeVitalEvent(
                     vitalId: ttfdVital.id,
-                    duration: Double(timeToFullDisplay.duration.dd.toInt64Nanoseconds),
+                    duration: Double(timeToFullDisplay.duration.kubesense.toInt64Nanoseconds),
                     appLaunchMetric: .ttfd,
                     startupType: startupType,
                     attributes: timeToFullDisplay.attributes,

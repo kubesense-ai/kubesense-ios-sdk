@@ -55,7 +55,7 @@ internal class RUMFeatureOperationManager {
         }
 
         if activeView == nil {
-            DD.logger.warn("RUM operation step command received without an active view. This may result in incomplete context information.")
+            KS.logger.warn("RUM operation step command received without an active view. This may result in incomplete context information.")
         }
 
         // Always create and send the vital event - this is the SDK's core responsibility
@@ -112,7 +112,7 @@ internal class RUMFeatureOperationManager {
         }
 
         let vitalEvent = RUMVitalOperationStepEvent(
-            dd: .init(profiling: profiling),
+            kubesense: .init(profiling: profiling),
             account: .init(context: context),
             application: .init(id: parent.context.rumApplicationID),
             buildId: context.buildId,
@@ -121,7 +121,7 @@ internal class RUMFeatureOperationManager {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: mergedAttributes),
-            date: command.time.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: command.time.addingTimeInterval(context.serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -164,7 +164,7 @@ internal class RUMFeatureOperationManager {
         // Check if operation is already being tracked
         if activeOperations.contains(lookupKey) {
             // Warning: Operation appears to be started multiple times
-            DD.logger.warn("Operation \(formatOperationName(name, operationKey: operationKey)) has already been started. This may result in the backend terminating the previous instance with an `auto_restart` failure. Note that the SDK only tracks operations locally and not across sessions.")
+            KS.logger.warn("Operation \(formatOperationName(name, operationKey: operationKey)) has already been started. This may result in the backend terminating the previous instance with an `auto_restart` failure. Note that the SDK only tracks operations locally and not across sessions.")
         }
 
         cleanUpActiveOperations()
@@ -177,7 +177,7 @@ internal class RUMFeatureOperationManager {
         // Check if operation is currently being tracked
         if !activeOperations.contains(lookupKey) {
             // Warning: Operation step called without a corresponding start
-            DD.logger.warn("`\(stepType.rawValue)` was called, but operation \(formatOperationName(name, operationKey: operationKey)) is currently not active. This may lead to a backend `instrumentation_error`. Make sure to call `startOperation(name:operationKey:attributes:options:)` first. Note that the SDK only tracks operations locally and not across sessions.")
+            KS.logger.warn("`\(stepType.rawValue)` was called, but operation \(formatOperationName(name, operationKey: operationKey)) is currently not active. This may lead to a backend `instrumentation_error`. Make sure to call `startOperation(name:operationKey:attributes:options:)` first. Note that the SDK only tracks operations locally and not across sessions.")
         }
 
         // Remove operation from tracking when it ends
@@ -226,12 +226,12 @@ internal class RUMFeatureOperationManager {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !trimmed.isEmpty else {
-            DD.logger.error("Operation `name` cannot be empty or contain only whitespace/line breaks. \(stepType) command will be ignored.")
+            KS.logger.error("Operation `name` cannot be empty or contain only whitespace/line breaks. \(stepType) command will be ignored.")
             return false
         }
 
         if !value.unicodeScalars.allSatisfy(Self.validOperationNameCharacters.contains) {
-            DD.logger.warn("Operation `name` '\(value)' does not match the backend-accepted pattern [\\w.@$-]* (letters, digits, _ . @ $ -). The \(stepType) command will still be emitted and may be rejected by the backend.")
+            KS.logger.warn("Operation `name` '\(value)' does not match the backend-accepted pattern [\\w.@$-]* (letters, digits, _ . @ $ -). The \(stepType) command will still be emitted and may be rejected by the backend.")
         }
 
         return true
@@ -245,7 +245,7 @@ internal class RUMFeatureOperationManager {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if trimmed.isEmpty {
-            DD.logger.warn("Operation `operationKey`, when provided, cannot be empty or contain only whitespace/line breaks. The \(stepType) command will still be emitted.")
+            KS.logger.warn("Operation `operationKey`, when provided, cannot be empty or contain only whitespace/line breaks. The \(stepType) command will still be emitted.")
         }
 
         return true

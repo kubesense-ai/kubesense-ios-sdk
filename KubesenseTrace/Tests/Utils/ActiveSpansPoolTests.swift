@@ -29,7 +29,7 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
         XCTAssertNil(previousSpan)
 
         let oneSpan = tracer.startSpan(operationName: .mockAny()).setActive()
-        XCTAssert(tracer.activeSpan?.dd.kubesenseContext.spanID == oneSpan.dd.kubesenseContext.spanID)
+        XCTAssert(tracer.activeSpan?.kubesense.kubesenseContext.spanID == oneSpan.kubesense.kubesenseContext.spanID)
         oneSpan.finish()
         XCTAssertNil(tracer.activeSpan)
         XCTAssertTrue(tracer.activeSpansPool.isEmpty)
@@ -40,7 +40,7 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
         XCTAssertNil(tracer.activeSpan)
 
         let oneSpan = tracer.startSpan(operationName: .mockAny()).setActive()
-        XCTAssert(tracer.activeSpan?.dd.kubesenseContext.spanID == oneSpan.dd.kubesenseContext.spanID)
+        XCTAssert(tracer.activeSpan?.kubesense.kubesenseContext.spanID == oneSpan.kubesense.kubesenseContext.spanID)
 
         oneSpan.finish()
         XCTAssertNil(tracer.activeSpan)
@@ -54,12 +54,12 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
         let previousActiveSpan = tracer.activeSpan
         let secondSpan = tracer.startSpan(operationName: .mockAny())
         secondSpan.setActive()
-        XCTAssertEqual(secondSpan.dd.kubesenseContext.parentSpanID, previousActiveSpan?.dd.kubesenseContext.spanID)
-        XCTAssertEqual(secondSpan.dd.kubesenseContext.spanID,  tracer.activeSpan?.dd.kubesenseContext.spanID)
-        XCTAssertEqual(secondSpan.dd.kubesenseContext.parentSpanID, firstSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(secondSpan.kubesense.kubesenseContext.parentSpanID, previousActiveSpan?.kubesense.kubesenseContext.spanID)
+        XCTAssertEqual(secondSpan.kubesense.kubesenseContext.spanID,  tracer.activeSpan?.kubesense.kubesenseContext.spanID)
+        XCTAssertEqual(secondSpan.kubesense.kubesenseContext.parentSpanID, firstSpan.kubesense.kubesenseContext.spanID)
 
         secondSpan.finish()
-        XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, firstSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, firstSpan.kubesense.kubesenseContext.spanID)
         firstSpan.finish()
         XCTAssertNil(tracer.activeSpan)
         XCTAssertTrue(tracer.activeSpansPool.isEmpty)
@@ -72,9 +72,9 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
 
         let spanWithParent = tracer.startSpan(operationName: .mockAny(), childOf: oneSpan.context)
 
-        XCTAssertEqual(spanWithParent.dd.kubesenseContext.parentSpanID, oneSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(spanWithParent.kubesense.kubesenseContext.parentSpanID, oneSpan.kubesense.kubesenseContext.spanID)
         spanWithParent.finish()
-        XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, otherSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, otherSpan.kubesense.kubesenseContext.spanID)
         oneSpan.finish()
         otherSpan.finish()
         XCTAssertNil(tracer.activeSpan)
@@ -87,20 +87,20 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
 
         let task1 = Task {
             let firstSpan = tracer.startSpan(operationName: .mockAny()).setActive()
-            XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, firstSpan.dd.kubesenseContext.spanID)
+            XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, firstSpan.kubesense.kubesenseContext.spanID)
             return firstSpan
         }
 
         let task2 = Task {
             try await Task.sleep(nanoseconds: 500_000_000)
-            XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, oneSpan.dd.kubesenseContext.spanID)
+            XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, oneSpan.kubesense.kubesenseContext.spanID)
             let secondSpan = tracer.startSpan(operationName: .mockAny()).setActive()
-            XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, secondSpan.dd.kubesenseContext.spanID)
+            XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, secondSpan.kubesense.kubesenseContext.spanID)
             return secondSpan
         }
 
         let (firstSpan, secondSpan) = try await (task1.value, task2.value)
-        XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, oneSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, oneSpan.kubesense.kubesenseContext.spanID)
         oneSpan.finish()
         firstSpan.finish()
         secondSpan.finish()
@@ -118,7 +118,7 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
             span.setActive()
         }
 
-        XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, span.dd.kubesenseContext.spanID)
+        XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, span.kubesense.kubesenseContext.spanID)
 
         span.finish()
 
@@ -139,12 +139,12 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
         firstSpan.setActive()
         secondSpan.setActive()
 
-        XCTAssertEqual(secondSpan.dd.kubesenseContext.parentSpanID, previousActiveSpan?.dd.kubesenseContext.spanID)
-        XCTAssertEqual(secondSpan.dd.kubesenseContext.spanID,  tracer.activeSpan?.dd.kubesenseContext.spanID)
-        XCTAssertEqual(secondSpan.dd.kubesenseContext.parentSpanID, firstSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(secondSpan.kubesense.kubesenseContext.parentSpanID, previousActiveSpan?.kubesense.kubesenseContext.spanID)
+        XCTAssertEqual(secondSpan.kubesense.kubesenseContext.spanID,  tracer.activeSpan?.kubesense.kubesenseContext.spanID)
+        XCTAssertEqual(secondSpan.kubesense.kubesenseContext.parentSpanID, firstSpan.kubesense.kubesenseContext.spanID)
 
         secondSpan.finish()
-        XCTAssertEqual(tracer.activeSpan?.dd.kubesenseContext.spanID, firstSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(tracer.activeSpan?.kubesense.kubesenseContext.spanID, firstSpan.kubesense.kubesenseContext.spanID)
         firstSpan.finish()
         XCTAssertNil(tracer.activeSpan)
         XCTAssertTrue(tracer.activeSpansPool.isEmpty)
@@ -162,10 +162,10 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
         child2Span.finish()
         parentSpan.finish()
 
-        XCTAssertEqual(child1Span.dd.kubesenseContext.traceID, parentSpan.dd.kubesenseContext.traceID)
-        XCTAssertEqual(child1Span.dd.kubesenseContext.parentSpanID, parentSpan.dd.kubesenseContext.spanID)
-        XCTAssertEqual(child2Span.dd.kubesenseContext.traceID, parentSpan.dd.kubesenseContext.traceID)
-        XCTAssertEqual(child2Span.dd.kubesenseContext.parentSpanID, parentSpan.dd.kubesenseContext.spanID)
+        XCTAssertEqual(child1Span.kubesense.kubesenseContext.traceID, parentSpan.kubesense.kubesenseContext.traceID)
+        XCTAssertEqual(child1Span.kubesense.kubesenseContext.parentSpanID, parentSpan.kubesense.kubesenseContext.spanID)
+        XCTAssertEqual(child2Span.kubesense.kubesenseContext.traceID, parentSpan.kubesense.kubesenseContext.traceID)
+        XCTAssertEqual(child2Span.kubesense.kubesenseContext.parentSpanID, parentSpan.kubesense.kubesenseContext.spanID)
 
         XCTAssertNil(tracer.activeSpan)
         XCTAssertTrue(tracer.activeSpansPool.isEmpty)
@@ -185,8 +185,8 @@ class ActiveSpansPoolTests: XCTestCase, Sendable {
             XCTAssertNil(provider.activeSpanContext())
 
             let oneSpan = tracer.startSpan(operationName: .mockAny()).setActive()
-            XCTAssertEqual(provider.activeSpanContext()?.activeSpanID, oneSpan.dd.kubesenseContext.spanID)
-            XCTAssertEqual(provider.activeSpanContext()?.traceID, oneSpan.dd.kubesenseContext.traceID)
+            XCTAssertEqual(provider.activeSpanContext()?.activeSpanID, oneSpan.kubesense.kubesenseContext.spanID)
+            XCTAssertEqual(provider.activeSpanContext()?.traceID, oneSpan.kubesense.kubesenseContext.traceID)
 
             oneSpan.finish()
             XCTAssertNil(provider.activeSpanContext())

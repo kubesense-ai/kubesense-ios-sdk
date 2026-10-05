@@ -433,8 +433,8 @@ class DataUploadWorkerTests: XCTestCase {
     // MARK: - Notifying Upload Progress
 
     func testWhenDataIsBeingUploaded_itPrintsUploadProgressInformation() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         writer.write(value: ["key": "value"])
@@ -467,24 +467,24 @@ class DataUploadWorkerTests: XCTestCase {
 
         // Then
         let expectedSummary = randomUploadStatus.needsRetry ? "not delivered, will be retransmitted" : "accepted, won't be retransmitted"
-        XCTAssertEqual(dd.logger.debugLogs.count, 2)
+        XCTAssertEqual(kubesense.logger.debugLogs.count, 2)
 
         XCTAssertEqual(
-            dd.logger.debugLogs[0].message,
+            kubesense.logger.debugLogs[0].message,
             "⏳ (\(randomFeatureName)) Uploading batches...",
-            "Batch start information should be printed to `userLogger`. All captured logs:\n\(dd.logger.recordedLogs)"
+            "Batch start information should be printed to `userLogger`. All captured logs:\n\(kubesense.logger.recordedLogs)"
         )
 
         XCTAssertEqual(
-            dd.logger.debugLogs[1].message,
+            kubesense.logger.debugLogs[1].message,
             "   → (\(randomFeatureName)) \(expectedSummary): \(randomUploadStatus.userDebugDescription)",
-            "Batch completion information should be printed to `userLogger`. All captured logs:\n\(dd.logger.recordedLogs)"
+            "Batch completion information should be printed to `userLogger`. All captured logs:\n\(kubesense.logger.recordedLogs)"
         )
     }
 
     func testWhenDataIsUploadedWithUnauthorizedError_itPrintsUnauthoriseMessage_toUserLogger() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         writer.write(value: ["key": "value"])
@@ -520,9 +520,9 @@ class DataUploadWorkerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.errorLog?.message,
+            kubesense.logger.errorLog?.message,
             "⚠️ Make sure that the provided token still exists and you're targeting the relevant Kubesense site.",
-            "An error should be printed to `userLogger`. All captured logs:\n\(dd.logger.recordedLogs)"
+            "An error should be printed to `userLogger`. All captured logs:\n\(kubesense.logger.recordedLogs)"
         )
     }
 

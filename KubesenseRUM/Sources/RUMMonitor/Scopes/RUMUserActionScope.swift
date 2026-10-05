@@ -158,7 +158,7 @@ internal class RUMUserActionScope: RUMScope, RUMContextProvider {
         }
 
         let actionEvent = RUMActionEvent(
-            dd: .init(
+            kubesense: .init(
                 action: .init(heatmapAttributes: heatmapAttributes),
                 browserSdkVersion: nil,
                 configuration: .init(sessionReplaySampleRate: nil, sessionSampleRate: Double(dependencies.samplingRate)),
@@ -173,7 +173,7 @@ internal class RUMUserActionScope: RUMScope, RUMContextProvider {
                 error: .init(count: errorsCount.toInt64),
                 frustration: frustrations.map { .init(type: $0) },
                 id: actionUUID.toRUMDataFormat,
-                loadingTime: completionTime.timeIntervalSince(actionStartTime).dd.toInt64Nanoseconds,
+                loadingTime: completionTime.timeIntervalSince(actionStartTime).kubesense.toInt64Nanoseconds,
                 longTask: .init(count: longTasksCount),
                 resource: .init(count: resourcesCount.toInt64),
                 target: .init(name: name),
@@ -186,7 +186,7 @@ internal class RUMUserActionScope: RUMScope, RUMContextProvider {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: command.globalAttributes.merging(parent.attributes) { $1 }.merging(attributes) { $1 }),
-            date: actionStartTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: actionStartTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -251,7 +251,7 @@ internal class RUMUserActionScope: RUMScope, RUMContextProvider {
     }
 }
 
-extension RUMActionEvent.DD.Action {
+extension RUMActionEvent.KS.Action {
     fileprivate init?(heatmapAttributes: HeatmapAttributes?) {
         guard let heatmapAttributes else {
             return nil

@@ -11,9 +11,9 @@ import KubesenseInternal
 @testable import KubesenseTrace
 
 class KubesenseNoopTracerTests: XCTestCase {
-    func testWhenUsingDDNoopTracerAPIs_itPrintsWarning() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+    func testWhenUsingKubesenseNoopTracerAPIs_itPrintsWarning() {
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         let noop = KubesenseNoopTracer()
@@ -37,8 +37,8 @@ class KubesenseNoopTracerTests: XCTestCase {
         See https://docs.kubesense.ai/tracing/setup_overview/setup/ios
         """
 
-        XCTAssertEqual(dd.logger.warnLogs.count, 4)
-        dd.logger.warnLogs.forEach { log in
+        XCTAssertEqual(kubesense.logger.warnLogs.count, 4)
+        kubesense.logger.warnLogs.forEach { log in
             XCTAssertEqual(log.message, expectedWarningMessage)
         }
     }

@@ -23,7 +23,7 @@ internal struct FileWriter: Writer {
         orchestrator: FilesOrchestratorType,
         encryption: DataEncryption?,
         telemetry: Telemetry,
-        jsonEncoder: JSONEncoder = .dd.default()
+        jsonEncoder: JSONEncoder = .kubesense.default()
     ) {
         self.orchestrator = orchestrator
         self.encryption = encryption
@@ -47,7 +47,7 @@ internal struct FileWriter: Writer {
                 let encodedMetadata = try encode(value: metadata, blockType: .eventMetadata)
                 encoded.append(encodedMetadata)
             } catch {
-                DD.logger.error("(\(orchestrator.trackName)) Failed to encode metadata", error: error)
+                KS.logger.error("(\(orchestrator.trackName)) Failed to encode metadata", error: error)
                 telemetry.error("(\(orchestrator.trackName)) Failed to encode metadata", error: error)
             }
         }
@@ -56,7 +56,7 @@ internal struct FileWriter: Writer {
             let encodedValue = try encode(value: value, blockType: .event)
             encoded.append(encodedValue)
         } catch {
-            DD.logger.error("(\(orchestrator.trackName)) Failed to encode value", error: error)
+            KS.logger.error("(\(orchestrator.trackName)) Failed to encode value", error: error)
             telemetry.error("(\(orchestrator.trackName)) Failed to encode value", error: error)
             return
         }
@@ -69,7 +69,7 @@ internal struct FileWriter: Writer {
         do {
             file = try orchestrator.getWritableFile(writeSize: writeSize)
         } catch {
-            DD.logger.error("(\(orchestrator.trackName)) Failed to get writable file for \(writeSize) bytes", error: error)
+            KS.logger.error("(\(orchestrator.trackName)) Failed to get writable file for \(writeSize) bytes", error: error)
             telemetry.error("(\(orchestrator.trackName)) Failed to get writable file for \(writeSize) bytes", error: error)
             return
         }
@@ -81,7 +81,7 @@ internal struct FileWriter: Writer {
                 .increment(by: encoded.count, attributes: ["track": orchestrator.trackName])
 #endif
         } catch {
-            DD.logger.error("(\(orchestrator.trackName)) Failed to write \(writeSize) bytes to file", error: error)
+            KS.logger.error("(\(orchestrator.trackName)) Failed to write \(writeSize) bytes to file", error: error)
             telemetry.error("(\(orchestrator.trackName)) Failed to write \(writeSize) bytes to file", error: error)
         }
     }
@@ -100,7 +100,7 @@ internal struct FileWriter: Writer {
     /// - Parameter event: The value to encode.
     /// - Returns: Data representation of the value.
     private func encode<T: Encodable>(value: T, blockType: BatchBlockType) throws -> Data {
-        let data = try jsonEncoder.dd.encodeWithAttributeRecovery(value)
+        let data = try jsonEncoder.kubesense.encodeWithAttributeRecovery(value)
         return try BatchDataBlock(
             type: blockType,
             data: encrypt(data: data)

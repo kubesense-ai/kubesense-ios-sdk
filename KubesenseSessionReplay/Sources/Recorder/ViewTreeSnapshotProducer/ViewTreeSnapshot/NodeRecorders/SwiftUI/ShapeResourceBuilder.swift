@@ -117,12 +117,12 @@ internal final class ShapeResourceBuilder {
         }
 
         let pathData = self.pathData(for: path)
-        let fillColor = color.paint.map(\.uiColor.dd.hexString) ?? "#000000FF"
+        let fillColor = color.paint.map(\.uiColor.kubesense.hexString) ?? "#000000FF"
         let fillRule = fillStyle.isEOFilled ? "evenodd" : "nonzero"
 
         let resource = ShapeResource(
             svgString: """
-            <svg width="\(size.width.dd.svgString)" height="\(size.height.dd.svgString)" xmlns="http://www.w3.org/2000/svg">
+            <svg width="\(size.width.kubesense.svgString)" height="\(size.height.kubesense.svgString)" xmlns="http://www.w3.org/2000/svg">
               <path d="\(pathData)" fill="\(fillColor)" fill-rule="\(fillRule)"/>
             </svg>
             """
@@ -147,7 +147,7 @@ internal final class ShapeResourceBuilder {
             return pathData as String
         }
 
-        let pathData = path.dd.svgString
+        let pathData = path.kubesense.svgString
 
         pathCache.setObject(pathData as NSString, forKey: key)
 

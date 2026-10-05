@@ -296,7 +296,7 @@ extension CALayer {
     }
 
     @MainActor fileprivate var privacyOverrides: SessionReplayPrivacyOverrides? {
-        (delegate as? UIView)?.dd._privacyOverrides
+        (delegate as? UIView)?.kubesense._privacyOverrides
     }
 
     @MainActor

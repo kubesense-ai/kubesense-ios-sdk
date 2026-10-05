@@ -100,7 +100,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
                     using: adjustedCrashTimings
                 )
             } else {
-                DD.logger.debug("There was a crash in previous session, but it is ignored due to another crash already present in the last view.")
+                KS.logger.debug("There was a crash in previous session, but it is ignored due to another crash already present in the last view.")
                 return false
             }
 
@@ -127,7 +127,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
         } else {
             // We know it is too late for sending RUM view to previous RUM session as it is now stale on backend.
             // To avoid inconsistency, we only send the RUM error.
-            DD.logger.debug("Sending crash as RUM error.")
+            KS.logger.debug("Sending crash as RUM error.")
             featureScope.eventWriteContext(bypassConsent: true) { context, writer in
                 let builder = createFatalErrorBuilder(context: context, crash: crashReport, crashDate: crashTimings.realCrashDate, timeSinceAppStart: crashTimings.timeSinceAppStart)
                 let rumError = builder.createRUMError(with: lastRUMViewEvent)
@@ -135,7 +135,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
                 if let mappedError = self.eventsMapper.map(event: rumError) {
                     writer.write(value: self.sanitizer.sanitize(event: mappedError))
                 } else {
-                    DD.logger.warn("errorEventMapper returned 'nil' for a crash. Discarding crashes is not supported. The unmodified event will be sent.")
+                    KS.logger.warn("errorEventMapper returned 'nil' for a crash. Discarding crashes is not supported. The unmodified event will be sent.")
                     writer.write(value: self.sanitizer.sanitize(event: rumError))
                 }
             }
@@ -186,7 +186,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
                 hasReplay: lastRUMSessionState.didStartWithReplay
             )
         case .doNotHandle:
-            DD.logger.debug("There was a crash in background, but it is ignored due to Background Event Tracking disabled or sampling.")
+            KS.logger.debug("There was a crash in background, but it is ignored due to Background Event Tracking disabled or sampling.")
             newRUMView = nil
         }
 
@@ -209,7 +209,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
         ).sample()
 
         guard sampled else {
-            DD.logger.debug("There was a crash in previous session, but it is ignored due to sampling.")
+            KS.logger.debug("There was a crash in previous session, but it is ignored due to sampling.")
             return false
         }
 
@@ -252,7 +252,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
                 hasReplay: false
             )
         case .doNotHandle:
-            DD.logger.debug("There was a crash in background, but it is ignored due to Background Event Tracking disabled.")
+            KS.logger.debug("There was a crash in background, but it is ignored due to Background Event Tracking disabled.")
             newRUMView = nil
         }
 
@@ -265,7 +265,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
 
     /// Sends given `CrashReport` by linking it to given `rumView` and updating view counts accordingly.
     private func send(crashReport: KubesenseCrashReport, to rumView: RUMViewEvent, using crashTimings: AdjustedCrashTimings) {
-        DD.logger.debug("Updating RUM view with crash report.")
+        KS.logger.debug("Updating RUM view with crash report.")
 
         // crash reporting is considering the user consent from previous session, if an event reached
         // the message bus it means that consent was granted and we can safely bypass current consent.
@@ -277,7 +277,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
             if let mappedError = self.eventsMapper.map(event: rumError) {
                 writer.write(value: self.sanitizer.sanitize(event: mappedError))
             } else {
-                DD.logger.warn("errorEventMapper returned 'nil' for a crash. Discarding crashes is not supported. The unmodified event will be sent.")
+                KS.logger.warn("errorEventMapper returned 'nil' for a crash. Discarding crashes is not supported. The unmodified event will be sent.")
                 writer.write(value: self.sanitizer.sanitize(event: rumError))
             }
             if let mappedView = self.eventsMapper.map(event: updatedRUMView) {
@@ -301,7 +301,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
             errorBinaryImages: crash.binaryImages.toRUMDataFormat,
             errorWasTruncated: crash.wasTruncated,
             errorMeta: crash.meta.toRUMDataFormat,
-            additionalAttributes: crash.additionalAttributes.dd.decode(),
+            additionalAttributes: crash.additionalAttributes.kubesense.decode(),
             timeSinceAppStart: timeSinceAppStart
         )
     }
@@ -318,7 +318,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
         let viewUUID = uuidGenerator.generateUnique()
 
         return RUMViewEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 cls: nil,
                 configuration: .init(
@@ -350,7 +350,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
             // RUM attributes if available. There is a chance of having them as global RUM attributes can be updated more often than RUM view.
             // See https://github.com/kubesense-ai/kubesense-ios-sdk/pull/1834 for more context.
             context: context.lastRUMAttributes,
-            date: startDate.timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: startDate.timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.device,
             display: nil,

@@ -110,10 +110,10 @@ SessionReplay.stopRecording()
 
 // 5. (Optional) Per-view privacy overrides (UIKit)
 // Override privacy settings for specific UIKit views
-myPasswordField.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAll
-mySensitiveImage.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
-myInteractiveView.dd.sessionReplayPrivacyOverrides.touchPrivacy = .hide
-myView.dd.sessionReplayPrivacyOverrides.hide = true  // Render as opaque wireframe
+myPasswordField.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAll
+mySensitiveImage.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
+myInteractiveView.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .hide
+myView.kubesense.sessionReplayPrivacyOverrides.hide = true  // Render as opaque wireframe
 
 // 6. (Optional) Per-view privacy overrides (SwiftUI)
 // Use SessionReplayPrivacyView to wrap SwiftUI content (iOS 16+)
@@ -143,7 +143,7 @@ SessionReplayPrivacyView(
 
 ### Privacy Overrides (Per-View)
 - **`KubesenseSessionReplay/Sources/SessionReplayPrivacyOverrides.swift`** - UIKit per-view privacy control
-  - Access via `view.dd.sessionReplayPrivacyOverrides`
+  - Access via `view.kubesense.sessionReplayPrivacyOverrides`
   - Override text, image, touch privacy per view
   - Hide specific views entirely
 - **`KubesenseSessionReplay/Sources/SessionReplayPrivacyView.swift`** - SwiftUI per-view privacy control (iOS 16+)
@@ -181,10 +181,10 @@ Override global privacy for specific views:
 
 **UIKit:**
 ```swift
-view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskNone
-view.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskNone
-view.dd.sessionReplayPrivacyOverrides.touchPrivacy = .show
-view.dd.sessionReplayPrivacyOverrides.hide = true  // Completely hide view and subviews
+view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskNone
+view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskNone
+view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .show
+view.kubesense.sessionReplayPrivacyOverrides.hide = true  // Completely hide view and subviews
 ```
 
 **SwiftUI (iOS 16+):**
@@ -221,7 +221,7 @@ When `Kubesense.Configuration.remoteConfiguration` is set, Core fetches and cach
 
 ### "Sensitive data visible in replay"
 1. Increase privacy levels in configuration
-2. Use per-view overrides for specific views: `view.dd.sessionReplayPrivacyOverrides`
+2. Use per-view overrides for specific views: `view.kubesense.sessionReplayPrivacyOverrides`
 3. Set `hide = true` to completely hide sensitive views, this will also hide subviews
 
 ### "Images not showing in replay"

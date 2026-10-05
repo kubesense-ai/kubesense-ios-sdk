@@ -332,8 +332,8 @@ public class RUMSessionMatcher {
 
         // Sort view events in each visit by document version
         visits.forEach { visit in
-            visit.viewEvents = visit.viewEvents.sorted { $0.dd.documentVersion < $1.dd.documentVersion }
-            visit.viewUpdateEvents = visit.viewUpdateEvents.sorted { $0.dd.documentVersion < $1.dd.documentVersion }
+            visit.viewEvents = visit.viewEvents.sorted { $0.kubesense.documentVersion < $1.kubesense.documentVersion }
+            visit.viewUpdateEvents = visit.viewUpdateEvents.sorted { $0.kubesense.documentVersion < $1.kubesense.documentVersion }
         }
 
         // Validate ViewVisit's view.isActive for each events
@@ -591,11 +591,11 @@ extension RUMSessionMatcher {
     }
 
     public var sessionPrecondition: RUMSessionPrecondition? {
-        let fromViews = viewEvents.compactMap { $0.dd.session?.sessionPrecondition }
-        let fromActions = actionEvents.compactMap { $0.dd.session?.sessionPrecondition }
-        let fromResources = resourceEvents.compactMap { $0.dd.session?.sessionPrecondition }
-        let fromErrors = errorEvents.compactMap { $0.dd.session?.sessionPrecondition }
-        let fromLongTasks = longTaskEvents.compactMap { $0.dd.session?.sessionPrecondition }
+        let fromViews = viewEvents.compactMap { $0.kubesense.session?.sessionPrecondition }
+        let fromActions = actionEvents.compactMap { $0.kubesense.session?.sessionPrecondition }
+        let fromResources = resourceEvents.compactMap { $0.kubesense.session?.sessionPrecondition }
+        let fromErrors = errorEvents.compactMap { $0.kubesense.session?.sessionPrecondition }
+        let fromLongTasks = longTaskEvents.compactMap { $0.kubesense.session?.sessionPrecondition }
         let all = Set(fromViews + fromActions + fromResources + fromErrors + fromLongTasks)
         precondition(all.count == 1, "All events must share the same session precondition")
         return all.first

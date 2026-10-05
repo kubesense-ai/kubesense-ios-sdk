@@ -133,7 +133,7 @@ extension DeviceInfo {
     ///   - device: The device description.
     public init(
         processInfo: ProcessInfo,
-        device: _UIDevice = .dd.current,
+        device: _UIDevice = .kubesense.current,
         sysctl: SysctlProviding = Sysctl()
     ) {
         var architecture = "unknown"

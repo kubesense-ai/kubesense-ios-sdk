@@ -38,7 +38,7 @@ extension ObjcInteropTransitiveNestedClass: ObjcInteropReflectable {
 
     var objcTypeName: String {
         let parentObjcTypeName = (parentClass as! ObjcInteropReflectable).objcTypeName
-        return parentObjcTypeName + bridgedSwiftStruct.name.removingDuplicatedDDPrefix(after: parentObjcTypeName)
+        return parentObjcTypeName + bridgedSwiftStruct.name.removingDuplicatedKubesensePrefix(after: parentObjcTypeName)
     }
 
     var swiftTypeName: String {
@@ -60,7 +60,7 @@ extension ObjcInteropNestedClass: ObjcInteropReflectable {
 
     var objcTypeName: String {
         let parentObjcTypeName = (parentClass as! ObjcInteropReflectable).objcTypeName
-        return parentObjcTypeName + bridgedSwiftStruct.name.removingDuplicatedDDPrefix(after: parentObjcTypeName)
+        return parentObjcTypeName + bridgedSwiftStruct.name.removingDuplicatedKubesensePrefix(after: parentObjcTypeName)
     }
 
     var swiftTypeName: String {
@@ -79,7 +79,7 @@ extension ObjcInteropNestedEnum: ObjcInteropReflectable {
 
     var objcTypeName: String {
         let parentObjcTypeName = (parentClass as! ObjcInteropReflectable).objcTypeName
-        return parentObjcTypeName + bridgedSwiftEnum.name.removingDuplicatedDDPrefix(after: parentObjcTypeName)
+        return parentObjcTypeName + bridgedSwiftEnum.name.removingDuplicatedKubesensePrefix(after: parentObjcTypeName)
     }
 
     var swiftTypeName: String {
@@ -101,7 +101,7 @@ extension ObjcInteropAssociatedTypeEnum: ObjcInteropReflectable {
 
     var objcTypeName: String {
         let parentObjcTypeName = (parentClass as! ObjcInteropReflectable).objcTypeName
-        return parentObjcTypeName + bridgedSwiftAssociatedTypeEnum.name.removingDuplicatedDDPrefix(after: parentObjcTypeName)
+        return parentObjcTypeName + bridgedSwiftAssociatedTypeEnum.name.removingDuplicatedKubesensePrefix(after: parentObjcTypeName)
     }
 
     var swiftTypeName: String {
@@ -126,8 +126,8 @@ extension ObjcInteropPropertyWrapper {
 }
 
 private extension String {
-    func removingDuplicatedDDPrefix(after parentObjcTypeName: String) -> String {
-        guard parentObjcTypeName.hasSuffix("DD"), hasPrefix("DD") else {
+    func removingDuplicatedKubesensePrefix(after parentObjcTypeName: String) -> String {
+        guard parentObjcTypeName.hasSuffix("KS"), hasPrefix("KS") else {
             return self
         }
 

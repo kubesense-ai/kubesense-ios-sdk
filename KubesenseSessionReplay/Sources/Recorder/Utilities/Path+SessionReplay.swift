@@ -18,13 +18,13 @@ extension KubesenseExtension where ExtendedType == SwiftUI.Path {
         type.forEach { element in
             switch element {
             case let .move(to):
-                d += "M \(to.dd.svgString) "
+                d += "M \(to.kubesense.svgString) "
             case let .line(to):
-                d += "L \(to.dd.svgString) "
+                d += "L \(to.kubesense.svgString) "
             case let .quadCurve(to, control):
-                d += "Q \(control.dd.svgString) \(to.dd.svgString) "
+                d += "Q \(control.kubesense.svgString) \(to.kubesense.svgString) "
             case let .curve(to, control1, control2):
-                d += "C \(control1.dd.svgString) \(control2.dd.svgString) \(to.dd.svgString) "
+                d += "C \(control1.kubesense.svgString) \(control2.kubesense.svgString) \(to.kubesense.svgString) "
             case .closeSubpath:
                 d += "Z "
             }
@@ -37,7 +37,7 @@ extension CGPoint: KubesenseExtended {}
 
 extension KubesenseExtension where ExtendedType == CGPoint {
     internal var svgString: String {
-        "\(type.x.dd.svgString) \(type.y.dd.svgString)"
+        "\(type.x.kubesense.svgString) \(type.y.kubesense.svgString)"
     }
 }
 

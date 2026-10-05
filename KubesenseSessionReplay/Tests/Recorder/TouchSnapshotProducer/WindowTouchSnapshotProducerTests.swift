@@ -141,7 +141,7 @@ class WindowTouchSnapshotProducerTests: XCTestCase {
         // Given
         let parentView = UIView(frame: .mockRandom())
         let touchOverride: TouchPrivacyLevel = .mockRandom()
-        parentView.dd.sessionReplayPrivacyOverrides.touchPrivacy = touchOverride
+        parentView.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = touchOverride
 
         let childView = UIView(frame: .mockRandom())
         parentView.addSubview(childView)
@@ -162,7 +162,7 @@ class WindowTouchSnapshotProducerTests: XCTestCase {
     func testWhenViewHasTouchOverrideSetToHide_touchesAreNotRecorded() {
         // Given
         let view = UIView(frame: .mockRandom())
-        view.dd.sessionReplayPrivacyOverrides.touchPrivacy = .hide
+        view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .hide
 
         let touch = UITouchMock(phase: .began, location: .mockRandom(), view: view)
         let touchEvent = UITouchEventMock(touches: [touch])
@@ -182,7 +182,7 @@ class WindowTouchSnapshotProducerTests: XCTestCase {
     func testWhenParentViewHasTouchOverrideSetToHide_touchesInChildViewsAreNotRecorded() {
         // Given
         let parentView = UIView(frame: .mockRandom())
-        parentView.dd.sessionReplayPrivacyOverrides.touchPrivacy = .hide
+        parentView.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .hide
 
         let childView = UIView(frame: .mockRandom())
         parentView.addSubview(childView)
@@ -205,7 +205,7 @@ class WindowTouchSnapshotProducerTests: XCTestCase {
     func testWhenViewHasTouchOverrideSetToShow_touchesAreRecorded() {
         // Given
         let view = UIView(frame: .mockRandom())
-        view.dd.sessionReplayPrivacyOverrides.touchPrivacy = .show
+        view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .show
 
         let touch = UITouchMock(phase: .began, location: .mockRandom(), view: view)
         let touchEvent = UITouchEventMock(touches: [touch])
@@ -226,7 +226,7 @@ class WindowTouchSnapshotProducerTests: XCTestCase {
     func testWhenParentViewHasTouchOverrideSetToShow_touchesInChildViewsAreRecorded() {
         // Given
         let parentView = UIView(frame: .mockRandom())
-        parentView.dd.sessionReplayPrivacyOverrides.touchPrivacy = .show
+        parentView.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .show
 
         let childView = UIView(frame: .mockRandom())
         parentView.addSubview(childView)

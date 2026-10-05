@@ -32,7 +32,7 @@ class KubesenseCrashReportFilterTests: XCTestCase {
         return (index, libraryName, instructionAddr, loadAddr, offset)
     }
 
-    func testFilterReports_ConvertsValidCrashReportToDDCrashReport() throws {
+    func testFilterReports_ConvertsValidCrashReportToKubesenseCrashReport() throws {
         // Given
         let json = """
         {

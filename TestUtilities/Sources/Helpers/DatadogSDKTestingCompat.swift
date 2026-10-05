@@ -25,11 +25,11 @@ extension Trait where Self == DatadogSDKTestingStubTrait {
     public static var datadogTesting: Self { Self() }
 }
 
-/// Stand-in for `DatadogSDKTesting`'s `Tag.dd.retriable`/`.nonretriable` and
-/// `Tag.dd.tia.skippable`/`.unskippable` tags. Applying any of these tags under the
+/// Stand-in for `DatadogSDKTesting`'s `Tag.kubesense.retriable`/`.nonretriable` and
+/// `Tag.kubesense.tia.skippable`/`.unskippable` tags. Applying any of these tags under the
 /// stub is a no-op.
 extension Tag {
-    public enum dd {
+    public enum kubesense {
         @Tag public static var retriable: Tag
         @Tag public static var nonretriable: Tag
 

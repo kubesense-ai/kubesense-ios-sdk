@@ -945,7 +945,7 @@ class RUMMonitorTests: XCTestCase {
         XCTAssertGreaterThan(errorEvents.count, 0)
 
         // All RUM events should be send later than or equal this earliest server time
-        let earliestServerTime = deviceTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds
+        let earliestServerTime = deviceTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds
 
         viewEvents.forEach { view in
             XCTAssertGreaterThanOrEqual(view.date, earliestServerTime, "Event `date` should be adjusted to server time")
@@ -1027,7 +1027,7 @@ class RUMMonitorTests: XCTestCase {
 
         XCTAssertEqual(view.view.name, RUMOffViewEventsHandlingRule.Constants.applicationLaunchViewName)
         XCTAssertEqual(view.view.url, RUMOffViewEventsHandlingRule.Constants.applicationLaunchViewURL)
-        XCTAssertEqual(view.date, sdkInitDate.timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(view.date, sdkInitDate.timeIntervalSince1970.kubesense.toInt64Milliseconds)
     }
 
     func testWhenCollectingEventsBeforeStartingFirstView_itTracksThemWithinApplicationLaunchView() throws {
@@ -1070,7 +1070,7 @@ class RUMMonitorTests: XCTestCase {
         XCTAssertEqual(session.views.count, 2, "It should track 2 views")
 
         let appLaunchView = session.views[0]
-        let sdkInitDateInMilliseconds = sdkInitDate.timeIntervalSince1970.dd.toInt64Milliseconds
+        let sdkInitDateInMilliseconds = sdkInitDate.timeIntervalSince1970.kubesense.toInt64Milliseconds
 
         XCTAssertEqual(appLaunchView.name, "ApplicationLaunch", "It should track 'ApplicationLaunch' view")
         XCTAssertEqual(appLaunchView.viewEvents.first?.date, sdkInitDateInMilliseconds, "'ApplicationLaunch' view should start at launch time")
@@ -1435,7 +1435,7 @@ class RUMMonitorTests: XCTestCase {
 
         RUM.enable(with: config, in: core)
 
-        let monitor = RUMMonitor.shared(in: core).dd
+        let monitor = RUMMonitor.shared(in: core).kubesense
         let transformedCommand = monitor.transform(command: mockCommand)
         XCTAssertTrue(transformedCommand.attributes.isEmpty)
         XCTAssertNotEqual(transformedCommand.time, mockCommand.time)

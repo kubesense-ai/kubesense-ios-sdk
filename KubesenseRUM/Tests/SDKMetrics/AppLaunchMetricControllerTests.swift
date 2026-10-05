@@ -31,7 +31,7 @@ final class AppLaunchMetricControllerTests: XCTestCase {
 
         // Then
         let metric = try XCTUnwrap(telemetry.messages.appLaunchMetric)
-        XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.dd.toInt64Nanoseconds)
+        XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.kubesense.toInt64Nanoseconds)
         XCTAssertEqual(metric.startupType, vitalEvent.vital.startupType?.rawValue)
         XCTAssertEqual(metric.coldStartRule, coldStartRule.rawValue)
         XCTAssertEqual(metric.isPrewarmed, vitalEvent.vital.isPrewarmed)
@@ -54,7 +54,7 @@ final class AppLaunchMetricControllerTests: XCTestCase {
 
         // Then
         let metric = try XCTUnwrap(telemetry.messages.appLaunchMetric)
-        XCTAssertEqual(metric.ttidDurationNs, duration.dd.toInt64Nanoseconds)
+        XCTAssertEqual(metric.ttidDurationNs, duration.kubesense.toInt64Nanoseconds)
         XCTAssertEqual(metric.launchReason, kubesenseContext.launchInfo.launchReason)
         XCTAssertEqual(metric.taskPolicyRole, kubesenseContext.launchInfo.raw.taskPolicyRole)
         XCTAssertEqual(metric.isPrewarmed, kubesenseContext.launchInfo.launchReason == .prewarming)
@@ -76,7 +76,7 @@ final class AppLaunchMetricControllerTests: XCTestCase {
 
         // Then
         let metric = try XCTUnwrap(telemetry.messages.appLaunchMetric)
-        XCTAssertEqual(metric.ttidDurationNs, duration.dd.toInt64Nanoseconds)
+        XCTAssertEqual(metric.ttidDurationNs, duration.kubesense.toInt64Nanoseconds)
         XCTAssertEqual(metric.launchReason, kubesenseContext.launchInfo.launchReason)
         XCTAssertEqual(metric.taskPolicyRole, kubesenseContext.launchInfo.raw.taskPolicyRole)
         XCTAssertEqual(metric.isPrewarmed, kubesenseContext.launchInfo.launchReason == .prewarming)
@@ -101,7 +101,7 @@ final class AppLaunchMetricControllerTests: XCTestCase {
 
         // Then
         let metric = try XCTUnwrap(telemetry.messages.appLaunchMetric)
-        XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.dd.toInt64Nanoseconds)
+        XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.kubesense.toInt64Nanoseconds)
         XCTAssertEqual(metric.startupType, vitalEvent.vital.startupType?.rawValue)
         XCTAssertEqual(metric.launchReason, kubesenseContext.launchInfo.launchReason)
         XCTAssertEqual(metric.taskPolicyRole, kubesenseContext.launchInfo.raw.taskPolicyRole)
@@ -126,7 +126,7 @@ final class AppLaunchMetricControllerTests: XCTestCase {
 
         // Then
         let metric = try XCTUnwrap(telemetry.messages.appLaunchMetric)
-        XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.dd.toInt64Nanoseconds)
+        XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.kubesense.toInt64Nanoseconds)
         XCTAssertEqual(metric.startupType, vitalEvent.vital.startupType?.rawValue)
         XCTAssertEqual(metric.launchReason, kubesenseContext.launchInfo.launchReason)
         XCTAssertEqual(metric.taskPolicyRole, kubesenseContext.launchInfo.raw.taskPolicyRole)
@@ -156,7 +156,7 @@ final class AppLaunchMetricControllerTests: XCTestCase {
             let metric = try XCTUnwrap(telemetry.messages[$0]
                 .asMetric?.attributes[AppLaunchMetric.Constants.appLaunchKey] as? AppLaunchMetric.Attributes)
 
-            XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.dd.toInt64Nanoseconds)
+            XCTAssertEqual(metric.ttidDurationNs, vitalEvent.vital.duration.kubesense.toInt64Nanoseconds)
             XCTAssertEqual(metric.startupType, vitalEvent.vital.startupType?.rawValue)
             XCTAssertEqual(metric.launchReason, kubesenseContext.launchInfo.launchReason)
             XCTAssertEqual(metric.taskPolicyRole, kubesenseContext.launchInfo.raw.taskPolicyRole)

@@ -44,13 +44,13 @@ internal final class WatchdogTerminationReporter: WatchdogTerminationReporting {
     /// Sends the Watchdog Termination event to Kubesense.
     func send(date: Date?, state: AppStateInfo, viewEvent: RUMViewEvent) {
         guard state.trackingConsent == .granted else { // consider the user consent from previous session
-            DD.logger.debug("Skipped sending Watchdog Termination as it was recorded with \(state.trackingConsent) consent")
+            KS.logger.debug("Skipped sending Watchdog Termination as it was recorded with \(state.trackingConsent) consent")
             return
         }
 
         let errorDate = date ?? Date(timeIntervalSinceReferenceDate: TimeInterval(viewEvent.date))
 
-        DD.logger.debug("Sending Watchdog Termination event")
+        KS.logger.debug("Sending Watchdog Termination event")
         featureScope.eventWriteContext(bypassConsent: true) { [dateProvider] context, writer in
             let realDateNow = dateProvider.now.addingTimeInterval(context.serverTimeOffset)
 
@@ -72,14 +72,14 @@ internal final class WatchdogTerminationReporter: WatchdogTerminationReporting {
             let view = self.sanitizer.sanitize(event: builder.updateRUMViewWithError(viewEvent))
 
             if realDateNow.timeIntervalSince(errorDate) < FatalErrorBuilder.Constants.viewEventAvailabilityThreshold {
-                DD.logger.debug("Sending Watchdog Termination as RUM error with issuing RUM view update")
+                KS.logger.debug("Sending Watchdog Termination as RUM error with issuing RUM view update")
                 // It is still OK to send RUM view to previous RUM session.
                 writer.write(value: error)
                 writer.write(value: view)
             } else {
                 // We know it is too late for sending RUM view to previous RUM session as it is now stale on backend.
                 // To avoid inconsistency, we only send the RUM error.
-                DD.logger.debug("Sending Watchdog Termination as RUM error without updating RUM view")
+                KS.logger.debug("Sending Watchdog Termination as RUM error without updating RUM view")
                 writer.write(value: error)
             }
         }

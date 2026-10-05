@@ -56,7 +56,7 @@ public struct RUMSessionState: Codable, Equatable {
         // `isSampled` was introduced in a later SDK version. For crash reports persisted by older
         // SDK versions, fall back to deriving the sampling state from `sessionUUID`: a null UUID
         // indicated a rejected (non-sampled) session in the previous encoding.
-        isSampled = try container.decodeIfPresent(Bool.self, forKey: .isSampled) ?? (sessionUUID != UUID.dd.nullUUID)
+        isSampled = try container.decodeIfPresent(Bool.self, forKey: .isSampled) ?? (sessionUUID != UUID.kubesense.nullUUID)
     }
 }
 

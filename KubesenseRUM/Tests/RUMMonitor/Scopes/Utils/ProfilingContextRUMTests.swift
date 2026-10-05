@@ -9,7 +9,7 @@ import KubesenseInternal
 @testable import KubesenseRUM
 
 final class ProfilingContextRUMTests: XCTestCase {
-    func testDDProfiling_mapsRunningStatus() {
+    func testKubesenseProfiling_mapsRunningStatus() {
         let profiling = ProfilingContext(status: .running).kubesenseProfiling
 
         XCTAssertEqual(profiling.status, .running)
@@ -17,7 +17,7 @@ final class ProfilingContextRUMTests: XCTestCase {
         XCTAssertNil(profiling.quotaReason)
     }
 
-    func testDDProfiling_mapsStoppedStatus() throws {
+    func testKubesenseProfiling_mapsStoppedStatus() throws {
         let stopReasons: [ProfilingContext.Status.StopReason] = [.manual, .notStarted, .timeout, .prewarmed]
         let quotaReasons: [KubesenseProfiling.QuotaReason] = [
             .quotaOk, .quotaExceeded, .orgDisabled, .backendUnavailable, .undefined, .timeout, .apiError
@@ -34,7 +34,7 @@ final class ProfilingContextRUMTests: XCTestCase {
         XCTAssertEqual(stoppedProfiling.quotaReason, quotaReason)
     }
 
-    func testDDProfiling_mapsErrorStatus() {
+    func testKubesenseProfiling_mapsErrorStatus() {
         let memoryAllocationFailure = ProfilingContext(status: .error(reason: .memoryAllocationFailed)).kubesenseProfiling
 
         XCTAssertEqual(memoryAllocationFailure.status, .error)

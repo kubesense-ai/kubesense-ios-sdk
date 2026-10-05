@@ -1782,22 +1782,22 @@ class NetworkInstrumentationFeatureTests: XCTestCase {
     }
 
     func testWhenEnableAutomaticModeTwice_thenItPrintsAWarning() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         try URLSessionInstrumentation.enableOrThrow(with: nil, in: core)
         try URLSessionInstrumentation.enableOrThrow(with: nil, in: core)
 
         // Then
         XCTAssertEqual(
-            dd.logger.debugLog?.message,
+            kubesense.logger.debugLog?.message,
             "Automatic network instrumentation is already enabled."
         )
     }
 
     func testWhenEnablingDurationBreakdownOnTheSameDelegate_thenItPrintsAWarning() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         try URLSessionInstrumentation.enableOrThrow(with: nil, in: core)
         URLSessionInstrumentation.enableDurationBreakdown(with: .init(delegateClass: SessionDataDelegateMock.self), in: core)
@@ -1805,7 +1805,7 @@ class NetworkInstrumentationFeatureTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.warnLog?.message,
+            kubesense.logger.warnLog?.message,
             """
             The delegate class SessionDataDelegateMock is already instrumented.
             The previous instrumentation will be disabled in favor of the new one.
@@ -1814,15 +1814,15 @@ class NetworkInstrumentationFeatureTests: XCTestCase {
     }
 
     func testWhenEnablingDurationBreakdownBeforeAutomaticMode_thenItPrintsAnError() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // When - Try to enable duration breakdown without enabling automatic mode first
         URLSessionInstrumentation.enableDurationBreakdown(with: .init(delegateClass: SessionDataDelegateMock.self), in: core)
 
         // Then
         XCTAssertEqual(
-            dd.logger.errorLog?.message,
+            kubesense.logger.errorLog?.message,
             """
             Duration breakdown requires automatic network instrumentation to be enabled first.
             Please enable RUM or Trace with `urlSessionTracking` parameter before enabling duration breakdown.

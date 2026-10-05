@@ -206,7 +206,7 @@ final class ProfilingHandlerTests: XCTestCase {
         let metadata = try XCTUnwrap(core.metadata.first as? ProfileAttachments)
         let vitalsFromJson = try typedRUMEvents(from: metadata).filter { $0["type"] as? String == "vital" }
         let start = try XCTUnwrap(vitalsFromJson.first?["start_ns"] as? Int64)
-        XCTAssertEqual(start, vitalDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Nanoseconds)
+        XCTAssertEqual(start, vitalDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Nanoseconds)
     }
 
     func testWrite_capturesOperationBeforeEventWriteContextIsExecuted() throws {
