@@ -755,7 +755,7 @@ public class objc_RUMConfiguration: NSObject {
     }
 }
 
-@objc(KubesenseRUM)
+@objc(KubesenseRUMSDK)
 @objcMembers
 @_spi(objc)
 public class objc_RUM: NSObject {

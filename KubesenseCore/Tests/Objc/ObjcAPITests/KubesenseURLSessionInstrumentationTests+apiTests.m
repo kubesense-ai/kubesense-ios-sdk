@@ -35,7 +35,7 @@
     KubesenseTraceFirstPartyHostsTracing *tracing = [[KubesenseTraceFirstPartyHostsTracing alloc] initWithHosts:[NSSet new] sampleRate:20];
     KubesenseTraceURLSessionTracking *urlSessionTracking = [[KubesenseTraceURLSessionTracking alloc] initWithFirstPartyHostsTracing:tracing];
     [config setURLSessionTracking:urlSessionTracking];
-    [KubesenseTrace enableWith:config];
+    [KubesenseTraceSDK enableWith:config];
 }
 
 - (void)tearDown {

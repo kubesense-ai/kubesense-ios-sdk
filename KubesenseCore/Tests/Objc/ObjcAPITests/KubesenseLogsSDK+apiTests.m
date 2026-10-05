@@ -7,13 +7,13 @@
 #import <XCTest/XCTest.h>
 @import KubesenseLogs;
 
-@interface KubesenseLogs_apiTests : XCTestCase
+@interface KubesenseLogsSDK_apiTests : XCTestCase
 @end
 
 /*
  * Objc API for smoke tests - minimal assertions, mainly check if the interface is available to Objc.
  */
-@implementation KubesenseLogs_apiTests
+@implementation KubesenseLogsSDK_apiTests
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
@@ -21,25 +21,25 @@
 
 - (void)testDDLogsAPI {
     KubesenseLogsConfiguration *config = [[KubesenseLogsConfiguration alloc] init];
-    [KubesenseLogs enableWith:config];
+    [KubesenseLogsSDK enableWith:config];
 
-    [KubesenseLogs addAttributeForKey:@"key1" value:@"value"];
-    [KubesenseLogs addAttributeForKey:@"key2" value:@1];
-    [KubesenseLogs addAttributeForKey:@"key3" value:@YES];
-    [KubesenseLogs addAttributeForKey:@"key4" value:@[@"array"]];
-    [KubesenseLogs addAttributeForKey:@"key5" value:@{@"key": @"value"}];
+    [KubesenseLogsSDK addAttributeForKey:@"key1" value:@"value"];
+    [KubesenseLogsSDK addAttributeForKey:@"key2" value:@1];
+    [KubesenseLogsSDK addAttributeForKey:@"key3" value:@YES];
+    [KubesenseLogsSDK addAttributeForKey:@"key4" value:@[@"array"]];
+    [KubesenseLogsSDK addAttributeForKey:@"key5" value:@{@"key": @"value"}];
 
-    [KubesenseLogs removeAttributeForKey:@"key1"];
-    [KubesenseLogs removeAttributeForKey:@"keyNotAdded"];
+    [KubesenseLogsSDK removeAttributeForKey:@"key1"];
+    [KubesenseLogsSDK removeAttributeForKey:@"keyNotAdded"];
 }
 
 - (void)testDDLogsInstanceNameAPI {
     NSString *instanceName = @"logs-test-instance";
     KubesenseLogsConfiguration *config = [[KubesenseLogsConfiguration alloc] init];
-    [KubesenseLogs enableWith:config instanceName:instanceName];
+    [KubesenseLogsSDK enableWith:config instanceName:instanceName];
 
-    [KubesenseLogs addAttributeForKey:@"key1" value:@"value" instanceName:instanceName];
-    [KubesenseLogs removeAttributeForKey:@"key1" instanceName:instanceName];
+    [KubesenseLogsSDK addAttributeForKey:@"key1" value:@"value" instanceName:instanceName];
+    [KubesenseLogsSDK removeAttributeForKey:@"key1" instanceName:instanceName];
 }
 
 - (void)testDDLoggerInstanceNameAPI {

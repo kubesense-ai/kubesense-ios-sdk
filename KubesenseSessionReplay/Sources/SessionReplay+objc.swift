@@ -10,7 +10,7 @@ import KubesenseInternal
 #if os(iOS)
 
 /// An entry point to Kubesense Session Replay feature.
-@objc(KubesenseSessionReplay)
+@objc(KubesenseSessionReplaySDK)
 @objcMembers
 @_spi(objc)
 public final class objc_SessionReplay: NSObject {

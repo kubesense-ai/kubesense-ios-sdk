@@ -94,7 +94,7 @@ public final class objc_TraceURLSessionTracking: NSObject {
     }
 }
 
-@objc(KubesenseTrace)
+@objc(KubesenseTraceSDK)
 @objcMembers
 @_spi(objc)
 public final class objc_Trace: NSObject {
