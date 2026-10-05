@@ -66,18 +66,47 @@ OpenTelemetry packages still declare.
 ## Tests
 
 ```bash
-# Repository and catalog logic, no network.
-xcodebuild -project KubesenseShop.xcodeproj -scheme KubesenseShop \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:KubesenseShopTests test
-
-# One full shopping journey: add to cart, sign in, place an order, run diagnostics,
-# open the UIKit and WebView screen. Needs the sample API and creates a real order.
-xcodebuild -project KubesenseShop.xcodeproj -scheme KubesenseShop \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:KubesenseShopUITests test
+make test       # repository and catalog logic, no network
+make ui-test    # one full shopping journey: add to cart, sign in, place an order, run diagnostics,
+                # open the UIKit and WebView screen; needs the sample API and creates a real order
 ```
 
-The UI tests install a separate `KubesenseShopUITests-Runner` app on the simulator; that is Xcode's test
-driver, not a second copy of the shop.
+Both take `DESTINATION=...` (default: the iPhone 17 Pro simulator). The UI tests install a separate
+`KubesenseShopUITests-Runner` app on the simulator; that is Xcode's test driver, not a second copy of
+the shop.
+
+## Benchmarks
+
+`make benchmark` (here or at the repository root) measures what the SDK costs this app. It runs the
+`KubesenseShopBenchmarks` scheme in Release, five iterations of each measurement, in four SDK
+profiles:
+
+| Profile | SDK |
+| --- | --- |
+| `off` | Not started: the baseline |
+| `rum` | Core and RUM, with URLSession tracking |
+| `replay` | Core, RUM and Session Replay with SwiftUI recording |
+| `full` | Everything the sample enables: RUM, Logs, Trace, OpenTelemetry, Flags, Crash Reporting, Session Replay with SwiftUI recording |
+
+and prints a table of medians with the change against `off`:
+
+- **Launch:** cold launch until the app is responsive.
+- **Scroll:** three flings down the catalog and back; CPU time and instructions, peak and final memory,
+  scroll duration, and on a physical device the hitch time ratio and frame rate.
+
+The app runs on its offline catalog so the shop's own API does not add noise, with
+`KUBESENSE_ENV=benchmark` so these sessions can be filtered out on the dashboard. SDK uploads stay on,
+since they are part of the cost. Results, with the result bundle and build log, go to
+`build/benchmarks/<timestamp>/`.
+
+The simulator shares the Mac's CPU, so treat its numbers as relative and compare runs on the same
+machine. For numbers to publish, run on a device: `make benchmark DESTINATION='platform=iOS,name=<device>'`
+(the app must be signed for it). The latest results are in
+[docs/benchmarks.md](../../docs/benchmarks.md).
+
+The profile can also be chosen by hand, for profiling in Instruments: set `KUBESENSE_SDK_PROFILE` to
+`off`, `rum`, `replay` or `full` in the scheme's environment. Any key of `Config/local.json` can be overridden the
+same way.
 
 ## Feature map
 
@@ -91,7 +120,8 @@ driver, not a second copy of the shop.
 | Diagnostics: Replay and context | Start and stop Session Replay, user and account info, feature flag evaluation |
 | Diagnostics: Reliability | Long task, plus confirmed Swift crash, SIGSEGV and a 20 second app hang |
 | UIKit and WebView | Auto-tracked UIKit view, secure text field, slider action, `WebViewTracking` bridge |
-| SDK bootstrap | Core, RUM, Logs, Trace, OpenTelemetry, Flags, Crash Reporting, Session Replay with SwiftUI recording |
+| SDK bootstrap | Core, RUM, Logs, Trace, OpenTelemetry, Flags, Crash Reporting, Session Replay with SwiftUI recording; `KUBESENSE_SDK_PROFILE` selects `off`, `rum`, `replay` or `full` |
+| Benchmarks | Launch and scrolling overhead per SDK profile (`make benchmark`) |
 
 The Diagnostics tab is compiled into Debug builds only. Destructive scenarios ask for confirmation;
 reopen the app afterwards so the crash report is sent.
