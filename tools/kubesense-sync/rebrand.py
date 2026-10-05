@@ -56,13 +56,17 @@ PRESERVED_FILES = re.compile(r'(^|/)(LICENSE|NOTICE|LICENSE-3rdparty\.csv)$')
 
 # Upstream paths this fork does not ship: Datadog's internal CI (GitLab pipeline, Chainguard tokens, code
 # owners, Synthetics end-to-end and benchmark apps, dogfooding into Datadog's apps, Vault-backed upload
-# and runner scripts, the Confluence publisher) and the documents that only make sense with them. `apply` deletes them, so every upgrade drops them again;
+# and runner scripts, the Confluence publisher), the Session Replay snapshot tests (their reference
+# images live in Datadog's private snapshots repository; their SRFixtures package stays) and the documents that only make sense with
+# them. `apply` deletes them, so every upgrade drops them again;
 # `spec` therefore never sees them, and `attribution` does not expect their notices, since a file that is
 # not distributed carries no notice to keep. Matched against upstream's and the rebranded spelling.
 REMOVED_PATHS = re.compile(
-    r'^(E2ETests|BenchmarkTests|tools/dogfooding|\.github/chainguard)/'
+    r'^(E2ETests|BenchmarkTests|tools/dogfooding|tools/sr-snapshots|\.github/chainguard)/'
+    # Everything of the snapshot tests but SRFixtures, a package the IntegrationTests runner imports.
+    r'|^KubesenseSessionReplay/SRSnapshotTests/(?!SRFixtures/)'
     r'|^(\.gitlab-ci\.yml|\.github/CODEOWNERS|MIGRATION\.md|docs/session_replay_performance\.md|\.github/workflows/changelog-to-confluence\.yaml'
-    r'|tools/(e2e-build-upload|benchmark-build-upload|runner-setup|upload-smoke-test-reports)\.sh)$'
+    r'|tools/(e2e-build-upload|benchmark-build-upload|runner-setup|upload-smoke-test-reports|sr-snapshot-test)\.sh)$'
 )
 
 # Files this fork owns outright. They talk about upstream on purpose, so the rules never touch them;
@@ -239,7 +243,7 @@ def rename_path(path):
 
 def tracked_files(root=REPO_ROOT):
     """The files to consider: tracked ones in a git checkout, every file in an exported tree."""
-    if os.path.isdir(os.path.join(root, '.git')):
+    if os.path.exists(os.path.join(root, '.git')):
         output = subprocess.run(['git', 'ls-files', '-z'], cwd=root, capture_output=True, check=True).stdout
         return [path for path in output.decode().split('\0') if path]
     files = []
@@ -297,7 +301,7 @@ SOURCE_FILE = re.compile(r'\.(swift|m|mm|h|c|cpp)$')
 
 
 def apply(dry_run, root=REPO_ROOT, quiet=False):
-    use_git = os.path.isdir(os.path.join(root, '.git'))
+    use_git = os.path.exists(os.path.join(root, '.git'))
     files = tracked_files(root)
     dropped = [path for path in files if removed(path)]
     remove_paths(dropped, dry_run, root, use_git)

@@ -16,5 +16,4 @@ test_swift_package() {
 # Test swift packages
 test_swift_package tools/http-server-mock
 test_swift_package tools/rum-models-generator
-test_swift_package tools/sr-snapshots
 

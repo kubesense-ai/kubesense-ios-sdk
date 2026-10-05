@@ -3,7 +3,6 @@ all: env-check repo-setup dependencies templates
 		lint lint-cpp license-check \
 		test test-ios test-ios-all test-tvos test-tvos-all test-visionos test-visionos-all \
 		ui-test ui-test-all ui-test-podinstall \
-		sr-snapshot-test sr-snapshots-pull sr-snapshots-push sr-layer-snapshot-test sr-layer-snapshots-pull sr-layer-snapshots-push sr-snapshot-tests-open \
 		tools-test \
 		smoke-test smoke-test-ios smoke-test-ios-all smoke-test-tvos smoke-test-tvos-all \
 		spm-build spm-build-ios spm-build-tvos spm-build-visionos spm-build-macos spm-build-watchos \
@@ -72,11 +71,6 @@ DEFAULT_WATCHOS_DEVICE := Apple Watch Series 11 (46mm)
 DEFAULT_VISIONOS_OS := latest
 DEFAULT_VISIONOS_PLATFORM := visionOS Simulator
 DEFAULT_VISIONOS_DEVICE := Apple Vision Pro
-
-# Test env for running SR snapshot tests in local:
-DEFAULT_SR_SNAPSHOT_TESTS_OS := 17.5
-DEFAULT_SR_SNAPSHOT_TESTS_PLATFORM := iOS Simulator
-DEFAULT_SR_SNAPSHOT_TESTS_DEVICE := iPhone 15
 
 # Default location for deploying artifacts
 DEFAULT_ARTIFACTS_PATH := artifacts
@@ -332,50 +326,6 @@ rc-models-verify:
 protoc-pprof:
 	@$(ECHO_TITLE) "protoc-pprof"
 	./tools/protoc-pprof.sh --proto-path KubesenseProfiling/Protos/profile.proto --output-dir KubesenseProfiling/Mach
-
-# Pushes current SR snapshots to snapshots repo
-sr-snapshots-push:
-	@$(ECHO_TITLE) "make sr-snapshots-push"
-	./tools/sr-snapshot-test.sh --push
-
-# Pulls SR snapshots from snapshots repo
-sr-snapshots-pull:
-	@$(ECHO_TITLE) "make sr-snapshots-pull"
-	./tools/sr-snapshot-test.sh --pull
-
-# Pushes current SR layer snapshots to snapshots repo
-sr-layer-snapshots-push:
-	@$(ECHO_TITLE) "make sr-layer-snapshots-push"
-	./tools/sr-snapshot-test.sh --suite layer-tree --push $(if $(SNAPSHOT_ENV),--snapshot-env "$(SNAPSHOT_ENV)")
-
-# Pulls SR layer snapshots from snapshots repo
-sr-layer-snapshots-pull:
-	@$(ECHO_TITLE) "make sr-layer-snapshots-pull"
-	./tools/sr-snapshot-test.sh --suite layer-tree --pull $(if $(SNAPSHOT_ENV),--snapshot-env "$(SNAPSHOT_ENV)")
-
-# Run Session Replay snapshot tests
-sr-snapshot-test:
-	@:$(eval OS ?= $(DEFAULT_SR_SNAPSHOT_TESTS_OS))
-	@:$(eval PLATFORM ?= $(DEFAULT_SR_SNAPSHOT_TESTS_PLATFORM))
-	@:$(eval DEVICE ?= $(DEFAULT_SR_SNAPSHOT_TESTS_DEVICE))
-	@:$(eval ARTIFACTS_PATH ?= $(DEFAULT_ARTIFACTS_PATH))
-	@$(ECHO_TITLE) "make sr-snapshot-test OS='$(OS)' PLATFORM='$(PLATFORM)' DEVICE='$(DEVICE)' ARTIFACTS_PATH='$(ARTIFACTS_PATH)'"
-	./tools/sr-snapshot-test.sh \
-		--test --os "$(OS)" --device "$(DEVICE)" --platform "$(PLATFORM)" --artifacts-path "$(ARTIFACTS_PATH)"
-
-# Run Session Replay layer snapshot tests
-sr-layer-snapshot-test:
-	@:$(eval ARTIFACTS_PATH ?= $(DEFAULT_ARTIFACTS_PATH))
-	@$(ECHO_TITLE) "make sr-layer-snapshot-test SNAPSHOT_ENV='$(SNAPSHOT_ENV)' ARTIFACTS_PATH='$(ARTIFACTS_PATH)'"
-	./tools/sr-snapshot-test.sh \
-		--suite layer-tree --test $(if $(SNAPSHOT_ENV),--snapshot-env "$(SNAPSHOT_ENV)") \
-		$(if $(OS),--os "$(OS)") $(if $(DEVICE),--device "$(DEVICE)") $(if $(PLATFORM),--platform "$(PLATFORM)") \
-		--artifacts-path "$(ARTIFACTS_PATH)"
-
-# Opens `SRSnapshotTests` project with passing required ENV variables
-sr-snapshot-tests-open:
-	@$(ECHO_TITLE) "make sr-snapshot-tests-open"
-	./tools/sr-snapshot-test.sh --open-project
 
 # Define default paths for API output files
 SWIFT_OUTPUT_PATH ?= api-surface-swift

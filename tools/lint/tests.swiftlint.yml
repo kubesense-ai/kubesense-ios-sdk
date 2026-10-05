@@ -93,7 +93,6 @@ included:
   - ../../KubesenseTrace/Tests
   - ../../KubesenseRUM/Tests
   - ../../KubesenseSessionReplay/Tests
-  - ../../KubesenseSessionReplay/SRSnapshotTests
   - ../../KubesenseCrashReporting/Tests
   - ../../KubesenseWebViewTracking/Tests
   - ../../KubesenseFlags/Tests
@@ -102,7 +101,6 @@ included:
   - ../../tools/http-server-mock/Tests
   - ../../tools/api-surface/Tests
   - ../../tools/rum-models-generator/Tests
-  - ../../tools/sr-snapshots/Tests
   - ../../SmokeTests/carthage/CTProjectTests
   - ../../SmokeTests/carthage/CTProjectUITests
   - ../../SmokeTests/cocoapods/CTProjectTests

@@ -10,11 +10,11 @@
 
 # ENVs:
 # - DRY_RUN: Set to '1' to do everything except publishing podspecs to Cocoapods trunk.
+# - COCOAPODS_TRUNK_TOKEN: Optional. Without it, the session of `pod trunk register` (in ~/.netrc) is used.
 
 set -eo pipefail
 source ./tools/utils/argparse.sh
 source ./tools/utils/echo-color.sh
-source ./tools/secrets/get-secret.sh
 
 set_description "Publishes podspec to Cocoapods trunk."
 define_arg "podspec-name" "" "The name of podspec file to publish." "string" "true"
@@ -27,12 +27,10 @@ REPO_PATH="$artifacts_path/kubesense-ios-sdk"
 PODSPEC_PATH="$REPO_PATH/$podspec_name"
 
 authenticate() {
-    echo_subtitle "Authenticate 'pod trunk' CLI"
-    echo_info "Exporting 'COCOAPODS_TRUNK_TOKEN' for CI"
-    export COCOAPODS_TRUNK_TOKEN=$(get_secret $KUBESENSE_IOS_SECRET__CP_TRUNK_TOKEN)
-    echo_info "▸ bundle exec pod trunk me" && bundle exec pod trunk me
-    if [[ $? -ne 0 ]]; then
-        echo_err "Error: 'pod trunk' is not authenticated."
+    echo_subtitle "Check 'pod trunk' session"
+    echo_info "▸ bundle exec pod trunk me"
+    if ! bundle exec pod trunk me; then
+        echo_err "Error: 'pod trunk' is not authenticated." "Run 'pod trunk register <email> <name>' and confirm the email."
         exit 1
     fi
 }

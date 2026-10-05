@@ -11,11 +11,11 @@
 
 # ENVs:
 # - DRY_RUN: Set to '1' to do everything except publishing the GitHub assets.
+# Uses the GitHub CLI's login (`gh auth login`), or GITHUB_TOKEN when it is set.
 
 set -eo pipefail
 source ./tools/utils/argparse.sh
 source ./tools/utils/echo-color.sh
-source ./tools/secrets/get-secret.sh
 
 set_description "Publishes GitHub assets to GH release."
 define_arg "tag" "" "The tag to publish GitHub assets to." "string" "true"
@@ -33,7 +33,7 @@ REPO_NAME="kubesense-ai/kubesense-ios-sdk"
 verify_gh_auth() {
     gh auth status &>/dev/null
     if [[ $? -ne 0 ]]; then
-        echo_err "Error:" "GitHub CLI is not authenticated."
+        echo_err "Error:" "GitHub CLI is not authenticated. Run 'gh auth login'."
         exit 1
     fi
 }
@@ -58,7 +58,5 @@ echo_info "Publishing '$GH_ASSET_WITHOUT_ARM64E' and '$GH_ASSET_WITH_ARM64E' to 
 echo_info "▸ Using DRY_RUN = $DRY_RUN"
 echo_info "▸ Using OVERWRITE_EXISTING = $overwrite_existing"
 
-export GITHUB_TOKEN=$(dd-octo-sts --disable-tracing token --scope kubesense-ai/kubesense-ios-sdk --policy self.release)
 verify_gh_auth
 upload
-dd-octo-sts --disable-tracing revoke
