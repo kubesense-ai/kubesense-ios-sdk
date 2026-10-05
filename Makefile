@@ -1,5 +1,5 @@
-all: env-check repo-setup dependencies templates
-.PHONY: env-check repo-setup dependencies clean templates \
+all: repo-setup dependencies
+.PHONY: repo-setup dependencies clean \
 		lint lint-cpp license-check \
 		test test-ios test-ios-all test-tvos test-tvos-all test-visionos test-visionos-all \
 		ui-test ui-test-all ui-test-podinstall \
@@ -7,21 +7,15 @@ all: env-check repo-setup dependencies templates
 		smoke-test smoke-test-ios smoke-test-ios-all smoke-test-tvos smoke-test-tvos-all \
 		spm-build spm-build-ios spm-build-tvos spm-build-visionos spm-build-macos spm-build-watchos \
 		models-generate rum-models-generate sr-models-generate rc-models-generate models-verify rum-models-verify sr-models-verify rc-models-verify \
-		api-surface spi-docs-build \
-		profiling-protoc \
+		api-surface \
 		release-build release-validate release-publish-github \
-		release-publish-podspec release-publish-internal-podspecs release-publish-dependent-podspecs \
-		set-ci-secret
+		release-publish-podspec release-publish-internal-podspecs release-publish-dependent-podspecs
 
 REPO_ROOT := $(PWD)
 include tools/utils/common.mk
 
 # Default ENV for setting up the repo
 DEFAULT_ENV := dev
-
-env-check:
-	@$(ECHO_TITLE) "make env-check"
-	./tools/env-check.sh
 
 repo-setup:
 	@:$(eval ENV ?= $(DEFAULT_ENV))
@@ -75,9 +69,6 @@ DEFAULT_VISIONOS_DEVICE := Apple Vision Pro
 # Default location for deploying artifacts
 DEFAULT_ARTIFACTS_PATH := artifacts
 
-# Whether Test Visibility product is enabled by default
-DEFAULT_USE_TEST_VISIBILITY := 0
-
 SKIP_OBJC_TYPES ?= TelemetryUsageEvent
 
 # Run unit tests for specified SCHEME
@@ -86,9 +77,8 @@ test:
 	@$(call require_param,OS)
 	@$(call require_param,PLATFORM)
 	@$(call require_param,DEVICE)
-	@:$(eval USE_TEST_VISIBILITY ?= $(DEFAULT_USE_TEST_VISIBILITY))
-	@$(ECHO_TITLE) "make test SCHEME='$(SCHEME)' OS='$(OS)' PLATFORM='$(PLATFORM)' DEVICE='$(DEVICE)' USE_TEST_VISIBILITY='$(USE_TEST_VISIBILITY)'"
-	USE_TEST_VISIBILITY=$(USE_TEST_VISIBILITY) ./tools/test.sh --scheme "$(SCHEME)" --os "$(OS)" --platform "$(PLATFORM)" --device "$(DEVICE)"
+	@$(ECHO_TITLE) "make test SCHEME='$(SCHEME)' OS='$(OS)' PLATFORM='$(PLATFORM)' DEVICE='$(DEVICE)'"
+	./tools/test.sh --scheme "$(SCHEME)" --os "$(OS)" --platform "$(PLATFORM)" --device "$(DEVICE)"
 
 # Run unit tests for specified SCHEME using iOS Simulator
 test-ios:
@@ -285,10 +275,6 @@ xcodeproj-session-replay:
 		@cd KubesenseSessionReplay/ && swift package generate-xcodeproj
 		@echo "OK 👌"
 
-templates:
-	@$(ECHO_TITLE) "make templates"
-	./tools/xcode-templates/install-xcode-templates.sh
-
 # Generate data models from rum-events-format ('rum', 'sr') or kubesense-go ('rc')
 models-generate:
 	@$(call require_param,PRODUCT) # 'rum', 'sr', or 'rc'
@@ -328,11 +314,6 @@ rc-models-generate:
 # Validate RC data models (uses gh CLI to authenticate against the private kubesense-go repo)
 rc-models-verify:
 	GITHUB_TOKEN="$$(gh auth token)" $(MAKE) models-verify PRODUCT="rc"
-
-# Generate profiling protobuf-c files from pprof proto
-protoc-pprof:
-	@$(ECHO_TITLE) "protoc-pprof"
-	./tools/protoc-pprof.sh --proto-path KubesenseProfiling/Protos/profile.proto --output-dir KubesenseProfiling/Mach
 
 # Define default paths for API output files
 SWIFT_OUTPUT_PATH ?= api-surface-swift
@@ -374,11 +355,6 @@ api-surface-verify:
 feature-docs-verify:
 	@$(ECHO_TITLE) "make feature-docs-verify"
 	@./tools/feature-docs-verify.sh
-
-# Builds API documentation using the same process as Swift Package Index.
-spi-docs-build:
-	@$(ECHO_TITLE) "make spi-docs-build"
-	./tools/doc-build.sh --spi-path .spi.yml
 
 # Builds release artifacts for given tag
 release-build:
@@ -431,11 +407,6 @@ release-publish-dependent-podspecs:
 	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseWebViewTracking.podspec"
 	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseFlags.podspec"
 	@$(MAKE) release-publish-podspec PODSPEC_NAME="KubesenseProfiling.podspec"
-
-# Set ot update CI secrets
-set-ci-secret:
-	@$(ECHO_TITLE) "make set-ci-secret"
-	@./tools/secrets/set-secret.sh
 
 bump:
 	@read -p "Enter version number: " version;  \
