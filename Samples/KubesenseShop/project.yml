@@ -1,0 +1,106 @@
+name: KubesenseShop
+options:
+  bundleIdPrefix: ai.kubesense.sample
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+
+packages:
+  # The SDK from this repository, so the sample always runs the code next to it.
+  Kubesense:
+    path: ../..
+  OpenTelemetry:
+    url: https://github.com/open-telemetry/opentelemetry-swift-core
+    minorVersion: 2.5.0
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  KubesenseShop:
+    type: application
+    platform: iOS
+    sources:
+      - path: KubesenseShop
+    dependencies:
+      - package: Kubesense
+        product: KubesenseCore
+      - package: Kubesense
+        product: KubesenseRUM
+      - package: Kubesense
+        product: KubesenseLogs
+      - package: Kubesense
+        product: KubesenseTrace
+      - package: Kubesense
+        product: KubesenseSessionReplay
+      - package: Kubesense
+        product: KubesenseCrashReporting
+      - package: Kubesense
+        product: KubesenseWebViewTracking
+      - package: Kubesense
+        product: KubesenseFlags
+      - package: OpenTelemetry
+        product: OpenTelemetryApi
+    info:
+      path: KubesenseShop/Info.plist
+      properties:
+        CFBundleDisplayName: Kubesense Shop
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSAppTransportSecurity:
+          # A local sample API on http://127.0.0.1:8080 needs this; HTTPS hosts are unaffected.
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.kubesense.sample.shop
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+    postCompileScripts:
+      # Bundle Config/local.json when it exists (git-ignored, holds credentials),
+      # otherwise Config/example.json, which runs the app offline in preview mode.
+      - name: Bundle configuration
+        basedOnDependencyAnalysis: false
+        script: |
+          src="${SRCROOT}/Config/local.json"
+          [ -f "$src" ] || src="${SRCROOT}/Config/example.json"
+          cp "$src" "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/config.json"
+
+  KubesenseShopTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: KubesenseShopTests
+    dependencies:
+      - target: KubesenseShop
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+  KubesenseShopUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: KubesenseShopUITests
+    dependencies:
+      - target: KubesenseShop
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  KubesenseShop:
+    build:
+      targets:
+        KubesenseShop: all
+        KubesenseShopTests: [test]
+        KubesenseShopUITests: [test]
+    test:
+      targets:
+        - KubesenseShopTests
+        - KubesenseShopUITests
