@@ -55,7 +55,7 @@ class RUMConfigurationTests: XCTestCase {
         // Then
         XCTAssertTrue(emptyFlags[.trackScrollAndSwipeActions], "should fall back to `.defaults` when not set")
         XCTAssertFalse(overriddenFlags[.trackScrollAndSwipeActions], "should use the explicitly set value")
-        XCTAssertTrue(emptyFlags[.viewUpdates], "should fall back to `.defaults` when not set")
+        XCTAssertFalse(emptyFlags[.viewUpdates], "should fall back to `.defaults`, which keep view update deltas off in the Kubesense SDK")
         XCTAssertFalse(emptyFlags[.none], "should be `false` when the flag has no default")
     }
 

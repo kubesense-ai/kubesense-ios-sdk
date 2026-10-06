@@ -1223,7 +1223,9 @@ extension RUMScopeDependencies {
         },
         appStateManager: AppStateManaging = AppStateManagerMock(),
         watchdogTermination: WatchdogTerminationMonitor? = nil,
-        featureFlags: RUM.Configuration.FeatureFlags = .defaults,
+        // Upstream's defaults, with view update deltas on: the scope tests exercise both write modes,
+        // while the Kubesense default (deltas off) is checked by `RUMConfigurationTests`.
+        featureFlags: RUM.Configuration.FeatureFlags = .defaults.merging([.viewUpdates: true]) { $1 },
         networkSettledMetricFactory: @escaping (Date, String) -> TNSMetricTracking = {
             TNSMetric(viewName: $1, viewStartDate: $0, resourcePredicate: TimeBasedTNSResourcePredicate())
         },

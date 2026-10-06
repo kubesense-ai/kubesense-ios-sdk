@@ -199,6 +199,8 @@ class KubesenseRUMMonitorTests: XCTestCase {
         core = KubesenseCoreProxy()
         CoreRegistry.register(default: core)
         config = RUM.Configuration(applicationID: .mockAny())
+        // These tests count view update (delta) events, which the Kubesense default leaves off.
+        config.featureFlags[.viewUpdates] = true
     }
 
         override func tearDownWithError() throws {
