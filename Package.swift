@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 
 import PackageDescription
 import Foundation
@@ -11,7 +11,7 @@ let package = Package(
     platforms: [
         .iOS(.v15),
         .tvOS(.v15),
-        .macOS("12.6"),
+        .macOS("12.0"),
         .watchOS(.v9),
         .visionOS(.v1)
     ],
@@ -54,8 +54,9 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/kstenerud/KSCrash.git", from: "2.5.1"),
+        .package(url: "https://github.com/kstenerud/KSCrash.git", exact: "2.5.1"),
         .package(url: "https://github.com/open-telemetry/opentelemetry-swift-core", .upToNextMinor(from: "2.5.0")),
+        .package(url: "https://github.com/DataDog/dd-sdk-swift-testing.git", .upToNextMinor(from: "2.7.11")),
     ],
     targets: [
         .target(
@@ -86,6 +87,7 @@ let package = Package(
             dependencies: [
                 .target(name: "KubesenseInternal"),
                 .target(name: "TestUtilities"),
+                .product(name: "DatadogSDKTesting", package: "dd-sdk-swift-testing"),
             ],
             path: "KubesenseInternal/Tests"
         ),
@@ -151,6 +153,7 @@ let package = Package(
             dependencies: [
                 .target(name: "KubesenseRUM"),
                 .target(name: "TestUtilities"),
+                .product(name: "DatadogSDKTesting", package: "dd-sdk-swift-testing"),
             ],
             path: "KubesenseRUM/Tests"
         ),
@@ -203,6 +206,7 @@ let package = Package(
             dependencies: [
                 .target(name: "KubesenseSessionReplay"),
                 .target(name: "TestUtilities"),
+                .product(name: "DatadogSDKTesting", package: "dd-sdk-swift-testing"),
             ],
             path: "KubesenseSessionReplay/Tests",
             resources: [

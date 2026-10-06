@@ -71,7 +71,7 @@ class KubesenseCoreTests: XCTestCase {
             clientToken: "client-token",
             directory: temporaryCoreDirectory.coreDirectory,
             httpClient: PendingHTTPClientMock(),
-            notificationCenter: NotificationCenter()
+            notificationCenterProvider: NotificationCenterProvider.makeTestProvider()
         )
         let core = KubesenseCore(
             directory: temporaryCoreDirectory,
@@ -415,7 +415,7 @@ class KubesenseCoreTests: XCTestCase {
 
     func testWhenStoppingInstance_itStopsRemoteConfigurationProvider() throws {
         // Given
-        let notificationCenter = NotificationCenter()
+        let notificationCenterProvider = NotificationCenterProvider.makeTestProvider()
         let httpClient = PendingHTTPClientMock()
         weak var weakProvider: RemoteConfigurationProvider?
         let core = KubesenseCore(
@@ -435,7 +435,7 @@ class KubesenseCoreTests: XCTestCase {
                     clientToken: "client-token",
                     directory: temporaryCoreDirectory.coreDirectory,
                     httpClient: httpClient,
-                    notificationCenter: notificationCenter
+                    notificationCenterProvider: notificationCenterProvider
                 )
                 weakProvider = provider
                 return provider
@@ -443,8 +443,11 @@ class KubesenseCoreTests: XCTestCase {
         )
 
         XCTAssertEqual(httpClient.requestsSent().count, 1)
-
-        notificationCenter.post(name: ApplicationNotifications.willEnterForeground, object: nil)
+        #if os(macOS)
+        notificationCenterProvider.workspaceCenter.post(name: WorkspaceNotifications.didWake, object: nil)
+        #else
+        notificationCenterProvider.applicationCenter.post(name: ApplicationNotifications.willEnterForeground, object: nil)
+        #endif
         XCTAssertEqual(httpClient.requestsSent().count, 2)
 
         // When
@@ -453,7 +456,11 @@ class KubesenseCoreTests: XCTestCase {
         // Then
         XCTAssertNotNil(core.remoteConfigurationProvider)
         XCTAssertNotNil(weakProvider)
-        notificationCenter.post(name: ApplicationNotifications.willEnterForeground, object: nil)
+        #if os(macOS)
+        notificationCenterProvider.workspaceCenter.post(name: WorkspaceNotifications.didWake, object: nil)
+        #else
+        notificationCenterProvider.applicationCenter.post(name: ApplicationNotifications.willEnterForeground, object: nil)
+        #endif
         XCTAssertEqual(httpClient.requestsSent().count, 2)
     }
 

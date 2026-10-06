@@ -18,8 +18,12 @@ There is no shared history with upstream: the fork started from a release tarbal
 
 | Ref | Content |
 | --- | --- |
-| `upstream/<version>` (tag) | The pristine upstream tree, committed as `import dd-sdk-ios <version>` |
-| `kubesense/main` | The fork: the rebranded tree plus the customizations |
+| `upstream/<version>` (tag) | The pristine upstream tree, committed on the previous baseline as `chore: import iOS SDK sources at upstream <version>` (`upstream/3.18.0` is the root commit of `main`) |
+| `kubesense/main` (`main`) | The fork: the rebranded tree plus the customizations |
+
+Commit messages, branch names and pull request text never contain the upstream name or `dd` (see
+`docs/CONVENTIONS.md`), the import commits included. Push the `upstream/<version>` tags: the next upgrade
+needs the baseline as a ref.
 
 ## The two layers
 
@@ -36,13 +40,15 @@ fork as two layers and re-applying the second one to a newer release:
 
 ```bash
 # 0. Capture the customization layer against the CURRENT baseline (see upstream.json)
-python3 tools/kubesense-sync/rebrand.py spec --ref upstream/3.18.0 > /tmp/customizations.diff
+python3 tools/kubesense-sync/rebrand.py spec --ref upstream/3.19.0 > /tmp/customizations.diff
 
 # 1. Import the new release as a pristine commit on top of the old baseline, and tag it
-git checkout -b import/<version> upstream/3.18.0
-rsync -a --delete --exclude .git /path/to/dd-sdk-ios-<version>/ ./
-git add -A -f . && git commit -m "import dd-sdk-ios <version>" && git tag upstream/<version>
-#    (`git add -f`: the release tarball contains a few files upstream's .gitignore ignores)
+git checkout --detach upstream/3.19.0
+curl -sL https://github.com/DataDog/dd-sdk-ios/archive/refs/tags/<version>.tar.gz | tar -xz -C /tmp
+rsync -a --delete --exclude .git /tmp/dd-sdk-ios-<version>/ ./
+git add -A -f . && git commit -m "chore: import iOS SDK sources at upstream <version>" && git tag upstream/<version>
+#    (`git add -f`: the release tarball contains a few files upstream's .gitignore ignores; the GitHub
+#    tag tarball is what upstream/3.18.0 and upstream/3.19.0 were imported from, byte for byte)
 
 # 2. Rebrand it on a new branch
 git checkout -b kubesense/upgrade-<version> upstream/<version>
@@ -62,6 +68,16 @@ grep -E '^# binary file (added|differs): ' /tmp/customizations.diff | sed -E 's/
 ```
 
 Then update `upstream.json`, the versions (below) and `CHANGELOG.md`, and validate.
+
+Resolving rejects: most come from upstream editing lines next to a customization (version bumps, a
+renamed parameter). Rather than reading each `.rej`, merge the whole file three ways, with the rebranded
+old release as the base: `git merge-file <fork file> <rebranded old file> <rebranded new file>` (export
+each tag, run `apply` on it with the new `rebrand.py`). Only real overlaps are left as conflict markers.
+Files whose upstream change is only a version bump (podspecs, `Versioning.swift`) take the fork's copy.
+
+Landing: the upgrade branch shares no history with `main` beyond the 3.18.0 root, so do not merge it.
+Commit its tree on top of `main` instead (`git read-tree -u --reset <upgraded tree>`), one commit for the
+whole upgrade.
 
 Before step 3, read upstream's `CHANGELOG.md` between the two baselines. New sites, new upload paths,
 new per-feature endpoint options, changes to `RemoteConfigurationProvider` and new public API do not show
@@ -131,9 +147,10 @@ hand for its API changes), and a run of the example app against a collector.
 | Site model | `KubesenseSite { prod, staging }` with hosts `us2.kubesense.ai` / `dev.kubesense.ai` (`KubesenseInternal/Sources/Context/KubesenseSite.swift`); `objc_KubesenseSite.prod()` / `.staging()`; default `.prod` in `Kubesense.Configuration` |
 | Collector endpoint | `Kubesense.Configuration.kubesenseRumEndpoint` and `kubesenseRumEndpointURL` (host only, always https, like Android `useKubesenseRumEndpoint`); `KubesenseContext.intakeEndpoint`, threaded through `KubesenseContextProvider` in `Kubesense.swift` / `KubesenseCore.swift` |
 | Upload paths | `context.intakeEndpoint.appendingPathComponent(...)` in each feature's request builder: RUM `rum/api/v1`, Logs `rum/api/v1/logs`, Trace `rum/api/v1/spans`, Session Replay segments and resources `rum/api/v1/replay`, Profiling `rum/api/v1/profile`, Flags exposures `rum/api/v1/exposures`, evaluations `rum/api/v1/flagevaluation`, assignments `precompute-assignments` (`FlagAssignmentsFetcher.swift`); the Datadog flags CDN hosts are removed |
-| Per-feature endpoints | `customEndpoint` of RUM, Logs, Trace, Session Replay, Profiling and Flags' `customFlagsEndpoint` / `customExposureEndpoint` / `customEvaluationEndpoint` are `internal` test hooks: removed from the public inits and the Objective-C wrappers. Tests and the `IntegrationTests` runner set them through `@testable import` |
-| Remote configuration | `RemoteConfigDocument` (`KubesenseInternal/Sources/Models/RC/RemoteConfigDocument.swift`: Android document, fail-safe accessors, `RemoteConfiguration(document:)` translation onto upstream's typed model, `isFeatureDisabledRemotely`); `KubesenseCoreProtocol.remoteConfigDocument`; `RemoteConfigurationProvider` rewritten for `GET /rum/api/v1/sdk-config` with `KUBESENSE-API-KEY`, cache `kubesense-sdk-config.json`, apply-at-next-launch, periodic refresh; `Kubesense.Configuration.remoteConfigurationEnabled` / `remoteConfigurationRefreshPeriod` (replacing upstream's `RemoteConfiguration(id:customURL:)`), their Objective-C properties; core `batchSize` / `uploadFrequency` override in `Kubesense.swift` |
+| Per-feature endpoints | `customEndpoint` of RUM, Logs, Trace, Session Replay, Profiling and Flags' `customFlagsEndpoint` / `customExposureEndpoint` / `customEvaluationEndpoint` are `internal` test hooks: removed from the public inits (every one: 3.19.0 added a macOS and an iOS `RUM.Configuration` init, and the patch only caught two of the three, so search `customEndpoint: URL? = nil` after every upgrade) and the Objective-C wrappers; the `TestUtilities` mocks set the property after `init`. Tests and the `IntegrationTests` runner set them through `@testable import` |
+| Remote configuration | `RemoteConfigDocument` (`KubesenseInternal/Sources/Models/RC/RemoteConfigDocument.swift`: Android document, fail-safe accessors, `RemoteConfiguration(document:)` translation onto upstream's typed model, `isFeatureDisabledRemotely`); `KubesenseCoreProtocol.remoteConfigDocument`; `RemoteConfigurationProvider` rewritten for `GET /rum/api/v1/sdk-config` (since 3.19.0 it observes through upstream's `NotificationCenterProvider`) with `KUBESENSE-API-KEY`, cache `kubesense-sdk-config.json`, apply-at-next-launch, periodic refresh; `Kubesense.Configuration.remoteConfigurationEnabled` / `remoteConfigurationRefreshPeriod` (replacing upstream's `RemoteConfiguration(id:customURL:)`), their Objective-C properties; core `batchSize` / `uploadFrequency` override in `Kubesense.swift` |
 | Remote settings in features | `features.*` switches in `RUM.swift`, `SessionReplay.swift`, `Trace.swift`, `Logs.swift`, `Flags.swift`, `Profiling.swift`; `rum.sessionSampleRate`, `rum.collectAccessibility`, `sessionReplay.startRecordingImmediately`, `trace.networkInfoEnabled`, `flags.*`, and the `logs` section (`Logger.Configuration.applying(remoteConfigDocument:)`). Android-only keys with no iOS setting are ignored: `rum.trackNonFatalAnrs`, `logs.logcatLogsEnabled`, `sessionReplay.dynamicOptimizationEnabled` / `minRAMSizeMb` / `minCPUCoreNumber`, `imagePrivacy: MASK_LARGE_ONLY` |
+| RUM view updates | `RUM.Configuration.FeatureFlags.defaults` keeps `.viewUpdates: false`: upstream turned delta `view_update` events on in 3.19.0, but the Kubesense Android SDK writes full view events (`RumViewEventWriteConfig.AlwaysFullView`) and kubecol has no `view_update` type (`kube_rum/common/const.go`), so deltas would be dropped |
 | Profiling quota | No quota request: `ProfilerFeature` defaults to `AdmittingProfilingQuotaChecker` (`ProfilingQuotaChecker.swift`), which admits every profile. Neither kubecol nor the Android SDK has a quota service; upstream's `ProfilingQuotaChecker` (`quota.<host>/api/v2/profiling/quota`) is kept, unused, with its tests |
 | WebView bridge | `window.KubeSenseEventBridge` (rule `DatadogEventBridge`), the name the browser fork reads |
 | Versions | 1.0.0 in podspecs, `Versioning.swift`, feature docs |
@@ -142,7 +159,7 @@ hand for its API changes), and a run of the example app against a collector.
 | Xcode project | `RemoteConfigDocument.swift` and `RemoteConfigDocumentTests.swift` registered in `Kubesense/Kubesense.xcodeproj` (`tools/kubesense-sync/xcodeproj_add.py`) |
 | Tests | Site, endpoint, request-builder URL, remote-configuration and Objective-C tests rewritten for the Kubesense model; remote document tests per feature (`features.*` switches and feature settings in `RUMTests`, `TraceTests`, `SessionReplayTests`, `ProfilingTest`, `LogsTests`, `FlagsTests`); `TestUtilities` mocks (`KubesenseSite` mocks, `remoteConfigDocument`, `Kubesense.Configuration.mockWith(remoteConfigurationEnabled: false)`); the swift-testing copies in `tools/kubesense-sync/verify/runtime` |
 | App settings | `CUSTOM_RUM_URL` in `xcconfigs/Kubesense.xcconfig` is the Example app's `kubesenseRumEndpoint` host |
-| API surface | `api-surface-swift` / `api-surface-objc` edited by hand for the API changes above |
+| API surface | `api-surface-swift` / `api-surface-objc` edited by hand for the API changes above, then regenerated with `make api-surface` after every upgrade: the generator orders declarations by file path, which the renames change, so upstream's order never verifies. `make api-surface-verify` must pass |
 | Fork-owned files | `README.md`, `CLAUDE.md`, `CHANGELOG.md` (Kubesense entry on top of upstream's history), `docs/CONVENTIONS.md` (the fork's workflow, which names upstream on purpose), this file |
 | Removed | Not a patch: `REMOVED_PATHS` in `rebrand.py`, which `apply` deletes from every new release (`spec` then never shows them, and `attribution` does not expect their notices). Datadog's CI and its tooling: `.gitlab-ci.yml`, `.github/chainguard/`, `.github/CODEOWNERS`, the Confluence publish workflow, `E2ETests/` and `BenchmarkTests/` (Synthetics apps), `tools/dogfooding/`, the Vault-backed `tools/{e2e-build-upload,benchmark-build-upload,runner-setup,upload-smoke-test-reports}.sh`; the Session Replay snapshot tests (`KubesenseSessionReplay/SRSnapshotTests/` except its `SRFixtures` package, which `IntegrationTests` imports, `tools/sr-snapshots/`, `tools/sr-snapshot-test.sh`), whose reference images live in Datadog's private snapshots repository; `tools/secrets/` (the Vault client), `tools/env-check.sh` (checks Datadog's CI tools), `tools/xcode-templates/` (they stamp new files with Datadog's copyright), `tools/protoc-pprof.sh` and `tools/doc-build.sh` (generators for the shipped profiling protobuf code and Swift Package Index docs), `Kubesense/Kubesense.xcodeproj/xcshareddata/xcbaselines/` (performance baselines from Datadog's devices for test classes that no longer exist), Datadog's GitHub issue and PR templates, `dependabot.yml` and stale-issue workflow, and the `git-branch`, `git-commit`, `open-pr` and `update-feature-docs` agent skills (its JIRA, branch, PR and Confluence conventions); and `MIGRATION.md` and `docs/session_replay_performance.md`, which describe Datadog's releases and benchmarks. The `Makefile` targets, lint paths and license-check exclusions for them are removed in the customization layer. With them go the Test Visibility setup of `tools/test.sh` (it uploads test results to Datadog) and the CI token block of `tools/carthage-shim.sh` |
 | Release scripts | `tools/release/publish-podspec.sh` uses the `pod trunk register` session (or `COCOAPODS_TRUNK_TOKEN`) and `publish-github.sh` the `gh` login, instead of tokens from Datadog's Vault and `dd-octo-sts` |

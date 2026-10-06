@@ -43,7 +43,7 @@ func waitUntil(_ condition: () -> Bool) {
         let client = RecordingHTTPClient(body: document)
         let provider = RemoteConfigurationProvider(
             endpoint: URL(string: "https://collector.example.com")!, clientToken: "client-token",
-            directory: directory, httpClient: client, notificationCenter: NotificationCenter(), refreshPeriod: 0
+            directory: directory, httpClient: client, notificationCenterProvider: .isolated, refreshPeriod: 0
         )
         var delivered: [RemoteConfigDocument] = []
         provider.start { delivered.append($0) }
@@ -58,7 +58,7 @@ func waitUntil(_ condition: () -> Bool) {
 
         let nextLaunch = RemoteConfigurationProvider(
             endpoint: URL(string: "https://collector.example.com")!, clientToken: "client-token",
-            directory: directory, httpClient: client, notificationCenter: NotificationCenter(), refreshPeriod: 0
+            directory: directory, httpClient: client, notificationCenterProvider: .isolated, refreshPeriod: 0
         )
         let cached = nextLaunch.readCachedDocument()
         #expect(cached.bool("features", "logs") == false)
@@ -70,7 +70,7 @@ func waitUntil(_ condition: () -> Bool) {
         let directory = try temporaryDirectory()
         let good = RemoteConfigurationProvider(
             endpoint: URL(string: "https://collector.example.com")!, clientToken: "t",
-            directory: directory, httpClient: RecordingHTTPClient(body: document), notificationCenter: NotificationCenter(), refreshPeriod: 0
+            directory: directory, httpClient: RecordingHTTPClient(body: document), notificationCenterProvider: .isolated, refreshPeriod: 0
         )
         good.start { _ in }
         waitUntil { directory.hasFile(named: "kubesense-sdk-config.json") }
@@ -80,7 +80,7 @@ func waitUntil(_ condition: () -> Bool) {
             let client = RecordingHTTPClient(statusCode: status, body: body)
             let bad = RemoteConfigurationProvider(
                 endpoint: URL(string: "https://collector.example.com")!, clientToken: "t",
-                directory: directory, httpClient: client, notificationCenter: NotificationCenter(), refreshPeriod: 0
+                directory: directory, httpClient: client, notificationCenterProvider: .isolated, refreshPeriod: 0
             )
             bad.start { _ in }
             waitUntil { !client.sent.isEmpty }
@@ -97,7 +97,7 @@ func waitUntil(_ condition: () -> Bool) {
         let seed = RemoteConfigurationProvider(
             endpoint: KubesenseSite.prod.endpoint, clientToken: "abc-123",
             directory: try CoreDirectory(in: persistent, instanceName: "rc-runtime", site: .prod).coreDirectory,
-            httpClient: RecordingHTTPClient(body: document), notificationCenter: NotificationCenter(), refreshPeriod: 0
+            httpClient: RecordingHTTPClient(body: document), notificationCenterProvider: .isolated, refreshPeriod: 0
         )
         seed.start { _ in }
         waitUntil { seed.readCachedDocument().isEmpty == false }
@@ -121,5 +121,16 @@ func waitUntil(_ condition: () -> Bool) {
         #expect(!core.isFeatureDisabledRemotely(featureKey: "rum", featureName: "RUM"))
         waitUntil { !client.sent.isEmpty }
         #expect(client.sent.first?.url?.absoluteString == "https://collector.example.com/rum/api/v1/sdk-config")
+    }
+}
+
+/// Notification centers no other test posts to.
+private extension NotificationCenterProvider {
+    static var isolated: NotificationCenterProvider {
+        #if os(macOS)
+        .init(applicationCenter: NotificationCenter(), workspaceCenter: NotificationCenter())
+        #else
+        .init(applicationCenter: NotificationCenter())
+        #endif
     }
 }

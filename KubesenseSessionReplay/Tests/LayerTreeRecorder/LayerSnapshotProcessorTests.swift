@@ -9,6 +9,7 @@ import CoreGraphics
 @_spi(Internal)
 import KubesenseInternal
 import Testing
+import DatadogSDKTesting
 @_spi(Internal)
 import TestUtilities
 import UIKit

@@ -510,7 +510,13 @@ internal class CoreFeatureScope<Feature>: @unchecked Sendable, FeatureScope wher
 }
 
 extension KubesenseContextProvider {
-    /// Creates a core context provider with the given configuration,
+    /// Creates a core context provider with the given configuration.
+    ///
+    /// - Remark: `ContextProvider` must be initialized on the main thread for two key reasons:
+    ///   - It interacts with UIKit/AppKit APIs to read the initial app state, which is only safe on the main thread.
+    ///   - It subscribes to app state change notifications, and we need this subscription to occur
+    ///   before any Feature subscriptions. This ensures that Core always processes state changes first.
+    @MainActor
     convenience init(
         site: KubesenseSite,
         intakeEndpoint: URL? = nil,
@@ -536,17 +542,11 @@ extension KubesenseContextProvider {
         processInfo: ProcessInfo,
         dateProvider: DateProvider,
         serverDateProvider: ServerDateProvider,
-        notificationCenter: NotificationCenter,
+        notificationCenterProvider: NotificationCenterProvider,
         appLaunchHandler: AppLaunchHandling,
         appStateProvider: AppStateProvider,
         remoteConfigurationId: String?
     ) {
-        // `ContextProvider` must be initialized on the main thread for two key reasons:
-        // - It interacts with UIKit APIs to read the initial app state, which is only safe on the main thread.
-        // - It subscribes to app state change notifications, and we need this subscription to occur
-        //   before any Feature subscriptions. This ensures that Core always processes state changes first.
-        kubesense_assert(Thread.isMainThread, "Must be called on main thread")
-
         let initialAppState = appStateProvider.current
         let appStateHistory = AppStateHistory(initialState: initialAppState, date: dateProvider.now)
         let launchInfo = appLaunchHandler.resolveLaunchInfo(using: processInfo)
@@ -581,9 +581,7 @@ extension KubesenseContextProvider {
 
         subscribe(\.serverTimeOffset, to: ServerOffsetPublisher(provider: serverDateProvider))
 
-        #if !os(macOS)
         subscribe(\.launchInfo, to: LaunchInfoPublisher(handler: appLaunchHandler, initialValue: launchInfo))
-        #endif
 
         subscribe(\.networkConnectionInfo, to: NWPathMonitorPublisher())
 
@@ -592,20 +590,41 @@ extension KubesenseContextProvider {
         #endif
 
         #if (os(iOS) || os(visionOS)) && !targetEnvironment(simulator)
-        subscribe(\.batteryStatus, to: BatteryStatusPublisher(notificationCenter: notificationCenter, device: .current))
-        subscribe(\.isLowPowerModeEnabled, to: LowPowerModePublisher(notificationCenter: notificationCenter, processInfo: processInfo))
+        subscribe(
+            \.batteryStatus,
+             to: BatteryStatusPublisher(
+                notificationCenter: notificationCenterProvider.applicationCenter,
+                device: .current
+             )
+        )
+        subscribe(
+            \.isLowPowerModeEnabled,
+             to: LowPowerModePublisher(
+                notificationCenter: notificationCenterProvider.applicationCenter,
+                processInfo: processInfo
+             )
+        )
         #endif
 
         #if os(iOS)
-        subscribe(\.brightnessLevel, to: BrightnessLevelPublisher(notificationCenter: notificationCenter))
+        subscribe(\.brightnessLevel, to: BrightnessLevelPublisher(notificationCenter: notificationCenterProvider.applicationCenter))
         #endif
 
-        subscribe(\.localeInfo, to: LocaleInfoPublisher(initialLocale: locale, notificationCenter: notificationCenter))
+        subscribe(\.localeInfo, to: LocaleInfoPublisher(initialLocale: locale, notificationCenter: notificationCenterProvider.applicationCenter))
 
         #if os(iOS) || os(tvOS) || os(visionOS) || os(watchOS)
         let applicationStatePublisher = ApplicationStatePublisher(
             appStateHistory: appStateHistory,
-            notificationCenter: notificationCenter,
+            notificationCenter: notificationCenterProvider.applicationCenter,
+            dateProvider: dateProvider
+        )
+        self.subscribe(\.applicationStateHistory, to: applicationStatePublisher)
+        #elseif os(macOS)
+        let applicationStatePublisher = ApplicationStatePublisher(
+            appStateHistory: appStateHistory,
+            applicationNotificationCenter: notificationCenterProvider.applicationCenter,
+            workspaceNotificationCenter: notificationCenterProvider.workspaceCenter,
+            applicationStateProvider: DefaultMacOSApplicationStateProvider(),
             dateProvider: dateProvider
         )
         self.subscribe(\.applicationStateHistory, to: applicationStatePublisher)

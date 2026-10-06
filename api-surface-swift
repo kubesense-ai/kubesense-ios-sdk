@@ -8,6 +8,12 @@ public protocol ServerDateProvider
 public protocol DataEncryption
     func encrypt(data: Data) throws -> Data
     func decrypt(data: Data) throws -> Data
+public class SharedContext: NSObject
+    public let userId: String?
+    public let accountId: String?
+public final class CrossPlatformExtension: NSObject
+    public static func subscribe(toSharedContext: @escaping (SharedContext?) -> Void)
+    public static func unsubscribeFromSharedContext()
 [?] extension InternalExtension where ExtendedType == Kubesense
     public static var telemetry: _TelemetryProxy
     public static func set(customVersion: String)
@@ -64,12 +70,6 @@ public extension Kubesense
         public var remoteConfigurationRefreshPeriod: TimeInterval
         public init(clientToken: String,env: String,site: KubesenseSite = .prod,service: String? = nil,version: String? = nil,bundle: Bundle = .main,batchSize: BatchSize = .medium,uploadFrequency: UploadFrequency = .average,proxyConfiguration: [AnyHashable: Any]? = nil,encryption: DataEncryption? = nil,serverDateProvider: ServerDateProvider? = nil,batchProcessingLevel: BatchProcessingLevel = .medium,backgroundTasksEnabled: Bool = false,kubesenseRumEndpoint: String? = nil,remoteConfigurationEnabled: Bool = true,remoteConfigurationRefreshPeriod: TimeInterval = Configuration.defaultRemoteConfigurationRefreshPeriod)
         public static let defaultRemoteConfigurationRefreshPeriod: TimeInterval = 6 * 60 * 60
-public class SharedContext: NSObject
-    public let userId: String?
-    public let accountId: String?
-public final class CrossPlatformExtension: NSObject
-    public static func subscribe(toSharedContext: @escaping (SharedContext?) -> Void)
-    public static func unsubscribeFromSharedContext()
 
 # ----------------------------------
 # API surface for KubesenseLogs:

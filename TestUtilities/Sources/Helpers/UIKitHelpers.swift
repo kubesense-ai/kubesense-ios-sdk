@@ -5,18 +5,14 @@
  */
 
 #if !os(watchOS)
+import KubesenseRUM
+#if canImport(AppKit)
+import AppKit
+#elseif canImport(UIKit)
 import UIKit
+#endif
 
-/// The library name for UIKit framework as it will appear in unsymbolicated stack trace.
-///
-/// This name may differ between OS runtimes.
-public var uiKitLibraryName: String {
-    let uiKitBundleURL = Bundle(for: UIViewController.self).bundleURL
-    let uiKitFrameworkName = uiKitBundleURL.lastPathComponent // 'UIKitCore.framework' on iOS 12+; 'UIKit.framework' on iOS 11
-    return String(uiKitFrameworkName.dropLast(".framework".count))
-}
-
-extension UIView {
+extension KubesenseView {
     /// Obtains a list of all the subviews, recursively, including `self`, that match a given predicate.
     ///
     /// Example usage:
@@ -33,9 +29,9 @@ extension UIView {
     ///     - predicate: returns `true` if the given view should be included in the result, `false` otherwise.
     ///
     /// - returns: An array with all `self` subviews (including `self`) that match the given predicate.
-    public func allSubviewsMatching(predicate: (UIView) -> Bool) -> [UIView] {
+    public func allSubviewsMatching(predicate: (KubesenseView) -> Bool) -> [KubesenseView] {
         var queue = [self]
-        var result = [UIView]()
+        var result = [KubesenseView]()
 
         while let view = queue.popLast() {
             if predicate(view) {

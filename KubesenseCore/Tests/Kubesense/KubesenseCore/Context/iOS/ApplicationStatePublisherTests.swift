@@ -4,11 +4,13 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
+#if !os(macOS)
 import XCTest
 import KubesenseInternal
 import TestUtilities
 @testable import KubesenseCore
 
+@MainActor
 class ApplicationStatePublisherTests: XCTestCase {
     func testWhenReceivingAppLifecycleNotification_itUpdatesStatesHistory() throws {
         let date = Date()
@@ -54,3 +56,4 @@ class ApplicationStatePublisherTests: XCTestCase {
         XCTAssertEqual(history.state(at: .distantFuture), .background)
     }
 }
+#endif

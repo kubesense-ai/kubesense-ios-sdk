@@ -5,7 +5,9 @@
  */
 
 import Foundation
-#if !os(watchOS)
+#if canImport(AppKit)
+import AppKit
+#elseif !os(watchOS)
 import UIKit
 #endif
 import KubesenseInternal
@@ -94,7 +96,7 @@ extension RUM.Configuration: AnyMockable, RandomMockable {
             telemetrySampleRate: .mockRandom(min: 0, max: 100)
         )
     }
-    #else
+    #elseif !os(macOS)
     public static func mockWith(
         applicationID: String = .mockAny(),
         sessionSampleRate: SampleRate = .maxSampleRate,
@@ -152,7 +154,67 @@ extension RUM.Configuration: AnyMockable, RandomMockable {
         configuration.customEndpoint = customEndpoint
         return configuration
     }
+    #else
+    public static func mockWith(
+        applicationID: String = .mockAny(),
+        sessionSampleRate: SampleRate = .maxSampleRate,
+        appKitViewsPredicate: KubesenseKitRUMViewsPredicate? = DefaultAppKitRUMViewsPredicate(),
+        macOSActionsPredicate: KubesenseKitRUMActionsPredicate? = DefaultMacOSRUMActionsPredicate(),
+        swiftUIViewsPredicate: SwiftUIRUMViewsPredicate? = DefaultSwiftUIRUMViewsPredicate(),
+        urlSessionTracking: URLSessionTracking? = nil,
+        trackFrustrations: Bool = .mockAny(),
+        trackBackgroundEvents: Bool = .mockAny(),
+        longTaskThreshold: TimeInterval? = 0.1,
+        appHangThreshold: TimeInterval? = nil,
+        trackWatchdogTerminations: Bool = .mockAny(),
+        vitalsUpdateFrequency: VitalsFrequency? = .average,
+        networkSettledResourcePredicate: NetworkSettledResourcePredicate = TimeBasedTNSResourcePredicate(),
+        nextViewActionPredicate: NextViewActionPredicate? = TimeBasedINVActionPredicate(),
+        viewEventMapper: RUM.ViewEventMapper? = nil,
+        resourceEventMapper: RUM.ResourceEventMapper? = nil,
+        actionEventMapper: RUM.ActionEventMapper? = nil,
+        errorEventMapper: RUM.ErrorEventMapper? = nil,
+        longTaskEventMapper: RUM.LongTaskEventMapper? = nil,
+        onSessionStart: RUM.SessionListener? = nil,
+        customEndpoint: URL? = .mockAny(),
+        trackAnonymousUser: Bool = .mockAny(),
+        trackMemoryWarnings: Bool = .mockAny(),
+        trackSlowFrames: Bool = .mockAny(),
+        telemetrySampleRate: SampleRate = 0
+    ) -> RUM.Configuration {
+        var configuration = RUM.Configuration(
+            applicationID: applicationID,
+            sessionSampleRate: sessionSampleRate,
+            appKitViewsPredicate: appKitViewsPredicate,
+            macOSActionsPredicate: macOSActionsPredicate,
+            swiftUIViewsPredicate: swiftUIViewsPredicate,
+            urlSessionTracking: urlSessionTracking,
+            trackFrustrations: trackFrustrations,
+            trackBackgroundEvents: trackBackgroundEvents,
+            longTaskThreshold: longTaskThreshold,
+            appHangThreshold: appHangThreshold,
+            trackWatchdogTerminations: trackWatchdogTerminations,
+            vitalsUpdateFrequency: vitalsUpdateFrequency,
+            networkSettledResourcePredicate: networkSettledResourcePredicate,
+            nextViewActionPredicate: nextViewActionPredicate,
+            viewEventMapper: viewEventMapper,
+            resourceEventMapper: resourceEventMapper,
+            actionEventMapper: actionEventMapper,
+            errorEventMapper: errorEventMapper,
+            longTaskEventMapper: longTaskEventMapper,
+            onSessionStart: onSessionStart,
+            trackAnonymousUser: trackAnonymousUser,
+            trackMemoryWarnings: trackMemoryWarnings,
+            trackSlowFrames: trackSlowFrames,
+            telemetrySampleRate: telemetrySampleRate
+        )
+        // Not a public init parameter: every feature uploads to the core-level collector endpoint.
+        configuration.customEndpoint = customEndpoint
+        return configuration
+    }
+    #endif
 
+    #if !os(watchOS)
     public static func mockRandom() -> RUM.Configuration {
         .mockWith(
             applicationID: .mockRandom(),
@@ -285,7 +347,7 @@ extension RUMEventsMapper {
 
 /// Holds the `mockView` object so it can be weakly referenced by `RUMViewScope` mocks.
 #if !os(watchOS)
-public let mockView: UIViewController = createMockViewInWindow()
+public let mockView: KubesenseViewController = createMockViewInWindow()
 #endif
 
 extension ViewIdentifier {
@@ -1161,7 +1223,9 @@ extension RUMScopeDependencies {
         },
         appStateManager: AppStateManaging = AppStateManagerMock(),
         watchdogTermination: WatchdogTerminationMonitor? = nil,
-        featureFlags: RUM.Configuration.FeatureFlags = .defaults,
+        // Upstream's defaults, with view update deltas on: the scope tests exercise both write modes,
+        // while the Kubesense default (deltas off) is checked by `RUMConfigurationTests`.
+        featureFlags: RUM.Configuration.FeatureFlags = .defaults.merging([.viewUpdates: true]) { $1 },
         networkSettledMetricFactory: @escaping (Date, String) -> TNSMetricTracking = {
             TNSMetric(viewName: $1, viewStartDate: $0, resourcePredicate: TimeBasedTNSResourcePredicate())
         },
@@ -1415,31 +1479,45 @@ extension RUMUserActionScope {
 }
 
 #if !os(watchOS)
-private let mockWindow = UIWindow(frame: .zero)
+#if os(macOS)
+private let mockWindow = KubesenseWindow()
+#else
+private let mockWindow = KubesenseWindow(frame: .zero)
+#endif
 
-public func createMockViewInWindow() -> UIViewController {
-    let viewController = UIViewController()
+public func createMockViewInWindow() -> KubesenseViewController {
+    let viewController = KubesenseViewController()
+    #if os(macOS)
+    mockWindow.contentViewController = viewController
+    mockWindow.makeKeyAndOrderFront(nil)
+    #else
     mockWindow.rootViewController = viewController
     mockWindow.makeKeyAndVisible()
+    #endif
     return viewController
 }
 
 /// Creates an instance of `UIViewController` subclass with a given name.
-public func createMockView(viewControllerClassName: String) -> UIViewController {
+public func createMockView(viewControllerClassName: String) -> KubesenseViewController {
     var theClass: AnyClass! // swiftlint:disable:this implicitly_unwrapped_optional
 
     if let existingClass = objc_lookUpClass(viewControllerClassName) {
         theClass = existingClass
     } else {
-        let newClass: AnyClass = objc_allocateClassPair(UIViewController.classForCoder(), viewControllerClassName, 0)!
+        let newClass: AnyClass = objc_allocateClassPair(KubesenseViewController.classForCoder(), viewControllerClassName, 0)!
         objc_registerClassPair(newClass)
         theClass = newClass
     }
 
-    let viewController = UIViewController()
+    let viewController = KubesenseViewController()
     object_setClass(viewController, theClass)
+    #if os(macOS)
+    mockWindow.contentViewController = viewController
+    mockWindow.makeKeyAndOrderFront(nil)
+    #else
     mockWindow.rootViewController = viewController
     mockWindow.makeKeyAndVisible()
+    #endif
     return viewController
 }
 #endif
@@ -1469,23 +1547,24 @@ public class RUMCommandSubscriberMock: RUMCommandSubscriber {
 }
 
 #if !os(watchOS)
-public class UIKitRUMViewsPredicateMock: UIKitRUMViewsPredicate {
-    public var resultByViewController: [UIViewController: RUMView] = [:]
+public class UIKitRUMViewsPredicateMock: KubesenseKitRUMViewsPredicate {
+    public var resultByViewController: [KubesenseViewController: RUMView] = [:]
     public var result: RUMView?
 
     public init(result: RUMView? = nil) {
         self.result = result
     }
 
-    public func rumView(for viewController: UIViewController) -> RUMView? {
+    public func rumView(for viewController: KubesenseViewController) -> RUMView? {
         return resultByViewController[viewController] ?? result
     }
 }
 
-public class UIKitRUMViewsHandlerMock: UIViewControllerHandler {
+#if os(macOS)
+public class AppKitRUMViewsHandlerMock: NSViewControllerHandler {
     public var onSubscribe: ((RUMCommandSubscriber) -> Void)?
-    public var notifyViewDidAppear: ((UIViewController, Bool) -> Void)?
-    public var notifyViewDidDisappear: ((UIViewController, Bool) -> Void)?
+    public var notifyViewDidAppear: ((KubesenseViewController) -> Void)?
+    public var notifyViewDidDisappear: ((KubesenseViewController) -> Void)?
 
     public init() {}
 
@@ -1493,21 +1572,43 @@ public class UIKitRUMViewsHandlerMock: UIViewControllerHandler {
         onSubscribe?(subscriber)
     }
 
-    public func notify_viewDidAppear(viewController: UIViewController, animated: Bool) {
+    public func notify_viewDidAppear(viewController: KubesenseViewController) {
+        notifyViewDidAppear?(viewController)
+    }
+
+    public func notify_viewDidDisappear(viewController: KubesenseViewController) {
+        notifyViewDidDisappear?(viewController)
+    }
+}
+#else
+public class UIKitRUMViewsHandlerMock: UIViewControllerHandler {
+    public var onSubscribe: ((RUMCommandSubscriber) -> Void)?
+    public var notifyViewDidAppear: ((KubesenseViewController, Bool) -> Void)?
+    public var notifyViewDidDisappear: ((KubesenseViewController, Bool) -> Void)?
+
+    public init() {}
+
+    public func publish(to subscriber: RUMCommandSubscriber) {
+        onSubscribe?(subscriber)
+    }
+
+    public func notify_viewDidAppear(viewController: KubesenseViewController, animated: Bool) {
         notifyViewDidAppear?(viewController, animated)
     }
 
-    public func notify_viewDidDisappear(viewController: UIViewController, animated: Bool) {
+    public func notify_viewDidDisappear(viewController: KubesenseViewController, animated: Bool) {
         notifyViewDidDisappear?(viewController, animated)
     }
 }
+#endif
 
 #if os(tvOS)
 public typealias UIKitRUMActionsPredicateMock = UIPressRUMActionsPredicateMock
-#else
+#elseif !os(macOS)
 public typealias UIKitRUMActionsPredicateMock = UITouchRUMActionsPredicateMock
 #endif
 
+#if !os(macOS)
 public class UITouchRUMActionsPredicateMock: UITouchRUMActionsPredicate {
     public var resultByView: [UIView: RUMAction] = [:]
     public var result: RUMAction?
@@ -1533,7 +1634,38 @@ public class UIPressRUMActionsPredicateMock: UIPressRUMActionsPredicate {
         return resultByView[targetView] ?? result
     }
 }
+#else
+public class MacOSRUMActionsPredicateMock: MacOSRUMActionsPredicate {
+    public var resultByView: [NSView: RUMAction] = [:]
+    public var resultByMenuItem: [NSMenuItem: RUMAction] = [:]
+    public var resultByAccessibilityRole: [NSAccessibility.Role: RUMAction] = [:]
+    public var result: RUMAction?
+    public private(set) var receivedViews: [NSView] = []
+    public private(set) var receivedAccessibilityRoles: [NSAccessibility.Role] = []
+    public private(set) var receivedAccessibilityIdentifiers: [String?] = []
 
+    public init(result: RUMAction? = nil) {
+        self.result = result
+    }
+
+    public func rumAction(targetView: NSView) -> RUMAction? {
+        receivedViews.append(targetView)
+        return resultByView[targetView] ?? result
+    }
+
+    public func rumAction(targetMenuItem: NSMenuItem) -> RUMAction? {
+        return resultByMenuItem[targetMenuItem] ?? result
+    }
+
+    public func rumAction(accessibilityRole: NSAccessibility.Role, identifier: String?) -> RUMAction? {
+        receivedAccessibilityRoles.append(accessibilityRole)
+        receivedAccessibilityIdentifiers.append(identifier)
+        return resultByAccessibilityRole[accessibilityRole] ?? result
+    }
+}
+#endif
+
+#if !os(macOS)
 public class MockSwiftUIRUMActionsPredicate: SwiftUIRUMActionsPredicate {
     var returnAction: RUMAction?
 
@@ -1545,10 +1677,15 @@ public class MockSwiftUIRUMActionsPredicate: SwiftUIRUMActionsPredicate {
         return returnAction
     }
 }
+#endif
 
 public class RUMActionsHandlerMock: RUMActionsHandling {
     public var onSubscribe: ((RUMCommandSubscriber) -> Void)?
+    #if os(macOS)
+    public var onSendEvent: ((NSEvent) -> Void)?
+    #else
     public var onSendEvent: ((UIApplication, UIEvent) -> Void)?
+    #endif
     public var onViewModifierTapped: ((String, [String: any Encodable]) -> Void)?
 
     public init() { }
@@ -1557,9 +1694,21 @@ public class RUMActionsHandlerMock: RUMActionsHandling {
         onSubscribe?(subscriber)
     }
 
+    #if os(macOS)
+    public func notify_sendEvent(event: NSEvent) {
+        onSendEvent?(event)
+    }
+
+    public func notify_sendAction(app: NSApplication, action: Selector?, target: Any?, from: Any?) {
+    }
+
+    public func notify_menuItemSelected(_ menuItem: NSMenuItem) {
+    }
+    #else
     public func notify_sendEvent(application: UIApplication, event: UIEvent) {
         onSendEvent?(application, event)
     }
+    #endif
 
     public func notify_viewModifierTapped(actionName: String, actionAttributes: [String: any Encodable]) {
         onViewModifierTapped?(actionName, actionAttributes)
@@ -1604,12 +1753,14 @@ extension TelemetryReceiver: AnyMockable {
 
     public static func mockWith(
         featureScope: FeatureScope = NOPFeatureScope(),
+        applicationID: String = .mockAny(),
         dateProvider: DateProvider = SystemDateProvider(),
         sampler: Sampler = .mockKeepAll(),
         configurationExtraSampler: Sampler = .mockKeepAll()
     ) -> Self {
         .init(
             featureScope: featureScope,
+            applicationID: applicationID,
             dateProvider: dateProvider,
             sampler: sampler,
             configurationExtraSampler: configurationExtraSampler
@@ -1933,27 +2084,27 @@ extension RUMResourceScope {
 // MARK: - Auto Instrumentation Mocks
 
 #if !os(watchOS)
-public class UIKitPredicateWithTrackingMock: UIKitRUMViewsPredicate {
+public class UIKitPredicateWithTrackingMock: KubesenseKitRUMViewsPredicate {
     public var numberOfCalls: Int
 
     public init(numberOfCalls: Int = 0) {
         self.numberOfCalls = numberOfCalls
     }
 
-    public func rumView(for viewController: UIViewController) -> RUMView? {
+    public func rumView(for viewController: KubesenseViewController) -> RUMView? {
         numberOfCalls += 1
         return .init(name: .mockRandom())
     }
 }
 
-public class UIKitPredicateWithModalMock: UIKitRUMViewsPredicate {
-    let untrackedModal: UIViewController
+public class UIKitPredicateWithModalMock: KubesenseKitRUMViewsPredicate {
+    let untrackedModal: KubesenseViewController
 
-    public init(untrackedModal: UIViewController) {
+    public init(untrackedModal: KubesenseViewController) {
         self.untrackedModal = untrackedModal
     }
 
-    public func rumView(for viewController: UIViewController) -> RUMView? {
+    public func rumView(for viewController: KubesenseViewController) -> RUMView? {
         let isUntrackedModal = viewController == untrackedModal
         return .init(name: .mockRandom(), isUntrackedModal: isUntrackedModal)
     }
@@ -1973,18 +2124,19 @@ public class SwiftUIRUMViewsPredicateMock: SwiftUIRUMViewsPredicate {
 }
 
 public class SwiftUIViewNameExtractorMock: SwiftUIViewNameExtractor {
-    public var resultByViewController: [UIViewController: String] = [:]
+    public var resultByViewController: [KubesenseViewController: String] = [:]
     public var defaultResult: String?
 
     public init(defaultResult: String? = nil) {
         self.defaultResult = defaultResult
     }
 
-    public func extractName(from viewController: UIViewController) -> String? {
+    public func extractName(from viewController: KubesenseViewController) -> String? {
         return resultByViewController[viewController] ?? defaultResult
     }
 }
 
+#if !os(macOS)
 public class SwiftUIRUMActionsPredicateMock: SwiftUIRUMActionsPredicate {
     public var resultByName: [String: RUMAction] = [:]
     public var result: RUMAction?
@@ -1997,4 +2149,5 @@ public class SwiftUIRUMActionsPredicateMock: SwiftUIRUMActionsPredicate {
         return resultByName[componentName] ?? result
     }
 }
+#endif
 #endif

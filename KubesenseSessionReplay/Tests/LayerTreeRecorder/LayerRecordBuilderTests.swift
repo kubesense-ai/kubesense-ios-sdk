@@ -10,6 +10,7 @@ import CoreGraphics
 import KubesenseInternal
 import Foundation
 import Testing
+import DatadogSDKTesting
 @_spi(Internal)
 import TestUtilities
 @_spi(Internal)

@@ -8,8 +8,8 @@
 @_spi(Internal)
 import KubesenseInternal
 import QuartzCore
-import TestUtilities
 import Testing
+import DatadogSDKTesting
 import WebKit
 
 @testable import KubesenseSessionReplay

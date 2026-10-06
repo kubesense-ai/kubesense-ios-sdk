@@ -5,7 +5,7 @@
  */
 
 import XCTest
-import TestUtilities
+@testable import TestUtilities
 import KubesenseInternal
 @testable import KubesenseRUM
 @testable import KubesenseCore
@@ -890,5 +890,106 @@ class WebViewEventReceiverTests: XCTestCase {
             "usr": ["anonymous_id": fakeAnonymousId]
         ]
         KubesenseAssertJSONEqual(AnyCodable(actualWebEventWritten), AnyCodable(expectedWebEventWritten))
+    }
+
+    func testGivenLongLivedNativeView_whenDelayedWebEventArrivesAfterNavigation_itRetainsOriginalContainer() throws {
+        let start = Date(timeIntervalSinceReferenceDate: 0)
+        let inactiveTTL: TimeInterval = 10
+        let dateProvider = DateProviderMock(now: start)
+        let viewCache = ViewCache(dateProvider: dateProvider, ttl: inactiveTTL)
+        let sessionContext: KubesenseContext = .mockWith(
+            serverTimeOffset: 0,
+            additionalContext: [SessionReplayCoreContext.HasReplay(value: true)]
+        )
+        let parent = RUMApplicationScope(
+            dependencies: .mockWith(rumApplicationID: "rum-207")
+        )
+        let scope: RUMSessionScope = .mockWith(
+            parent: parent,
+            startTime: start,
+            context: sessionContext,
+            dependencies: .mockWith(
+                rumApplicationID: "rum-207",
+                samplingRate: 100,
+                viewCache: viewCache
+            )
+        )
+        let writer = FileWriterMock()
+
+        dateProvider.now = start
+        _ = scope.process(
+            command: RUMStartViewCommand.mockWith(
+                time: start,
+                identity: ViewIdentifier("A"),
+                name: "A",
+                path: "A"
+            ),
+            context: sessionContext,
+            writer: writer
+        )
+        let viewAID = try XCTUnwrap(scope.viewScopes.last).viewUUID.toRUMDataFormat
+
+        let navigation = start.addingTimeInterval(100)
+        dateProvider.now = navigation
+        _ = scope.process(
+            command: RUMStartViewCommand.mockWith(
+                time: navigation,
+                identity: ViewIdentifier("B"),
+                name: "B",
+                path: "B"
+            ),
+            context: sessionContext,
+            writer: writer
+        )
+        let viewBID = try XCTUnwrap(scope.viewScopes.last).viewUUID.toRUMDataFormat
+
+        dateProvider.now = navigation.addingTimeInterval(inactiveTTL - 0.01)
+        let rumContext = RUMCoreContext.mockWith(
+            applicationID: "rum-207",
+            sessionID: scope.context.sessionID.rawValue,
+            sessionSampleRate: 100,
+            viewID: viewBID,
+            serverTimeOffset: 0
+        )
+        featureScope.contextMock = .mockWith(
+            source: "react-native",
+            serverTimeOffset: 0,
+            additionalContext: [
+                rumContext,
+                SessionReplayCoreContext.HasReplay(value: true)
+            ]
+        )
+        let receiver = WebViewEventReceiver(
+            featureScope: featureScope,
+            dateProvider: dateProvider,
+            commandSubscriber: RUMCommandSubscriberMock(),
+            viewCache: viewCache
+        )
+        let delayedDate = navigation.timeIntervalSince1970.kubesense.toInt64Milliseconds - 1
+        let webEvent: JSON = [
+            "application": ["id": "browser-app"],
+            "session": ["id": "browser-session", "has_replay": true],
+            "view": ["id": "browser-view"],
+            "date": Int(delayedDate)
+        ]
+
+        XCTAssertTrue(receiver.receive(message: webViewTrackingMessage(with: webEvent), from: NOPKubesenseCore()))
+        XCTAssertEqual(featureScope.eventsWritten.count, 1)
+        let actual = try XCTUnwrap(featureScope.eventsWritten.first)
+        let actualJSON = try AnyCodable(actual).toJSONObject()
+
+        KubesenseAssertJSONEqual(actualJSON["application"], ["id": "rum-207"] as JSON)
+        KubesenseAssertJSONEqual(actualJSON["session"], ["id": rumContext.sessionID, "has_replay": true] as JSON)
+        KubesenseAssertJSONEqual(actualJSON["view"], ["id": "browser-view"] as JSON)
+        KubesenseAssertJSONEqual(actualJSON["date"], delayedDate)
+        KubesenseAssertJSONEqual(actualJSON["ktags"], featureScope.contextMock.kubesenseTags)
+
+        let actualContainer = try XCTUnwrap(actualJSON["container"] as? JSON)
+        let expectedContainer: JSON = [
+            "source": "react-native",
+            "view": ["id": viewAID]
+        ]
+        KubesenseAssertJSONEqual(actualContainer, expectedContainer)
+        withExtendedLifetime(parent) {}
     }
 }

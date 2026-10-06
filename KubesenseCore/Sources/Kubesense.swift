@@ -275,6 +275,7 @@ public enum Kubesense {
         }
     }
 
+    @MainActor
     private static func initializeOrThrow(
         with configuration: Configuration,
         trackingConsent: TrackingConsent,
@@ -379,6 +380,7 @@ extension KubesenseCore {
     ///     passed to SDK's downstream components.
     ///   - trackingConsent: The user's consent regarding data tracking for the SDK.
     ///   - instanceName: A unique name for this SDK instance.
+    @MainActor
     convenience init(
         configuration: Kubesense.Configuration,
         trackingConsent: TrackingConsent,
@@ -429,7 +431,7 @@ extension KubesenseCore {
                 clientToken: configuration.clientToken,
                 directory: persistentDirectory.coreDirectory,
                 httpClient: httpClient,
-                notificationCenter: configuration.notificationCenter,
+                notificationCenterProvider: configuration.notificationCenterProvider,
                 refreshPeriod: configuration.remoteConfigurationRefreshPeriod,
                 dateProvider: configuration.dateProvider
             )
@@ -496,7 +498,7 @@ extension KubesenseCore {
                 processInfo: configuration.processInfo,
                 dateProvider: configuration.dateProvider,
                 serverDateProvider: configuration.serverDateProvider,
-                notificationCenter: configuration.notificationCenter,
+                notificationCenterProvider: configuration.notificationCenterProvider,
                 appLaunchHandler: configuration.appLaunchHandler,
                 appStateProvider: configuration.appStateProvider,
                 remoteConfigurationId: nil

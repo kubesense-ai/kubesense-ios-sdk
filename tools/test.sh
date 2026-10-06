@@ -25,7 +25,12 @@ check_for_help "$@"
 parse_args "$@"
 
 WORKSPACE="Kubesense.xcworkspace"
-DESTINATION="platform=$platform,name=$device,OS=$os"
+# macOS has no simulator, so the destination omits `name` and `OS`.
+if [ "$platform" = "macOS" ]; then
+    DESTINATION="platform=macOS"
+else
+    DESTINATION="platform=$platform,name=$device,OS=$os"
+fi
 SCHEME=$scheme
 
 # Suppress lint Build Phase during xcodebuild test runs. CI runs `make lint` standalone
