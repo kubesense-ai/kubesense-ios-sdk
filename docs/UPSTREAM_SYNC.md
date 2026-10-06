@@ -165,6 +165,10 @@ hand for its API changes), and a run of the example app against a collector.
 | `DD_*`, `dd_*` (macros, env vars, C functions) | `KUBESENSE_*`, `kubesense_*` | |
 | `com.datadoghq.*` (and the `com.datadogqh.*` typo) | `ai.kubesense.*` | bundle ids, queue labels, storage directories |
 | `dd-sdk-ios` | `kubesense-ios-sdk` | repository, SPM identity, telemetry `service` |
+| bare `dd` (the `x.dd.…` extension namespace, the `dd` field of the event models, locals) | `kubesense` | public: `view.kubesense.sessionReplayPrivacyOverrides`, `event.kubesense`; the field is sent as `_kubesense` either way. Never inside string data: after `"` or `=`, before `"`, `=` or ` MMM`, or next to `-`, `/`, `%` |
+| bare `DD` / `Dd` (the logger namespace `DD.logger`, the nested event types `RUMViewEvent.DD`, `LogEvent.Dd`) | `KS` | `Kubesense` would shadow the SDK's entry point inside those types; KSCrash declares no bare `KS`. `DD.swift` becomes `KS.swift` |
+| `DD` / `Dd` after a lowercase letter (`objc_RUMViewEventDDSession`, `spanDD`, `testDDRUMAPI`) | `Kubesense` | the lowercase letter keeps Xcode's hexadecimal object ids out |
+| `🐶 ` in console output | removed | Datadog's mascot in `[KUBESENSE SDK] 🐶 → ` |
 
 Kept as they are, on purpose:
 
@@ -175,11 +179,10 @@ Kept as they are, on purpose:
   `dd-application-id` (flags assignment headers; `DD-CLIENT-TOKEN` is the same header, compared
   case-insensitively to recognise the SDK's own requests), `dd_env` (flags request body) — the Android fork
   kept them.
-- The W3C `tracestate` vendor key `dd=` — Android kept it.
-- The bare `DD` namespace (`DD.logger`, `DD.telemetry`) and the bare `dd` identifier (the `.dd` extension
-  namespace such as `view.dd.sessionReplayPrivacyOverrides`, and the `dd: DD` property of the generated
-  models). A bare two-letter identifier cannot be renamed safely by text substitution (date formats,
-  local variables, generated models), and the Flutter plugin calls `DD.logger`.
+- The W3C `tracestate` vendor key `dd=` — Android and the browser SDK (`dd=s:1;o:rum`) kept it. The
+  Swift constant holding it is renamed (`W3CHTTPHeaders.Constants.kubesense`); its value stays `"dd"`.
+- The `dd` of date formats (`"EEE, dd MMM yyyy"`), Objective-C type encodings (`{CGSize=dd}`) and the
+  `"dd"` keys of test data: the bare-`dd` rule skips string data.
 - External projects and tools: `rum-events-format`, `dd-go`, `datadog-ci`, `dd-octo-sts`,
   `dd-sdk-swift-testing` and its `DatadogSDKTesting` product / `.datadogTesting` trait,
   `dd-sdk-ios-apollo-interceptor`, `dd-openfeature-provider-swift`, `dd-mobile-session-replay-snapshots`,
@@ -227,6 +230,8 @@ Kept as they are, on purpose:
     sends it; the properties are not public here);
   - its own Session Replay request builders (`RequestBuilder.swift`, `ResourceRequestBuilder.swift`) moved
     from `context.site.endpoint` + `api/v2/replay` to `context.intakeEndpoint` + `rum/api/v1/replay`;
+  - the SDK's own names: `KS.logger` for `DD.logger` (`KubesenseInAppWebviewTrackingPlugin.swift`) and
+    `.kubesense.decode()` for `.dd.decode()` (`KubesenseRumPluginTests.swift`);
   - the dependency moved to this SDK's `1.0.0` (`Package.swift` pins `exact: "3.15.0"` or `from: "3.0.0"`,
     podspecs `'3.15.0'`, `'~> 3'`, `'~> 3.0'`) and the minimum raised to iOS 15 (upstream 3.17; the plugins
     declare iOS 12 / 13);

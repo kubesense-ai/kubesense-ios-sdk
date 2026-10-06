@@ -112,7 +112,7 @@ extension LogEvent: AnyMockable, RandomMockable {
         networkConnectionInfo: NetworkConnectionInfo = .mockAny(),
         mobileCarrierInfo: CarrierInfo? = .mockAny(),
         attributes: LogEvent.Attributes = .mockAny(),
-        kubesenseTags: String = .mockRandomDDTags(),
+        kubesenseTags: String = .mockRandomKubesenseTags(),
         tags: [String]? = nil
     ) -> LogEvent {
         return LogEvent(
@@ -129,7 +129,7 @@ extension LogEvent: AnyMockable, RandomMockable {
             applicationBuildNumber: applicationBuildNumber,
             buildId: nil,
             variant: variant,
-            dd: .init(
+            kubesense: .init(
                 device: .init(architecture: device.architecture ?? "")
             ),
             device: device,
@@ -159,7 +159,7 @@ extension LogEvent: AnyMockable, RandomMockable {
             applicationBuildNumber: .mockRandom(),
             buildId: .mockRandom(),
             variant: .mockRandom(),
-            dd: .init(
+            kubesense: .init(
                 device: .init(architecture: .mockRandom())
             ),
             device: .mockRandom(),
@@ -169,7 +169,7 @@ extension LogEvent: AnyMockable, RandomMockable {
             networkConnectionInfo: .mockRandom(),
             mobileCarrierInfo: .mockRandom(),
             attributes: .mockRandom(),
-            kubesenseTags: .mockRandomDDTags(),
+            kubesenseTags: .mockRandomKubesenseTags(),
             tags: .mockRandom()
         )
     }

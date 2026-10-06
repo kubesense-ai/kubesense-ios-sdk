@@ -380,7 +380,7 @@ public class SwiftPrinter: BasePrinter, CodePrinter {
             indentRight()
             let comparisons: [String] = swiftStruct.properties.map { property in
                 if let dict = property.type as? SwiftDictionary, dict.value is SwiftEncodable {
-                    return "lhs.\(property.backtickName).dd == rhs.\(property.backtickName).dd"
+                    return "lhs.\(property.backtickName).kubesense == rhs.\(property.backtickName).dd"
                 }
                 return "lhs.\(property.backtickName) == rhs.\(property.backtickName)"
             }

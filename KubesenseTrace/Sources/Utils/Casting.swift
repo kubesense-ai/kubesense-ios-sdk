@@ -6,6 +6,6 @@
 
 // swiftlint:disable identifier_name
 internal extension OTSpanContext {
-    var dd: KubesenseSpanContext? { warnIfCannotCast(value: self) }
+    var kubesense: KubesenseSpanContext? { warnIfCannotCast(value: self) }
 }
 // swiftlint:enable identifier_name

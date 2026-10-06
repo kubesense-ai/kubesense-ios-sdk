@@ -112,13 +112,13 @@ public struct CrashContext: Codable, Equatable {
         remoteConfigurationId: String? = nil
     ) {
         self.serverTimeOffset = serverTimeOffset
-        self.service = service.sanitizedToDDTags()
-        self.env = env.sanitizedToDDTags()
-        self.version = version.sanitizedToDDTags()
+        self.service = service.sanitizedToKubesenseTags()
+        self.env = env.sanitizedToKubesenseTags()
+        self.version = version.sanitizedToKubesenseTags()
         self.buildNumber = buildNumber
         self.device = device
         self.os = os
-        self.sdkVersion = sdkVersion.sanitizedToDDTags()
+        self.sdkVersion = sdkVersion.sanitizedToKubesenseTags()
         self.source = source
         self.trackingConsent = trackingConsent
         self.userInfo = userInfo

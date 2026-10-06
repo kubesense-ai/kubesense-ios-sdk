@@ -600,8 +600,8 @@ class CrashReportReceiverTests: XCTestCase {
             sendRUMViewEvent.view.crash?.count, 1, "The `RUMViewEvent` must include incremented crash count."
         )
         XCTAssertEqual(
-            sendRUMViewEvent.dd.documentVersion,
-            lastRUMViewEvent.dd.documentVersion + 1,
+            sendRUMViewEvent.kubesense.documentVersion,
+            lastRUMViewEvent.kubesense.documentVersion + 1,
             "The `RUMViewEvent` sent must contain incremented document version."
         )
         XCTAssertTrue(
@@ -618,10 +618,10 @@ class CrashReportReceiverTests: XCTestCase {
         XCTAssertEqual(sendRUMViewEvent.view.action.count, lastRUMViewEvent.view.action.count)
         XCTAssertEqual(
             sendRUMViewEvent.date,
-            crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds - 1,
+            crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds - 1,
             "The `RUMViewEvent` sent must include crash date corrected by current correction offset and shifted back by 1ms."
         )
-        XCTAssertEqual(sendRUMViewEvent.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(sendRUMViewEvent.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         KubesenseAssertReflectionEqual(sendRUMViewEvent.device, lastRUMViewEvent.device)
         KubesenseAssertReflectionEqual(sendRUMViewEvent.os, lastRUMViewEvent.os)
     }
@@ -714,7 +714,7 @@ class CrashReportReceiverTests: XCTestCase {
         )
         XCTAssertEqual(
             sendRUMErrorEvent.date,
-            crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             "The `RUMErrorEvent` sent must include crash date corrected by current correction offset."
         )
         XCTAssertEqual(
@@ -733,7 +733,7 @@ class CrashReportReceiverTests: XCTestCase {
             2: stack-trace line 2
             """
         )
-        XCTAssertEqual(sendRUMErrorEvent.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(sendRUMErrorEvent.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         KubesenseAssertJSONEqual(sendRUMErrorEvent.error.threads, crashReport.threads)
         KubesenseAssertJSONEqual(sendRUMErrorEvent.error.binaryImages, crashReport.binaryImages)
         KubesenseAssertJSONEqual(sendRUMErrorEvent.error.meta, crashReport.meta)
@@ -914,7 +914,7 @@ class CrashReportReceiverTests: XCTestCase {
         )
         XCTAssertEqual(
             sendRUMErrorEvent.date,
-            crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             "The `RUMErrorEvent` sent must include crash date corrected by current correction offset."
         )
         XCTAssertEqual(
@@ -933,7 +933,7 @@ class CrashReportReceiverTests: XCTestCase {
             2: stack-trace line 2
             """
         )
-        XCTAssertEqual(sendRUMErrorEvent.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(sendRUMErrorEvent.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         KubesenseAssertJSONEqual(sendRUMErrorEvent.error.threads, crashReport.threads)
         KubesenseAssertJSONEqual(sendRUMErrorEvent.error.binaryImages, crashReport.binaryImages)
         KubesenseAssertJSONEqual(sendRUMErrorEvent.error.meta, crashReport.meta)
@@ -1110,10 +1110,10 @@ class CrashReportReceiverTests: XCTestCase {
             XCTAssertEqual(sentRUMView.buildVersion, randomBuildNumber)
             XCTAssertEqual(
                 sentRUMView.date,
-                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds - 1,
+                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds - 1,
                 "The view must include crash date corrected by current correction offset and shifted back by 1ms."
             )
-            XCTAssertEqual(sentRUMView.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+            XCTAssertEqual(sentRUMView.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
 
             // Assert RUM error properties
             XCTAssertEqual(sentRUMError.application.id, sentRUMView.application.id, "It must be linked to the same application as RUM view")
@@ -1134,11 +1134,11 @@ class CrashReportReceiverTests: XCTestCase {
             XCTAssertTrue(sentRUMError.error.isCrash == true, "RUM error must be marked as crash.")
             XCTAssertEqual(
                 sentRUMError.date,
-                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 "RUM error must include crash date corrected by current correction offset."
             )
             XCTAssertEqual(sentRUMError.error.type, randomCrashType)
-            XCTAssertEqual(sentRUMError.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+            XCTAssertEqual(sentRUMError.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
             XCTAssertNotNil(sentRUMError.error.threads, "It must contain crash details")
             XCTAssertNotNil(sentRUMError.error.binaryImages, "It must contain crash details")
             XCTAssertNotNil(sentRUMError.error.meta, "It must contain crash details")
@@ -1193,7 +1193,7 @@ class CrashReportReceiverTests: XCTestCase {
         // Then
         let sentRUMView = try XCTUnwrap(featureScope.eventsWritten(ofType: RUMViewEvent.self).first)
         XCTAssertEqual(
-            sentRUMView.dd.configuration?.remoteConfigurationId,
+            sentRUMView.kubesense.configuration?.remoteConfigurationId,
             randomRemoteConfigurationId,
             "The synthesized crash view event must carry the configured remote configuration id"
         )
@@ -1493,10 +1493,10 @@ class CrashReportReceiverTests: XCTestCase {
             XCTAssertEqual(sentRUMView.view.action.count, 0)
             XCTAssertEqual(
                 sentRUMView.date,
-                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds - 1,
+                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds - 1,
                 "The view must include crash date corrected by current correction offset and shifted back by 1ms."
             )
-            XCTAssertEqual(sentRUMView.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+            XCTAssertEqual(sentRUMView.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
 
             // Assert RUM error properties
             XCTAssertEqual(sentRUMError.application.id, sentRUMView.application.id, "It must be linked to the same application as RUM view")
@@ -1515,11 +1515,11 @@ class CrashReportReceiverTests: XCTestCase {
             XCTAssertTrue(sentRUMError.error.isCrash == true, "RUM error must be marked as crash.")
             XCTAssertEqual(
                 sentRUMError.date,
-                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 "RUM error must include crash date corrected by current correction offset."
             )
             XCTAssertEqual(sentRUMError.error.type, randomCrashType)
-            XCTAssertEqual(sentRUMError.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+            XCTAssertEqual(sentRUMError.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
             XCTAssertNotNil(sentRUMError.error.threads, "It must contain crash details")
             XCTAssertNotNil(sentRUMError.error.binaryImages, "It must contain crash details")
             XCTAssertNotNil(sentRUMError.error.meta, "It must contain crash details")
@@ -1683,10 +1683,10 @@ class CrashReportReceiverTests: XCTestCase {
             XCTAssertTrue(sentRUMError.error.isCrash == true, "RUM error must be marked as crash.")
             XCTAssertEqual(
                 sentRUMError.date,
-                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+                crashDate.addingTimeInterval(dateCorrectionOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
                 "RUM error must include crash date corrected by current correction offset."
             )
-            XCTAssertEqual(sentRUMError.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+            XCTAssertEqual(sentRUMError.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
             XCTAssertNotNil(sentRUMError.error.threads, "It must contain crash details")
             XCTAssertNotNil(sentRUMError.error.binaryImages, "It must contain crash details")
             XCTAssertNotNil(sentRUMError.error.meta, "It must contain crash details")

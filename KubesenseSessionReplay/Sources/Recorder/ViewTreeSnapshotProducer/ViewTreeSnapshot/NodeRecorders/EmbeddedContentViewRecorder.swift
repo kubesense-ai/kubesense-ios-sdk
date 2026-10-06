@@ -23,7 +23,7 @@ internal final class EmbeddedContentViewRecorder: NodeRecorder {
         with attributes: ViewAttributes,
         in context: ViewTreeRecordingContext
     ) -> NodeSemantics? {
-        guard let slotID = view.dd.sessionReplaySlotID else {
+        guard let slotID = view.kubesense.sessionReplaySlotID else {
             return nil
         }
 

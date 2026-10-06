@@ -81,7 +81,7 @@ internal final class WatchdogTerminationMonitor {
             return
         }
 
-        DD.logger.debug(ErrorMessages.rumViewEventUpdated)
+        KS.logger.debug(ErrorMessages.rumViewEventUpdated)
         feature.rumDataStore.setValue(viewEvent, forKey: .watchdogRUMViewEvent)
     }
 
@@ -90,7 +90,7 @@ internal final class WatchdogTerminationMonitor {
     private func sendWatchTerminationIfFound(launch: LaunchReport, completion: @escaping () -> Void) {
         checker.isWatchdogTermination(launch: launch) { [weak self] isWatchdogTermination, state  in
             if isWatchdogTermination, let state = state {
-                DD.logger.debug(ErrorMessages.detectedWatchdogTermination)
+                KS.logger.debug(ErrorMessages.detectedWatchdogTermination)
                 self?.sendWatchTermination(state: state, completion: completion)
             } else {
                 completion()
@@ -108,7 +108,7 @@ internal final class WatchdogTerminationMonitor {
                 let likelyCrashedAt = try self?.storage?.mostRecentModifiedFileAt(before: context.launchInfo.processLaunchDate)
                 self?.feature.rumDataStore.value(forKey: .watchdogRUMViewEvent) { [weak self] (viewEvent: RUMViewEvent?) in
                     guard let viewEvent = viewEvent else {
-                        DD.logger.error(ErrorMessages.failedToReadViewEvent)
+                        KS.logger.error(ErrorMessages.failedToReadViewEvent)
                         self?.feature.telemetry.error(ErrorMessages.failedToReadViewEvent)
                         completion()
                         return
@@ -117,7 +117,7 @@ internal final class WatchdogTerminationMonitor {
                     completion()
                 }
             } catch {
-                DD.logger.error(ErrorMessages.failedToSendWatchdogTermination, error: error)
+                KS.logger.error(ErrorMessages.failedToSendWatchdogTermination, error: error)
                 self?.feature.telemetry.error(ErrorMessages.failedToSendWatchdogTermination, error: error)
                 completion()
             }

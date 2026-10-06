@@ -127,8 +127,8 @@ internal class RUMResourceScope: RUMScope {
         let graphql = extractGraphQL()
 
         // Extract captured HTTP headers
-        let requestHeaders: [String: String]? = attributes.removeValue(forKey: CrossPlatformAttributes.requestHeaders)?.dd.decode()
-        let responseHeaders: [String: String]? = attributes.removeValue(forKey: CrossPlatformAttributes.responseHeaders)?.dd.decode()
+        let requestHeaders: [String: String]? = attributes.removeValue(forKey: CrossPlatformAttributes.requestHeaders)?.kubesense.decode()
+        let responseHeaders: [String: String]? = attributes.removeValue(forKey: CrossPlatformAttributes.responseHeaders)?.kubesense.decode()
         let deliveryType: RUMResourceEvent.Resource.DeliveryType? =
             switch resourceMetrics?.deliveryType {
             case .cache: .cache
@@ -173,7 +173,7 @@ internal class RUMResourceScope: RUMScope {
 
         // Write resource event
         let resourceEvent = RUMResourceEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .init(
                     sessionReplaySampleRate: nil,
@@ -200,7 +200,7 @@ internal class RUMResourceScope: RUMScope {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: command.globalAttributes.merging(parent.attributes) { $1 }.merging(attributes) { $1 }),
-            date: resourceStartTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: resourceStartTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -208,30 +208,30 @@ internal class RUMResourceScope: RUMScope {
             resource: .init(
                 connect: resourceMetrics?.connect.map { metric in
                     .init(
-                        duration: metric.duration.dd.toInt64Nanoseconds,
-                        start: metric.start.timeIntervalSince(resourceStartTime).dd.toInt64Nanoseconds
+                        duration: metric.duration.kubesense.toInt64Nanoseconds,
+                        start: metric.start.timeIntervalSince(resourceStartTime).kubesense.toInt64Nanoseconds
                     )
                 },
                 decodedBodySize: decodedBodySize,
                 deliveryType: deliveryType,
                 dns: resourceMetrics?.dns.map { metric in
                     .init(
-                        duration: metric.duration.dd.toInt64Nanoseconds,
-                        start: metric.start.timeIntervalSince(resourceStartTime).dd.toInt64Nanoseconds
+                        duration: metric.duration.kubesense.toInt64Nanoseconds,
+                        start: metric.start.timeIntervalSince(resourceStartTime).kubesense.toInt64Nanoseconds
                     )
                 },
                 download: resourceMetrics?.download.map { metric in
                     .init(
-                        duration: metric.duration.dd.toInt64Nanoseconds,
-                        start: metric.start.timeIntervalSince(resourceStartTime).dd.toInt64Nanoseconds
+                        duration: metric.duration.kubesense.toInt64Nanoseconds,
+                        start: metric.start.timeIntervalSince(resourceStartTime).kubesense.toInt64Nanoseconds
                     )
                 },
                 duration: resolveResourceDuration(resourceDuration),
                 encodedBodySize: encodedBodySize,
                 firstByte: resourceMetrics?.firstByte.map { metric in
                     .init(
-                        duration: metric.duration.dd.toInt64Nanoseconds,
-                        start: metric.start.timeIntervalSince(resourceStartTime).dd.toInt64Nanoseconds
+                        duration: metric.duration.kubesense.toInt64Nanoseconds,
+                        start: metric.start.timeIntervalSince(resourceStartTime).kubesense.toInt64Nanoseconds
                     )
                 },
                 graphql: graphql,
@@ -241,8 +241,8 @@ internal class RUMResourceScope: RUMScope {
                 provider: resourceEventProvider,
                 redirect: resourceMetrics?.redirection.map { metric in
                     .init(
-                        duration: metric.duration.dd.toInt64Nanoseconds,
-                        start: metric.start.timeIntervalSince(resourceStartTime).dd.toInt64Nanoseconds
+                        duration: metric.duration.kubesense.toInt64Nanoseconds,
+                        start: metric.start.timeIntervalSince(resourceStartTime).kubesense.toInt64Nanoseconds
                     )
                 },
                 renderBlockingStatus: nil,
@@ -251,8 +251,8 @@ internal class RUMResourceScope: RUMScope {
                 size: size ?? 0,
                 ssl: resourceMetrics?.ssl.map { metric in
                     .init(
-                        duration: metric.duration.dd.toInt64Nanoseconds,
-                        start: metric.start.timeIntervalSince(resourceStartTime).dd.toInt64Nanoseconds
+                        duration: metric.duration.kubesense.toInt64Nanoseconds,
+                        start: metric.start.timeIntervalSince(resourceStartTime).kubesense.toInt64Nanoseconds
                     )
                 },
                 statusCode: command.httpStatusCode?.toInt64 ?? 0,
@@ -294,8 +294,8 @@ internal class RUMResourceScope: RUMScope {
     }
 
     private func sendErrorEvent(on command: RUMStopResourceWithErrorCommand, context: KubesenseContext, writer: Writer) {
-        let errorFingerprint: String? = attributes.removeValue(forKey: RUM.Attributes.errorFingerprint)?.dd.decode()
-        let timeSinceAppStart = command.time.timeIntervalSince(context.launchInfo.processLaunchDate).dd.toInt64Milliseconds
+        let errorFingerprint: String? = attributes.removeValue(forKey: RUM.Attributes.errorFingerprint)?.kubesense.decode()
+        let timeSinceAppStart = command.time.timeIntervalSince(context.launchInfo.processLaunchDate).kubesense.toInt64Milliseconds
 
         // Trace context from cross-platform attributes or spanContext fallback
         let traceContext = extractTraceAttributes()
@@ -305,7 +305,7 @@ internal class RUMResourceScope: RUMScope {
 
         // Write error event
         let errorEvent = RUMErrorEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .init(sessionReplaySampleRate: nil, sessionSampleRate: Double(dependencies.samplingRate)),
                 parentSpanId: traceContext.parentSpanID?.toString(representation: .decimal),
@@ -325,7 +325,7 @@ internal class RUMResourceScope: RUMScope {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: command.globalAttributes.merging(parent.attributes) { $1 }.merging(attributes) { $1 }),
-            date: command.time.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: command.time.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -422,7 +422,7 @@ internal class RUMResourceScope: RUMScope {
 
     private func resolveResourceDuration(_ duration: TimeInterval) -> Int64 {
         guard duration > 0.0 else {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 The computed duration for your resource: \(resourceURL) was 0 or negative. In order to keep the resource event we forced it to 1ns.
                 """
@@ -430,7 +430,7 @@ internal class RUMResourceScope: RUMScope {
             return 1 // 1ns
         }
 
-        return duration.dd.toInt64Nanoseconds
+        return duration.kubesense.toInt64Nanoseconds
     }
 
     /// Decodes GraphQL errors JSON string into intermediate response error models.
@@ -444,14 +444,14 @@ internal class RUMResourceScope: RUMScope {
             return nil
         }
         guard let data = jsonString.data(using: .utf8) else {
-            DD.logger.debug("Failed to convert GraphQL errors string to UTF-8 data")
+            KS.logger.debug("Failed to convert GraphQL errors string to UTF-8 data")
             return nil
         }
         do {
             let errors = try JSONDecoder().decode([GraphQLResponseError].self, from: data)
             return errors.isEmpty ? nil : errors
         } catch {
-            DD.logger.debug("Failed to decode GraphQL errors: \(error)")
+            KS.logger.debug("Failed to decode GraphQL errors: \(error)")
             return nil
         }
     }
@@ -462,18 +462,18 @@ internal class RUMResourceScope: RUMScope {
     /// Must be called at most once per event send — repeated calls return nil for consumed keys.
     private func extractTraceAttributes() -> (traceID: TraceID?, spanID: SpanID?, parentSpanID: SpanID?, samplingRate: Double?) {
         let traceID: TraceID? = attributes.removeValue(forKey: CrossPlatformAttributes.traceID)?
-            .dd.decode()
+            .kubesense.decode()
             .map { .init($0, representation: .hexadecimal) }
             ?? spanContext?.traceID
         let spanID: SpanID? = attributes.removeValue(forKey: CrossPlatformAttributes.spanID)?
-            .dd.decode()
+            .kubesense.decode()
             .map { .init($0, representation: .decimal) }
             ?? spanContext?.spanID
         let parentSpanID: SpanID? = attributes.removeValue(forKey: CrossPlatformAttributes.parentSpanID)?
-            .dd.decode()
+            .kubesense.decode()
             .map { .init($0, representation: .decimal) }
             ?? spanContext?.parentSpanID
-        let samplingRate = attributes.removeValue(forKey: CrossPlatformAttributes.rulePSR)?.dd.decode() ?? spanContext?.samplingRate
+        let samplingRate = attributes.removeValue(forKey: CrossPlatformAttributes.rulePSR)?.kubesense.decode() ?? spanContext?.samplingRate
 
         return (traceID, spanID, parentSpanID, samplingRate)
     }
@@ -482,11 +482,11 @@ internal class RUMResourceScope: RUMScope {
     /// Consumes attributes via `removeValue` — must be called at most once per event send.
     /// Returns `nil` if no valid operation type is found.
     private func extractGraphQL() -> RUMGraphql? {
-        let operationType: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlOperationType)?.dd.decode()
-        let operationName: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlOperationName)?.dd.decode()
-        let payload: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlPayload)?.dd.decode()
-        let variables: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlVariables)?.dd.decode()
-        let errorsJSON: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlErrors)?.dd.decode()
+        let operationType: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlOperationType)?.kubesense.decode()
+        let operationName: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlOperationName)?.kubesense.decode()
+        let payload: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlPayload)?.kubesense.decode()
+        let variables: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlVariables)?.kubesense.decode()
+        let errorsJSON: String? = attributes.removeValue(forKey: CrossPlatformAttributes.graphqlErrors)?.kubesense.decode()
 
         guard
             let rawOperationType = operationType,

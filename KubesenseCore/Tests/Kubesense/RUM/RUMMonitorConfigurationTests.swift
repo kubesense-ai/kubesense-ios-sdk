@@ -39,7 +39,7 @@ class RUMMonitorConfigurationTests: XCTestCase {
             in: core
         )
 
-        let monitor = RUMMonitor.shared(in: core).dd
+        let monitor = RUMMonitor.shared(in: core).kubesense
 
         let dependencies = monitor.applicationScope.dependencies
         monitor.featureScope.eventWriteContext { context, _ in

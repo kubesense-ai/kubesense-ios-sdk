@@ -79,7 +79,7 @@ class WebLogIntegrationTests: XCTestCase {
         try logMatcher.assertItFullyMatches(
             jsonString: """
         {
-            "date": \(1_635_932_927_012 + 123.dd.toInt64Milliseconds),
+            "date": \(1_635_932_927_012 + 123.kubesense.toInt64Milliseconds),
             "ktags": "service:abc,version:1.1.1,sdk_version:abc,env:test",
             "message": "message",
             "session_id": "0110cab4-7471-480e-aa4e-7ce039ced355",
@@ -134,7 +134,7 @@ class WebLogIntegrationTests: XCTestCase {
         try logMatcher.assertItFullyMatches(
             jsonString: """
         {
-            "date": \(1_635_932_927_012 + 123.dd.toInt64Milliseconds),
+            "date": \(1_635_932_927_012 + 123.kubesense.toInt64Milliseconds),
             "ktags": "service:abc,version:1.1.1,sdk_version:abc,env:test",
             "message": "message",
             "application_id": "\(randomApplicationID)",

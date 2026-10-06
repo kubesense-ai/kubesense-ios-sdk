@@ -107,7 +107,7 @@ public struct LogEvent: Encodable {
     }
 
     /// Kubesense specific attributes.
-    public struct Dd: Codable {
+    public struct KS: Codable {
         /// Device information
         public struct Device: Codable {
             /// The CPU architecture of the device. Used to symbolication and deobfuscation.
@@ -144,7 +144,7 @@ public struct LogEvent: Encodable {
     /// The variant of the current build (used in some cross platform frameworks)
     public let variant: String?
     /// Kubesense specific attributes
-    public let dd: Dd
+    public let kubesense: KS
     /// Device information
     public let device: Device
     /// Operating System information
@@ -196,9 +196,9 @@ internal struct LogEventEncoder {
         case applicationBuildNumber = "build_version"
         case buildId = "build_id"
 
-        // MARK: - Dd info
+        // MARK: - KS info
 
-        case dd = "_kubesense"
+        case kubesense = "_kubesense"
 
         // MARK: - Device info
         case device
@@ -280,20 +280,20 @@ internal struct LogEventEncoder {
             try container.encode(buildId, forKey: .buildId)
         }
 
-        try container.encode(log.dd, forKey: .dd)
+        try container.encode(log.kubesense, forKey: .kubesense)
         try container.encode(log.device, forKey: .device)
         try container.encode(log.os, forKey: .os)
 
         // Encode user info
-        try log.userInfo.id.dd.ifNotNil { try container.encode($0, forKey: .userId) }
-        try log.userInfo.name.dd.ifNotNil { try container.encode($0, forKey: .userName) }
-        try log.userInfo.email.dd.ifNotNil { try container.encode($0, forKey: .userEmail) }
-        try log.userInfo.anonymousId.dd.ifNotNil { try container.encode($0, forKey: .userAnonymousId) }
+        try log.userInfo.id.kubesense.ifNotNil { try container.encode($0, forKey: .userId) }
+        try log.userInfo.name.kubesense.ifNotNil { try container.encode($0, forKey: .userName) }
+        try log.userInfo.email.kubesense.ifNotNil { try container.encode($0, forKey: .userEmail) }
+        try log.userInfo.anonymousId.kubesense.ifNotNil { try container.encode($0, forKey: .userAnonymousId) }
 
         // Encode account info
         if let accountInfo = log.accountInfo {
             try container.encode(accountInfo.id, forKey: .accountId)
-            try accountInfo.name.dd.ifNotNil { try container.encode($0, forKey: .accountName) }
+            try accountInfo.name.kubesense.ifNotNil { try container.encode($0, forKey: .accountName) }
         }
 
         // Encode network info
@@ -303,20 +303,20 @@ internal struct LogEventEncoder {
             try container.encode(networkConnectionInfo.supportsIPv4, forKey: .networkConnectionSupportsIPv4)
             try container.encode(networkConnectionInfo.supportsIPv6, forKey: .networkConnectionSupportsIPv6)
             try container.encode(networkConnectionInfo.isExpensive, forKey: .networkConnectionIsExpensive)
-            try networkConnectionInfo.isConstrained.dd.ifNotNil {
+            try networkConnectionInfo.isConstrained.kubesense.ifNotNil {
                 try container.encode($0, forKey: .networkConnectionIsConstrained)
             }
-            try networkConnectionInfo.linkQuality.dd.ifNotNil {
+            try networkConnectionInfo.linkQuality.kubesense.ifNotNil {
                 try container.encode($0, forKey: .networkConnectionLinkQuality)
             }
         }
 
         // Encode mobile carrier info
         if let carrierInfo = log.mobileCarrierInfo {
-            try carrierInfo.carrierName.dd.ifNotNil {
+            try carrierInfo.carrierName.kubesense.ifNotNil {
                 try container.encode($0, forKey: .mobileNetworkCarrierName)
             }
-            try carrierInfo.carrierISOCountryCode.dd.ifNotNil {
+            try carrierInfo.carrierISOCountryCode.kubesense.ifNotNil {
                 try container.encode($0, forKey: .mobileNetworkCarrierISOCountryCode)
             }
             try container.encode(carrierInfo.radioAccessTechnology, forKey: .mobileNetworkCarrierRadioTechnology)
@@ -395,7 +395,7 @@ internal struct LogEventEncoder {
 
         // Encode tags
         var tags = log.tags ?? []
-        // Include dd tags
+        // Include kubesense tags
         // log.kubesenseTags is already a string with multiple tags
         // joined by ",". That is OK, as it gets joined with
         // the specific ones for this log.

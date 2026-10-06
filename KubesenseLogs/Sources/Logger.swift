@@ -122,7 +122,7 @@ public struct Logger {
         do {
             return try createOrThrow(with: configuration, in: core)
         } catch {
-            DD.logger.critical("Failed to build `Logger`.", error: error)
+            KS.logger.critical("Failed to build `Logger`.", error: error)
             return NOPLogger()
         }
     }

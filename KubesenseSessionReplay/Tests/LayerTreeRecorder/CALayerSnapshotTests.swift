@@ -339,7 +339,7 @@ struct CALayerSnapshotTests {
         root.bounds = CGRect(x: 0, y: 0, width: 100, height: 100)
 
         let privateView = UIView(frame: CGRect(x: 10, y: 10, width: 50, height: 50))
-        privateView.dd.sessionReplayPrivacyOverrides.hide = true
+        privateView.kubesense.sessionReplayPrivacyOverrides.hide = true
         root.addSublayer(privateView.layer)
 
         let child = CALayer()
@@ -363,12 +363,12 @@ struct CALayerSnapshotTests {
         root.bounds = CGRect(x: 0, y: 0, width: 100, height: 100)
 
         let parentView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
-        parentView.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAllInputs
-        parentView.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskNone
+        parentView.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAllInputs
+        parentView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskNone
         root.addSublayer(parentView.layer)
 
         let childView = UIView(frame: CGRect(x: 10, y: 10, width: 40, height: 40))
-        childView.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskNonBundledOnly
+        childView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskNonBundledOnly
         parentView.layer.addSublayer(childView.layer)
 
         let context = CALayerSnapshot.Context.mockAny(

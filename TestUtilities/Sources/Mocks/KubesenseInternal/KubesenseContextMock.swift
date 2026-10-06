@@ -480,8 +480,8 @@ extension String {
         return ["ios", "android", "browser", "react-native", "flutter", "roku", "ndk", "ios+il2cpp", "ndk+il2cpp"].randomElement()!
     }
 
-    public static func mockRandomDDTags() -> String {
-        mockAnyDDTags(
+    public static func mockRandomKubesenseTags() -> String {
+        mockAnyKubesenseTags(
             service: .mockRandom(),
             version: .mockRandom(),
             sdkVersion: .mockRandom(),
@@ -490,7 +490,7 @@ extension String {
         )
     }
 
-    public static func mockAnyDDTags(
+    public static func mockAnyKubesenseTags(
         service: String = .mockAny(),
         version: String = .mockAny(),
         sdkVersion: String = .mockAny(),

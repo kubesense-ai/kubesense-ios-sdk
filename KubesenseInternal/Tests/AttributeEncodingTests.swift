@@ -58,8 +58,8 @@ class AttributeEncodingTests: XCTestCase {
 
     func testEncodeAttributeWithInvalidValueEncodesNullAndLogsError() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         class NonEncodableObject {}
 
@@ -87,7 +87,7 @@ class AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(jsonObject["invalidAttr"] is NSNull)
 
         // And error is logged
-        let errorLog = try XCTUnwrap(dd.logger.errorLog)
+        let errorLog = try XCTUnwrap(kubesense.logger.errorLog)
         XCTAssertTrue(
             errorLog.message.contains("Failed to encode attribute 'invalidAttr'")
         )
@@ -98,8 +98,8 @@ class AttributeEncodingTests: XCTestCase {
 
     func testEncodeAttributeWithCustomContextUsesNoPrefix() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         class NonEncodableObject {}
 
@@ -123,14 +123,14 @@ class AttributeEncodingTests: XCTestCase {
         _ = try encoder.encode(TestEvent())
 
         // Then
-        let errorMessage = try XCTUnwrap(dd.logger.errorLog).message
+        let errorMessage = try XCTUnwrap(kubesense.logger.errorLog).message
         XCTAssertTrue(errorMessage.contains("Failed to encode attribute 'customAttr'"))
     }
 
     func testEncodeAttributeWithUserInfoContextUsesCorrectPrefix() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         struct UserInfoStruct: Encodable {
             enum CodingKeys: String, CodingKey {
@@ -157,7 +157,7 @@ class AttributeEncodingTests: XCTestCase {
         _ = try encoder.encode(testStruct)
 
         // Then
-        let errorLog = try XCTUnwrap(dd.logger.errorLog)
+        let errorLog = try XCTUnwrap(kubesense.logger.errorLog)
         XCTAssertTrue(
             errorLog.message.contains("Failed to encode user info attribute 'customField'")
         )
@@ -165,8 +165,8 @@ class AttributeEncodingTests: XCTestCase {
 
     func testEncodeAttributeWithAccountInfoContextUsesCorrectPrefix() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         struct AccountInfoStruct: Encodable {
             enum CodingKeys: String, CodingKey {
@@ -193,7 +193,7 @@ class AttributeEncodingTests: XCTestCase {
         _ = try encoder.encode(testStruct)
 
         // Then
-        let errorLog = try XCTUnwrap(dd.logger.errorLog)
+        let errorLog = try XCTUnwrap(kubesense.logger.errorLog)
         XCTAssertTrue(
             errorLog.message.contains("Failed to encode account attribute 'accountField'")
         )
@@ -201,8 +201,8 @@ class AttributeEncodingTests: XCTestCase {
 
     func testEncodeAttributeWithInternalContextUsesCorrectPrefix() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         struct InternalStruct: Encodable {
             enum CodingKeys: String, CodingKey {
@@ -229,7 +229,7 @@ class AttributeEncodingTests: XCTestCase {
         _ = try encoder.encode(testStruct)
 
         // Then
-        let errorLog = try XCTUnwrap(dd.logger.errorLog)
+        let errorLog = try XCTUnwrap(kubesense.logger.errorLog)
         XCTAssertTrue(
             errorLog.message.contains("Failed to encode internal attribute 'internalField'")
         )
@@ -237,8 +237,8 @@ class AttributeEncodingTests: XCTestCase {
 
     func testEncodeAttributeThrowingAfterPartialEncodeDoesNotAffectSubsequentAttributes() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         struct ThrowingAfterPartialEncode: Encodable {
             func encode(to encoder: Encoder) throws {
@@ -275,7 +275,7 @@ class AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(jsonObject["poison"] is NSNull)
         XCTAssertEqual(jsonObject["after"] as? String, "after")
 
-        let errorLog = try XCTUnwrap(dd.logger.errorLog)
+        let errorLog = try XCTUnwrap(kubesense.logger.errorLog)
         XCTAssertTrue(
             errorLog.message.contains("Failed to encode attribute 'poison'")
         )
@@ -322,7 +322,7 @@ class AttributeEncodingTests: XCTestCase {
             ]
         )
 
-        let data = try encoder.dd.encodeWithAttributeRecovery(accountInfo)
+        let data = try encoder.kubesense.encodeWithAttributeRecovery(accountInfo)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         XCTAssertEqual(json["id"] as? String, "account-id")
@@ -343,7 +343,7 @@ class AttributeEncodingTests: XCTestCase {
             ]
         )
 
-        let data = try encoder.dd.encodeWithAttributeRecovery(userInfo)
+        let data = try encoder.kubesense.encodeWithAttributeRecovery(userInfo)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         XCTAssertEqual(json["anonymousId"] as? String, "anonymous-id")
@@ -426,7 +426,7 @@ class AttributeEncodingTests: XCTestCase {
         }
 
         let value = CountingValue()
-        let encodedData = try JSONEncoder().dd.encodeWithAttributeRecovery(TestEvent(value: value))
+        let encodedData = try JSONEncoder().kubesense.encodeWithAttributeRecovery(TestEvent(value: value))
         let jsonObject = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
 
         XCTAssertEqual(value.encodeCount, 1)
@@ -514,7 +514,7 @@ class AttributeEncodingTests: XCTestCase {
             nan: "nan"
         )
 
-        let encodedData = try encoder.dd.encodeWithAttributeRecovery(TestEvent())
+        let encodedData = try encoder.kubesense.encodeWithAttributeRecovery(TestEvent())
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
 
         XCTAssertEqual(json["date"] as? String, "1970-01-01T00:00:00Z")
@@ -591,7 +591,7 @@ class AttributeEncodingTests: XCTestCase {
             after: after
         )
 
-        let encodedData = try JSONEncoder().dd.encodeWithAttributeRecovery(event)
+        let encodedData = try JSONEncoder().kubesense.encodeWithAttributeRecovery(event)
         let jsonObject = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
 
         XCTAssertEqual(before.encodeCount, 2)
@@ -653,7 +653,7 @@ class AttributeEncodingTests: XCTestCase {
         }
 
         let stateful = SucceedsOnceThenThrows()
-        let encodedData = try JSONEncoder().dd.encodeWithAttributeRecovery(TestEvent(stateful: stateful))
+        let encodedData = try JSONEncoder().kubesense.encodeWithAttributeRecovery(TestEvent(stateful: stateful))
         let jsonObject = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
 
         XCTAssertEqual(stateful.encodeCount, 2)
@@ -710,7 +710,7 @@ class AttributeEncodingTests: XCTestCase {
         let value = ContextAwareValue()
         let encoder = JSONEncoder()
         encoder.userInfo[CodingUserInfoKey(rawValue: "attribute-recovery-test")!] = "preserved"
-        let encodedData = try encoder.dd.encodeWithAttributeRecovery(TestEvent(value: value))
+        let encodedData = try encoder.kubesense.encodeWithAttributeRecovery(TestEvent(value: value))
         let jsonString = try XCTUnwrap(String(data: encodedData, encoding: .utf8))
         let jsonObject = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
         let encodedValue = try XCTUnwrap(jsonObject["value"] as? [String: Any])

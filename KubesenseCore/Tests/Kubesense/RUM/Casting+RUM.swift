@@ -7,5 +7,5 @@
 @testable import KubesenseRUM
 
 internal extension RUMMonitorProtocol {
-    var dd: Monitor { self as! Monitor }
+    var kubesense: Monitor { self as! Monitor }
 }

@@ -61,7 +61,7 @@ internal class WindowTouchSnapshotProducer: TouchSnapshotProducer, UIEventHandle
         }
 
         for touch in touches {
-            guard let phase = touch.phase.dd else {
+            guard let phase = touch.phase.kubesense else {
                 continue
             }
 
@@ -96,7 +96,7 @@ internal class WindowTouchSnapshotProducer: TouchSnapshotProducer, UIEventHandle
     }
 
     /// Resolves the touch privacy override for the given touch by traversing the view hierarchy.
-    /// It checks the `dd.sessionReplayPrivacyOverrides.touchPrivacy` property for the view where the touch occurred
+    /// It checks the `kubesense.sessionReplayPrivacyOverrides.touchPrivacy` property for the view where the touch occurred
     /// and its ancestors, if needed. The first non-nil override encountered is returned.
     /// - Parameter touch: The touch event to check.
     /// - Returns: The `TouchPrivacyLevel` for the view, or `nil` if no override is found.
@@ -107,7 +107,7 @@ internal class WindowTouchSnapshotProducer: TouchSnapshotProducer, UIEventHandle
 
         var view: UIView? = initialView
         while view != nil {
-            if let touchPrivacy = view?.dd._privacyOverrides?.touchPrivacy {
+            if let touchPrivacy = view?.kubesense._privacyOverrides?.touchPrivacy {
                 return touchPrivacy
             }
             view = view?.superview
@@ -118,7 +118,7 @@ internal class WindowTouchSnapshotProducer: TouchSnapshotProducer, UIEventHandle
 
 internal extension UITouch.Phase {
     /// Converts `UITouch.Phase` to touch phases distinguished in session replay.
-    var dd: TouchSnapshot.TouchPhase? {
+    var kubesense: TouchSnapshot.TouchPhase? {
         switch self {
         case .began, .regionEntered: return .down
         case .moved, .regionMoved, .stationary: return .move

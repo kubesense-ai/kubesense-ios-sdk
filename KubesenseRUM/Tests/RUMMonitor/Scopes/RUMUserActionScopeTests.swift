@@ -85,7 +85,7 @@ class RUMUserActionScopeTests: XCTestCase {
         XCTAssertEqual(recordedActionEvents.count, 1)
         let recordedAction = try XCTUnwrap(recordedActionEvents.last)
         XCTAssertEqual(recordedAction.action.type.rawValue, String(describing: mockUserActionCmd.actionType))
-        XCTAssertEqual(recordedAction.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(recordedAction.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(recordedAction.session.hasReplay, hasReplay)
         XCTAssertEqual(recordedAction.source, .ios)
         XCTAssertEqual(recordedAction.service, "test-service")
@@ -131,7 +131,7 @@ class RUMUserActionScopeTests: XCTestCase {
         XCTAssertEqual(recordedActionEvents.count, 1)
         let recordedAction = try XCTUnwrap(recordedActionEvents.last)
         XCTAssertEqual(recordedAction.action.type.rawValue, String(describing: mockUserActionCmd.actionType))
-        XCTAssertEqual(recordedAction.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(recordedAction.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(recordedAction.source, .ios)
         XCTAssertEqual(recordedAction.service, "test-service")
         XCTAssertEqual(recordedAction.version, "test-version")
@@ -207,7 +207,7 @@ class RUMUserActionScopeTests: XCTestCase {
         )
 
         let event = try XCTUnwrap(writer.events(ofType: RUMActionEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -257,7 +257,7 @@ class RUMUserActionScopeTests: XCTestCase {
         )
 
         let event = try XCTUnwrap(writer.events(ofType: RUMActionEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .ciTest)
@@ -309,7 +309,7 @@ class RUMUserActionScopeTests: XCTestCase {
         )
 
         let event = try XCTUnwrap(writer.events(ofType: RUMActionEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .synthetics)
@@ -365,7 +365,7 @@ class RUMUserActionScopeTests: XCTestCase {
         )
 
         let event = try XCTUnwrap(writer.events(ofType: RUMActionEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -996,7 +996,7 @@ class RUMUserActionScopeTests: XCTestCase {
 
     // MARK: - Heatmap Attributes
 
-    func testGivenHeatmapAttributes_whenActionCompletes_itPopulatesDDAction() throws {
+    func testGivenHeatmapAttributes_whenActionCompletes_itPopulatesKubesenseAction() throws {
         let scope = RUMViewScope.mockWith(
             parent: parent,
             dependencies: .mockAny(),
@@ -1033,14 +1033,14 @@ class RUMUserActionScopeTests: XCTestCase {
         )
 
         let actionEvent = try XCTUnwrap(writer.events(ofType: RUMActionEvent.self).first)
-        XCTAssertEqual(actionEvent.dd.action?.target?.permanentId, "abc123")
-        XCTAssertEqual(actionEvent.dd.action?.target?.width, 100)
-        XCTAssertEqual(actionEvent.dd.action?.target?.height, 50)
-        XCTAssertEqual(actionEvent.dd.action?.position?.x, 10)
-        XCTAssertEqual(actionEvent.dd.action?.position?.y, 20)
+        XCTAssertEqual(actionEvent.kubesense.action?.target?.permanentId, "abc123")
+        XCTAssertEqual(actionEvent.kubesense.action?.target?.width, 100)
+        XCTAssertEqual(actionEvent.kubesense.action?.target?.height, 50)
+        XCTAssertEqual(actionEvent.kubesense.action?.position?.x, 10)
+        XCTAssertEqual(actionEvent.kubesense.action?.position?.y, 20)
     }
 
-    func testGivenNoHeatmapAttributes_whenActionCompletes_itLeavesDDActionNil() throws {
+    func testGivenNoHeatmapAttributes_whenActionCompletes_itLeavesKubesenseActionNil() throws {
         let scope = RUMViewScope.mockWith(
             parent: parent,
             dependencies: .mockAny(),
@@ -1071,6 +1071,6 @@ class RUMUserActionScopeTests: XCTestCase {
         )
 
         let actionEvent = try XCTUnwrap(writer.events(ofType: RUMActionEvent.self).first)
-        XCTAssertNil(actionEvent.dd.action)
+        XCTAssertNil(actionEvent.kubesense.action)
     }
 }

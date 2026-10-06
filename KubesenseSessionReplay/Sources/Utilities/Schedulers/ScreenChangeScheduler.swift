@@ -72,7 +72,7 @@ internal final class ScreenChangeScheduler: Scheduler {
 
     private func screenDidChange(_ changeset: CALayerChangeset) {
         // ScreenChangeMonitor notifies on the main thread
-        DD.logger.debug("Screen changed: \(changeset)")
+        KS.logger.debug("Screen changed: \(changeset)")
         operations.forEach { $0() }
     }
 }

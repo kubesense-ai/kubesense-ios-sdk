@@ -355,7 +355,7 @@ private extension ProfilingRUMIntegrationTests {
         XCTAssertEqual(rumVitalEvents.count, expectedCount)
 
         if let ttidVitalEvent = rumVitalEvents.first {
-            XCTAssertEqual(ttidVitalEvent.dd.profiling?.status, .running)
+            XCTAssertEqual(ttidVitalEvent.kubesense.profiling?.status, .running)
             XCTAssertEqual(ttidVitalEvent.vital.appLaunchMetric, .ttid)
         }
     }

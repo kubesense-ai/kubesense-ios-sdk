@@ -62,8 +62,8 @@ public class LogMatcher: JSONDataMatcher {
         public static let errorStack = "error.stack"
         public static let errorFingerprint = "error.fingerprint"
 
-        // MARK: - Dd info
-        static let dd = "_kubesense"
+        // MARK: - KS info
+        static let kubesense = "_kubesense"
         static let kubesenseDevice = "device"
         static let kubesenseDeviceArchitecture = "architecture"
     }

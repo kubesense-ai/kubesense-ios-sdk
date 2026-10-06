@@ -38,7 +38,7 @@ public final class CoreRegistry {
     ///   - name: The name of the given instance.
     public static func register(_ instance: KubesenseCoreProtocol, named name: String) {
         guard !isRegistered(instanceName: name) else {
-            DD.logger.warn("A core instance with name \(name) has already been registered.")
+            KS.logger.warn("A core instance with name \(name) has already been registered.")
             return
         }
         instances[name] = instance

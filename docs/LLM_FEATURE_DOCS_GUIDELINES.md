@@ -33,7 +33,7 @@ Each feature documentation file must include a YAML frontmatter header at the to
 
 ```markdown
 ---
-last_updated: YYYY-MM-DD
+last_updated: YYYY-MM-KS
 sdk_version: X.Y.Z
 verified_against_commit: <short_commit_hash>
 tracked_files:

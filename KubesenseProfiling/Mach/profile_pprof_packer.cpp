@@ -62,7 +62,7 @@ static inline void* pb_alloc(ProtobufCAllocator* allocator, size_t size) {
     return allocator->alloc(allocator->allocator_data, size);
 }
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 /**
  * @brief Helper function forward declarations
@@ -314,6 +314,6 @@ void perftools_profiles_profile_add_samples(const profile& prof, Perftools__Prof
     }
 }
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // __APPLE__ && !TARGET_OS_WATCH

@@ -35,7 +35,7 @@ internal final class FatalAppHangsHandler {
 
     func startHang(hang: AppHang) {
         guard let lastRUMView = fatalErrorContext.view else {
-            DD.logger.debug("App Hang is being detected, but won't be considered fatal as there is no active RUM view")
+            KS.logger.debug("App Hang is being detected, but won't be considered fatal as there is no active RUM view")
             return // TODO: RUM-3840 Track fatal App Hangs if there is no active RUM view
         }
 
@@ -68,7 +68,7 @@ internal final class FatalAppHangsHandler {
         // Report pending app hang
         featureScope.rumDataStore.value(forKey: .fatalAppHangKey) { [weak self] (fatalHang: FatalAppHang?) in
             guard let fatalHang = fatalHang else {
-                DD.logger.debug("No pending App Hang found")
+                KS.logger.debug("No pending App Hang found")
                 return // previous process didn't end up with a hang
             }
             guard fatalHang.processID != self?.processID else {
@@ -83,7 +83,7 @@ internal final class FatalAppHangsHandler {
 
     private func send(fatalHang: FatalAppHang) {
         guard fatalHang.trackingConsent == .granted else { // consider the user consent from previous session
-            DD.logger.debug("Skipped sending fatal App Hang as it was recorded with \(fatalHang.trackingConsent) consent")
+            KS.logger.debug("Skipped sending fatal App Hang as it was recorded with \(fatalHang.trackingConsent) consent")
             return
         }
 
@@ -122,14 +122,14 @@ internal final class FatalAppHangsHandler {
             let view = self.sanitizer.sanitize(event: builder.updateRUMViewWithError(fatalHang.lastRUMView))
 
             if realDateNow.timeIntervalSince(realErrorDate) < FatalErrorBuilder.Constants.viewEventAvailabilityThreshold {
-                DD.logger.debug("Sending fatal App hang as RUM error with issuing RUM view update")
+                KS.logger.debug("Sending fatal App hang as RUM error with issuing RUM view update")
                 // It is still OK to send RUM view to previous RUM session.
                 writer.write(value: error)
                 writer.write(value: view)
             } else {
                 // We know it is too late for sending RUM view to previous RUM session as it is now stale on backend.
                 // To avoid inconsistency, we only send the RUM error.
-                DD.logger.debug("Sending fatal App hang as RUM error without updating RUM view")
+                KS.logger.debug("Sending fatal App hang as RUM error without updating RUM view")
                 writer.write(value: error)
             }
         }

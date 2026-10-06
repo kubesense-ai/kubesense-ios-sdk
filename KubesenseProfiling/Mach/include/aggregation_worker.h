@@ -20,7 +20,7 @@
 #include <variant>
 #include <vector>
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 /**
  * @brief Serialized worker that drains sampled stack-trace batches in-order.
@@ -178,7 +178,7 @@ private:
     uint64_t batch_footprint_bytes(const std::vector<stack_trace_t>& batch) const;
 };
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // __APPLE__ && !TARGET_OS_WATCH
 #endif // KUBESENSE_PROFILER_AGGREGATION_WORKER_H_

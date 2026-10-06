@@ -101,7 +101,7 @@ internal final class AppStateManager: AppStateManaging {
             self?.featureScope.rumDataStore.value(forKey: .appStateKey) { (appState: AppStateInfo?) in
                 var appState = appState
                 block(&appState)
-                DD.logger.debug("Updating app state in data store")
+                KS.logger.debug("Updating app state in data store")
                 self?.featureScope.rumDataStore.setValue(appState, forKey: .appStateKey)
             }
         }
@@ -147,7 +147,7 @@ internal final class AppStateManager: AppStateManaging {
     /// - Parameter completion: The completion block called with the app state.
     func readAppState(completion: @escaping (AppStateInfo?) -> Void) {
         featureScope.rumDataStore.value(forKey: .appStateKey) { (state: AppStateInfo?) in
-            DD.logger.debug("Reading app state from data store.")
+            KS.logger.debug("Reading app state from data store.")
             completion(state)
         }
     }
@@ -164,7 +164,7 @@ extension AppStateManager {
     /// Deletes the app state from the data store.
     /// Used for testing only.
     func deleteAppState() {
-        DD.logger.debug("Deleting app state from data store")
+        KS.logger.debug("Deleting app state from data store")
         featureScope.rumDataStore.removeValue(forKey: .appStateKey)
     }
 }

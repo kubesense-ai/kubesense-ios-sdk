@@ -31,10 +31,10 @@ class InternalLoggerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(mock.printedMessages.count, 4)
-        XCTAssertEqual(mock.printedMessages[0], "[KUBESENSE SDK] 🐶 → 10:00:04.200 Debug message")
-        XCTAssertEqual(mock.printedMessages[1], "[KUBESENSE SDK] 🐶 → 10:00:04.200 ⚠️ Warn message")
-        XCTAssertEqual(mock.printedMessages[2], "[KUBESENSE SDK] 🐶 → 10:00:04.200 🔥 Error message")
-        XCTAssertEqual(mock.printedMessages[3], "[KUBESENSE SDK] 🐶 → 10:00:04.200 ⛔️ Critical message")
+        XCTAssertEqual(mock.printedMessages[0], "[KUBESENSE SDK] → 10:00:04.200 Debug message")
+        XCTAssertEqual(mock.printedMessages[1], "[KUBESENSE SDK] → 10:00:04.200 ⚠️ Warn message")
+        XCTAssertEqual(mock.printedMessages[2], "[KUBESENSE SDK] → 10:00:04.200 🔥 Error message")
+        XCTAssertEqual(mock.printedMessages[3], "[KUBESENSE SDK] → 10:00:04.200 ⛔️ Critical message")
     }
 
     func testItPrintsErrorWithExpectedFormat() {
@@ -63,7 +63,7 @@ class InternalLoggerTests: XCTestCase {
         // Then
         let expectedMessages = ["", "⚠️ ", "🔥 ", "⛔️ "].map { emoji in
             """
-            [KUBESENSE SDK] 🐶 → 10:00:00.000 \(emoji)Message
+            [KUBESENSE SDK] → 10:00:00.000 \(emoji)Message
 
             Error details:
             → type: The error domain - 42
@@ -158,26 +158,26 @@ class InternalLoggerTests: XCTestCase {
     // MARK: - Thread Safety Tests
 
     func testConcurrentLoggerReplacementDoesNotCrash() {
-        // Ensures DD.logger can be safely replaced while being accessed from multiple threads
+        // Ensures KS.logger can be safely replaced while being accessed from multiple threads
         let expectation = self.expectation(description: "Concurrent operations complete")
         expectation.expectedFulfillmentCount = 10
 
-        // Simulate multiple threads reading DD.logger
+        // Simulate multiple threads reading KS.logger
         for threadId in 0..<8 {
             DispatchQueue.global(qos: .userInitiated).async {
                 for i in 0..<1_000 {
-                    DD.logger.debug("Thread \(threadId) message \(i)")
-                    DD.logger.error("Thread \(threadId) error \(i)")
+                    KS.logger.debug("Thread \(threadId) message \(i)")
+                    KS.logger.error("Thread \(threadId) error \(i)")
                 }
                 expectation.fulfill()
             }
         }
 
-        // Simulate threads replacing DD.logger (like during SDK initialization)
+        // Simulate threads replacing KS.logger (like during SDK initialization)
         for _ in 0..<2 {
             DispatchQueue.global(qos: .userInitiated).async {
                 for _ in 0..<200 {
-                    DD.logger = InternalLogger(
+                    KS.logger = InternalLogger(
                         dateProvider: SystemDateProvider(),
                         timeZone: .current,
                         printFunction: { _, _ in /* no-op */ },

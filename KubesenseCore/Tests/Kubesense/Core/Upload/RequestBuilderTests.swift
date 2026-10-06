@@ -93,28 +93,28 @@ class RequestBuilderTests: XCTestCase {
         XCTAssertEqual(request.allHTTPHeaderFields?["User-Agent"], "Foobar/1.2.3 CFNetwork (iPhone; iOS/13.3.1)")
     }
 
-    func testBuildingRequestWithDDAPIKeyHeader() {
+    func testBuildingRequestWithKubesenseAPIKeyHeader() {
         let randomClientToken: String = .mockRandom()
         let builder = URLRequestBuilder(url: .mockRandom(), queryItems: .mockRandom(), headers: [.kubesenseAPIKeyHeader(clientToken: randomClientToken)])
         let request = builder.uploadRequest(with: .mockRandom())
         XCTAssertEqual(request.allHTTPHeaderFields?["KUBESENSE-API-KEY"], randomClientToken)
     }
 
-    func testBuildingRequestWithDDEVPOriginHeader() {
+    func testBuildingRequestWithKubesenseEVPOriginHeader() {
         let randomSource: String = .mockRandom()
         let builder = URLRequestBuilder(url: .mockRandom(), queryItems: .mockRandom(), headers: [.kubesenseEVPOriginHeader(source: randomSource)])
         let request = builder.uploadRequest(with: .mockRandom())
         XCTAssertEqual(request.allHTTPHeaderFields?["KUBESENSE-EVP-ORIGIN"], randomSource)
     }
 
-    func testBuildingRequestWithDDEVPOriginVersionHeader() {
+    func testBuildingRequestWithKubesenseEVPOriginVersionHeader() {
         let randomSDKVersion: String = .mockRandom()
         let builder = URLRequestBuilder(url: .mockRandom(), queryItems: .mockRandom(), headers: [.kubesenseEVPOriginVersionHeader(sdkVersion: randomSDKVersion)])
         let request = builder.uploadRequest(with: .mockRandom())
         XCTAssertEqual(request.allHTTPHeaderFields?["KUBESENSE-EVP-ORIGIN-VERSION"], randomSDKVersion)
     }
 
-    func testBuildingRequestWithDDRequestIDHeader() throws {
+    func testBuildingRequestWithKubesenseRequestIDHeader() throws {
         let builder = URLRequestBuilder(url: .mockRandom(), queryItems: .mockRandom(), headers: [.kubesenseRequestIDHeader()])
 
         let request1 = builder.uploadRequest(with: .mockRandom())

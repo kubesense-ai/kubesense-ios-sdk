@@ -54,24 +54,24 @@ class KubesenseSessionReplayOverrideTests: XCTestCase {
         let objcOverrides = view.kubesenseSessionReplayPrivacyOverrides
 
         // Set via Swift
-        view.dd.sessionReplayPrivacyOverrides.hide = true
+        view.kubesense.sessionReplayPrivacyOverrides.hide = true
         XCTAssertEqual(objcOverrides.hide, NSNumber(value: true))
 
-        view.dd.sessionReplayPrivacyOverrides.hide = false
+        view.kubesense.sessionReplayPrivacyOverrides.hide = false
         XCTAssertEqual(objcOverrides.hide, NSNumber(value: false))
 
-        view.dd.sessionReplayPrivacyOverrides.hide = nil
+        view.kubesense.sessionReplayPrivacyOverrides.hide = nil
         XCTAssertNil(objcOverrides.hide)
 
         // Set via Objective-C
         objcOverrides.hide = NSNumber(value: true)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.hide, true)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.hide, true)
 
         objcOverrides.hide = NSNumber(value: false)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.hide, false)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.hide, false)
 
         objcOverrides.hide = nil
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.hide)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.hide)
     }
 
     // MARK: Setting Privacy Overrides
@@ -150,10 +150,10 @@ class KubesenseSessionReplayOverrideTests: XCTestCase {
         let hidePrivacy = NSNumber.mockRandomBoolean()
 
         // When (set in Swift)
-        view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = textAndInputPrivacy._swift
-        view.dd.sessionReplayPrivacyOverrides.imagePrivacy = imagePrivacy._swift
-        view.dd.sessionReplayPrivacyOverrides.touchPrivacy = touchPrivacy._swift
-        view.dd.sessionReplayPrivacyOverrides.hide = hidePrivacy?.boolValue
+        view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = textAndInputPrivacy._swift
+        view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = imagePrivacy._swift
+        view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = touchPrivacy._swift
+        view.kubesense.sessionReplayPrivacyOverrides.hide = hidePrivacy?.boolValue
 
         // Then (check in ObjC)
         XCTAssertEqual(view.kubesenseSessionReplayPrivacyOverrides.textAndInputPrivacy, textAndInputPrivacy)
@@ -177,10 +177,10 @@ class KubesenseSessionReplayOverrideTests: XCTestCase {
         view.kubesenseSessionReplayPrivacyOverrides.hide = hidePrivacy
 
         // Then (check in Swift)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy, textAndInputPrivacy._swift)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.imagePrivacy, imagePrivacy._swift)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.touchPrivacy, touchPrivacy._swift)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.hide, hidePrivacy?.boolValue)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy, textAndInputPrivacy._swift)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy, imagePrivacy._swift)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy, touchPrivacy._swift)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.hide, hidePrivacy?.boolValue)
     }
 
     func testReleasingOverridesWhenViewIsDeallocated() {

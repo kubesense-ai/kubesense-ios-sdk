@@ -70,7 +70,7 @@ internal final class AppLaunchMetric {
         self.coldStartRule = coldStartRule?.rawValue
         startupType = vitalEvent.vital.startupType?.rawValue
 
-        if let profiling = vitalEvent.dd.profiling {
+        if let profiling = vitalEvent.kubesense.profiling {
             profilingStatus = profiling.status?.rawValue
             profilingError = profiling.errorReason?.rawValue
         }
@@ -91,11 +91,11 @@ internal final class AppLaunchMetric {
 
 extension AppLaunchMetric {
     static func largeTTID(context: KubesenseContext, duration: TimeInterval) -> AppLaunchMetric {
-        .init(context: context, duration: duration.dd.toInt64Nanoseconds, errorMessage: "The TTID collected exceeds the limit.")
+        .init(context: context, duration: duration.kubesense.toInt64Nanoseconds, errorMessage: "The TTID collected exceeds the limit.")
     }
 
     static func launchNotSupported(context: KubesenseContext, duration: TimeInterval) -> AppLaunchMetric {
-        .init(context: context, duration: duration.dd.toInt64Nanoseconds, errorMessage: "The launch is not supported.")
+        .init(context: context, duration: duration.kubesense.toInt64Nanoseconds, errorMessage: "The launch is not supported.")
     }
 }
 

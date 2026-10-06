@@ -59,7 +59,7 @@ class ViewLoadingMetricsTests: XCTestCase {
 
         let lastViewEvent = try XCTUnwrap(session.views.last?.viewEvents.last)
         let actualTNS = try XCTUnwrap(lastViewEvent.view.networkSettledTime, "TNS should be reported after initial resources complete loading.")
-        let expectedTNS = lastResourceTime.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+        let expectedTNS = lastResourceTime.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
         XCTAssertEqual(actualTNS, expectedTNS, "TNS should span from the view start to the last completed initial resource.")
     }
 
@@ -100,7 +100,7 @@ class ViewLoadingMetricsTests: XCTestCase {
 
         let lastViewEvent = try XCTUnwrap(session.views.last?.viewEvents.last)
         let actualTNS = try XCTUnwrap(lastViewEvent.view.networkSettledTime, "TNS should be reported after initial resources complete loading.")
-        let expectedTNS = lastResourceTime.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+        let expectedTNS = lastResourceTime.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
         XCTAssertEqual(actualTNS, expectedTNS, "TNS should span from the view start to the last completed initial resource (resource1 with correct metrics).")
     }
 
@@ -139,7 +139,7 @@ class ViewLoadingMetricsTests: XCTestCase {
 
         let lastViewEvent = try XCTUnwrap(session.views.last?.viewEvents.last)
         let actualTNS = try XCTUnwrap(lastViewEvent.view.networkSettledTime, "TNS should be reported after initial resources complete loading.")
-        let expectedTNS = lastInitialResourceTime.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+        let expectedTNS = lastInitialResourceTime.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
         XCTAssertEqual(actualTNS, expectedTNS, "TNS should span from the view start to the last completed initial resource.")
     }
 
@@ -219,7 +219,7 @@ class ViewLoadingMetricsTests: XCTestCase {
 
         let lastViewEvent = try XCTUnwrap(session.views.last?.viewEvents.last)
         let actualTNS = try XCTUnwrap(lastViewEvent.view.networkSettledTime, "TNS should be reported after initial resources end.")
-        let expectedTNS = resource1EndTime.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+        let expectedTNS = resource1EndTime.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
         XCTAssertEqual(actualTNS, expectedTNS, "TNS should only reflect ACCEPTED resources.")
     }
 
@@ -293,7 +293,7 @@ class ViewLoadingMetricsTests: XCTestCase {
 
         let lastViewEvent = try XCTUnwrap(session.views.last?.viewEvents.last)
         let actualTNS = try XCTUnwrap(lastViewEvent.view.networkSettledTime, "TNS should be reported after initial resources complete loading.")
-        let expectedTNS = lastInitialResourceCompletionTime.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+        let expectedTNS = lastInitialResourceCompletionTime.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
         XCTAssertEqual(actualTNS, expectedTNS, "TNS should span from the view start to the completion of last classified resource.")
     }
 

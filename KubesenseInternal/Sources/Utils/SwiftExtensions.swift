@@ -22,7 +22,7 @@ public struct KubesenseOptionalExtension<Wrapped> {
 }
 
 extension Optional {
-    public var dd: KubesenseOptionalExtension<Wrapped> {
+    public var kubesense: KubesenseOptionalExtension<Wrapped> {
         KubesenseOptionalExtension(self)
     }
 }

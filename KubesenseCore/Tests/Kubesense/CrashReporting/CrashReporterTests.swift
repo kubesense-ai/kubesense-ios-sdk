@@ -275,8 +275,8 @@ class CrashReporterTests: XCTestCase {
     func testGivenNoRegisteredCrashReportReceiver_whenPendingCrashReportIsFound_itPrintsWarning() {
         let expectation = self.expectation(description: "`plugin` checks the crash report")
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let core = PassthroughCoreMock()
         let plugin = CrashReportingPluginMock()
@@ -300,7 +300,7 @@ class CrashReporterTests: XCTestCase {
 
         // Then
         waitForExpectations(timeout: 0.5, handler: nil)
-        let logs = dd.logger.warnLogs
+        let logs = kubesense.logger.warnLogs
 
         XCTAssert(logs.contains(where: { $0.message == """
             In order to use Crash Reporting, RUM feature must be enabled.

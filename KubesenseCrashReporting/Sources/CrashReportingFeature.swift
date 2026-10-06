@@ -69,12 +69,12 @@ internal final class CrashReportingFeature: KubesenseFeature, CrashReportingConf
                 }
 
                 guard let availableCrashReport = crashReport else {
-                    DD.logger.debug("No pending Crash found")
+                    KS.logger.debug("No pending Crash found")
                     self.sender.send(launch: .init(didCrash: false))
                     return false
                 }
 
-                DD.logger.debug("Loaded pending crash report")
+                KS.logger.debug("Loaded pending crash report")
 
                 guard let crashContext = availableCrashReport.context.flatMap({ self.decode(crashContextData: $0) }) else {
                     // `CrashContext` is malformed and and cannot be read. Return `true` to let the crash reporter
@@ -104,7 +104,7 @@ internal final class CrashReportingFeature: KubesenseFeature, CrashReportingConf
     /// Note: this `JSONEncoder` must have the same configuration as the `JSONEncoder` used later for writing payloads to uploadable files.
     /// Otherwise the format of data read and uploaded from crash report context will be different than the format of data retrieved from the user
     /// and written directly to uploadable file.
-    internal static var crashContextEncoder: JSONEncoder { .dd.default() }
+    internal static var crashContextEncoder: JSONEncoder { .kubesense.default() }
     /// JSON decoder used for reading `CrashContext` from JSON `Data` injected to crash report.
     /// Note: it must follow a configuration that enables reading data encoded with `crashContextEncoder`.
     internal static let crashContextDecoder: JSONDecoder = {
@@ -122,9 +122,9 @@ internal final class CrashReportingFeature: KubesenseFeature, CrashReportingConf
 
     private func encode(crashContext: CrashContext) -> Data? {
         do {
-            return try CrashReportingFeature.crashContextEncoder.dd.encodeWithAttributeRecovery(crashContext)
+            return try CrashReportingFeature.crashContextEncoder.kubesense.encodeWithAttributeRecovery(crashContext)
         } catch {
-            DD.logger.error(
+            KS.logger.error(
                 """
                 Failed to encode crash report context. The app state information associated with eventual crash
                 report may be not in sync with the current state of the application.
@@ -141,7 +141,7 @@ internal final class CrashReportingFeature: KubesenseFeature, CrashReportingConf
         do {
             return try CrashReportingFeature.crashContextDecoder.decode(CrashContext.self, from: crashContextData)
         } catch {
-            DD.logger.error(
+            KS.logger.error(
                 """
                 Failed to decode crash report context. The app state information associated with the crash
                 report won't be in sync with the state of the application when it crashed.

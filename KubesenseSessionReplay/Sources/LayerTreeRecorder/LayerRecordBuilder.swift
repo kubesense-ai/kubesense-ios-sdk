@@ -17,7 +17,7 @@ internal struct LayerRecordBuilder {
                 width: Int64.kubesenseWithNoOverflow(snapshot.viewportSize.width)
             ),
             slotId: nil,
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
         return .metaRecord(value: record)
     }
@@ -26,7 +26,7 @@ internal struct LayerRecordBuilder {
         let record = SRFocusRecord(
             data: .init(hasFocus: true),
             slotId: nil,
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
         return .focusRecord(value: record)
     }
@@ -41,7 +41,7 @@ internal struct LayerRecordBuilder {
                 compositionTree: compositionTree,
                 wireframes: wireframes
             ),
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
         return .fullSnapshotRecord(value: record)
     }
@@ -71,7 +71,7 @@ internal struct LayerRecordBuilder {
                     }
                 )
             ),
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
 
         return .incrementalSnapshotRecord(value: record)
@@ -88,7 +88,7 @@ internal struct LayerRecordBuilder {
 
         let record = SRIncrementalSnapshotRecord(
             data: .compositionTreeMutationData(value: mutation),
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
 
         return .incrementalSnapshotRecord(value: record)
@@ -112,7 +112,7 @@ internal struct LayerRecordBuilder {
                         y: round(touch.position.y)
                     )
                 ),
-                timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+                timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
             )
             return .incrementalSnapshotRecord(value: record)
         }
@@ -122,7 +122,7 @@ internal struct LayerRecordBuilder {
         from snapshot: LayerTreeSnapshot,
         previousSnapshot: LayerTreeSnapshot
     ) -> SRRecord? {
-        guard previousSnapshot.viewportSize.dd.aspectRatio != snapshot.viewportSize.dd.aspectRatio else {
+        guard previousSnapshot.viewportSize.kubesense.aspectRatio != snapshot.viewportSize.kubesense.aspectRatio else {
             return nil
         }
 
@@ -133,7 +133,7 @@ internal struct LayerRecordBuilder {
                     width: Int64.kubesenseWithNoOverflow(snapshot.viewportSize.width)
                 )
             ),
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
 
         return .incrementalSnapshotRecord(value: record)

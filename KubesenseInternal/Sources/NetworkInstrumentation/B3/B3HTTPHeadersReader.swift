@@ -29,14 +29,14 @@ public class B3HTTPHeadersReader: TracePropagationHeadersReader {
         let b3Value = httpHeaderFields[B3HTTPHeaders.Single.b3Field]?
             .components(separatedBy: B3HTTPHeaders.Constants.b3Separator)
 
-        if let traceIDValue = b3Value?.dd[safe: 0],
-           let spanIDValue = b3Value?.dd[safe: 1],
+        if let traceIDValue = b3Value?.kubesense[safe: 0],
+           let spanIDValue = b3Value?.kubesense[safe: 1],
            let traceID = TraceID(traceIDValue, representation: .hexadecimal),
            let spanID = SpanID(spanIDValue, representation: .hexadecimal) {
             return (
                 traceID: traceID,
                 spanID: spanID,
-                parentSpanID: b3Value?.dd[safe: 3].flatMap({ SpanID($0, representation: .hexadecimal) })
+                parentSpanID: b3Value?.kubesense[safe: 3].flatMap({ SpanID($0, representation: .hexadecimal) })
             )
         }
 
@@ -50,7 +50,7 @@ public class B3HTTPHeadersReader: TracePropagationHeadersReader {
             if single == "0" {
                 return .autoDrop
             }
-            let sampled = single.components(separatedBy: B3HTTPHeaders.Constants.b3Separator).dd[safe: 2] != B3HTTPHeaders.Constants.unsampledValue
+            let sampled = single.components(separatedBy: B3HTTPHeaders.Constants.b3Separator).kubesense[safe: 2] != B3HTTPHeaders.Constants.unsampledValue
             return sampled ? .autoKeep : .autoDrop
         } else if let multiple = httpHeaderFields[B3HTTPHeaders.Multiple.sampledField] {
             let sampled = multiple == B3HTTPHeaders.Constants.sampledValue

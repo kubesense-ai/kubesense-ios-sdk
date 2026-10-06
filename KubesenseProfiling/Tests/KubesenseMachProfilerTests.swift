@@ -21,7 +21,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         // static constructor's state. Recreate with 0% sample rate so `auto_start` leaves `NOT_STARTED`.
         kubesense_profiler_destroy()
         kubesense_delete_profiling_defaults()
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
     }
 
     override func tearDown() {
@@ -33,37 +33,37 @@ final class KubesenseMachProfilerTests: XCTestCase {
 
     // MARK: - State Management Tests
 
-    func testDDProfiler_initiallyNotStarted() {
+    func testKubesenseProfiler_initiallyNotStarted() {
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED, "Profiler should exist but not be running until started")
     }
 
-    func testDDProfiler_startTesting_withValidSampleRate_startsSuccessfully() {
+    func testKubesenseProfiler_startTesting_withValidSampleRate_startsSuccessfully() {
         XCTAssertEqual(kubesense_profiler_start(), 1)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should be running after starting with valid sample rate")
     }
 
-    func testDDProfiler_startTesting_withZeroSampleRate_doesNotStart() {
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+    func testKubesenseProfiler_startTesting_withZeroSampleRate_doesNotStart() {
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED, "Profiler should not start with zero sample rate")
     }
 
-    func testDDProfiler_startTesting_withSampleRateAbove100_startsSuccessfully() {
-        kubesense_profiler_start_testing(150, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+    func testKubesenseProfiler_startTesting_withSampleRateAbove100_startsSuccessfully() {
+        kubesense_profiler_start_testing(150, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should start successfully with sample rate above 100")
     }
 
-    func testDDProfiler_startTesting_withCustomTimeout() {
-        kubesense_profiler_start_testing(100, false, 1.seconds.dd.toInt64Nanoseconds, 0) // 1 second timeout
+    func testKubesenseProfiler_startTesting_withCustomTimeout() {
+        kubesense_profiler_start_testing(100, false, 1.seconds.kubesense.toInt64Nanoseconds, 0) // 1 second timeout
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should start with custom timeout")
     }
 
-    func testDDProfiler_wasStartedAtLaunch_whenAutoStartSucceeds() {
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+    func testKubesenseProfiler_wasStartedAtLaunch_whenAutoStartSucceeds() {
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         XCTAssertTrue(kubesense_profiler_was_started_at_launch())
     }
 
-    func testDDProfiler_wasNotStartedAtLaunch_whenStartedLater() {
+    func testKubesenseProfiler_wasNotStartedAtLaunch_whenStartedLater() {
         XCTAssertFalse(kubesense_profiler_was_started_at_launch())
 
         XCTAssertEqual(kubesense_profiler_start(), 1)
@@ -71,8 +71,8 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertFalse(kubesense_profiler_was_started_at_launch())
     }
 
-    func testDDProfiler_flushHarvestsPartialBatch() {
-        kubesense_profiler_start_testing(100, false, 1.seconds.dd.toInt64Nanoseconds, 0)
+    func testKubesenseProfiler_flushHarvestsPartialBatch() {
+        kubesense_profiler_start_testing(100, false, 1.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         for i in 0..<2_000 {
@@ -90,8 +90,8 @@ final class KubesenseMachProfilerTests: XCTestCase {
         }
     }
 
-    func testDDProfiler_consumeDiagnostics_reportsDroppedBatchesAtHardLimit() {
-        kubesense_profiler_start_testing(100, false, 1.seconds.dd.toInt64Nanoseconds, 1)
+    func testKubesenseProfiler_consumeDiagnostics_reportsDroppedBatchesAtHardLimit() {
+        kubesense_profiler_start_testing(100, false, 1.seconds.kubesense.toInt64Nanoseconds, 1)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         for i in 0..<2_000 {
@@ -117,8 +117,8 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(secondRead.dropped_sample_count, 0, "Reading diagnostics should reset sample drops")
     }
 
-    func testDDProfiler_doesNotIncludeProfilerInternalThreadsInProfile() throws {
-        kubesense_profiler_start_testing(100, false, 1.seconds.dd.toInt64Nanoseconds, 0)
+    func testKubesenseProfiler_doesNotIncludeProfilerInternalThreadsInProfile() throws {
+        kubesense_profiler_start_testing(100, false, 1.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         for i in 0..<10_000 {
@@ -163,7 +163,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         )
     }
 
-    func testDDProfiler_serializesWallAndCPUTimingByDefault() throws {
+    func testKubesenseProfiler_serializesWallAndCPUTimingByDefault() throws {
         kubesense_profiler_destroy()
 
         XCTAssertEqual(kubesense_profiler_start(), 1)
@@ -213,12 +213,12 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(unpackedNextProfile.pointee.n_sample_type, 2)
     }
 
-    func testDDProfiler_startTesting_withPrewarming_doesNotStart() {
-        kubesense_profiler_start_testing(100, true, 5.seconds.dd.toInt64Nanoseconds, 0) // prewarming = true
+    func testKubesenseProfiler_startTesting_withPrewarming_doesNotStart() {
+        kubesense_profiler_start_testing(100, true, 5.seconds.kubesense.toInt64Nanoseconds, 0) // prewarming = true
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_PREWARMED, "Profiler should not start when prewarming is active")
     }
 
-    func testDDProfiler_stop_whenRunning_stopsSuccessfully() {
+    func testKubesenseProfiler_stop_whenRunning_stopsSuccessfully() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should be running")
@@ -230,7 +230,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_STOPPED, "Profiler should be stopped after calling stop")
     }
 
-    func testDDProfiler_stop_whenNotRunning_doesNotCrash() {
+    func testKubesenseProfiler_stop_whenNotRunning_doesNotCrash() {
         // Given
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED, "Precondition: profiler should not be running")
 
@@ -239,7 +239,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED, "Status should remain unchanged")
     }
 
-    func testDDProfiler_multipleStops_doesNotCrash() {
+    func testKubesenseProfiler_multipleStops_doesNotCrash() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         kubesense_profiler_stop()
@@ -253,7 +253,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
 
     // MARK: - Profile Data Management Tests
 
-    func testDDProfiler_getProfile_whenNotStarted_returnsNil() {
+    func testKubesenseProfiler_getProfile_whenNotStarted_returnsNil() {
         // Given
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED, "Precondition: profiler should not be started")
 
@@ -261,7 +261,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertNil(kubesense_profiler_get_profile(), "Profile should be nil when profiler was never started")
     }
 
-    func testDDProfiler_flushProfile_whenNotStarted_returnsNil() {
+    func testKubesenseProfiler_flushProfile_whenNotStarted_returnsNil() {
         // Given
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED, "Precondition: profiler should not be started")
 
@@ -273,9 +273,9 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertNil(kubesense_profiler_get_profile(), "Profile should remain nil")
     }
 
-    func testDDProfiler_flushProfile_whenProfileHasNoSamples_returnsNil() throws {
+    func testKubesenseProfiler_flushProfile_whenProfileHasNoSamples_returnsNil() throws {
         // Given - flush a known sample to rotate to a fresh profile, then stop sampling.
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         kubesense_profiler_stop()
 
         let trace = UnsafeMutablePointer<stack_trace_t>.allocate(capacity: 1)
@@ -298,7 +298,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertNil(emptyProfile, "Flush should not return a profile without samples")
     }
 
-    func testDDProfiler_getProfile_whenRunning_returnsValidProfile() {
+    func testKubesenseProfiler_getProfile_whenRunning_returnsValidProfile() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should be running")
@@ -313,7 +313,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertNotNil(profile, "Profile should be available when profiler is running")
     }
 
-    func testDDProfiler_getProfile_afterStopping_returnsValidProfile() {
+    func testKubesenseProfiler_getProfile_afterStopping_returnsValidProfile() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should be running")
@@ -331,7 +331,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertNotNil(profile, "Profile should still be available after stopping")
     }
 
-    func testDDProfiler_flushProfileAfterStopping_returnsStoppedProfile() {
+    func testKubesenseProfiler_flushProfileAfterStopping_returnsStoppedProfile() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING, "Profiler should be running")
@@ -358,7 +358,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertNotNil(kubesense_profiler_get_profile(), "Flush should rotate to a fresh active profile")
     }
 
-    func testDDProfiler_destroy_clearsAllData() {
+    func testKubesenseProfiler_destroy_clearsAllData() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         Thread.sleep(forTimeInterval: 0.1)
@@ -377,7 +377,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_CREATED, "Status should be reset to not created")
     }
 
-    func testDDProfiler_destroy_whenNotStarted_doesNotCrash() {
+    func testKubesenseProfiler_destroy_whenNotStarted_doesNotCrash() {
         // Given
         XCTAssertNil(kubesense_profiler_get_profile(), "Precondition: no profile should exist")
 
@@ -387,7 +387,7 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_CREATED, "Profiler Status should be not created")
     }
 
-    func testDDProfiler_multipleDestroy_doesNotCrash() {
+    func testKubesenseProfiler_multipleDestroy_doesNotCrash() {
         // Given
         XCTAssertEqual(kubesense_profiler_start(), 1)
         Thread.sleep(forTimeInterval: 0.1)
@@ -406,8 +406,8 @@ final class KubesenseMachProfilerTests: XCTestCase {
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_CREATED, "Status should be reset to not created")
     }
 
-    func testDDProfiler_statusCodes_prewarmed() {
-        kubesense_profiler_start_testing(100, true, 5.seconds.dd.toInt64Nanoseconds, 0) // prewarming = true
+    func testKubesenseProfiler_statusCodes_prewarmed() {
+        kubesense_profiler_start_testing(100, true, 5.seconds.kubesense.toInt64Nanoseconds, 0) // prewarming = true
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_PREWARMED, "Should return PREWARMED status when prewarming is true")
     }
 

@@ -234,8 +234,8 @@ class RUMSessionEndedMetricIntegrationTests: XCTestCase {
 
         // Then
         let metric = try XCTUnwrap(core.waitAndReturnSessionEndedMetricEvent())
-        XCTAssertEqual(metric.attributes?.ntpOffset.atStart, offsetAtStart.dd.toInt64Milliseconds)
-        XCTAssertEqual(metric.attributes?.ntpOffset.atEnd, offsetAtEnd.dd.toInt64Milliseconds)
+        XCTAssertEqual(metric.attributes?.ntpOffset.atStart, offsetAtStart.kubesense.toInt64Milliseconds)
+        XCTAssertEqual(metric.attributes?.ntpOffset.atEnd, offsetAtEnd.kubesense.toInt64Milliseconds)
     }
 
     func testTrackingNoViewEventsCount() throws {

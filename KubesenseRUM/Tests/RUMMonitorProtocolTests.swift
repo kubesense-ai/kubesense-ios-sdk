@@ -12,8 +12,8 @@ import KubesenseInternal
 
 class NOPMonitorTests: XCTestCase {
     func testWhenUsingNOPMonitorAPIs_itPrintsWarning() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         let noop = NOPMonitor()
@@ -55,8 +55,8 @@ class NOPMonitorTests: XCTestCase {
         _ = noop.debug
 
         // Then
-        XCTAssertEqual(dd.logger.criticalLogs.count, 33)
-        let actualMessages = dd.logger.criticalLogs.map { $0.message }
+        XCTAssertEqual(kubesense.logger.criticalLogs.count, 33)
+        let actualMessages = kubesense.logger.criticalLogs.map { $0.message }
         let expectedMessages = [
             "addAttribute(forKey:value:)",
             "addAttributes(_:)",

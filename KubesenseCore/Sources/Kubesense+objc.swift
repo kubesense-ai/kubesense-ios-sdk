@@ -76,11 +76,11 @@ public final class objc_Kubesense: NSObject {
     }
 
     public static func setUserInfo(userId: String, name: String? = nil, email: String? = nil, extraInfo: [String: Any] = [:]) {
-        Kubesense.setUserInfo(id: userId, name: name, email: email, extraInfo: extraInfo.dd.swiftAttributes)
+        Kubesense.setUserInfo(id: userId, name: name, email: email, extraInfo: extraInfo.kubesense.swiftAttributes)
     }
 
     public static func setUserInfo(userId: String, instanceName: String?, name: String? = nil, email: String? = nil, extraInfo: [String: Any] = [:]) {
-        Kubesense.setUserInfo(id: userId, name: name, email: email, extraInfo: extraInfo.dd.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
+        Kubesense.setUserInfo(id: userId, name: name, email: email, extraInfo: extraInfo.kubesense.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
     }
 
     public static func clearUserInfo() {
@@ -92,27 +92,27 @@ public final class objc_Kubesense: NSObject {
     }
 
     public static func addUserExtraInfo(_ extraInfo: [String: Any]) {
-        Kubesense.addUserExtraInfo(extraInfo.dd.swiftAttributes)
+        Kubesense.addUserExtraInfo(extraInfo.kubesense.swiftAttributes)
     }
 
     public static func addUserExtraInfo(_ extraInfo: [String: Any], instanceName: String?) {
-        Kubesense.addUserExtraInfo(extraInfo.dd.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
+        Kubesense.addUserExtraInfo(extraInfo.kubesense.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
     }
 
     public static func setAccountInfo(accountId: String, name: String? = nil, extraInfo: [String: Any] = [:]) {
-        Kubesense.setAccountInfo(id: accountId, name: name, extraInfo: extraInfo.dd.swiftAttributes)
+        Kubesense.setAccountInfo(id: accountId, name: name, extraInfo: extraInfo.kubesense.swiftAttributes)
     }
 
     public static func setAccountInfo(accountId: String, instanceName: String?, name: String? = nil, extraInfo: [String: Any] = [:]) {
-        Kubesense.setAccountInfo(id: accountId, name: name, extraInfo: extraInfo.dd.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
+        Kubesense.setAccountInfo(id: accountId, name: name, extraInfo: extraInfo.kubesense.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
     }
 
     public static func addAccountExtraInfo(_ extraInfo: [String: Any]) {
-        Kubesense.addAccountExtraInfo(extraInfo.dd.swiftAttributes)
+        Kubesense.addAccountExtraInfo(extraInfo.kubesense.swiftAttributes)
     }
 
     public static func addAccountExtraInfo(_ extraInfo: [String: Any], instanceName: String?) {
-        Kubesense.addAccountExtraInfo(extraInfo.dd.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
+        Kubesense.addAccountExtraInfo(extraInfo.kubesense.swiftAttributes, in: CoreRegistry.instance(named: instanceName ?? CoreRegistry.defaultInstanceName))
     }
 
     public static func clearAccountInfo() {

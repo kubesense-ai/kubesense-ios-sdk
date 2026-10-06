@@ -95,7 +95,7 @@ class UITextFieldRecorderTests: XCTestCase {
         textField.text = .mockRandom()
         oneOrMoreOf([
             { self.textField.isSecureTextEntry = true },
-            { self.textField.textContentType = UITextField.dd.sensitiveTypes.randomElement() },
+            { self.textField.textContentType = UITextField.kubesense.sensitiveTypes.randomElement() },
         ])
 
         // Then

@@ -79,7 +79,7 @@ internal final class FlagAssignmentsFetcher: FlagAssignmentsFetching {
                             if !response.failedFlags.isEmpty {
                                 for (flagKey, errorDescription) in response.failedFlags {
                                     let error = InternalError(description: errorDescription)
-                                    DD.logger.warn(
+                                    KS.logger.warn(
                                         "Failed to decode flag '\(flagKey)' from flag assignments response. Flag will be dropped from configuration.",
                                         error: error
                                     )
@@ -102,13 +102,13 @@ internal final class FlagAssignmentsFetcher: FlagAssignmentsFetching {
                             completion(.failure(.invalidResponse))
                         }
                     case .failure(let error):
-                        DD.logger.error("Failed to fetch flag assignments from the server.", error: error)
+                        KS.logger.error("Failed to fetch flag assignments from the server.", error: error)
                         featureScope.telemetry.error("Failed to fetch flag assignments from the server", error: error)
                         completion(.failure(.networkError(error)))
                     }
                 }
             } catch let error {
-                DD.logger.error("Failed to encode flag assignments request body.", error: error)
+                KS.logger.error("Failed to encode flag assignments request body.", error: error)
                 featureScope.telemetry.error("Failed to encode flag assignments request body.", error: error)
                 completion(.failure(.invalidConfiguration))
             }

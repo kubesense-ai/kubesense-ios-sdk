@@ -22,8 +22,8 @@ public class objc_RUMActionEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMActionEventDD {
-        objc_RUMActionEventDD(root: root)
+    public var kubesense: objc_RUMActionEventKubesense {
+        objc_RUMActionEventKubesense(root: root)
     }
 
     public var account: objc_RUMActionEventRUMAccount? {
@@ -127,69 +127,69 @@ public class objc_RUMActionEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMActionEventDD)
+@objc(KubesenseRUMActionEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMActionEventDD: NSObject {
+public class objc_RUMActionEventKubesense: NSObject {
     internal let root: objc_RUMActionEvent
 
     internal init(root: objc_RUMActionEvent) {
         self.root = root
     }
 
-    public var action: objc_RUMActionEventDDAction? {
-        root.swiftModel.dd.action != nil ? objc_RUMActionEventDDAction(root: root) : nil
+    public var action: objc_RUMActionEventKubesenseAction? {
+        root.swiftModel.kubesense.action != nil ? objc_RUMActionEventKubesenseAction(root: root) : nil
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMActionEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMActionEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMActionEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMActionEventKubesenseConfiguration(root: root) : nil
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMActionEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMActionEventDDSession(root: root) : nil
+    public var session: objc_RUMActionEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMActionEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMActionEventDDAction)
+@objc(KubesenseRUMActionEventKubesenseAction)
 @objcMembers
 @_spi(objc)
-public class objc_RUMActionEventDDAction: NSObject {
+public class objc_RUMActionEventKubesenseAction: NSObject {
     internal let root: objc_RUMActionEvent
 
     internal init(root: objc_RUMActionEvent) {
         self.root = root
     }
 
-    public var nameSource: objc_RUMActionEventDDActionNameSource {
-        set { root.swiftModel.dd.action!.nameSource = newValue.toSwift }
-        get { .init(swift: root.swiftModel.dd.action!.nameSource) }
+    public var nameSource: objc_RUMActionEventKubesenseActionNameSource {
+        set { root.swiftModel.kubesense.action!.nameSource = newValue.toSwift }
+        get { .init(swift: root.swiftModel.kubesense.action!.nameSource) }
     }
 
-    public var position: objc_RUMActionEventDDActionPosition? {
-        root.swiftModel.dd.action!.position != nil ? objc_RUMActionEventDDActionPosition(root: root) : nil
+    public var position: objc_RUMActionEventKubesenseActionPosition? {
+        root.swiftModel.kubesense.action!.position != nil ? objc_RUMActionEventKubesenseActionPosition(root: root) : nil
     }
 
-    public var target: objc_RUMActionEventDDActionTarget? {
-        root.swiftModel.dd.action!.target != nil ? objc_RUMActionEventDDActionTarget(root: root) : nil
+    public var target: objc_RUMActionEventKubesenseActionTarget? {
+        root.swiftModel.kubesense.action!.target != nil ? objc_RUMActionEventKubesenseActionTarget(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMActionEventDDActionNameSource)
+@objc(KubesenseRUMActionEventKubesenseActionNameSource)
 @_spi(objc)
-public enum objc_RUMActionEventDDActionNameSource: Int {
-    internal init(swift: RUMActionEvent.DD.Action.NameSource?) {
+public enum objc_RUMActionEventKubesenseActionNameSource: Int {
+    internal init(swift: RUMActionEvent.KS.Action.NameSource?) {
         switch swift {
         case nil: self = .none
         case .customAttribute?: self = .customAttribute
@@ -201,7 +201,7 @@ public enum objc_RUMActionEventDDActionNameSource: Int {
         }
     }
 
-    internal var toSwift: RUMActionEvent.DD.Action.NameSource? {
+    internal var toSwift: RUMActionEvent.KS.Action.NameSource? {
         switch self {
         case .none: return nil
         case .customAttribute: return .customAttribute
@@ -222,10 +222,10 @@ public enum objc_RUMActionEventDDActionNameSource: Int {
     case blank
 }
 
-@objc(KubesenseRUMActionEventDDActionPosition)
+@objc(KubesenseRUMActionEventKubesenseActionPosition)
 @objcMembers
 @_spi(objc)
-public class objc_RUMActionEventDDActionPosition: NSObject {
+public class objc_RUMActionEventKubesenseActionPosition: NSObject {
     internal let root: objc_RUMActionEvent
 
     internal init(root: objc_RUMActionEvent) {
@@ -233,18 +233,18 @@ public class objc_RUMActionEventDDActionPosition: NSObject {
     }
 
     public var x: NSNumber {
-        root.swiftModel.dd.action!.position!.x as NSNumber
+        root.swiftModel.kubesense.action!.position!.x as NSNumber
     }
 
     public var y: NSNumber {
-        root.swiftModel.dd.action!.position!.y as NSNumber
+        root.swiftModel.kubesense.action!.position!.y as NSNumber
     }
 }
 
-@objc(KubesenseRUMActionEventDDActionTarget)
+@objc(KubesenseRUMActionEventKubesenseActionTarget)
 @objcMembers
 @_spi(objc)
-public class objc_RUMActionEventDDActionTarget: NSObject {
+public class objc_RUMActionEventKubesenseActionTarget: NSObject {
     internal let root: objc_RUMActionEvent
 
     internal init(root: objc_RUMActionEvent) {
@@ -252,30 +252,30 @@ public class objc_RUMActionEventDDActionTarget: NSObject {
     }
 
     public var composedPathSelector: String? {
-        root.swiftModel.dd.action!.target!.composedPathSelector
+        root.swiftModel.kubesense.action!.target!.composedPathSelector
     }
 
     public var height: NSNumber? {
-        root.swiftModel.dd.action!.target!.height as NSNumber?
+        root.swiftModel.kubesense.action!.target!.height as NSNumber?
     }
 
     public var permanentId: String? {
-        root.swiftModel.dd.action!.target!.permanentId
+        root.swiftModel.kubesense.action!.target!.permanentId
     }
 
     public var selector: String? {
-        root.swiftModel.dd.action!.target!.selector
+        root.swiftModel.kubesense.action!.target!.selector
     }
 
     public var width: NSNumber? {
-        root.swiftModel.dd.action!.target!.width as NSNumber?
+        root.swiftModel.kubesense.action!.target!.width as NSNumber?
     }
 }
 
-@objc(KubesenseRUMActionEventDDConfiguration)
+@objc(KubesenseRUMActionEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMActionEventDDConfiguration: NSObject {
+public class objc_RUMActionEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMActionEvent
 
     internal init(root: objc_RUMActionEvent) {
@@ -283,49 +283,49 @@ public class objc_RUMActionEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMActionEventDDSession)
+@objc(KubesenseRUMActionEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMActionEventDDSession: NSObject {
+public class objc_RUMActionEventKubesenseSession: NSObject {
     internal let root: objc_RUMActionEvent
 
     internal init(root: objc_RUMActionEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMActionEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMActionEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMActionEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMActionEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMActionEventDDSessionPlan)
+@objc(KubesenseRUMActionEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMActionEventDDSessionPlan: Int {
-    internal init(swift: RUMActionEvent.DD.Session.Plan?) {
+public enum objc_RUMActionEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMActionEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -333,7 +333,7 @@ public enum objc_RUMActionEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMActionEvent.DD.Session.Plan? {
+    internal var toSwift: RUMActionEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -346,9 +346,9 @@ public enum objc_RUMActionEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMActionEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMActionEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMActionEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMActionEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -404,8 +404,8 @@ public class objc_RUMActionEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -885,8 +885,8 @@ public class objc_RUMActionEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -1240,8 +1240,8 @@ public class objc_RUMActionEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -1287,8 +1287,8 @@ public class objc_RUMActionEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -1341,8 +1341,8 @@ public class objc_RUMErrorEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMErrorEventDD {
-        objc_RUMErrorEventDD(root: root)
+    public var kubesense: objc_RUMErrorEventKubesense {
+        objc_RUMErrorEventKubesense(root: root)
     }
 
     public var account: objc_RUMErrorEventRUMAccount? {
@@ -1458,10 +1458,10 @@ public class objc_RUMErrorEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMErrorEventDD)
+@objc(KubesenseRUMErrorEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMErrorEventDD: NSObject {
+public class objc_RUMErrorEventKubesense: NSObject {
     internal let root: objc_RUMErrorEvent
 
     internal init(root: objc_RUMErrorEvent) {
@@ -1469,54 +1469,54 @@ public class objc_RUMErrorEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMErrorEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMErrorEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMErrorEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMErrorEventKubesenseConfiguration(root: root) : nil
     }
 
-    public var debugIds: [objc_RUMErrorEventDDDebugIds]? {
-        root.swiftModel.dd.debugIds?.map { objc_RUMErrorEventDDDebugIds(swiftModel: $0) }
+    public var debugIds: [objc_RUMErrorEventKubesenseDebugIds]? {
+        root.swiftModel.kubesense.debugIds?.map { objc_RUMErrorEventKubesenseDebugIds(swiftModel: $0) }
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
     public var parentSpanId: String? {
-        root.swiftModel.dd.parentSpanId
+        root.swiftModel.kubesense.parentSpanId
     }
 
-    public var profiling: objc_RUMErrorEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMErrorEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMErrorEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMErrorEventKubesenseProfiling(root: root) : nil
     }
 
     public var rulePsr: NSNumber? {
-        root.swiftModel.dd.rulePsr as NSNumber?
+        root.swiftModel.kubesense.rulePsr as NSNumber?
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMErrorEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMErrorEventDDSession(root: root) : nil
+    public var session: objc_RUMErrorEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMErrorEventKubesenseSession(root: root) : nil
     }
 
     public var spanId: String? {
-        root.swiftModel.dd.spanId
+        root.swiftModel.kubesense.spanId
     }
 
     public var traceId: String? {
-        root.swiftModel.dd.traceId
+        root.swiftModel.kubesense.traceId
     }
 }
 
-@objc(KubesenseRUMErrorEventDDConfiguration)
+@objc(KubesenseRUMErrorEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMErrorEventDDConfiguration: NSObject {
+public class objc_RUMErrorEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMErrorEvent
 
     internal init(root: objc_RUMErrorEvent) {
@@ -1524,34 +1524,34 @@ public class objc_RUMErrorEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMErrorEventDDDebugIds)
+@objc(KubesenseRUMErrorEventKubesenseDebugIds)
 @objcMembers
 @_spi(objc)
-public class objc_RUMErrorEventDDDebugIds: NSObject {
-    internal var swiftModel: RUMErrorEvent.DD.DebugIds
-    internal var root: objc_RUMErrorEventDDDebugIds { self }
+public class objc_RUMErrorEventKubesenseDebugIds: NSObject {
+    internal var swiftModel: RUMErrorEvent.KS.DebugIds
+    internal var root: objc_RUMErrorEventKubesenseDebugIds { self }
 
-    internal init(swiftModel: RUMErrorEvent.DD.DebugIds) {
+    internal init(swiftModel: RUMErrorEvent.KS.DebugIds) {
         self.swiftModel = swiftModel
     }
 
@@ -1564,32 +1564,32 @@ public class objc_RUMErrorEventDDDebugIds: NSObject {
     }
 }
 
-@objc(KubesenseRUMErrorEventDDProfiling)
+@objc(KubesenseRUMErrorEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMErrorEventDDProfiling: NSObject {
+public class objc_RUMErrorEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMErrorEvent
 
     internal init(root: objc_RUMErrorEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMErrorEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMErrorEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMErrorEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMErrorEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMErrorEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMErrorEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMErrorEventDDProfilingErrorReason)
+@objc(KubesenseRUMErrorEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMErrorEventDDProfilingErrorReason: Int {
+public enum objc_RUMErrorEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -1617,9 +1617,9 @@ public enum objc_RUMErrorEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMErrorEventDDProfilingQuotaReason)
+@objc(KubesenseRUMErrorEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMErrorEventDDProfilingQuotaReason: Int {
+public enum objc_RUMErrorEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -1656,9 +1656,9 @@ public enum objc_RUMErrorEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMErrorEventDDProfilingStatus)
+@objc(KubesenseRUMErrorEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMErrorEventDDProfilingStatus: Int {
+public enum objc_RUMErrorEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -1686,29 +1686,29 @@ public enum objc_RUMErrorEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMErrorEventDDSession)
+@objc(KubesenseRUMErrorEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMErrorEventDDSession: NSObject {
+public class objc_RUMErrorEventKubesenseSession: NSObject {
     internal let root: objc_RUMErrorEvent
 
     internal init(root: objc_RUMErrorEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMErrorEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMErrorEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMErrorEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMErrorEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMErrorEventDDSessionPlan)
+@objc(KubesenseRUMErrorEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMErrorEventDDSessionPlan: Int {
-    internal init(swift: RUMErrorEvent.DD.Session.Plan?) {
+public enum objc_RUMErrorEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMErrorEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -1716,7 +1716,7 @@ public enum objc_RUMErrorEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMErrorEvent.DD.Session.Plan? {
+    internal var toSwift: RUMErrorEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -1729,9 +1729,9 @@ public enum objc_RUMErrorEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMErrorEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMErrorEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMErrorEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMErrorEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -1787,8 +1787,8 @@ public class objc_RUMErrorEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -2104,8 +2104,8 @@ public class objc_RUMErrorEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -3091,8 +3091,8 @@ public class objc_RUMErrorEventFeatureFlags: NSObject {
     }
 
     public var featureFlagsInfo: [String: Any] {
-        set { root.swiftModel.featureFlags!.featureFlagsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.featureFlags!.featureFlagsInfo.dd.objCAttributes }
+        set { root.swiftModel.featureFlags!.featureFlagsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.featureFlags!.featureFlagsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -3274,8 +3274,8 @@ public class objc_RUMErrorEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -3321,8 +3321,8 @@ public class objc_RUMErrorEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -3375,8 +3375,8 @@ public class objc_RUMLongTaskEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMLongTaskEventDD {
-        objc_RUMLongTaskEventDD(root: root)
+    public var kubesense: objc_RUMLongTaskEventKubesense {
+        objc_RUMLongTaskEventKubesense(root: root)
     }
 
     public var account: objc_RUMLongTaskEventRUMAccount? {
@@ -3484,10 +3484,10 @@ public class objc_RUMLongTaskEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMLongTaskEventDD)
+@objc(KubesenseRUMLongTaskEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMLongTaskEventDD: NSObject {
+public class objc_RUMLongTaskEventKubesense: NSObject {
     internal let root: objc_RUMLongTaskEvent
 
     internal init(root: objc_RUMLongTaskEvent) {
@@ -3495,42 +3495,42 @@ public class objc_RUMLongTaskEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMLongTaskEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMLongTaskEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMLongTaskEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMLongTaskEventKubesenseConfiguration(root: root) : nil
     }
 
-    public var debugIds: [objc_RUMLongTaskEventDDDebugIds]? {
-        root.swiftModel.dd.debugIds?.map { objc_RUMLongTaskEventDDDebugIds(swiftModel: $0) }
+    public var debugIds: [objc_RUMLongTaskEventKubesenseDebugIds]? {
+        root.swiftModel.kubesense.debugIds?.map { objc_RUMLongTaskEventKubesenseDebugIds(swiftModel: $0) }
     }
 
     public var discarded: NSNumber? {
-        root.swiftModel.dd.discarded as NSNumber?
+        root.swiftModel.kubesense.discarded as NSNumber?
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
-    public var profiling: objc_RUMLongTaskEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMLongTaskEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMLongTaskEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMLongTaskEventKubesenseProfiling(root: root) : nil
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMLongTaskEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMLongTaskEventDDSession(root: root) : nil
+    public var session: objc_RUMLongTaskEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMLongTaskEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMLongTaskEventDDConfiguration)
+@objc(KubesenseRUMLongTaskEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMLongTaskEventDDConfiguration: NSObject {
+public class objc_RUMLongTaskEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMLongTaskEvent
 
     internal init(root: objc_RUMLongTaskEvent) {
@@ -3538,34 +3538,34 @@ public class objc_RUMLongTaskEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMLongTaskEventDDDebugIds)
+@objc(KubesenseRUMLongTaskEventKubesenseDebugIds)
 @objcMembers
 @_spi(objc)
-public class objc_RUMLongTaskEventDDDebugIds: NSObject {
-    internal var swiftModel: RUMLongTaskEvent.DD.DebugIds
-    internal var root: objc_RUMLongTaskEventDDDebugIds { self }
+public class objc_RUMLongTaskEventKubesenseDebugIds: NSObject {
+    internal var swiftModel: RUMLongTaskEvent.KS.DebugIds
+    internal var root: objc_RUMLongTaskEventKubesenseDebugIds { self }
 
-    internal init(swiftModel: RUMLongTaskEvent.DD.DebugIds) {
+    internal init(swiftModel: RUMLongTaskEvent.KS.DebugIds) {
         self.swiftModel = swiftModel
     }
 
@@ -3578,32 +3578,32 @@ public class objc_RUMLongTaskEventDDDebugIds: NSObject {
     }
 }
 
-@objc(KubesenseRUMLongTaskEventDDProfiling)
+@objc(KubesenseRUMLongTaskEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMLongTaskEventDDProfiling: NSObject {
+public class objc_RUMLongTaskEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMLongTaskEvent
 
     internal init(root: objc_RUMLongTaskEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMLongTaskEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMLongTaskEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMLongTaskEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMLongTaskEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMLongTaskEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMLongTaskEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMLongTaskEventDDProfilingErrorReason)
+@objc(KubesenseRUMLongTaskEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMLongTaskEventDDProfilingErrorReason: Int {
+public enum objc_RUMLongTaskEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -3631,9 +3631,9 @@ public enum objc_RUMLongTaskEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMLongTaskEventDDProfilingQuotaReason)
+@objc(KubesenseRUMLongTaskEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMLongTaskEventDDProfilingQuotaReason: Int {
+public enum objc_RUMLongTaskEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -3670,9 +3670,9 @@ public enum objc_RUMLongTaskEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMLongTaskEventDDProfilingStatus)
+@objc(KubesenseRUMLongTaskEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMLongTaskEventDDProfilingStatus: Int {
+public enum objc_RUMLongTaskEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -3700,29 +3700,29 @@ public enum objc_RUMLongTaskEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMLongTaskEventDDSession)
+@objc(KubesenseRUMLongTaskEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMLongTaskEventDDSession: NSObject {
+public class objc_RUMLongTaskEventKubesenseSession: NSObject {
     internal let root: objc_RUMLongTaskEvent
 
     internal init(root: objc_RUMLongTaskEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMLongTaskEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMLongTaskEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMLongTaskEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMLongTaskEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMLongTaskEventDDSessionPlan)
+@objc(KubesenseRUMLongTaskEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMLongTaskEventDDSessionPlan: Int {
-    internal init(swift: RUMLongTaskEvent.DD.Session.Plan?) {
+public enum objc_RUMLongTaskEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMLongTaskEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -3730,7 +3730,7 @@ public enum objc_RUMLongTaskEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMLongTaskEvent.DD.Session.Plan? {
+    internal var toSwift: RUMLongTaskEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -3743,9 +3743,9 @@ public enum objc_RUMLongTaskEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMLongTaskEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMLongTaskEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMLongTaskEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMLongTaskEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -3801,8 +3801,8 @@ public class objc_RUMLongTaskEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -4118,8 +4118,8 @@ public class objc_RUMLongTaskEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -4640,8 +4640,8 @@ public class objc_RUMLongTaskEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -4687,8 +4687,8 @@ public class objc_RUMLongTaskEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -4737,8 +4737,8 @@ public class objc_RUMResourceEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMResourceEventDD {
-        objc_RUMResourceEventDD(root: root)
+    public var kubesense: objc_RUMResourceEventKubesense {
+        objc_RUMResourceEventKubesense(root: root)
     }
 
     public var account: objc_RUMResourceEventRUMAccount? {
@@ -4846,10 +4846,10 @@ public class objc_RUMResourceEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMResourceEventDD)
+@objc(KubesenseRUMResourceEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMResourceEventDD: NSObject {
+public class objc_RUMResourceEventKubesense: NSObject {
     internal let root: objc_RUMResourceEvent
 
     internal init(root: objc_RUMResourceEvent) {
@@ -4857,50 +4857,50 @@ public class objc_RUMResourceEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMResourceEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMResourceEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMResourceEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMResourceEventKubesenseConfiguration(root: root) : nil
     }
 
     public var discarded: NSNumber? {
-        root.swiftModel.dd.discarded as NSNumber?
+        root.swiftModel.kubesense.discarded as NSNumber?
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
     public var parentSpanId: String? {
-        root.swiftModel.dd.parentSpanId
+        root.swiftModel.kubesense.parentSpanId
     }
 
     public var rulePsr: NSNumber? {
-        root.swiftModel.dd.rulePsr as NSNumber?
+        root.swiftModel.kubesense.rulePsr as NSNumber?
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMResourceEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMResourceEventDDSession(root: root) : nil
+    public var session: objc_RUMResourceEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMResourceEventKubesenseSession(root: root) : nil
     }
 
     public var spanId: String? {
-        root.swiftModel.dd.spanId
+        root.swiftModel.kubesense.spanId
     }
 
     public var traceId: String? {
-        root.swiftModel.dd.traceId
+        root.swiftModel.kubesense.traceId
     }
 }
 
-@objc(KubesenseRUMResourceEventDDConfiguration)
+@objc(KubesenseRUMResourceEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMResourceEventDDConfiguration: NSObject {
+public class objc_RUMResourceEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMResourceEvent
 
     internal init(root: objc_RUMResourceEvent) {
@@ -4908,49 +4908,49 @@ public class objc_RUMResourceEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMResourceEventDDSession)
+@objc(KubesenseRUMResourceEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMResourceEventDDSession: NSObject {
+public class objc_RUMResourceEventKubesenseSession: NSObject {
     internal let root: objc_RUMResourceEvent
 
     internal init(root: objc_RUMResourceEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMResourceEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMResourceEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMResourceEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMResourceEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMResourceEventDDSessionPlan)
+@objc(KubesenseRUMResourceEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMResourceEventDDSessionPlan: Int {
-    internal init(swift: RUMResourceEvent.DD.Session.Plan?) {
+public enum objc_RUMResourceEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMResourceEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -4958,7 +4958,7 @@ public enum objc_RUMResourceEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMResourceEvent.DD.Session.Plan? {
+    internal var toSwift: RUMResourceEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -4971,9 +4971,9 @@ public enum objc_RUMResourceEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMResourceEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMResourceEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMResourceEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMResourceEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -5029,8 +5029,8 @@ public class objc_RUMResourceEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -5346,8 +5346,8 @@ public class objc_RUMResourceEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -6381,8 +6381,8 @@ public class objc_RUMResourceEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -6428,8 +6428,8 @@ public class objc_RUMResourceEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -6478,8 +6478,8 @@ public class objc_RUMTimeseriesCpuEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMTimeseriesCpuEventDD {
-        objc_RUMTimeseriesCpuEventDD(root: root)
+    public var kubesense: objc_RUMTimeseriesCpuEventKubesense {
+        objc_RUMTimeseriesCpuEventKubesense(root: root)
     }
 
     public var account: objc_RUMTimeseriesCpuEventRUMAccount? {
@@ -6579,10 +6579,10 @@ public class objc_RUMTimeseriesCpuEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMTimeseriesCpuEventDD)
+@objc(KubesenseRUMTimeseriesCpuEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMTimeseriesCpuEventDD: NSObject {
+public class objc_RUMTimeseriesCpuEventKubesense: NSObject {
     internal let root: objc_RUMTimeseriesCpuEvent
 
     internal init(root: objc_RUMTimeseriesCpuEvent) {
@@ -6590,30 +6590,30 @@ public class objc_RUMTimeseriesCpuEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMTimeseriesCpuEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMTimeseriesCpuEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMTimeseriesCpuEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMTimeseriesCpuEventKubesenseConfiguration(root: root) : nil
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMTimeseriesCpuEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMTimeseriesCpuEventDDSession(root: root) : nil
+    public var session: objc_RUMTimeseriesCpuEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMTimeseriesCpuEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMTimeseriesCpuEventDDConfiguration)
+@objc(KubesenseRUMTimeseriesCpuEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMTimeseriesCpuEventDDConfiguration: NSObject {
+public class objc_RUMTimeseriesCpuEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMTimeseriesCpuEvent
 
     internal init(root: objc_RUMTimeseriesCpuEvent) {
@@ -6621,49 +6621,49 @@ public class objc_RUMTimeseriesCpuEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMTimeseriesCpuEventDDSession)
+@objc(KubesenseRUMTimeseriesCpuEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMTimeseriesCpuEventDDSession: NSObject {
+public class objc_RUMTimeseriesCpuEventKubesenseSession: NSObject {
     internal let root: objc_RUMTimeseriesCpuEvent
 
     internal init(root: objc_RUMTimeseriesCpuEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMTimeseriesCpuEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMTimeseriesCpuEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMTimeseriesCpuEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMTimeseriesCpuEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMTimeseriesCpuEventDDSessionPlan)
+@objc(KubesenseRUMTimeseriesCpuEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMTimeseriesCpuEventDDSessionPlan: Int {
-    internal init(swift: RUMTimeseriesCpuEvent.DD.Session.Plan?) {
+public enum objc_RUMTimeseriesCpuEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMTimeseriesCpuEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -6671,7 +6671,7 @@ public enum objc_RUMTimeseriesCpuEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMTimeseriesCpuEvent.DD.Session.Plan? {
+    internal var toSwift: RUMTimeseriesCpuEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -6684,9 +6684,9 @@ public enum objc_RUMTimeseriesCpuEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMTimeseriesCpuEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMTimeseriesCpuEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMTimeseriesCpuEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMTimeseriesCpuEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -6742,8 +6742,8 @@ public class objc_RUMTimeseriesCpuEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -6937,8 +6937,8 @@ public class objc_RUMTimeseriesCpuEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -7292,8 +7292,8 @@ public class objc_RUMTimeseriesCpuEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -7408,8 +7408,8 @@ public class objc_RUMTimeseriesCpuEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -7458,8 +7458,8 @@ public class objc_RUMTimeseriesMemoryEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMTimeseriesMemoryEventDD {
-        objc_RUMTimeseriesMemoryEventDD(root: root)
+    public var kubesense: objc_RUMTimeseriesMemoryEventKubesense {
+        objc_RUMTimeseriesMemoryEventKubesense(root: root)
     }
 
     public var account: objc_RUMTimeseriesMemoryEventRUMAccount? {
@@ -7559,10 +7559,10 @@ public class objc_RUMTimeseriesMemoryEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMTimeseriesMemoryEventDD)
+@objc(KubesenseRUMTimeseriesMemoryEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMTimeseriesMemoryEventDD: NSObject {
+public class objc_RUMTimeseriesMemoryEventKubesense: NSObject {
     internal let root: objc_RUMTimeseriesMemoryEvent
 
     internal init(root: objc_RUMTimeseriesMemoryEvent) {
@@ -7570,30 +7570,30 @@ public class objc_RUMTimeseriesMemoryEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMTimeseriesMemoryEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMTimeseriesMemoryEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMTimeseriesMemoryEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMTimeseriesMemoryEventKubesenseConfiguration(root: root) : nil
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMTimeseriesMemoryEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMTimeseriesMemoryEventDDSession(root: root) : nil
+    public var session: objc_RUMTimeseriesMemoryEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMTimeseriesMemoryEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMTimeseriesMemoryEventDDConfiguration)
+@objc(KubesenseRUMTimeseriesMemoryEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMTimeseriesMemoryEventDDConfiguration: NSObject {
+public class objc_RUMTimeseriesMemoryEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMTimeseriesMemoryEvent
 
     internal init(root: objc_RUMTimeseriesMemoryEvent) {
@@ -7601,49 +7601,49 @@ public class objc_RUMTimeseriesMemoryEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMTimeseriesMemoryEventDDSession)
+@objc(KubesenseRUMTimeseriesMemoryEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMTimeseriesMemoryEventDDSession: NSObject {
+public class objc_RUMTimeseriesMemoryEventKubesenseSession: NSObject {
     internal let root: objc_RUMTimeseriesMemoryEvent
 
     internal init(root: objc_RUMTimeseriesMemoryEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMTimeseriesMemoryEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMTimeseriesMemoryEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMTimeseriesMemoryEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMTimeseriesMemoryEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMTimeseriesMemoryEventDDSessionPlan)
+@objc(KubesenseRUMTimeseriesMemoryEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMTimeseriesMemoryEventDDSessionPlan: Int {
-    internal init(swift: RUMTimeseriesMemoryEvent.DD.Session.Plan?) {
+public enum objc_RUMTimeseriesMemoryEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMTimeseriesMemoryEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -7651,7 +7651,7 @@ public enum objc_RUMTimeseriesMemoryEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMTimeseriesMemoryEvent.DD.Session.Plan? {
+    internal var toSwift: RUMTimeseriesMemoryEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -7664,9 +7664,9 @@ public enum objc_RUMTimeseriesMemoryEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMTimeseriesMemoryEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMTimeseriesMemoryEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMTimeseriesMemoryEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMTimeseriesMemoryEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -7722,8 +7722,8 @@ public class objc_RUMTimeseriesMemoryEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -7917,8 +7917,8 @@ public class objc_RUMTimeseriesMemoryEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -8272,8 +8272,8 @@ public class objc_RUMTimeseriesMemoryEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -8392,8 +8392,8 @@ public class objc_RUMTimeseriesMemoryEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -8442,8 +8442,8 @@ public class objc_RUMViewEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMViewEventDD {
-        objc_RUMViewEventDD(root: root)
+    public var kubesense: objc_RUMViewEventKubesense {
+        objc_RUMViewEventKubesense(root: root)
     }
 
     public var account: objc_RUMViewEventRUMAccount? {
@@ -8551,10 +8551,10 @@ public class objc_RUMViewEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMViewEventDD)
+@objc(KubesenseRUMViewEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDD: NSObject {
+public class objc_RUMViewEventKubesense: NSObject {
     internal let root: objc_RUMViewEvent
 
     internal init(root: objc_RUMViewEvent) {
@@ -8562,50 +8562,50 @@ public class objc_RUMViewEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var cls: objc_RUMViewEventDDCLS? {
-        root.swiftModel.dd.cls != nil ? objc_RUMViewEventDDCLS(root: root) : nil
+    public var cls: objc_RUMViewEventKubesenseCLS? {
+        root.swiftModel.kubesense.cls != nil ? objc_RUMViewEventKubesenseCLS(root: root) : nil
     }
 
-    public var configuration: objc_RUMViewEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMViewEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMViewEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMViewEventKubesenseConfiguration(root: root) : nil
     }
 
     public var documentVersion: NSNumber {
-        root.swiftModel.dd.documentVersion as NSNumber
+        root.swiftModel.kubesense.documentVersion as NSNumber
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
-    public var pageStates: [objc_RUMViewEventDDPageStates]? {
-        root.swiftModel.dd.pageStates?.map { objc_RUMViewEventDDPageStates(swiftModel: $0) }
+    public var pageStates: [objc_RUMViewEventKubesensePageStates]? {
+        root.swiftModel.kubesense.pageStates?.map { objc_RUMViewEventKubesensePageStates(swiftModel: $0) }
     }
 
-    public var profiling: objc_RUMViewEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMViewEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMViewEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMViewEventKubesenseProfiling(root: root) : nil
     }
 
-    public var replayStats: objc_RUMViewEventDDReplayStats? {
-        root.swiftModel.dd.replayStats != nil ? objc_RUMViewEventDDReplayStats(root: root) : nil
+    public var replayStats: objc_RUMViewEventKubesenseReplayStats? {
+        root.swiftModel.kubesense.replayStats != nil ? objc_RUMViewEventKubesenseReplayStats(root: root) : nil
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMViewEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMViewEventDDSession(root: root) : nil
+    public var session: objc_RUMViewEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMViewEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMViewEventDDCLS)
+@objc(KubesenseRUMViewEventKubesenseCLS)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDDCLS: NSObject {
+public class objc_RUMViewEventKubesenseCLS: NSObject {
     internal let root: objc_RUMViewEvent
 
     internal init(root: objc_RUMViewEvent) {
@@ -8613,14 +8613,14 @@ public class objc_RUMViewEventDDCLS: NSObject {
     }
 
     public var devicePixelRatio: NSNumber? {
-        root.swiftModel.dd.cls!.devicePixelRatio as NSNumber?
+        root.swiftModel.kubesense.cls!.devicePixelRatio as NSNumber?
     }
 }
 
-@objc(KubesenseRUMViewEventDDConfiguration)
+@objc(KubesenseRUMViewEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDDConfiguration: NSObject {
+public class objc_RUMViewEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMViewEvent
 
     internal init(root: objc_RUMViewEvent) {
@@ -8628,42 +8628,42 @@ public class objc_RUMViewEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var remoteConfigurationId: String? {
-        root.swiftModel.dd.configuration!.remoteConfigurationId
+        root.swiftModel.kubesense.configuration!.remoteConfigurationId
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var startSessionReplayRecordingManually: NSNumber? {
-        root.swiftModel.dd.configuration!.startSessionReplayRecordingManually as NSNumber?
+        root.swiftModel.kubesense.configuration!.startSessionReplayRecordingManually as NSNumber?
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMViewEventDDPageStates)
+@objc(KubesenseRUMViewEventKubesensePageStates)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDDPageStates: NSObject {
-    internal var swiftModel: RUMViewEvent.DD.PageStates
-    internal var root: objc_RUMViewEventDDPageStates { self }
+public class objc_RUMViewEventKubesensePageStates: NSObject {
+    internal var swiftModel: RUMViewEvent.KS.PageStates
+    internal var root: objc_RUMViewEventKubesensePageStates { self }
 
-    internal init(swiftModel: RUMViewEvent.DD.PageStates) {
+    internal init(swiftModel: RUMViewEvent.KS.PageStates) {
         self.swiftModel = swiftModel
     }
 
@@ -8671,15 +8671,15 @@ public class objc_RUMViewEventDDPageStates: NSObject {
         root.swiftModel.start as NSNumber
     }
 
-    public var state: objc_RUMViewEventDDPageStatesState {
+    public var state: objc_RUMViewEventKubesensePageStatesState {
         .init(swift: root.swiftModel.state)
     }
 }
 
-@objc(KubesenseRUMViewEventDDPageStatesState)
+@objc(KubesenseRUMViewEventKubesensePageStatesState)
 @_spi(objc)
-public enum objc_RUMViewEventDDPageStatesState: Int {
-    internal init(swift: RUMViewEvent.DD.PageStates.State) {
+public enum objc_RUMViewEventKubesensePageStatesState: Int {
+    internal init(swift: RUMViewEvent.KS.PageStates.State) {
         switch swift {
         case .active: self = .active
         case .passive: self = .passive
@@ -8689,7 +8689,7 @@ public enum objc_RUMViewEventDDPageStatesState: Int {
         }
     }
 
-    internal var toSwift: RUMViewEvent.DD.PageStates.State {
+    internal var toSwift: RUMViewEvent.KS.PageStates.State {
         switch self {
         case .active: return .active
         case .passive: return .passive
@@ -8706,32 +8706,32 @@ public enum objc_RUMViewEventDDPageStatesState: Int {
     case terminated
 }
 
-@objc(KubesenseRUMViewEventDDProfiling)
+@objc(KubesenseRUMViewEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDDProfiling: NSObject {
+public class objc_RUMViewEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMViewEvent
 
     internal init(root: objc_RUMViewEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMViewEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMViewEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMViewEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMViewEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMViewEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMViewEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMViewEventDDProfilingErrorReason)
+@objc(KubesenseRUMViewEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMViewEventDDProfilingErrorReason: Int {
+public enum objc_RUMViewEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -8759,9 +8759,9 @@ public enum objc_RUMViewEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMViewEventDDProfilingQuotaReason)
+@objc(KubesenseRUMViewEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMViewEventDDProfilingQuotaReason: Int {
+public enum objc_RUMViewEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -8798,9 +8798,9 @@ public enum objc_RUMViewEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMViewEventDDProfilingStatus)
+@objc(KubesenseRUMViewEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMViewEventDDProfilingStatus: Int {
+public enum objc_RUMViewEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -8828,10 +8828,10 @@ public enum objc_RUMViewEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMViewEventDDReplayStats)
+@objc(KubesenseRUMViewEventKubesenseReplayStats)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDDReplayStats: NSObject {
+public class objc_RUMViewEventKubesenseReplayStats: NSObject {
     internal let root: objc_RUMViewEvent
 
     internal init(root: objc_RUMViewEvent) {
@@ -8839,41 +8839,41 @@ public class objc_RUMViewEventDDReplayStats: NSObject {
     }
 
     public var recordsCount: NSNumber? {
-        root.swiftModel.dd.replayStats!.recordsCount as NSNumber?
+        root.swiftModel.kubesense.replayStats!.recordsCount as NSNumber?
     }
 
     public var segmentsCount: NSNumber? {
-        root.swiftModel.dd.replayStats!.segmentsCount as NSNumber?
+        root.swiftModel.kubesense.replayStats!.segmentsCount as NSNumber?
     }
 
     public var segmentsTotalRawSize: NSNumber? {
-        root.swiftModel.dd.replayStats!.segmentsTotalRawSize as NSNumber?
+        root.swiftModel.kubesense.replayStats!.segmentsTotalRawSize as NSNumber?
     }
 }
 
-@objc(KubesenseRUMViewEventDDSession)
+@objc(KubesenseRUMViewEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewEventDDSession: NSObject {
+public class objc_RUMViewEventKubesenseSession: NSObject {
     internal let root: objc_RUMViewEvent
 
     internal init(root: objc_RUMViewEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMViewEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMViewEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMViewEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMViewEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMViewEventDDSessionPlan)
+@objc(KubesenseRUMViewEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMViewEventDDSessionPlan: Int {
-    internal init(swift: RUMViewEvent.DD.Session.Plan?) {
+public enum objc_RUMViewEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMViewEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -8881,7 +8881,7 @@ public enum objc_RUMViewEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMViewEvent.DD.Session.Plan? {
+    internal var toSwift: RUMViewEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -8894,9 +8894,9 @@ public enum objc_RUMViewEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMViewEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMViewEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMViewEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMViewEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -8952,8 +8952,8 @@ public class objc_RUMViewEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -9229,8 +9229,8 @@ public class objc_RUMViewEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -9463,8 +9463,8 @@ public class objc_RUMViewEventFeatureFlags: NSObject {
     }
 
     public var featureFlagsInfo: [String: Any] {
-        set { root.swiftModel.featureFlags!.featureFlagsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.featureFlags!.featureFlagsInfo.dd.objCAttributes }
+        set { root.swiftModel.featureFlags!.featureFlagsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.featureFlags!.featureFlagsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -9710,8 +9710,8 @@ public class objc_RUMViewEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -9757,8 +9757,8 @@ public class objc_RUMViewEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -10658,8 +10658,8 @@ public class objc_RUMViewUpdateEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMViewUpdateEventDD {
-        objc_RUMViewUpdateEventDD(root: root)
+    public var kubesense: objc_RUMViewUpdateEventKubesense {
+        objc_RUMViewUpdateEventKubesense(root: root)
     }
 
     public var account: objc_RUMViewUpdateEventRUMAccount? {
@@ -10767,10 +10767,10 @@ public class objc_RUMViewUpdateEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDD)
+@objc(KubesenseRUMViewUpdateEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDD: NSObject {
+public class objc_RUMViewUpdateEventKubesense: NSObject {
     internal let root: objc_RUMViewUpdateEvent
 
     internal init(root: objc_RUMViewUpdateEvent) {
@@ -10778,50 +10778,50 @@ public class objc_RUMViewUpdateEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var cls: objc_RUMViewUpdateEventDDCLS? {
-        root.swiftModel.dd.cls != nil ? objc_RUMViewUpdateEventDDCLS(root: root) : nil
+    public var cls: objc_RUMViewUpdateEventKubesenseCLS? {
+        root.swiftModel.kubesense.cls != nil ? objc_RUMViewUpdateEventKubesenseCLS(root: root) : nil
     }
 
-    public var configuration: objc_RUMViewUpdateEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMViewUpdateEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMViewUpdateEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMViewUpdateEventKubesenseConfiguration(root: root) : nil
     }
 
     public var documentVersion: NSNumber {
-        root.swiftModel.dd.documentVersion as NSNumber
+        root.swiftModel.kubesense.documentVersion as NSNumber
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
-    public var pageStates: [objc_RUMViewUpdateEventDDPageStates]? {
-        root.swiftModel.dd.pageStates?.map { objc_RUMViewUpdateEventDDPageStates(swiftModel: $0) }
+    public var pageStates: [objc_RUMViewUpdateEventKubesensePageStates]? {
+        root.swiftModel.kubesense.pageStates?.map { objc_RUMViewUpdateEventKubesensePageStates(swiftModel: $0) }
     }
 
-    public var profiling: objc_RUMViewUpdateEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMViewUpdateEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMViewUpdateEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMViewUpdateEventKubesenseProfiling(root: root) : nil
     }
 
-    public var replayStats: objc_RUMViewUpdateEventDDReplayStats? {
-        root.swiftModel.dd.replayStats != nil ? objc_RUMViewUpdateEventDDReplayStats(root: root) : nil
+    public var replayStats: objc_RUMViewUpdateEventKubesenseReplayStats? {
+        root.swiftModel.kubesense.replayStats != nil ? objc_RUMViewUpdateEventKubesenseReplayStats(root: root) : nil
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMViewUpdateEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMViewUpdateEventDDSession(root: root) : nil
+    public var session: objc_RUMViewUpdateEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMViewUpdateEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDCLS)
+@objc(KubesenseRUMViewUpdateEventKubesenseCLS)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDDCLS: NSObject {
+public class objc_RUMViewUpdateEventKubesenseCLS: NSObject {
     internal let root: objc_RUMViewUpdateEvent
 
     internal init(root: objc_RUMViewUpdateEvent) {
@@ -10829,14 +10829,14 @@ public class objc_RUMViewUpdateEventDDCLS: NSObject {
     }
 
     public var devicePixelRatio: NSNumber? {
-        root.swiftModel.dd.cls!.devicePixelRatio as NSNumber?
+        root.swiftModel.kubesense.cls!.devicePixelRatio as NSNumber?
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDConfiguration)
+@objc(KubesenseRUMViewUpdateEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDDConfiguration: NSObject {
+public class objc_RUMViewUpdateEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMViewUpdateEvent
 
     internal init(root: objc_RUMViewUpdateEvent) {
@@ -10844,42 +10844,42 @@ public class objc_RUMViewUpdateEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var remoteConfigurationId: String? {
-        root.swiftModel.dd.configuration!.remoteConfigurationId
+        root.swiftModel.kubesense.configuration!.remoteConfigurationId
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var startSessionReplayRecordingManually: NSNumber? {
-        root.swiftModel.dd.configuration!.startSessionReplayRecordingManually as NSNumber?
+        root.swiftModel.kubesense.configuration!.startSessionReplayRecordingManually as NSNumber?
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDPageStates)
+@objc(KubesenseRUMViewUpdateEventKubesensePageStates)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDDPageStates: NSObject {
-    internal var swiftModel: RUMViewUpdateEvent.DD.PageStates
-    internal var root: objc_RUMViewUpdateEventDDPageStates { self }
+public class objc_RUMViewUpdateEventKubesensePageStates: NSObject {
+    internal var swiftModel: RUMViewUpdateEvent.KS.PageStates
+    internal var root: objc_RUMViewUpdateEventKubesensePageStates { self }
 
-    internal init(swiftModel: RUMViewUpdateEvent.DD.PageStates) {
+    internal init(swiftModel: RUMViewUpdateEvent.KS.PageStates) {
         self.swiftModel = swiftModel
     }
 
@@ -10887,15 +10887,15 @@ public class objc_RUMViewUpdateEventDDPageStates: NSObject {
         root.swiftModel.start as NSNumber
     }
 
-    public var state: objc_RUMViewUpdateEventDDPageStatesState {
+    public var state: objc_RUMViewUpdateEventKubesensePageStatesState {
         .init(swift: root.swiftModel.state)
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDPageStatesState)
+@objc(KubesenseRUMViewUpdateEventKubesensePageStatesState)
 @_spi(objc)
-public enum objc_RUMViewUpdateEventDDPageStatesState: Int {
-    internal init(swift: RUMViewUpdateEvent.DD.PageStates.State) {
+public enum objc_RUMViewUpdateEventKubesensePageStatesState: Int {
+    internal init(swift: RUMViewUpdateEvent.KS.PageStates.State) {
         switch swift {
         case .active: self = .active
         case .passive: self = .passive
@@ -10905,7 +10905,7 @@ public enum objc_RUMViewUpdateEventDDPageStatesState: Int {
         }
     }
 
-    internal var toSwift: RUMViewUpdateEvent.DD.PageStates.State {
+    internal var toSwift: RUMViewUpdateEvent.KS.PageStates.State {
         switch self {
         case .active: return .active
         case .passive: return .passive
@@ -10922,32 +10922,32 @@ public enum objc_RUMViewUpdateEventDDPageStatesState: Int {
     case terminated
 }
 
-@objc(KubesenseRUMViewUpdateEventDDProfiling)
+@objc(KubesenseRUMViewUpdateEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDDProfiling: NSObject {
+public class objc_RUMViewUpdateEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMViewUpdateEvent
 
     internal init(root: objc_RUMViewUpdateEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMViewUpdateEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMViewUpdateEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMViewUpdateEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMViewUpdateEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMViewUpdateEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMViewUpdateEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDProfilingErrorReason)
+@objc(KubesenseRUMViewUpdateEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMViewUpdateEventDDProfilingErrorReason: Int {
+public enum objc_RUMViewUpdateEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -10975,9 +10975,9 @@ public enum objc_RUMViewUpdateEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMViewUpdateEventDDProfilingQuotaReason)
+@objc(KubesenseRUMViewUpdateEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMViewUpdateEventDDProfilingQuotaReason: Int {
+public enum objc_RUMViewUpdateEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -11014,9 +11014,9 @@ public enum objc_RUMViewUpdateEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMViewUpdateEventDDProfilingStatus)
+@objc(KubesenseRUMViewUpdateEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMViewUpdateEventDDProfilingStatus: Int {
+public enum objc_RUMViewUpdateEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -11044,10 +11044,10 @@ public enum objc_RUMViewUpdateEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMViewUpdateEventDDReplayStats)
+@objc(KubesenseRUMViewUpdateEventKubesenseReplayStats)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDDReplayStats: NSObject {
+public class objc_RUMViewUpdateEventKubesenseReplayStats: NSObject {
     internal let root: objc_RUMViewUpdateEvent
 
     internal init(root: objc_RUMViewUpdateEvent) {
@@ -11055,41 +11055,41 @@ public class objc_RUMViewUpdateEventDDReplayStats: NSObject {
     }
 
     public var recordsCount: NSNumber? {
-        root.swiftModel.dd.replayStats!.recordsCount as NSNumber?
+        root.swiftModel.kubesense.replayStats!.recordsCount as NSNumber?
     }
 
     public var segmentsCount: NSNumber? {
-        root.swiftModel.dd.replayStats!.segmentsCount as NSNumber?
+        root.swiftModel.kubesense.replayStats!.segmentsCount as NSNumber?
     }
 
     public var segmentsTotalRawSize: NSNumber? {
-        root.swiftModel.dd.replayStats!.segmentsTotalRawSize as NSNumber?
+        root.swiftModel.kubesense.replayStats!.segmentsTotalRawSize as NSNumber?
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDSession)
+@objc(KubesenseRUMViewUpdateEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMViewUpdateEventDDSession: NSObject {
+public class objc_RUMViewUpdateEventKubesenseSession: NSObject {
     internal let root: objc_RUMViewUpdateEvent
 
     internal init(root: objc_RUMViewUpdateEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMViewUpdateEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMViewUpdateEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMViewUpdateEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMViewUpdateEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMViewUpdateEventDDSessionPlan)
+@objc(KubesenseRUMViewUpdateEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMViewUpdateEventDDSessionPlan: Int {
-    internal init(swift: RUMViewUpdateEvent.DD.Session.Plan?) {
+public enum objc_RUMViewUpdateEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMViewUpdateEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -11097,7 +11097,7 @@ public enum objc_RUMViewUpdateEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMViewUpdateEvent.DD.Session.Plan? {
+    internal var toSwift: RUMViewUpdateEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -11110,9 +11110,9 @@ public enum objc_RUMViewUpdateEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMViewUpdateEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMViewUpdateEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMViewUpdateEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMViewUpdateEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -11168,8 +11168,8 @@ public class objc_RUMViewUpdateEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -11445,8 +11445,8 @@ public class objc_RUMViewUpdateEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -11679,8 +11679,8 @@ public class objc_RUMViewUpdateEventFeatureFlags: NSObject {
     }
 
     public var featureFlagsInfo: [String: Any] {
-        set { root.swiftModel.featureFlags!.featureFlagsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.featureFlags!.featureFlagsInfo.dd.objCAttributes }
+        set { root.swiftModel.featureFlags!.featureFlagsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.featureFlags!.featureFlagsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -11926,8 +11926,8 @@ public class objc_RUMViewUpdateEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -11973,8 +11973,8 @@ public class objc_RUMViewUpdateEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -12874,8 +12874,8 @@ public class objc_RUMVitalAppLaunchEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMVitalAppLaunchEventDD {
-        objc_RUMVitalAppLaunchEventDD(root: root)
+    public var kubesense: objc_RUMVitalAppLaunchEventKubesense {
+        objc_RUMVitalAppLaunchEventKubesense(root: root)
     }
 
     public var account: objc_RUMVitalAppLaunchEventRUMAccount? {
@@ -12979,10 +12979,10 @@ public class objc_RUMVitalAppLaunchEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDD)
+@objc(KubesenseRUMVitalAppLaunchEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalAppLaunchEventDD: NSObject {
+public class objc_RUMVitalAppLaunchEventKubesense: NSObject {
     internal let root: objc_RUMVitalAppLaunchEvent
 
     internal init(root: objc_RUMVitalAppLaunchEvent) {
@@ -12990,34 +12990,34 @@ public class objc_RUMVitalAppLaunchEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMVitalAppLaunchEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMVitalAppLaunchEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMVitalAppLaunchEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMVitalAppLaunchEventKubesenseConfiguration(root: root) : nil
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
-    public var profiling: objc_RUMVitalAppLaunchEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMVitalAppLaunchEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMVitalAppLaunchEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMVitalAppLaunchEventKubesenseProfiling(root: root) : nil
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMVitalAppLaunchEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMVitalAppLaunchEventDDSession(root: root) : nil
+    public var session: objc_RUMVitalAppLaunchEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMVitalAppLaunchEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDConfiguration)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalAppLaunchEventDDConfiguration: NSObject {
+public class objc_RUMVitalAppLaunchEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMVitalAppLaunchEvent
 
     internal init(root: objc_RUMVitalAppLaunchEvent) {
@@ -13025,52 +13025,52 @@ public class objc_RUMVitalAppLaunchEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDProfiling)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalAppLaunchEventDDProfiling: NSObject {
+public class objc_RUMVitalAppLaunchEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMVitalAppLaunchEvent
 
     internal init(root: objc_RUMVitalAppLaunchEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMVitalAppLaunchEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMVitalAppLaunchEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMVitalAppLaunchEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMVitalAppLaunchEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMVitalAppLaunchEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMVitalAppLaunchEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDProfilingErrorReason)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMVitalAppLaunchEventDDProfilingErrorReason: Int {
+public enum objc_RUMVitalAppLaunchEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -13098,9 +13098,9 @@ public enum objc_RUMVitalAppLaunchEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDProfilingQuotaReason)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMVitalAppLaunchEventDDProfilingQuotaReason: Int {
+public enum objc_RUMVitalAppLaunchEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -13137,9 +13137,9 @@ public enum objc_RUMVitalAppLaunchEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDProfilingStatus)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMVitalAppLaunchEventDDProfilingStatus: Int {
+public enum objc_RUMVitalAppLaunchEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -13167,29 +13167,29 @@ public enum objc_RUMVitalAppLaunchEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDSession)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalAppLaunchEventDDSession: NSObject {
+public class objc_RUMVitalAppLaunchEventKubesenseSession: NSObject {
     internal let root: objc_RUMVitalAppLaunchEvent
 
     internal init(root: objc_RUMVitalAppLaunchEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMVitalAppLaunchEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMVitalAppLaunchEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMVitalAppLaunchEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMVitalAppLaunchEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDSessionPlan)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMVitalAppLaunchEventDDSessionPlan: Int {
-    internal init(swift: RUMVitalAppLaunchEvent.DD.Session.Plan?) {
+public enum objc_RUMVitalAppLaunchEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMVitalAppLaunchEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -13197,7 +13197,7 @@ public enum objc_RUMVitalAppLaunchEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMVitalAppLaunchEvent.DD.Session.Plan? {
+    internal var toSwift: RUMVitalAppLaunchEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -13210,9 +13210,9 @@ public enum objc_RUMVitalAppLaunchEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMVitalAppLaunchEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMVitalAppLaunchEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMVitalAppLaunchEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMVitalAppLaunchEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -13268,8 +13268,8 @@ public class objc_RUMVitalAppLaunchEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -13545,8 +13545,8 @@ public class objc_RUMVitalAppLaunchEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -13900,8 +13900,8 @@ public class objc_RUMVitalAppLaunchEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -13947,8 +13947,8 @@ public class objc_RUMVitalAppLaunchEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -14089,8 +14089,8 @@ public class objc_RUMVitalDurationEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMVitalDurationEventDD {
-        objc_RUMVitalDurationEventDD(root: root)
+    public var kubesense: objc_RUMVitalDurationEventKubesense {
+        objc_RUMVitalDurationEventKubesense(root: root)
     }
 
     public var account: objc_RUMVitalDurationEventRUMAccount? {
@@ -14194,10 +14194,10 @@ public class objc_RUMVitalDurationEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMVitalDurationEventDD)
+@objc(KubesenseRUMVitalDurationEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalDurationEventDD: NSObject {
+public class objc_RUMVitalDurationEventKubesense: NSObject {
     internal let root: objc_RUMVitalDurationEvent
 
     internal init(root: objc_RUMVitalDurationEvent) {
@@ -14205,34 +14205,34 @@ public class objc_RUMVitalDurationEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMVitalDurationEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMVitalDurationEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMVitalDurationEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMVitalDurationEventKubesenseConfiguration(root: root) : nil
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
-    public var profiling: objc_RUMVitalDurationEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMVitalDurationEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMVitalDurationEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMVitalDurationEventKubesenseProfiling(root: root) : nil
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMVitalDurationEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMVitalDurationEventDDSession(root: root) : nil
+    public var session: objc_RUMVitalDurationEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMVitalDurationEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMVitalDurationEventDDConfiguration)
+@objc(KubesenseRUMVitalDurationEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalDurationEventDDConfiguration: NSObject {
+public class objc_RUMVitalDurationEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMVitalDurationEvent
 
     internal init(root: objc_RUMVitalDurationEvent) {
@@ -14240,52 +14240,52 @@ public class objc_RUMVitalDurationEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMVitalDurationEventDDProfiling)
+@objc(KubesenseRUMVitalDurationEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalDurationEventDDProfiling: NSObject {
+public class objc_RUMVitalDurationEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMVitalDurationEvent
 
     internal init(root: objc_RUMVitalDurationEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMVitalDurationEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMVitalDurationEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMVitalDurationEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMVitalDurationEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMVitalDurationEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMVitalDurationEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMVitalDurationEventDDProfilingErrorReason)
+@objc(KubesenseRUMVitalDurationEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMVitalDurationEventDDProfilingErrorReason: Int {
+public enum objc_RUMVitalDurationEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -14313,9 +14313,9 @@ public enum objc_RUMVitalDurationEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMVitalDurationEventDDProfilingQuotaReason)
+@objc(KubesenseRUMVitalDurationEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMVitalDurationEventDDProfilingQuotaReason: Int {
+public enum objc_RUMVitalDurationEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -14352,9 +14352,9 @@ public enum objc_RUMVitalDurationEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMVitalDurationEventDDProfilingStatus)
+@objc(KubesenseRUMVitalDurationEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMVitalDurationEventDDProfilingStatus: Int {
+public enum objc_RUMVitalDurationEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -14382,29 +14382,29 @@ public enum objc_RUMVitalDurationEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMVitalDurationEventDDSession)
+@objc(KubesenseRUMVitalDurationEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalDurationEventDDSession: NSObject {
+public class objc_RUMVitalDurationEventKubesenseSession: NSObject {
     internal let root: objc_RUMVitalDurationEvent
 
     internal init(root: objc_RUMVitalDurationEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMVitalDurationEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMVitalDurationEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMVitalDurationEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMVitalDurationEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMVitalDurationEventDDSessionPlan)
+@objc(KubesenseRUMVitalDurationEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMVitalDurationEventDDSessionPlan: Int {
-    internal init(swift: RUMVitalDurationEvent.DD.Session.Plan?) {
+public enum objc_RUMVitalDurationEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMVitalDurationEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -14412,7 +14412,7 @@ public enum objc_RUMVitalDurationEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMVitalDurationEvent.DD.Session.Plan? {
+    internal var toSwift: RUMVitalDurationEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -14425,9 +14425,9 @@ public enum objc_RUMVitalDurationEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMVitalDurationEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMVitalDurationEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMVitalDurationEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMVitalDurationEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -14483,8 +14483,8 @@ public class objc_RUMVitalDurationEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -14760,8 +14760,8 @@ public class objc_RUMVitalDurationEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -15115,8 +15115,8 @@ public class objc_RUMVitalDurationEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -15162,8 +15162,8 @@ public class objc_RUMVitalDurationEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -15243,8 +15243,8 @@ public class objc_RUMVitalOperationStepEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_RUMVitalOperationStepEventDD {
-        objc_RUMVitalOperationStepEventDD(root: root)
+    public var kubesense: objc_RUMVitalOperationStepEventKubesense {
+        objc_RUMVitalOperationStepEventKubesense(root: root)
     }
 
     public var account: objc_RUMVitalOperationStepEventRUMAccount? {
@@ -15348,10 +15348,10 @@ public class objc_RUMVitalOperationStepEvent: NSObject {
     }
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDD)
+@objc(KubesenseRUMVitalOperationStepEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalOperationStepEventDD: NSObject {
+public class objc_RUMVitalOperationStepEventKubesense: NSObject {
     internal let root: objc_RUMVitalOperationStepEvent
 
     internal init(root: objc_RUMVitalOperationStepEvent) {
@@ -15359,34 +15359,34 @@ public class objc_RUMVitalOperationStepEventDD: NSObject {
     }
 
     public var browserSdkVersion: String? {
-        root.swiftModel.dd.browserSdkVersion
+        root.swiftModel.kubesense.browserSdkVersion
     }
 
-    public var configuration: objc_RUMVitalOperationStepEventDDConfiguration? {
-        root.swiftModel.dd.configuration != nil ? objc_RUMVitalOperationStepEventDDConfiguration(root: root) : nil
+    public var configuration: objc_RUMVitalOperationStepEventKubesenseConfiguration? {
+        root.swiftModel.kubesense.configuration != nil ? objc_RUMVitalOperationStepEventKubesenseConfiguration(root: root) : nil
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 
-    public var profiling: objc_RUMVitalOperationStepEventDDProfiling? {
-        root.swiftModel.dd.profiling != nil ? objc_RUMVitalOperationStepEventDDProfiling(root: root) : nil
+    public var profiling: objc_RUMVitalOperationStepEventKubesenseProfiling? {
+        root.swiftModel.kubesense.profiling != nil ? objc_RUMVitalOperationStepEventKubesenseProfiling(root: root) : nil
     }
 
     public var sdkName: String? {
-        root.swiftModel.dd.sdkName
+        root.swiftModel.kubesense.sdkName
     }
 
-    public var session: objc_RUMVitalOperationStepEventDDSession? {
-        root.swiftModel.dd.session != nil ? objc_RUMVitalOperationStepEventDDSession(root: root) : nil
+    public var session: objc_RUMVitalOperationStepEventKubesenseSession? {
+        root.swiftModel.kubesense.session != nil ? objc_RUMVitalOperationStepEventKubesenseSession(root: root) : nil
     }
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDConfiguration)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseConfiguration)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalOperationStepEventDDConfiguration: NSObject {
+public class objc_RUMVitalOperationStepEventKubesenseConfiguration: NSObject {
     internal let root: objc_RUMVitalOperationStepEvent
 
     internal init(root: objc_RUMVitalOperationStepEvent) {
@@ -15394,52 +15394,52 @@ public class objc_RUMVitalOperationStepEventDDConfiguration: NSObject {
     }
 
     public var profilingSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.profilingSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.profilingSampleRate as NSNumber?
     }
 
     public var sessionReplayExperimentalFeatures: [String]? {
-        root.swiftModel.dd.configuration!.sessionReplayExperimentalFeatures
+        root.swiftModel.kubesense.configuration!.sessionReplayExperimentalFeatures
     }
 
     public var sessionReplaySampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.sessionReplaySampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.sessionReplaySampleRate as NSNumber?
     }
 
     public var sessionSampleRate: NSNumber {
-        root.swiftModel.dd.configuration!.sessionSampleRate as NSNumber
+        root.swiftModel.kubesense.configuration!.sessionSampleRate as NSNumber
     }
 
     public var traceSampleRate: NSNumber? {
-        root.swiftModel.dd.configuration!.traceSampleRate as NSNumber?
+        root.swiftModel.kubesense.configuration!.traceSampleRate as NSNumber?
     }
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDProfiling)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseProfiling)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalOperationStepEventDDProfiling: NSObject {
+public class objc_RUMVitalOperationStepEventKubesenseProfiling: NSObject {
     internal let root: objc_RUMVitalOperationStepEvent
 
     internal init(root: objc_RUMVitalOperationStepEvent) {
         self.root = root
     }
 
-    public var errorReason: objc_RUMVitalOperationStepEventDDProfilingErrorReason {
-        .init(swift: root.swiftModel.dd.profiling!.errorReason)
+    public var errorReason: objc_RUMVitalOperationStepEventKubesenseProfilingErrorReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.errorReason)
     }
 
-    public var quotaReason: objc_RUMVitalOperationStepEventDDProfilingQuotaReason {
-        .init(swift: root.swiftModel.dd.profiling!.quotaReason)
+    public var quotaReason: objc_RUMVitalOperationStepEventKubesenseProfilingQuotaReason {
+        .init(swift: root.swiftModel.kubesense.profiling!.quotaReason)
     }
 
-    public var status: objc_RUMVitalOperationStepEventDDProfilingStatus {
-        .init(swift: root.swiftModel.dd.profiling!.status)
+    public var status: objc_RUMVitalOperationStepEventKubesenseProfilingStatus {
+        .init(swift: root.swiftModel.kubesense.profiling!.status)
     }
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDProfilingErrorReason)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseProfilingErrorReason)
 @_spi(objc)
-public enum objc_RUMVitalOperationStepEventDDProfilingErrorReason: Int {
+public enum objc_RUMVitalOperationStepEventKubesenseProfilingErrorReason: Int {
     internal init(swift: KubesenseProfiling.ErrorReason?) {
         switch swift {
         case nil: self = .none
@@ -15467,9 +15467,9 @@ public enum objc_RUMVitalOperationStepEventDDProfilingErrorReason: Int {
     case unexpectedException
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDProfilingQuotaReason)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseProfilingQuotaReason)
 @_spi(objc)
-public enum objc_RUMVitalOperationStepEventDDProfilingQuotaReason: Int {
+public enum objc_RUMVitalOperationStepEventKubesenseProfilingQuotaReason: Int {
     internal init(swift: KubesenseProfiling.QuotaReason?) {
         switch swift {
         case nil: self = .none
@@ -15506,9 +15506,9 @@ public enum objc_RUMVitalOperationStepEventDDProfilingQuotaReason: Int {
     case apiError
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDProfilingStatus)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseProfilingStatus)
 @_spi(objc)
-public enum objc_RUMVitalOperationStepEventDDProfilingStatus: Int {
+public enum objc_RUMVitalOperationStepEventKubesenseProfilingStatus: Int {
     internal init(swift: KubesenseProfiling.Status?) {
         switch swift {
         case nil: self = .none
@@ -15536,29 +15536,29 @@ public enum objc_RUMVitalOperationStepEventDDProfilingStatus: Int {
     case error
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDSession)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseSession)
 @objcMembers
 @_spi(objc)
-public class objc_RUMVitalOperationStepEventDDSession: NSObject {
+public class objc_RUMVitalOperationStepEventKubesenseSession: NSObject {
     internal let root: objc_RUMVitalOperationStepEvent
 
     internal init(root: objc_RUMVitalOperationStepEvent) {
         self.root = root
     }
 
-    public var plan: objc_RUMVitalOperationStepEventDDSessionPlan {
-        .init(swift: root.swiftModel.dd.session!.plan)
+    public var plan: objc_RUMVitalOperationStepEventKubesenseSessionPlan {
+        .init(swift: root.swiftModel.kubesense.session!.plan)
     }
 
-    public var sessionPrecondition: objc_RUMVitalOperationStepEventDDSessionRUMSessionPrecondition {
-        .init(swift: root.swiftModel.dd.session!.sessionPrecondition)
+    public var sessionPrecondition: objc_RUMVitalOperationStepEventKubesenseSessionRUMSessionPrecondition {
+        .init(swift: root.swiftModel.kubesense.session!.sessionPrecondition)
     }
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDSessionPlan)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseSessionPlan)
 @_spi(objc)
-public enum objc_RUMVitalOperationStepEventDDSessionPlan: Int {
-    internal init(swift: RUMVitalOperationStepEvent.DD.Session.Plan?) {
+public enum objc_RUMVitalOperationStepEventKubesenseSessionPlan: Int {
+    internal init(swift: RUMVitalOperationStepEvent.KS.Session.Plan?) {
         switch swift {
         case nil: self = .none
         case .plan1?: self = .plan1
@@ -15566,7 +15566,7 @@ public enum objc_RUMVitalOperationStepEventDDSessionPlan: Int {
         }
     }
 
-    internal var toSwift: RUMVitalOperationStepEvent.DD.Session.Plan? {
+    internal var toSwift: RUMVitalOperationStepEvent.KS.Session.Plan? {
         switch self {
         case .none: return nil
         case .plan1: return .plan1
@@ -15579,9 +15579,9 @@ public enum objc_RUMVitalOperationStepEventDDSessionPlan: Int {
     case plan2
 }
 
-@objc(KubesenseRUMVitalOperationStepEventDDSessionRUMSessionPrecondition)
+@objc(KubesenseRUMVitalOperationStepEventKubesenseSessionRUMSessionPrecondition)
 @_spi(objc)
-public enum objc_RUMVitalOperationStepEventDDSessionRUMSessionPrecondition: Int {
+public enum objc_RUMVitalOperationStepEventKubesenseSessionRUMSessionPrecondition: Int {
     internal init(swift: RUMSessionPrecondition?) {
         switch swift {
         case nil: self = .none
@@ -15637,8 +15637,8 @@ public class objc_RUMVitalOperationStepEventRUMAccount: NSObject {
     }
 
     public var accountInfo: [String: Any] {
-        set { root.swiftModel.account!.accountInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.account!.accountInfo.dd.objCAttributes }
+        set { root.swiftModel.account!.accountInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.account!.accountInfo.kubesense.objCAttributes }
     }
 }
 
@@ -15914,8 +15914,8 @@ public class objc_RUMVitalOperationStepEventRUMEventAttributes: NSObject {
     }
 
     public var contextInfo: [String: Any] {
-        set { root.swiftModel.context!.contextInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.context!.contextInfo.dd.objCAttributes }
+        set { root.swiftModel.context!.contextInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.context!.contextInfo.kubesense.objCAttributes }
     }
 }
 
@@ -16269,8 +16269,8 @@ public class objc_RUMVitalOperationStepEventRUMSyntheticsTest: NSObject {
     }
 
     public var syntheticsInfo: [String: Any] {
-        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.synthetics!.syntheticsInfo.dd.objCAttributes }
+        set { root.swiftModel.synthetics!.syntheticsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.synthetics!.syntheticsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -16316,8 +16316,8 @@ public class objc_RUMVitalOperationStepEventRUMUser: NSObject {
     }
 
     public var usrInfo: [String: Any] {
-        set { root.swiftModel.usr!.usrInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.usr!.usrInfo.dd.objCAttributes }
+        set { root.swiftModel.usr!.usrInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.usr!.usrInfo.kubesense.objCAttributes }
     }
 }
 
@@ -16459,8 +16459,8 @@ public class objc_TelemetryConfigurationEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_TelemetryConfigurationEventDD {
-        objc_TelemetryConfigurationEventDD(root: root)
+    public var kubesense: objc_TelemetryConfigurationEventKubesense {
+        objc_TelemetryConfigurationEventKubesense(root: root)
     }
 
     public var action: objc_TelemetryConfigurationEventAction? {
@@ -16512,10 +16512,10 @@ public class objc_TelemetryConfigurationEvent: NSObject {
     }
 }
 
-@objc(KubesenseTelemetryConfigurationEventDD)
+@objc(KubesenseTelemetryConfigurationEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_TelemetryConfigurationEventDD: NSObject {
+public class objc_TelemetryConfigurationEventKubesense: NSObject {
     internal let root: objc_TelemetryConfigurationEvent
 
     internal init(root: objc_TelemetryConfigurationEvent) {
@@ -16523,7 +16523,7 @@ public class objc_TelemetryConfigurationEventDD: NSObject {
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 }
 
@@ -16678,8 +16678,8 @@ public class objc_TelemetryConfigurationEventTelemetry: NSObject {
     }
 
     public var telemetryInfo: [String: Any] {
-        set { root.swiftModel.telemetry.telemetryInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.telemetry.telemetryInfo.dd.objCAttributes }
+        set { root.swiftModel.telemetry.telemetryInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.telemetry.telemetryInfo.kubesense.objCAttributes }
     }
 }
 
@@ -17218,8 +17218,8 @@ public class objc_TelemetryConfigurationEventTelemetryConfigurationPlugins: NSOb
     }
 
     public var pluginsInfo: [String: Any] {
-        set { root.swiftModel.pluginsInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.pluginsInfo.dd.objCAttributes }
+        set { root.swiftModel.pluginsInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.pluginsInfo.kubesense.objCAttributes }
     }
 }
 
@@ -17540,8 +17540,8 @@ public class objc_TelemetryDebugEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_TelemetryDebugEventDD {
-        objc_TelemetryDebugEventDD(root: root)
+    public var kubesense: objc_TelemetryDebugEventKubesense {
+        objc_TelemetryDebugEventKubesense(root: root)
     }
 
     public var action: objc_TelemetryDebugEventAction? {
@@ -17593,10 +17593,10 @@ public class objc_TelemetryDebugEvent: NSObject {
     }
 }
 
-@objc(KubesenseTelemetryDebugEventDD)
+@objc(KubesenseTelemetryDebugEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_TelemetryDebugEventDD: NSObject {
+public class objc_TelemetryDebugEventKubesense: NSObject {
     internal let root: objc_TelemetryDebugEvent
 
     internal init(root: objc_TelemetryDebugEvent) {
@@ -17604,7 +17604,7 @@ public class objc_TelemetryDebugEventDD: NSObject {
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 }
 
@@ -17763,8 +17763,8 @@ public class objc_TelemetryDebugEventTelemetry: NSObject {
     }
 
     public var telemetryInfo: [String: Any] {
-        set { root.swiftModel.telemetry.telemetryInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.telemetry.telemetryInfo.dd.objCAttributes }
+        set { root.swiftModel.telemetry.telemetryInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.telemetry.telemetryInfo.kubesense.objCAttributes }
     }
 }
 
@@ -17852,8 +17852,8 @@ public class objc_TelemetryErrorEvent: NSObject {
         self.swiftModel = swiftModel
     }
 
-    public var dd: objc_TelemetryErrorEventDD {
-        objc_TelemetryErrorEventDD(root: root)
+    public var kubesense: objc_TelemetryErrorEventKubesense {
+        objc_TelemetryErrorEventKubesense(root: root)
     }
 
     public var action: objc_TelemetryErrorEventAction? {
@@ -17905,10 +17905,10 @@ public class objc_TelemetryErrorEvent: NSObject {
     }
 }
 
-@objc(KubesenseTelemetryErrorEventDD)
+@objc(KubesenseTelemetryErrorEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_TelemetryErrorEventDD: NSObject {
+public class objc_TelemetryErrorEventKubesense: NSObject {
     internal let root: objc_TelemetryErrorEvent
 
     internal init(root: objc_TelemetryErrorEvent) {
@@ -17916,7 +17916,7 @@ public class objc_TelemetryErrorEventDD: NSObject {
     }
 
     public var formatVersion: NSNumber {
-        root.swiftModel.dd.formatVersion as NSNumber
+        root.swiftModel.kubesense.formatVersion as NSNumber
     }
 }
 
@@ -18079,8 +18079,8 @@ public class objc_TelemetryErrorEventTelemetry: NSObject {
     }
 
     public var telemetryInfo: [String: Any] {
-        set { root.swiftModel.telemetry.telemetryInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.telemetry.telemetryInfo.dd.objCAttributes }
+        set { root.swiftModel.telemetry.telemetryInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.telemetry.telemetryInfo.kubesense.objCAttributes }
     }
 }
 

@@ -25,7 +25,7 @@ public class objc_RUMView: NSObject {
     let swiftView: RUMView
 
     public var name: String { swiftView.name }
-    public var attributes: [String: Any] { swiftView.attributes.dd.objCAttributes }
+    public var attributes: [String: Any] { swiftView.attributes.kubesense.objCAttributes }
 
     /// Initializes the RUM View description.
     /// - Parameters:
@@ -34,7 +34,7 @@ public class objc_RUMView: NSObject {
     public init(name: String, attributes: [String: Any]) {
         swiftView = RUMView(
             name: name,
-            attributes: attributes.dd.swiftAttributes
+            attributes: attributes.kubesense.swiftAttributes
         )
     }
 }
@@ -56,7 +56,7 @@ public class objc_DefaultUIKitRUMViewsPredicate: NSObject, objc_UIKitRUMViewsPre
 
     public func rumView(for viewController: UIViewController) -> objc_RUMView? {
         return swiftPredicate.rumView(for: viewController).map {
-            objc_RUMView(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+            objc_RUMView(name: $0.name, attributes: $0.attributes.kubesense.objCAttributes)
         }
     }
 }
@@ -69,13 +69,13 @@ public class objc_DefaultUIKitRUMActionsPredicate: NSObject, objc_UIKitRUMAction
     #if os(tvOS)
     public func rumAction(press type: UIPress.PressType, targetView: UIView) -> objc_RUMAction? {
         swiftPredicate.rumAction(press: type, targetView: targetView).map {
-            objc_RUMAction(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+            objc_RUMAction(name: $0.name, attributes: $0.attributes.kubesense.objCAttributes)
         }
     }
     #else
     public func rumAction(targetView: UIView) -> objc_RUMAction? {
         swiftPredicate.rumAction(targetView: targetView).map {
-            objc_RUMAction(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+            objc_RUMAction(name: $0.name, attributes: $0.attributes.kubesense.objCAttributes)
         }
     }
     #endif
@@ -114,7 +114,7 @@ public class objc_RUMAction: NSObject {
     let swiftAction: RUMAction
 
     public var name: String { swiftAction.name }
-    public var attributes: [String: Any] { swiftAction.attributes.dd.objCAttributes }
+    public var attributes: [String: Any] { swiftAction.attributes.kubesense.objCAttributes }
 
     /// Initializes the RUM Action description.
     /// - Parameters:
@@ -123,7 +123,7 @@ public class objc_RUMAction: NSObject {
     public init(name: String, attributes: [String: Any]) {
         swiftAction = RUMAction(
             name: name,
-            attributes: attributes.dd.swiftAttributes
+            attributes: attributes.kubesense.swiftAttributes
         )
     }
 }
@@ -547,7 +547,7 @@ public class objc_URLSessionTracking: NSObject {
     public func setResourceAttributesProvider(_ provider: @escaping (URLRequest, URLResponse?, Data?, Error?) -> [String: Any]?) {
         swiftConfig.resourceAttributesProvider = { request, response, data, error in
             let objcAttributes = provider(request, response, data, error)
-            return objcAttributes?.dd.swiftAttributes
+            return objcAttributes?.kubesense.swiftAttributes
         }
     }
 
@@ -807,7 +807,7 @@ public class objc_RUMMonitor: NSObject {
     }
 
     public func addViewAttributes(_ attributes: [String: Any]) {
-        swiftRUMMonitor.addViewAttributes(attributes.dd.swiftAttributes)
+        swiftRUMMonitor.addViewAttributes(attributes.kubesense.swiftAttributes)
     }
 
     public func removeViewAttribute(forKey key: String) {
@@ -824,14 +824,14 @@ public class objc_RUMMonitor: NSObject {
         name: String?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.startView(viewController: viewController, name: name, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.startView(viewController: viewController, name: name, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func stopView(
         viewController: UIViewController,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.stopView(viewController: viewController, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.stopView(viewController: viewController, attributes: attributes.kubesense.swiftAttributes)
     }
     #endif
 
@@ -840,14 +840,14 @@ public class objc_RUMMonitor: NSObject {
         name: String?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.startView(key: key, name: name, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.startView(key: key, name: name, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func stopView(
         key: String,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.stopView(key: key, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.stopView(key: key, attributes: attributes.kubesense.swiftAttributes)
     }
 
     @available(*, message: "This API is experimental and may change in future releases")
@@ -865,7 +865,7 @@ public class objc_RUMMonitor: NSObject {
         source: objc_RUMErrorSource,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.addError(message: message, stack: stack, source: source.swiftType, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.addError(message: message, stack: stack, source: source.swiftType, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func addError(
@@ -873,7 +873,7 @@ public class objc_RUMMonitor: NSObject {
         source: objc_RUMErrorSource,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.addError(error: error, source: source.swiftType, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.addError(error: error, source: source.swiftType, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func startResource(
@@ -881,7 +881,7 @@ public class objc_RUMMonitor: NSObject {
         request: URLRequest,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.startResource(resourceKey: resourceKey, request: request, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.startResource(resourceKey: resourceKey, request: request, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func startResource(
@@ -889,7 +889,7 @@ public class objc_RUMMonitor: NSObject {
         url: URL,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.startResource(resourceKey: resourceKey, url: url, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.startResource(resourceKey: resourceKey, url: url, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func startResource(
@@ -898,7 +898,7 @@ public class objc_RUMMonitor: NSObject {
         urlString: String,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.startResource(resourceKey: resourceKey, httpMethod: httpMethod.swiftType, urlString: urlString, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.startResource(resourceKey: resourceKey, httpMethod: httpMethod.swiftType, urlString: urlString, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func addResourceMetrics(
@@ -906,7 +906,7 @@ public class objc_RUMMonitor: NSObject {
         metrics: URLSessionTaskMetrics,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.addResourceMetrics(resourceKey: resourceKey, metrics: metrics, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.addResourceMetrics(resourceKey: resourceKey, metrics: metrics, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func stopResource(
@@ -915,7 +915,7 @@ public class objc_RUMMonitor: NSObject {
         size: NSNumber?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.stopResource(resourceKey: resourceKey, response: response, size: size?.int64Value, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.stopResource(resourceKey: resourceKey, response: response, size: size?.int64Value, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func stopResource(
@@ -930,7 +930,7 @@ public class objc_RUMMonitor: NSObject {
             statusCode: statusCode?.intValue,
             kind: kind.swiftType,
             size: size?.int64Value,
-            attributes: attributes.dd.swiftAttributes
+            attributes: attributes.kubesense.swiftAttributes
         )
     }
 
@@ -940,7 +940,7 @@ public class objc_RUMMonitor: NSObject {
         response: URLResponse?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.stopResourceWithError(resourceKey: resourceKey, error: error, response: response, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.stopResourceWithError(resourceKey: resourceKey, error: error, response: response, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func stopResourceWithError(
@@ -949,7 +949,7 @@ public class objc_RUMMonitor: NSObject {
         response: URLResponse?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.stopResourceWithError(resourceKey: resourceKey, message: message, response: response, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.stopResourceWithError(resourceKey: resourceKey, message: message, response: response, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func startAction(
@@ -957,7 +957,7 @@ public class objc_RUMMonitor: NSObject {
         name: String,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.startAction(type: type.swiftType, name: name, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.startAction(type: type.swiftType, name: name, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func stopAction(
@@ -965,7 +965,7 @@ public class objc_RUMMonitor: NSObject {
         name: String?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.stopAction(type: type.swiftType, name: name, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.stopAction(type: type.swiftType, name: name, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func addAction(
@@ -973,7 +973,7 @@ public class objc_RUMMonitor: NSObject {
         name: String,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.addAction(type: type.swiftType, name: name, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.addAction(type: type.swiftType, name: name, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func addAttribute(
@@ -984,7 +984,7 @@ public class objc_RUMMonitor: NSObject {
     }
 
     public func addAttributes(_ attributes: [String: Any]) {
-        swiftRUMMonitor.addAttributes(attributes.dd.swiftAttributes)
+        swiftRUMMonitor.addAttributes(attributes.kubesense.swiftAttributes)
     }
 
     public func removeAttribute(forKey key: String) {
@@ -1008,7 +1008,7 @@ public class objc_RUMMonitor: NSObject {
         swiftRUMMonitor.startOperation(
             name: name,
             operationKey: operationKey,
-            attributes: attributes.dd.swiftAttributes,
+            attributes: attributes.kubesense.swiftAttributes,
             options: options?.swiftType
         )
     }
@@ -1027,7 +1027,7 @@ public class objc_RUMMonitor: NSObject {
         operationKey: String?,
         attributes: [String: Any]
     ) {
-        swiftRUMMonitor.succeedOperation(name: name, operationKey: operationKey, attributes: attributes.dd.swiftAttributes)
+        swiftRUMMonitor.succeedOperation(name: name, operationKey: operationKey, attributes: attributes.kubesense.swiftAttributes)
     }
 
     @available(*, deprecated, renamed: "succeedOperation(name:operationKey:attributes:)", message: "Use succeedOperation(name:operationKey:attributes:) instead.")
@@ -1049,7 +1049,7 @@ public class objc_RUMMonitor: NSObject {
             name: name,
             operationKey: operationKey,
             reason: reason.swiftType,
-            attributes: attributes.dd.swiftAttributes
+            attributes: attributes.kubesense.swiftAttributes
         )
     }
 
@@ -1091,7 +1091,7 @@ extension objc_RUMMonitor {
         swiftRUMMonitor.addError(
             error: error,
             source: source.swiftType,
-            attributes: attributes.dd.swiftAttributes,
+            attributes: attributes.kubesense.swiftAttributes,
             completionHandler: {
                 semaphore.signal()
             }

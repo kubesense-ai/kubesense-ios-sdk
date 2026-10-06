@@ -110,7 +110,7 @@ final class KubesenseProfilerTests: XCTestCase {
     func testReceiveApplicationLaunchVital_capturesOngoingRUMVitals() throws {
         // Given
         let dateProvider = DateProviderMock()
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = continuousProfiler(isAppLaunchProfilingEnabled: true, dateProvider: dateProvider)
         addSampleToCurrentProfile()
         let completedOperationStart = Vital.mockWith(name: "completed-operation")
@@ -184,7 +184,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = continuousProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         // When - transition context to background while retaining foreground history
@@ -480,7 +480,7 @@ extension KubesenseProfilerTests {
     func testApplicationDidEnterBackground_doesNothing_whenAppWasNeverInForeground() {
         // Given
         let profiler = continuousProfiler()
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         // App was only ever in background (e.g. UIScene based app)
         core.context = .mockWith(applicationStateHistory: .mockAppInBackground())
@@ -499,7 +499,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = continuousProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let startOperation = Vital.mockWith(id: .mockRandom(), name: "operation")
@@ -538,7 +538,7 @@ extension KubesenseProfilerTests {
             duration: 2_000_000_000
         )
 
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
         _ = profiler.receive(message: .payload(OperationMessage(attributes: mockRandomAttributes(), operation: ttfdVital)), from: core)
 
@@ -587,7 +587,7 @@ extension KubesenseProfilerTests {
             serverTimeOffset: serverTimeOffset
         )
 
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         _ = profiler.receive(
@@ -626,7 +626,7 @@ extension KubesenseProfilerTests {
         let metadata = try XCTUnwrap(core.metadata.first as? ProfileAttachments)
         let vitals = try typedRUMEvents(from: metadata).filter { $0["type"] as? String == "vital" }
         let start = try XCTUnwrap(vitals.first?["start_ns"] as? Int64)
-        XCTAssertEqual(start, startDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Nanoseconds)
+        XCTAssertEqual(start, startDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Nanoseconds)
         withExtendedLifetime(profiler) {}
     }
 
@@ -638,7 +638,7 @@ extension KubesenseProfilerTests {
             deterministicSampler: DeterministicSampler(uuid: .mockRandom(), samplingRate: .maxSampleRate)
         )
         let profiler = continuousProfiler(profilingSamplerProvider: profilingSamplerProvider, dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let attributes: [AttributeKey: AttributeValue] = [
@@ -676,7 +676,7 @@ extension KubesenseProfilerTests {
             deterministicSampler: DeterministicSampler(uuid: .mockRandom(), samplingRate: .maxSampleRate)
         )
         let profiler = continuousProfiler(profilingSamplerProvider: profilingSamplerProvider, dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let attributes: [AttributeKey: AttributeValue] = [
@@ -935,7 +935,7 @@ extension KubesenseProfilerTests {
         // Given
         core = PassthroughCoreMock(context: .mockWith(applicationStateHistory: .mockAppInBackground()))
         let profilingSamplerProvider = profilingSamplerProvider(isContinuousProfiling: true)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = continuousProfiler(
             profilingSamplerProvider: profilingSamplerProvider,
             isAppLaunchProfilingEnabled: true
@@ -976,7 +976,7 @@ extension KubesenseProfilerTests {
         // Given
         core = PassthroughCoreMock(context: .mockWith(applicationStateHistory: .mockAppInBackground()))
         let profilingSamplerProvider = profilingSamplerProvider(isContinuousProfiling: true)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = continuousProfiler(
             profilingSamplerProvider: profilingSamplerProvider,
             isAppLaunchProfilingEnabled: true
@@ -1026,7 +1026,7 @@ extension KubesenseProfilerTests {
         // Given
         core = PassthroughCoreMock(context: .mockWith(applicationStateHistory: .mockAppInBackground()))
         let profilingSamplerProvider = profilingSamplerProvider(isContinuousProfiling: true)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = continuousProfiler(
             profilingSamplerProvider: profilingSamplerProvider,
             isAppLaunchProfilingEnabled: true
@@ -1084,7 +1084,7 @@ extension KubesenseProfilerTests {
         // Given - launch profiling sampled out before the SDK initialized.
         core = PassthroughCoreMock(context: .mockWith(applicationStateHistory: .mockAppInBackground()))
         let profilingSamplerProvider = profilingSamplerProvider(isContinuousProfiling: true)
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = continuousProfiler(
             profilingSamplerProvider: profilingSamplerProvider,
             isAppLaunchProfilingEnabled: true
@@ -1132,7 +1132,7 @@ extension KubesenseProfilerTests {
     func testReceiveContext_preservesLaunchSamplesUntilTTID_whenOnlyAppLaunchProfilingIsEnabled() throws {
         // Given - native launch profiling starts before the SDK receives its first foreground context.
         core = PassthroughCoreMock(context: .mockWith(applicationStateHistory: .mockAppInBackground()))
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(isAppLaunchProfilingEnabled: true)
 
         let launchTrace = UnsafeMutablePointer<stack_trace_t>.allocate(capacity: 1)
@@ -1182,7 +1182,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         core = PassthroughCoreMock(context: .mockWith(applicationStateHistory: .mockAppInBackground()))
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(
             isAppLaunchProfilingEnabled: true,
             dateProvider: dateProvider
@@ -1253,7 +1253,7 @@ extension KubesenseProfilerTests {
 
     func testReceiveOperationStartWhenContinuousProfilingSamplesOut_doesNotStartProfiler() {
         // Given
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let dateProvider = DateProviderMock()
         let profilingSamplerProvider = profilingSamplerProvider(isContinuousProfiling: true)
         profilingSamplerProvider.updateWith(
@@ -1350,7 +1350,7 @@ extension KubesenseProfilerTests {
             operationKey: startOperation.operationKey,
             stepType: .end
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         _ = profiler.receive(message: .payload(OperationMessage(attributes: mockRandomAttributes(), operation: startOperation)), from: core)
@@ -1390,7 +1390,7 @@ extension KubesenseProfilerTests {
             additionalContext: [RUMCoreContext.mockWith(sessionSampleRate: .maxSampleRate)]
         )
         shareCurrentContext(with: profiler)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
         addSampleToCurrentProfile()
 
@@ -1433,7 +1433,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = continuousProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         // When
         core.context = .mockWith(applicationStateHistory: .mockWith(
@@ -1460,7 +1460,7 @@ extension KubesenseProfilerTests {
             profilingSamplerProvider: profilingSamplerProvider,
             profilingInterval: 0.05
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         // When
         waitForProfileWrite(expectingWrite: false, timeout: 0.15) {}
@@ -1475,7 +1475,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = continuousProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let startOperation = Vital.mockWith(name: "operation")
@@ -1503,7 +1503,7 @@ extension KubesenseProfilerTests {
         let dateProvider = DateProviderMock()
         let profiler = continuousProfiler(dateProvider: dateProvider)
         let longTask = DurationEvent(id: .mockRandom(), type: .longTask, start: 0, duration: 100)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         _ = profiler.receive(message: .payload(LongTaskMessage(attributes: mockRandomAttributes(), longTask: longTask)), from: core)
 
@@ -1527,7 +1527,7 @@ extension KubesenseProfilerTests {
         let dateProvider = DateProviderMock()
         let profiler = continuousProfiler(dateProvider: dateProvider)
         let hang = DurationEvent(id: .mockRandom(), type: .error, start: 0, duration: 500)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         _ = profiler.receive(message: .payload(AppHangMessage(attributes: mockRandomAttributes(), hang: hang)), from: core)
 
@@ -1556,7 +1556,7 @@ extension KubesenseProfilerTests {
         let profiler = continuousProfiler(profilingSamplerProvider: profilingSamplerProvider, dateProvider: dateProvider)
         let hang = DurationEvent(id: .mockRandom(), type: .error, start: 0, duration: 500)
         let longTask = DurationEvent(id: .mockRandom(), type: .longTask, start: 0, duration: 100)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         _ = profiler.receive(message: .payload(AppHangMessage(attributes: mockRandomAttributes(), hang: hang)), from: core)
         _ = profiler.receive(message: .payload(LongTaskMessage(attributes: mockRandomAttributes(), longTask: longTask)), from: core)
@@ -1587,7 +1587,7 @@ extension KubesenseProfilerTests {
             profilingSamplerProvider: profilingSamplerProvider,
             dateProvider: dateProvider
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         // Send background context to stop the profiler and record the state transition
@@ -1668,7 +1668,7 @@ extension KubesenseProfilerTests {
 
     func testCustomProfiler_doesNotStartProfilerOnFirstRUMOperationStart() {
         // Given
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED)
 
         let dateProvider = DateProviderMock()
@@ -1707,7 +1707,7 @@ extension KubesenseProfilerTests {
         )
         flushQueue()
 
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         core.context = .mockWith(applicationStateHistory: .mockWith(
             initialState: .active,
             date: dateProvider.now.addingTimeInterval(-1),
@@ -1724,7 +1724,7 @@ extension KubesenseProfilerTests {
 
     func testCustomProfiler_doesNotRestartProfilerStoppedByContextOnOperation() {
         // Given
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         let dateProvider = DateProviderMock()
@@ -1767,7 +1767,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = customProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         // When - background context with no accumulated events
         core.context = .mockWith(applicationStateHistory: .mockWith(
@@ -1794,7 +1794,7 @@ extension KubesenseProfilerTests {
         core.context = .mockWith(applicationStateHistory: .mockAppInForeground(since: initialDate.addingTimeInterval(-1)))
         let profiler = customProfiler(dateProvider: dateProvider)
         shareCurrentContext(with: profiler)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
         addSampleToCurrentProfile()
 
@@ -1828,7 +1828,7 @@ extension KubesenseProfilerTests {
         core.context = .mockWith(applicationStateHistory: .mockAppInForeground(since: initialDate.addingTimeInterval(-1)))
         let profiler = customProfiler(dateProvider: dateProvider)
         shareCurrentContext(with: profiler)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let startOp = Vital.mockWith(id: "start-id", name: "operation", stepType: .start, date: dateProvider.now)
@@ -1865,7 +1865,7 @@ extension KubesenseProfilerTests {
     func testCustomProfiler_doesNotStartProfiler_onEndOperationWithoutMatchingStart() {
         // Given
         let profiler = customProfiler()
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED)
 
         let orphanEnd: Vital = .mockWith(stepType: .end)
@@ -1884,7 +1884,7 @@ extension KubesenseProfilerTests {
         let dateProvider = DateProviderMock(now: Date())
         let profiler = customProfiler(dateProvider: dateProvider)
         shareCurrentContext(with: profiler)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         let startOp: Vital = .mockWith(stepType: .start, date: dateProvider.now)
         _ = profiler.receive(message: .payload(OperationMessage(attributes: mockRandomAttributes(), operation: startOp)), from: core)
@@ -1906,7 +1906,7 @@ extension KubesenseProfilerTests {
         let dateProvider = DateProviderMock(now: Date())
         let profiler = customProfiler(isAppLaunchProfilingEnabled: true, dateProvider: dateProvider)
         shareCurrentContext(with: profiler)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         let startOp: Vital = .mockWith(date: dateProvider.now.addingTimeInterval(1))
         _ = profiler.receive(message: .payload(OperationMessage(attributes: mockRandomAttributes(), operation: startOp)), from: core)
@@ -1924,7 +1924,7 @@ extension KubesenseProfilerTests {
     func testCustomProfiler_stopsProfiler_whenOperationsExpired() {
         // Given
         let dateProvider = DateProviderMock(now: Date())
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(isAppLaunchProfilingEnabled: true, dateProvider: dateProvider)
         shareCurrentContext(with: profiler)
 
@@ -1949,7 +1949,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = customProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_RUNNING)
 
         // When
@@ -1970,7 +1970,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = customProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let startOperation = Vital.mockWith(name: "operation", date: dateProvider.now)
@@ -2005,7 +2005,7 @@ extension KubesenseProfilerTests {
         // Given
         let dateProvider = DateProviderMock()
         let profiler = customProfiler(dateProvider: dateProvider)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let startOperation = Vital.mockWith(name: "operation", date: dateProvider.now)
@@ -2039,7 +2039,7 @@ extension KubesenseProfilerTests {
     func testCustomProfiler_applicationWillEnterForeground_doesNotRestartProfiler() {
         // Given
         let dateProvider = DateProviderMock()
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_NOT_STARTED)
 
         let profiler = customProfiler(dateProvider: dateProvider)
@@ -2089,7 +2089,7 @@ extension KubesenseProfilerTests {
             dateProvider: dateProvider
         )
         let longTask = DurationEvent(id: .mockRandom(), type: .longTask, start: 0, duration: 100)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
         _ = profiler.receive(message: .payload(LongTaskMessage(attributes: mockRandomAttributes(), longTask: longTask)), from: core)
 
@@ -2131,7 +2131,7 @@ extension KubesenseProfilerTests {
             telemetryController: telemetryController,
             dateProvider: dateProvider
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         kubesense_profiler_stop()
         addSampleToCurrentProfile()
 
@@ -2211,7 +2211,7 @@ extension KubesenseProfilerTests {
         core.context = .mockWith(applicationStateHistory: .mockAppInForeground(since: initialDate.addingTimeInterval(-1)))
         let profiler = customProfiler(telemetryController: telemetryController, dateProvider: dateProvider)
         shareCurrentContext(with: profiler)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let startOperation = Vital.mockWith(stepType: .start, date: dateProvider.now)
@@ -2263,7 +2263,7 @@ extension KubesenseProfilerTests {
             profilingSamplerProvider: profilingSamplerProvider,
             quotaChecker: quotaChecker
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         connectMessageReceiver(
             to: profiler,
             profilingSamplerProvider: profilingSamplerProvider,
@@ -2339,7 +2339,7 @@ extension KubesenseProfilerTests {
         let telemetryController = ProfilingTelemetryController(telemetry: telemetry)
         let quotaChecker = ProfilingQuotaCheckerMock()
         let profilingSamplerProvider = profilingSamplerProvider(isContinuousProfiling: true)
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = continuousProfiler(
             profilingSamplerProvider: profilingSamplerProvider,
             isAppLaunchProfilingEnabled: true,
@@ -2469,7 +2469,7 @@ extension KubesenseProfilerTests {
             applicationStateHistory: .mockAppInForeground(),
             additionalContext: [RUMCoreContext.mockWith(sessionSampleRate: .maxSampleRate)]
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         // When - quota rejects before TTID and no TTID message is ever received.
         connectMessageReceiver(
@@ -2503,7 +2503,7 @@ extension KubesenseProfilerTests {
             profilingSamplerProvider: profilingSamplerProvider,
             quotaChecker: quotaChecker
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         _ = profiler.receive(
             message: .payload(TTIDMessage(attributes: mockRandomAttributes(), ttid: .mockWith(stepType: nil))),
             from: core
@@ -2601,7 +2601,7 @@ extension KubesenseProfilerTests {
         ))
         _ = profiler.receive(message: .context(core.context), from: core)
         flushQueue()
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         addSampleToCurrentProfile()
 
         let admittedLongTask = DurationEvent(id: .mockRandom(), type: .longTask, start: 0, duration: 100)
@@ -2653,7 +2653,7 @@ extension KubesenseProfilerTests {
             from: core
         )
         flushQueue()
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
 
         let startOp: Vital = .mockWith(stepType: .start, date: dateProvider.now)
         _ = profiler.receive(message: .payload(OperationMessage(attributes: mockRandomAttributes(), operation: startOp)), from: core)
@@ -2691,7 +2691,7 @@ extension KubesenseProfilerTests {
         core = PassthroughCoreMock(context: .mockWith(
             launchInfo: .mockWith(launchReason: .userLaunch)
         ))
-        kubesense_profiler_start_testing(0, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(0, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(
             isAppLaunchProfilingEnabled: true,
             telemetryController: ProfilingTelemetryController(telemetry: telemetry)
@@ -2717,7 +2717,7 @@ extension KubesenseProfilerTests {
     func testReceiveTTIDMessage_whenLaunchProfileHasNoSamples_doesNotWriteProfile() throws {
         // Given
         let telemetry = TelemetryMock()
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(
             isAppLaunchProfilingEnabled: true,
             telemetryController: ProfilingTelemetryController(telemetry: telemetry)
@@ -2747,7 +2747,7 @@ extension KubesenseProfilerTests {
 
     func testReceiveTTIDMessage_whenProfilerPrewarmed_doesNotWriteProfile() {
         // Given
-        kubesense_profiler_start_testing(100, true, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, true, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(isAppLaunchProfilingEnabled: true)
         XCTAssertEqual(kubesense_profiler_get_status(), KUBESENSE_PROFILER_STATUS_PREWARMED)
 
@@ -2793,7 +2793,7 @@ extension KubesenseProfilerTests {
                 launchInfo: .mockWith(launchReason: .backgroundLaunch)
             )
         )
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(
             isAppLaunchProfilingEnabled: true,
             telemetryController: ProfilingTelemetryController(telemetry: telemetry)
@@ -2886,7 +2886,7 @@ extension KubesenseProfilerTests {
     func testReceiveTTIDMessage_preservesNewerContextServerTimeOffset_whenQueueIsBacklogged() throws {
         // Given
         let queue = DispatchQueue(label: "test.profiler.server-time-offset")
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(isAppLaunchProfilingEnabled: true, queue: queue)
         let ttidServerTimeOffset: TimeInterval = 2
         let contextServerTimeOffset: TimeInterval = 3
@@ -2938,7 +2938,7 @@ extension KubesenseProfilerTests {
         let start = try XCTUnwrap(vitals.first?["start_ns"] as? Int64)
         XCTAssertEqual(
             start,
-            launchDate.addingTimeInterval(ttidServerTimeOffset).timeIntervalSince1970.dd.toInt64Nanoseconds
+            launchDate.addingTimeInterval(ttidServerTimeOffset).timeIntervalSince1970.kubesense.toInt64Nanoseconds
         )
     }
 }
@@ -2946,7 +2946,7 @@ extension KubesenseProfilerTests {
 // MARK: - Profiling Context Status
 
 extension KubesenseProfilerTests {
-    func testProfilingContextStatus_mapsCorrectlyFromDDProfilerStatus() {
+    func testProfilingContextStatus_mapsCorrectlyFromKubesenseProfilerStatus() {
         let cases: [(kubesense_profiler_status_t, ProfilingContext.Status)] = [
             (KUBESENSE_PROFILER_STATUS_NOT_STARTED, .stopped(reason: .notStarted)),
             (KUBESENSE_PROFILER_STATUS_RUNNING, .running),
@@ -3004,7 +3004,7 @@ extension KubesenseProfilerTests {
         core = PassthroughCoreMock(context: .mockWith(
             launchInfo: .mockWith(launchReason: .userLaunch)
         ))
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         let profiler = customProfiler(
             isAppLaunchProfilingEnabled: true,
             telemetryController: ProfilingTelemetryController(telemetry: telemetry),

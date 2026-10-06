@@ -82,12 +82,12 @@ class RUMViewScope_Tests: XCTestCase {
         let fullEvents = writer.events(ofType: RUMViewEvent.self)
         XCTAssertEqual(fullEvents.count, 1)
         let fullEvent = try XCTUnwrap(fullEvents.first)
-        XCTAssertEqual(fullEvent.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(fullEvent.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         KubesenseTAssertValidRUMUUID(fullEvent.view.id)
         XCTAssertEqual(fullEvent.view.url, "UIViewController")
         XCTAssertEqual(fullEvent.view.name, "ViewName")
         XCTAssertTrue(try XCTUnwrap(fullEvent.view.isActive))
-        XCTAssertEqual(fullEvent.dd.documentVersion, 1)
+        XCTAssertEqual(fullEvent.kubesense.documentVersion, 1)
         XCTAssertEqual(fullEvent.source, .ios)
         XCTAssertEqual(fullEvent.service, "test-service")
         XCTAssertEqual(fullEvent.version, "test-version")
@@ -102,18 +102,18 @@ class RUMViewScope_Tests: XCTestCase {
         let update = try XCTUnwrap(updateEvents.first)
 
         // Always-forwarded fields.
-        XCTAssertEqual(update.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(update.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(update.application.id, scope.context.rumApplicationID)
         XCTAssertEqual(update.session.id, scope.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(update.session.type, .user)
         KubesenseTAssertValidRUMUUID(update.view.id)
         XCTAssertEqual(update.view.url, "UIViewController")
-        XCTAssertEqual(update.dd.documentVersion, 2)
+        XCTAssertEqual(update.kubesense.documentVersion, 2)
         XCTAssertNil(update.context)  // context unchanged between full event and stop → diffed to nil
 
         // Delta fields that changed.
         XCTAssertFalse(try XCTUnwrap(update.view.isActive))
-        XCTAssertEqual(update.view.timeSpent, TimeInterval(2).dd.toInt64Nanoseconds)
+        XCTAssertEqual(update.view.timeSpent, TimeInterval(2).kubesense.toInt64Nanoseconds)
 
         // Delta fields that did NOT change are nil in the update.
         XCTAssertNil(update.view.action)
@@ -348,13 +348,13 @@ class RUMViewScope_Tests: XCTestCase {
         currentTime.addTimeInterval(1)
         _ = scope.process(command: RUMStopResourceCommand.mockWith(resourceKey: "key", time: currentTime), context: context, writer: writer)
 
-        // dd.session.sessionPrecondition is always forwarded in both event types.
+        // kubesense.session.sessionPrecondition is always forwarded in both event types.
         XCTAssertGreaterThan(totalViewEventCount, 1)
         writer.events(ofType: RUMViewEvent.self).forEach {
-            XCTAssertEqual($0.dd.session?.sessionPrecondition, randomPrecondition)
+            XCTAssertEqual($0.kubesense.session?.sessionPrecondition, randomPrecondition)
         }
         writer.events(ofType: RUMViewUpdateEvent.self).forEach {
-            XCTAssertEqual($0.dd.session?.sessionPrecondition, randomPrecondition)
+            XCTAssertEqual($0.kubesense.session?.sessionPrecondition, randomPrecondition)
         }
     }
 
@@ -612,7 +612,7 @@ class RUMViewScope_Tests: XCTestCase {
     func testWhenThereAreHitches_firstFullEventContainsSlowFrames_updatesDoNot() {
         var hitches: [Hitch] = []
         (0...Int.mockRandom(min: 1, max: 10)).forEach {
-            hitches.append((start: TimeInterval($0).dd.toInt64Nanoseconds, duration: 0.016.dd.toInt64Nanoseconds))
+            hitches.append((start: TimeInterval($0).kubesense.toInt64Nanoseconds, duration: 0.016.kubesense.toInt64Nanoseconds))
         }
         let hitchesDuration = TimeInterval.kubesenseFromNanoseconds(hitches.map { $0.duration }.reduce(0, +))
         let viewHitchesReaderFactory = { ViewHitchesMock(hitchesDataModel: (hitches: hitches, hitchesDuration: hitchesDuration)) }
@@ -654,7 +654,7 @@ class RUMViewScope_Tests: XCTestCase {
         var currentTime: Date = .mockDecember15th2019At10AMUTC()
         var hitches: [Hitch] = []
         (0..<10).forEach {
-            hitches.append((start: TimeInterval($0).dd.toInt64Nanoseconds, duration: 0.016.dd.toInt64Nanoseconds))
+            hitches.append((start: TimeInterval($0).kubesense.toInt64Nanoseconds, duration: 0.016.kubesense.toInt64Nanoseconds))
         }
         let hitchesDuration = TimeInterval.kubesenseFromNanoseconds(hitches.map { $0.duration }.reduce(0, +))
         let viewHitchesReaderFactory = { ViewHitchesMock(hitchesDataModel: (hitches: hitches, hitchesDuration: hitchesDuration)) }
@@ -782,9 +782,9 @@ class RUMViewScope_Tests: XCTestCase {
             XCTAssertNil($0.view.error,  "Error was dropped — count never changed from 0")
         }
 
-        // dd.documentVersion increments on each write.
+        // kubesense.documentVersion increments on each write.
         let lastUpdate = try XCTUnwrap(writer.events(ofType: RUMViewUpdateEvent.self).last)
-        XCTAssertEqual(lastUpdate.dd.documentVersion, 4)
+        XCTAssertEqual(lastUpdate.kubesense.documentVersion, 4)
     }
 
     // MARK: - Has Replay

@@ -100,7 +100,7 @@ public struct LogEvent: Encodable
         public var sourceType: String = "ios"
         public var fingerprint: String?
         public var binaryImages: [BinaryImage]?
-    public struct Dd: Codable
+    public struct KS: Codable
         public struct Device: Codable
             public let architecture: String
         public let device: Device
@@ -117,7 +117,7 @@ public struct LogEvent: Encodable
     public let applicationBuildNumber: String
     public let buildId: String?
     public let variant: String?
-    public let dd: Dd
+    public let kubesense: KS
     public let device: Device
     public let os: OperatingSystem
     public var userInfo: UserInfo

@@ -16,11 +16,11 @@
 #include "kubesense_profiler.h"
 
 #ifdef __cplusplus
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 class profile;
 
-} // namespace dd:profiler
+} // namespace kubesense:profiler
 
 extern "C" {
 #endif
@@ -29,7 +29,7 @@ extern "C" {
  * Opaque handle to a profile instance
  */
 #ifdef __cplusplus
-typedef dd::profiler::profile kubesense_pprof_t;
+typedef kubesense::profiler::profile kubesense_pprof_t;
 #else
 typedef struct profile kubesense_pprof_t;
 #endif

@@ -146,8 +146,8 @@ class FileWriterTests: XCTestCase {
         let expectation = expectation(description: "Writes complete")
         expectation.expectedFulfillmentCount = 2
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let writer = FileWriter(
             orchestrator: FilesOrchestrator(
@@ -187,8 +187,8 @@ class FileWriterTests: XCTestCase {
         reader = try BatchDataBlockReader(input: directory.files()[0].stream())
         blocks = try XCTUnwrap(reader.all())
         XCTAssertEqual(blocks.count, 1) // same content as before
-        XCTAssertEqual(dd.logger.errorLog?.message, "(rum) Failed to encode value")
-        XCTAssertEqual(dd.logger.errorLog?.error?.message, "DataBlock with \(47) bytes exceeds limit of \(23) bytes")
+        XCTAssertEqual(kubesense.logger.errorLog?.message, "(rum) Failed to encode value")
+        XCTAssertEqual(kubesense.logger.errorLog?.error?.message, "DataBlock with \(47) bytes exceeds limit of \(23) bytes")
 
         wait(for: [expectation], timeout: 0)
     }
@@ -196,8 +196,8 @@ class FileWriterTests: XCTestCase {
     func testGivenErrorVerbosity_whenDataCannotBeEncoded_itPrintsError() throws {
         let expectation = expectation(description: "Writes complete")
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let writer = FileWriter(
             orchestrator: FilesOrchestrator(
@@ -218,8 +218,8 @@ class FileWriterTests: XCTestCase {
 
         writer.write(value: FailingEncodableMock(errorMessage: "failed to encode `FailingEncodable`."), completion: expectation.fulfill)
 
-        XCTAssertEqual(dd.logger.errorLog?.message, "(rum) Failed to encode value")
-        XCTAssertEqual(dd.logger.errorLog?.error?.message, "failed to encode `FailingEncodable`.")
+        XCTAssertEqual(kubesense.logger.errorLog?.message, "(rum) Failed to encode value")
+        XCTAssertEqual(kubesense.logger.errorLog?.error?.message, "failed to encode `FailingEncodable`.")
 
         wait(for: [expectation], timeout: 0)
     }
@@ -228,8 +228,8 @@ class FileWriterTests: XCTestCase {
         let expectation = expectation(description: "Writes complete")
         expectation.expectedFulfillmentCount = 2
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let writer = FileWriter(
             orchestrator: FilesOrchestrator(
@@ -253,8 +253,8 @@ class FileWriterTests: XCTestCase {
         writer.write(value: ["won't be written"], completion: expectation.fulfill)
         try? directory.files()[0].makeReadWrite()
 
-        XCTAssertEqual(dd.logger.errorLog?.message, "(rum) Failed to write 26 bytes to file")
-        XCTAssertTrue(dd.logger.errorLog!.error!.message.contains("You don’t have permission"))
+        XCTAssertEqual(kubesense.logger.errorLog?.message, "(rum) Failed to write 26 bytes to file")
+        XCTAssertTrue(kubesense.logger.errorLog!.error!.message.contains("You don’t have permission"))
 
         wait(for: [expectation], timeout: 0)
     }

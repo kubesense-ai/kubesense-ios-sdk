@@ -306,8 +306,8 @@ class EvaluationLoggingTests: XCTestCase {
     // MARK: - EVALLOG.4: Event Buffering / Flushing
 
     func testGivenFlushIntervalBelowMinimum_whenEnabled_itClampsToMinimum() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         let core = FeatureRegistrationCoreMock()
@@ -318,14 +318,14 @@ class EvaluationLoggingTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.warnLog?.message,
+            kubesense.logger.warnLog?.message,
             "`Flags.Configuration.evaluationFlushInterval` cannot be less than 1.0s. A value of 1.0s will be used."
         )
     }
 
     func testGivenFlushIntervalAboveMaximum_whenEnabled_itClampsToMaximum() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         let core = FeatureRegistrationCoreMock()
@@ -336,7 +336,7 @@ class EvaluationLoggingTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.warnLog?.message,
+            kubesense.logger.warnLog?.message,
             "`Flags.Configuration.evaluationFlushInterval` cannot exceed 60.0s. A value of 60.0s will be used."
         )
     }

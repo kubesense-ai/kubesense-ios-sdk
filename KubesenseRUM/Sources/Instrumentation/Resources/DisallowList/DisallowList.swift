@@ -23,7 +23,7 @@ internal struct DisallowList {
             let segments = pattern.components(separatedBy: "*")
             // Reject patterns with no literal content (e.g. `*`, `**`) - they would disallow every URL.
             guard segments.contains(where: { !$0.isEmpty }) else {
-                DD.logger.warn("The disallow-list pattern '\(pattern)' is not valid and will be ignored.")
+                KS.logger.warn("The disallow-list pattern '\(pattern)' is not valid and will be ignored.")
                 return nil
             }
             let escaped = segments.map { NSRegularExpression.escapedPattern(for: $0) }

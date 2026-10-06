@@ -19,16 +19,16 @@ class SessionReplayPrivacyOverridesTests: XCTestCase {
         let view = UIView()
 
         // Then
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy)
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.imagePrivacy)
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.touchPrivacy)
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.hide)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.hide)
 
-        XCTAssertNotNil(view.dd._privacyOverrides)
-        XCTAssertNil(view.dd._privacyOverrides?.textAndInputPrivacy)
-        XCTAssertNil(view.dd._privacyOverrides?.imagePrivacy)
-        XCTAssertNil(view.dd._privacyOverrides?.touchPrivacy)
-        XCTAssertNil(view.dd._privacyOverrides?.hide)
+        XCTAssertNotNil(view.kubesense._privacyOverrides)
+        XCTAssertNil(view.kubesense._privacyOverrides?.textAndInputPrivacy)
+        XCTAssertNil(view.kubesense._privacyOverrides?.imagePrivacy)
+        XCTAssertNil(view.kubesense._privacyOverrides?.touchPrivacy)
+        XCTAssertNil(view.kubesense._privacyOverrides?.hide)
     }
 
     func testWithOverrides() {
@@ -36,49 +36,49 @@ class SessionReplayPrivacyOverridesTests: XCTestCase {
         let view = UIView()
 
         // When
-        view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAllInputs
-        view.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
-        view.dd.sessionReplayPrivacyOverrides.touchPrivacy = .hide
-        view.dd.sessionReplayPrivacyOverrides.hide = true
+        view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAllInputs
+        view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
+        view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .hide
+        view.kubesense.sessionReplayPrivacyOverrides.hide = true
 
         // Then
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy, .maskAllInputs)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.imagePrivacy, .maskAll)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.touchPrivacy, .hide)
-        XCTAssertEqual(view.dd.sessionReplayPrivacyOverrides.hide, true)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy, .maskAllInputs)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy, .maskAll)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy, .hide)
+        XCTAssertEqual(view.kubesense.sessionReplayPrivacyOverrides.hide, true)
 
-        XCTAssertNotNil(view.dd._privacyOverrides)
-        XCTAssertEqual(view.dd._privacyOverrides?.textAndInputPrivacy, .maskAllInputs)
-        XCTAssertEqual(view.dd._privacyOverrides?.imagePrivacy, .maskAll)
-        XCTAssertEqual(view.dd._privacyOverrides?.touchPrivacy, .hide)
-        XCTAssertEqual(view.dd._privacyOverrides?.hide, true)
+        XCTAssertNotNil(view.kubesense._privacyOverrides)
+        XCTAssertEqual(view.kubesense._privacyOverrides?.textAndInputPrivacy, .maskAllInputs)
+        XCTAssertEqual(view.kubesense._privacyOverrides?.imagePrivacy, .maskAll)
+        XCTAssertEqual(view.kubesense._privacyOverrides?.touchPrivacy, .hide)
+        XCTAssertEqual(view.kubesense._privacyOverrides?.hide, true)
     }
 
     func testRemovingOverrides() {
         // Given
         let view = UIView()
-        view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAllInputs
-        view.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
-        view.dd.sessionReplayPrivacyOverrides.touchPrivacy = .hide
-        view.dd.sessionReplayPrivacyOverrides.hide = true
+        view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = .maskAllInputs
+        view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
+        view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = .hide
+        view.kubesense.sessionReplayPrivacyOverrides.hide = true
 
         // When
-        view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = nil
-        view.dd.sessionReplayPrivacyOverrides.imagePrivacy = nil
-        view.dd.sessionReplayPrivacyOverrides.touchPrivacy = nil
-        view.dd.sessionReplayPrivacyOverrides.hide = nil
+        view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = nil
+        view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = nil
+        view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = nil
+        view.kubesense.sessionReplayPrivacyOverrides.hide = nil
 
         // Then
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy)
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.imagePrivacy)
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.touchPrivacy)
-        XCTAssertNil(view.dd.sessionReplayPrivacyOverrides.hide)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy)
+        XCTAssertNil(view.kubesense.sessionReplayPrivacyOverrides.hide)
 
-        XCTAssertNotNil(view.dd._privacyOverrides)
-        XCTAssertNil(view.dd._privacyOverrides?.textAndInputPrivacy)
-        XCTAssertNil(view.dd._privacyOverrides?.imagePrivacy)
-        XCTAssertNil(view.dd._privacyOverrides?.touchPrivacy)
-        XCTAssertNil(view.dd._privacyOverrides?.hide)
+        XCTAssertNotNil(view.kubesense._privacyOverrides)
+        XCTAssertNil(view.kubesense._privacyOverrides?.textAndInputPrivacy)
+        XCTAssertNil(view.kubesense._privacyOverrides?.imagePrivacy)
+        XCTAssertNil(view.kubesense._privacyOverrides?.touchPrivacy)
+        XCTAssertNil(view.kubesense._privacyOverrides?.hide)
     }
 
     // MARK: Privacy Overrides taking precedence over global settings
@@ -236,17 +236,17 @@ class SessionReplayPrivacyOverridesTests: XCTestCase {
             let view = UIView()
             // Weak reference to the view
             weakView = view
-            view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = randomValues.textAndInputPrivacy
-            view.dd.sessionReplayPrivacyOverrides.imagePrivacy = randomValues.imagePrivacy
-            view.dd.sessionReplayPrivacyOverrides.touchPrivacy = randomValues.touchPrivacy
-            view.dd.sessionReplayPrivacyOverrides.hide = randomValues.hide
+            view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = randomValues.textAndInputPrivacy
+            view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = randomValues.imagePrivacy
+            view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = randomValues.touchPrivacy
+            view.kubesense.sessionReplayPrivacyOverrides.hide = randomValues.hide
 
             // Captures overrides values without retaining the view
             let attributes = ViewAttributes(
                 view: view,
                 frame: view.frame,
                 clip: view.frame,
-                overrides: view.dd.sessionReplayPrivacyOverrides
+                overrides: view.kubesense.sessionReplayPrivacyOverrides
             )
 
             // Check attributes are captured and not optimized away

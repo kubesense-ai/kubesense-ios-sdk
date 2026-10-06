@@ -94,7 +94,7 @@ class KubesenseRUMConfigurationTests: XCTestCase {
     }
 #endif
 
-    func testSetDDRUMURLSessionTrackingWithFirstPartyHosts() {
+    func testSetKubesenseRUMURLSessionTrackingWithFirstPartyHosts() {
         let tracking = objc_URLSessionTracking()
 
         objc.setURLSessionTracking(tracking)
@@ -117,7 +117,7 @@ class KubesenseRUMConfigurationTests: XCTestCase {
         KubesenseAssertReflectionEqual(swift.urlSessionTracking, .init(firstPartyHostsTracing: .traceWithHeaders(hostsWithHeaders: ["foo.com": [.b3, .kubesense]], sampleRate: 99)))
     }
 
-    func testSetDDRUMURLSessionTrackingWithTrackResourceHeaders() {
+    func testSetKubesenseRUMURLSessionTrackingWithTrackResourceHeaders() {
         let tracking = objc_URLSessionTracking()
 
         objc.setURLSessionTracking(tracking)
@@ -144,7 +144,7 @@ class KubesenseRUMConfigurationTests: XCTestCase {
         KubesenseAssertReflectionEqual(swift.urlSessionTracking, .init(trackResourceHeaders: .custom([.defaults, .matchHeaders(["x-request-id"])])))
     }
 
-    func testSetDDRUMURLSessionTrackingWithDisallowList() {
+    func testSetKubesenseRUMURLSessionTrackingWithDisallowList() {
         let tracking = objc_URLSessionTracking()
 
         objc.setURLSessionTracking(tracking)
@@ -162,7 +162,7 @@ class KubesenseRUMConfigurationTests: XCTestCase {
         )
     }
 
-    func testSetDDRUMURLSessionTrackingWithResourceAttributesProvider() {
+    func testSetKubesenseRUMURLSessionTrackingWithResourceAttributesProvider() {
         let tracking = objc_URLSessionTracking()
 
         objc.setURLSessionTracking(tracking)

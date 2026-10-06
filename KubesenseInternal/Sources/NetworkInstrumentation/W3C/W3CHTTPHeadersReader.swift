@@ -20,9 +20,9 @@ public class W3CHTTPHeadersReader: TracePropagationHeadersReader {
             separatedBy: W3CHTTPHeaders.Constants.separator
         )
 
-        guard let traceIDValue = values?.dd[safe: 1],
-              let spanIDValue = values?.dd[safe: 2],
-              values?.dd[safe: 3] != W3CHTTPHeaders.Constants.unsampledValue,
+        guard let traceIDValue = values?.kubesense[safe: 1],
+              let spanIDValue = values?.kubesense[safe: 2],
+              values?.kubesense[safe: 3] != W3CHTTPHeaders.Constants.unsampledValue,
               let traceID = TraceID(traceIDValue, representation: .hexadecimal),
               let spanID = SpanID(spanIDValue, representation: .hexadecimal)
         else {

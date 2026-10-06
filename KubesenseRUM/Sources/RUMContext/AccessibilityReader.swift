@@ -228,7 +228,7 @@ internal final class AccessibilityReader: AccessibilityReading {
     @MainActor private var currentState: AccessibilityInfo {
         var state = AccessibilityInfo()
 
-        if let contentSize = UIApplication.dd.managedShared?.preferredContentSizeCategory.rawValue as String? {
+        if let contentSize = UIApplication.kubesense.managedShared?.preferredContentSizeCategory.rawValue as String? {
             state.textSize = contentSize
         } else {
             state.textSize = UIContentSizeCategory.unspecified.rawValue
@@ -252,7 +252,7 @@ internal final class AccessibilityReader: AccessibilityReading {
         state.singleAppModeEnabled = UIAccessibility.isGuidedAccessEnabled
         state.speakScreenEnabled = UIAccessibility.isSpeakScreenEnabled
         state.speakSelectionEnabled = UIAccessibility.isSpeakSelectionEnabled
-        state.rtlEnabled = UIApplication.dd.managedShared?.userInterfaceLayoutDirection == .rightToLeft
+        state.rtlEnabled = UIApplication.kubesense.managedShared?.userInterfaceLayoutDirection == .rightToLeft
 
         state.buttonShapesEnabled = UIAccessibility.buttonShapesEnabled
         state.reducedAnimationsEnabled = UIAccessibility.prefersCrossFadeTransitions

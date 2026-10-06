@@ -51,7 +51,7 @@ class FirstPartyURLsFilterTests: XCTestCase {
         // NOTE: RUMM-722 why that for loop here? https://github.com/kubesense-ai/kubesense-ios-sdk/pull/384
         for _ in 0...5 {
             let filter = FirstPartyURLsFilter(
-                hosts: ["first-party.com": .init(.dd), "eu": .init(.dd)]
+                hosts: ["first-party.com": .init(.kubesense), "eu": .init(.kubesense)]
             )
             fixtures1stParty.forEach { fixture in
                 let url = URL(string: fixture)!
@@ -67,7 +67,7 @@ class FirstPartyURLsFilterTests: XCTestCase {
         // NOTE: RUMM-722 why that for loop here? https://github.com/kubesense-ai/kubesense-ios-sdk/pull/384
         for _ in 0...5 {
             let filter = FirstPartyURLsFilter(
-                hosts: ["first-party.com": .init(.dd), "eu": .init(.b3m)]
+                hosts: ["first-party.com": .init(.kubesense), "eu": .init(.b3m)]
             )
             fixtures3rdParty.forEach { fixture in
                 let url = URL(string: fixture)!
@@ -81,7 +81,7 @@ class FirstPartyURLsFilterTests: XCTestCase {
 
     func testWhenURLHostIsSubdomain_itIsConsideredFirstParty() {
         let filter = FirstPartyURLsFilter(
-            hosts: ["first-party.com": .init(.dd)]
+            hosts: ["first-party.com": .init(.kubesense)]
         )
         let url = URL(string: "https://api.first-party.com")!
         XCTAssertTrue(
@@ -92,7 +92,7 @@ class FirstPartyURLsFilterTests: XCTestCase {
 
     func testWhenURLHostIsNotSubdomain_itIsNotConsideredFirstParty() {
         let filter = FirstPartyURLsFilter(
-            hosts: ["first-party.com": .init(.dd)]
+            hosts: ["first-party.com": .init(.kubesense)]
         )
         let url = URL(string: "https://apifirst-party.com")!
         XCTAssertFalse(

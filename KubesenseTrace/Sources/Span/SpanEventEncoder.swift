@@ -193,8 +193,8 @@ internal struct SpanEventEncoder {
         try container.encode(span.resource, forKey: .resource)
         try container.encode("custom", forKey: .type)
 
-        try container.encode(span.startTime.timeIntervalSince1970.dd.toNanoseconds, forKey: .startTime)
-        try container.encode(span.duration.dd.toNanoseconds, forKey: .duration)
+        try container.encode(span.startTime.timeIntervalSince1970.kubesense.toNanoseconds, forKey: .startTime)
+        try container.encode(span.duration.kubesense.toNanoseconds, forKey: .duration)
 
         let isError = span.isError ? 1 : 0
         try container.encode(isError, forKey: .isError)
@@ -226,18 +226,18 @@ internal struct SpanEventEncoder {
         try container.encode(span.tracerVersion, forKey: .tracerVersion)
         try container.encode(span.applicationVersion, forKey: .applicationVersion)
 
-        try span.origin.dd.ifNotNil { try container.encode($0, forKey: .origin) }
+        try span.origin.kubesense.ifNotNil { try container.encode($0, forKey: .origin) }
 
         try container.encode(span.device, forKey: .device)
         try container.encode(span.os, forKey: .os)
 
-        try span.userInfo.id.dd.ifNotNil { try container.encode($0, forKey: .userId) }
-        try span.userInfo.name.dd.ifNotNil { try container.encode($0, forKey: .userName) }
-        try span.userInfo.email.dd.ifNotNil { try container.encode($0, forKey: .userEmail) }
+        try span.userInfo.id.kubesense.ifNotNil { try container.encode($0, forKey: .userId) }
+        try span.userInfo.name.kubesense.ifNotNil { try container.encode($0, forKey: .userName) }
+        try span.userInfo.email.kubesense.ifNotNil { try container.encode($0, forKey: .userEmail) }
 
         if let accountInfo = span.accountInfo {
             try container.encode(accountInfo.id, forKey: .accountId)
-            try accountInfo.name.dd.ifNotNil { try container.encode($0, forKey: .accountName) }
+            try accountInfo.name.kubesense.ifNotNil { try container.encode($0, forKey: .accountName) }
         }
 
         if let networkConnectionInfo = span.networkConnectionInfo {

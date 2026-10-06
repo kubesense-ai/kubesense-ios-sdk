@@ -123,10 +123,10 @@ private struct SessionReplayPrivacyHost<Content: View>: UIViewControllerRepresen
         hostingController.rootView = EnvironmentView(context.environment, content: content)
 
         // Forward privacy overrides to the host `UIView`
-        hostingController.view.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = textAndInputPrivacy
-        hostingController.view.dd.sessionReplayPrivacyOverrides.imagePrivacy = imagePrivacy
-        hostingController.view.dd.sessionReplayPrivacyOverrides.touchPrivacy = touchPrivacy
-        hostingController.view.dd.sessionReplayPrivacyOverrides.hide = hide
+        hostingController.view.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = textAndInputPrivacy
+        hostingController.view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = imagePrivacy
+        hostingController.view.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = touchPrivacy
+        hostingController.view.kubesense.sessionReplayPrivacyOverrides.hide = hide
     }
 
     func sizeThatFits(_ proposal: ProposedViewSize, uiViewController: UIHostingController<HostedContent>, context: Context) -> CGSize? {

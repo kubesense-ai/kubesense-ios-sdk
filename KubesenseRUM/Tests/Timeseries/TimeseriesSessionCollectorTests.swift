@@ -477,7 +477,7 @@ class TimeseriesSessionCollectorTests: XCTestCase {
         // Then
         let events = scope.eventsWritten(ofType: RUMTimeseriesMemoryEvent.self)
         XCTAssertFalse(events.isEmpty)
-        XCTAssertEqual(events[0].dd.configuration?.sessionSampleRate, 42)
+        XCTAssertEqual(events[0].kubesense.configuration?.sessionSampleRate, 42)
     }
 
     func testWhenNoActiveView_itWritesEventWithoutView() {

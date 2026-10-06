@@ -203,9 +203,9 @@ class RUMResourcesScenarioTests: IntegrationTests, RUMCommonAsserts, URLSessionT
         XCTAssertNotNil(firstPartyResource1.resource.duration)
         XCTAssertGreaterThan(firstPartyResource1.resource.duration!, 0)
 
-        XCTAssertNotNil(firstPartyResource1.dd.traceId)
-        XCTAssertNotNil(firstPartyResource1.dd.spanId)
-        XCTAssertNotNil(firstPartyResource1.dd.rulePsr)
+        XCTAssertNotNil(firstPartyResource1.kubesense.traceId)
+        XCTAssertNotNil(firstPartyResource1.kubesense.spanId)
+        XCTAssertNotNil(firstPartyResource1.kubesense.rulePsr)
 
         let firstPartyResource2 = try XCTUnwrap(
             session.views[1].resourceEvents.first { $0.resource.url == firstPartyPOSTResourceURL.absoluteString },
@@ -215,16 +215,16 @@ class RUMResourcesScenarioTests: IntegrationTests, RUMCommonAsserts, URLSessionT
         XCTAssertNotNil(firstPartyResource2.resource.duration)
         XCTAssertGreaterThan(firstPartyResource2.resource.duration!, 0)
         XCTAssertEqual(
-            firstPartyResource2.dd.traceId,
+            firstPartyResource2.kubesense.traceId,
             firstPartyPOSTRequestTraceID.toString(representation: .hexadecimal),
             "Tracing information should be propagated to `firstPartyPOSTResourceURL`"
         )
         XCTAssertEqual(
-            firstPartyResource2.dd.spanId,
+            firstPartyResource2.kubesense.spanId,
             firstPartyPOSTRequestSpanID.toString(representation: .decimal),
             "Tracing information should be propagated to `firstPartyPOSTResourceURL`"
         )
-        let firstPartyResource2SampleRate = try XCTUnwrap(firstPartyResource2.dd.rulePsr, "Traced resource should send sample rate")
+        let firstPartyResource2SampleRate = try XCTUnwrap(firstPartyResource2.kubesense.rulePsr, "Traced resource should send sample rate")
         XCTAssertTrue(isValid(sampleRate: firstPartyResource2SampleRate), "\(firstPartyResource2SampleRate) is not valid sample rate")
 
         let firstPartyResourceError1 = try XCTUnwrap(
@@ -250,9 +250,9 @@ class RUMResourcesScenarioTests: IntegrationTests, RUMCommonAsserts, URLSessionT
         XCTAssertEqual(thirdPartyResource1.resource.method, .get)
         XCTAssertNotNil(thirdPartyResource1.resource.duration)
         XCTAssertGreaterThan(thirdPartyResource1.resource.duration!, 0)
-        XCTAssertNil(thirdPartyResource1.dd.traceId, "3rd party RUM Resources should not be traced")
-        XCTAssertNil(thirdPartyResource1.dd.spanId, "3rd party RUM Resources should not be traced")
-        XCTAssertNil(thirdPartyResource1.dd.rulePsr, "Not traced resource should not send sample rate")
+        XCTAssertNil(thirdPartyResource1.kubesense.traceId, "3rd party RUM Resources should not be traced")
+        XCTAssertNil(thirdPartyResource1.kubesense.spanId, "3rd party RUM Resources should not be traced")
+        XCTAssertNil(thirdPartyResource1.kubesense.rulePsr, "Not traced resource should not send sample rate")
 
         let thirdPartyResource2 = try XCTUnwrap(
             session.views[2].resourceEvents.first { $0.resource.url == thirdPartyPOSTResourceURL.absoluteString },
@@ -261,9 +261,9 @@ class RUMResourcesScenarioTests: IntegrationTests, RUMCommonAsserts, URLSessionT
         XCTAssertEqual(thirdPartyResource2.resource.method, .post)
         XCTAssertNotNil(thirdPartyResource2.resource.duration)
         XCTAssertGreaterThan(thirdPartyResource2.resource.duration!, 0)
-        XCTAssertNil(thirdPartyResource2.dd.traceId, "3rd party RUM Resources should not be traced")
-        XCTAssertNil(thirdPartyResource2.dd.spanId, "3rd party RUM Resources should not be traced")
-        XCTAssertNil(thirdPartyResource2.dd.rulePsr, "Not traced resource should not send sample rate")
+        XCTAssertNil(thirdPartyResource2.kubesense.traceId, "3rd party RUM Resources should not be traced")
+        XCTAssertNil(thirdPartyResource2.kubesense.spanId, "3rd party RUM Resources should not be traced")
+        XCTAssertNil(thirdPartyResource2.kubesense.rulePsr, "Not traced resource should not send sample rate")
 
         XCTAssertTrue(
             thirdPartyResource1.resource.dns != nil || thirdPartyResource2.resource.dns != nil,

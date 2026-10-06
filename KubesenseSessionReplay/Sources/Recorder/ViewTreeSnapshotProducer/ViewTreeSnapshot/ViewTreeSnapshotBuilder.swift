@@ -71,7 +71,7 @@ internal struct ViewTreeSnapshotBuilder {
         for key in embeddedContentViewCache.keyEnumerator() {
             guard
                 let view = key as? UIView,
-                let slotID = view.dd.sessionReplaySlotID,
+                let slotID = view.kubesense.sessionReplaySlotID,
                 let wireframeID = embeddedContentViewCache.object(forKey: view)?.int64Value
             else {
                 continue

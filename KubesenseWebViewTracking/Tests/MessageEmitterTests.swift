@@ -133,8 +133,8 @@ class MessageEmitterTests: XCTestCase {
     // MARK: - Parsing
 
     func testWhenMessageIsInvalid_itReportTheError() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         let telemetry = TelemetryReceiverMock()
@@ -145,8 +145,8 @@ class MessageEmitterTests: XCTestCase {
         bridge.send(body: 123)
 
         // Then
-        XCTAssertEqual(dd.logger.errorLog?.message, "Encountered an error when receiving web view event")
-        XCTAssertEqual(dd.logger.errorLog?.error?.message, #"invalidMessage(description: "123")"#)
+        XCTAssertEqual(kubesense.logger.errorLog?.message, "Encountered an error when receiving web view event")
+        XCTAssertEqual(kubesense.logger.errorLog?.error?.message, #"invalidMessage(description: "123")"#)
         XCTAssertEqual(telemetry.messages.first?.asError?.message, "Encountered an error when receiving web view event - WebViewMessageError does not conform to TelemetrySanitizableError — reporting type name only")
     }
 }

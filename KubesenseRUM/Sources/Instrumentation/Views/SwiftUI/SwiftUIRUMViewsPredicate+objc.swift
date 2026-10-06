@@ -34,7 +34,7 @@ public class objc_DefaultSwiftUIRUMViewsPredicate: NSObject, objc_SwiftUIRUMView
 
     public func rumView(for extractedViewName: String) -> objc_RUMView? {
         return swiftPredicate.rumView(for: extractedViewName).map {
-            objc_RUMView(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+            objc_RUMView(name: $0.name, attributes: $0.attributes.kubesense.objCAttributes)
         }
     }
 }
@@ -71,7 +71,7 @@ public class objc_DefaultSwiftUIRUMActionsPredicate: NSObject, objc_SwiftUIRUMAc
 
     public func rumAction(with componentName: String) -> objc_RUMAction? {
         swiftPredicate.rumAction(with: componentName).map {
-            objc_RUMAction(name: $0.name, attributes: $0.attributes.dd.objCAttributes)
+            objc_RUMAction(name: $0.name, attributes: $0.attributes.kubesense.objCAttributes)
         }
     }
 }

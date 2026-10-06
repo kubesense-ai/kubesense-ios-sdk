@@ -656,8 +656,8 @@ class RemoteLoggerTests: XCTestCase {
 
     func testWhenMultipleAttributesFailToEncode_itReplacesAllMalformedAttributesWithNull() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let logger = RemoteLogger(
             featureScope: featureScope,
@@ -685,7 +685,7 @@ class RemoteLoggerTests: XCTestCase {
         let log = try XCTUnwrap(logs.first)
 
         // Encode to JSON
-        let jsonData = try JSONEncoder().dd.encodeWithAttributeRecovery(log)
+        let jsonData = try JSONEncoder().kubesense.encodeWithAttributeRecovery(log)
         let jsonObject = try JSONSerialization.jsonObject(with: jsonData) as! [String: Any]
 
         // Event sent with its valid attribute and malformed attributes replaced by null.
@@ -696,7 +696,7 @@ class RemoteLoggerTests: XCTestCase {
 
         // And all errors logged
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute") }.count,
             3
         )
     }
