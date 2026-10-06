@@ -24,6 +24,9 @@ class Kubesense_MultipleInstancesIntegrationTests: XCTestCase {
         let systemDirectory = Directory(url: temporaryDirectory)
         defaultInstanceConfig.systemDirectory = { systemDirectory }
         customInstanceConfig.systemDirectory = { systemDirectory }
+        // Remote configuration is on by default and would send its fetch through the mocked clients.
+        defaultInstanceConfig.remoteConfigurationEnabled = false
+        customInstanceConfig.remoteConfigurationEnabled = false
     }
 
     override func tearDown() {
