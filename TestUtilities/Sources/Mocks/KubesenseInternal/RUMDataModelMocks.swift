@@ -315,8 +315,8 @@ extension RUMViewEvent.View.Performance.CLS: RandomMockable {
     }
 }
 
-extension RUMViewEvent.DD.Configuration: RandomMockable {
-    public static func mockRandom() -> RUMViewEvent.DD.Configuration {
+extension RUMViewEvent.KS.Configuration: RandomMockable {
+    public static func mockRandom() -> RUMViewEvent.KS.Configuration {
         return .init(
             sessionReplaySampleRate: .mockRandom(min: 0, max: 100),
             sessionSampleRate: .mockRandom(min: 0, max: 100),
@@ -355,7 +355,7 @@ extension RUMViewEvent: RandomMockable {
         featureFlags: RUMViewEvent.FeatureFlags? = .init(featureFlagsInfo: ["flag-\(String.mockRandom())": Bool.mockRandom()])
     ) -> RUMViewEvent {
         return RUMViewEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: .mockRandom(),
                 cls: .init(devicePixelRatio: .mockRandom()),
                 configuration: .mockRandom(),
@@ -378,7 +378,7 @@ extension RUMViewEvent: RandomMockable {
             container: .init(source: .ios, view: .init(id: .mockRandom())),
             context: .mockRandom(),
             date: date,
-            ktags: .mockRandomDDTags(),
+            ktags: .mockRandomKubesenseTags(),
             device: .mockRandom(),
             display: .init(
                 scroll: .init(
@@ -468,8 +468,8 @@ extension RUMViewEvent: RandomMockable {
     }
 }
 
-extension RUMResourceEvent.DD.Configuration: RandomMockable {
-    public static func mockRandom() -> RUMResourceEvent.DD.Configuration {
+extension RUMResourceEvent.KS.Configuration: RandomMockable {
+    public static func mockRandom() -> RUMResourceEvent.KS.Configuration {
         .init(sessionReplaySampleRate: .mockRandom(min: 0, max: 100), sessionSampleRate: .mockRandom(min: 0, max: 100))
     }
 }
@@ -477,7 +477,7 @@ extension RUMResourceEvent.DD.Configuration: RandomMockable {
 extension RUMResourceEvent: RandomMockable {
     public static func mockRandom() -> RUMResourceEvent {
         return RUMResourceEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .mockRandom(),
                 discarded: nil,
@@ -499,7 +499,7 @@ extension RUMResourceEvent: RandomMockable {
             container: nil,
             context: .mockRandom(),
             date: .mockRandom(),
-            ktags: .mockRandomDDTags(),
+            ktags: .mockRandomKubesenseTags(),
             device: .mockRandom(),
             display: nil,
             os: .mockRandom(),
@@ -550,8 +550,8 @@ extension RUMResourceEvent: RandomMockable {
     }
 }
 
-extension RUMActionEvent.DD.Configuration: RandomMockable {
-    public static func mockRandom() -> RUMActionEvent.DD.Configuration {
+extension RUMActionEvent.KS.Configuration: RandomMockable {
+    public static func mockRandom() -> RUMActionEvent.KS.Configuration {
         .init(sessionReplaySampleRate: .mockRandom(min: 0, max: 100), sessionSampleRate: .mockRandom(min: 0, max: 100))
     }
 }
@@ -565,7 +565,7 @@ extension RUMActionEvent: AnyMockable {
         sessionID: UUID = .mockRandom()
     ) -> RUMActionEvent {
         return RUMActionEvent(
-            dd: .init(
+            kubesense: .init(
                 action: .init(
                     position: nil,
                     target: .init(
@@ -601,7 +601,7 @@ extension RUMActionEvent: AnyMockable {
             container: nil,
             context: .mockRandom(),
             date: .mockRandom(),
-            ktags: .mockRandomDDTags(),
+            ktags: .mockRandomKubesenseTags(),
             device: .mockRandom(),
             display: nil,
             os: .mockRandom(),
@@ -631,8 +631,8 @@ extension RUMErrorEvent.Error.SourceType: RandomMockable {
     }
 }
 
-extension RUMErrorEvent.DD.Configuration: RandomMockable {
-    public static func mockRandom() -> RUMErrorEvent.DD.Configuration {
+extension RUMErrorEvent.KS.Configuration: RandomMockable {
+    public static func mockRandom() -> RUMErrorEvent.KS.Configuration {
         .init(sessionReplaySampleRate: .mockRandom(min: 0, max: 100), sessionSampleRate: .mockRandom(min: 0, max: 100))
     }
 }
@@ -640,7 +640,7 @@ extension RUMErrorEvent.DD.Configuration: RandomMockable {
 extension RUMErrorEvent: RandomMockable {
     public static func mockRandom() -> RUMErrorEvent {
         return RUMErrorEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .mockRandom(),
                 session: .init(
@@ -710,8 +710,8 @@ extension RUMErrorEvent: RandomMockable {
     }
 }
 
-extension RUMLongTaskEvent.DD.Configuration: RandomMockable {
-    public static func mockRandom() -> RUMLongTaskEvent.DD.Configuration {
+extension RUMLongTaskEvent.KS.Configuration: RandomMockable {
+    public static func mockRandom() -> RUMLongTaskEvent.KS.Configuration {
         return .init(sessionReplaySampleRate: .mockRandom(min: 0, max: 100), sessionSampleRate: .mockRandom(min: 0, max: 100))
     }
 }
@@ -719,7 +719,7 @@ extension RUMLongTaskEvent.DD.Configuration: RandomMockable {
 extension RUMLongTaskEvent: RandomMockable {
     public static func mockRandom() -> RUMLongTaskEvent {
         return RUMLongTaskEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .mockRandom(),
                 discarded: nil,
@@ -738,7 +738,7 @@ extension RUMLongTaskEvent: RandomMockable {
             container: nil,
             context: .mockRandom(),
             date: .mockRandom(),
-            ktags: .mockRandomDDTags(),
+            ktags: .mockRandomKubesenseTags(),
             device: .mockRandom(),
             display: nil,
             longTask: .init(
@@ -772,7 +772,7 @@ extension RUMLongTaskEvent: RandomMockable {
 extension TelemetryConfigurationEvent: RandomMockable {
     public static func mockRandom() -> TelemetryConfigurationEvent {
         return TelemetryConfigurationEvent(
-            dd: .init(),
+            kubesense: .init(),
             action: .init(id: .mockRandom()),
             application: .init(id: .mockRandom()),
             date: .mockRandom(),
@@ -880,7 +880,7 @@ extension RUMTelemetryOperatingSystem: RandomMockable {
 extension RUMVitalOperationStepEvent: RandomMockable {
     public static func mockRandom() -> RUMVitalOperationStepEvent {
         return RUMVitalOperationStepEvent(
-            dd: .init(),
+            kubesense: .init(),
             account: .mockRandom(),
             application: .init(id: .mockRandom()),
             context: .mockRandom(),
@@ -896,7 +896,7 @@ extension RUMVitalOperationStepEvent: RandomMockable {
 extension RUMVitalDurationEvent: RandomMockable {
     public static func mockRandom() -> Self {
         return RUMVitalDurationEvent(
-            dd: .init(),
+            kubesense: .init(),
             application: .init(id: .mockRandom()),
             date: .mockRandom(),
             session: .init(id: .mockRandom(), type: .user),
@@ -909,7 +909,7 @@ extension RUMVitalDurationEvent: RandomMockable {
 extension RUMVitalAppLaunchEvent: RandomMockable, AnyMockable {
     public static func mockRandom() -> Self {
         return RUMVitalAppLaunchEvent(
-            dd: .init(),
+            kubesense: .init(),
             account: .mockRandom(),
             application: .init(id: .mockRandom()),
             context: .mockRandom(),
@@ -924,7 +924,7 @@ extension RUMVitalAppLaunchEvent: RandomMockable, AnyMockable {
     public static func mockAny() -> Self { .mockWith() }
 
     public static func mockWith(
-        dd: DD = .init(),
+        kubesense: KS = .init(),
         account: RUMAccount? = .mockRandom(),
         application: Application = .init(id: .mockAny()),
         context: RUMEventAttributes? = .mockRandom(),
@@ -935,7 +935,7 @@ extension RUMVitalAppLaunchEvent: RandomMockable, AnyMockable {
         vital: Vital = .mockAny()
     ) -> Self {
         .init(
-            dd: dd,
+            kubesense: kubesense,
             account: account,
             application: application,
             context: context,

@@ -82,7 +82,7 @@ class RUMStopSessionScenarioTests: IntegrationTests, RUMCommonAsserts {
             let initialView = appStartSession.views[0]
             XCTAssertTrue(initialView.isApplicationLaunchView(), "The session should start with 'application launch' view")
             XCTAssertNotNil(appStartSession.ttidEvent)
-            XCTAssertTrue(initialView.viewEvents.allSatisfy { $0.dd.session?.sessionPrecondition == .userAppLaunch })
+            XCTAssertTrue(initialView.viewEvents.allSatisfy { $0.kubesense.session?.sessionPrecondition == .userAppLaunch })
 
             let view1 = appStartSession.views[1]
             XCTAssertEqual(view1.name, "KioskViewController")
@@ -95,7 +95,7 @@ class RUMStopSessionScenarioTests: IntegrationTests, RUMCommonAsserts {
         do {
             let normalSession = sessions[1]
             let view1 = normalSession.views[0]
-            XCTAssertTrue(view1.viewEvents.allSatisfy { $0.dd.session?.sessionPrecondition == .explicitStop })
+            XCTAssertTrue(view1.viewEvents.allSatisfy { $0.kubesense.session?.sessionPrecondition == .explicitStop })
             XCTAssertTrue(try XCTUnwrap(view1.viewEvents.first?.session.isActive))
             XCTAssertEqual(view1.name, "KioskSendEvents")
             XCTAssertEqual(view1.path, "Runner.KioskSendEventsViewController")
@@ -118,7 +118,7 @@ class RUMStopSessionScenarioTests: IntegrationTests, RUMCommonAsserts {
         do {
             let interruptedSession = sessions[2]
             let view1 = interruptedSession.views[0]
-            XCTAssertTrue(view1.viewEvents.allSatisfy { $0.dd.session?.sessionPrecondition == .explicitStop })
+            XCTAssertTrue(view1.viewEvents.allSatisfy { $0.kubesense.session?.sessionPrecondition == .explicitStop })
             XCTAssertEqual(view1.name, "KioskSendInterruptedEvents")
             XCTAssertEqual(view1.path, "Runner.KioskSendInterruptedEventsViewController")
             XCTAssertEqual(view1.resourceEvents[0].resource.url, "https://foo.com/resource/1")

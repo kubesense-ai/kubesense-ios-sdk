@@ -85,13 +85,13 @@ internal final class WebViewEventReceiver: FeatureMessageReceiver {
                 let offsetMilliseconds: Int64
 
                 if let offset = webViewContext.serverTimeOffset(forView: id) {
-                    offsetMilliseconds = offset.dd.toInt64Milliseconds
+                    offsetMilliseconds = offset.kubesense.toInt64Milliseconds
                 } else {
                     let offset = context.serverTimeOffset
                     webViewContext.setServerTimeOffset(offset, forView: id)
 
                     self.featureScope.set(context: webViewContext)
-                    offsetMilliseconds = offset.dd.toInt64Milliseconds
+                    offsetMilliseconds = offset.kubesense.toInt64Milliseconds
                 }
 
                 let correctedDate = Int64(date) + offsetMilliseconds
@@ -121,20 +121,20 @@ internal final class WebViewEventReceiver: FeatureMessageReceiver {
                 event["session"] = session
             }
 
-            if var dd = event["_kubesense"] as? JSON {
+            if var kubesense = event["_kubesense"] as? JSON {
                 if context.hasReplay != true {
                     // Remove stats if native replay is disabled
-                    dd["replay_stats"] = nil
-                    event["_kubesense"] = dd
+                    kubesense["replay_stats"] = nil
+                    event["_kubesense"] = kubesense
                 }
-                if dd["rule_psr"] != nil,
+                if kubesense["rule_psr"] != nil,
                    let networkInstrumentation = core.feature(
                     named: Feature.networkInstrumentation,
                     type: DistributedTracingSampleRateProvider.self
                    ),
                    let distributedTracingSampleRate = networkInstrumentation.distributedTracingSampleRate {
-                    dd["rule_psr"] = distributedTracingSampleRate.percentageProportion
-                    event["_kubesense"] = dd
+                    kubesense["rule_psr"] = distributedTracingSampleRate.percentageProportion
+                    event["_kubesense"] = kubesense
                 }
             }
 
@@ -159,7 +159,7 @@ internal final class WebViewEventReceiver: FeatureMessageReceiver {
             var event = event
 
             if let date = event["date"] as? Int {
-                event["date"] = Int64(date) + context.serverTimeOffset.dd.toInt64Milliseconds
+                event["date"] = Int64(date) + context.serverTimeOffset.kubesense.toInt64Milliseconds
             }
 
             if var application = event["application"] as? JSON {

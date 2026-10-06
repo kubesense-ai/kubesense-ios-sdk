@@ -37,7 +37,7 @@ internal final class TouchIdentifierGenerator {
     /// - Parameter touch: the `UITouch` object
     /// - Returns: the `TouchIdentifier` of queried instance.
     func touchIdentifier(for touch: UITouch) -> TouchIdentifier {
-        switch touch.phase.dd {
+        switch touch.phase.kubesense {
         case .down:
             return persistNextID(in: touch)
         case .move:

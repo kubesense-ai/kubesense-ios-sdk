@@ -131,7 +131,7 @@ public extension JSONObjectMatcher {
     /// - Parameters:
     ///   - anyValue: the value to initialize matcher
     ///   - encoder: an instance of encoder to perform JSON serialization (defaults to SDK default encoder)
-    convenience init(_ anyValue: AnyEncodable, encoder: JSONEncoder = .dd.default()) throws {
+    convenience init(_ anyValue: AnyEncodable, encoder: JSONEncoder = .kubesense.default()) throws {
         let encoded = try encoder.encode(anyValue)
         guard let jsonObject = try JSONSerialization.jsonObject(with: encoded) as? [String: Any] else {
             throw JSONMatcherException.objectException("Encoded value can't be decoded [String: Any]")

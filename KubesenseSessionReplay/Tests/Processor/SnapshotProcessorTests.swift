@@ -448,8 +448,8 @@ class SnapshotProcessorTests: XCTestCase {
                 "Touch information must be send in 'incremental snapshot'"
             )
             XCTAssertEqual(pointerInteractionData.pointerType, .touch)
-            XCTAssertGreaterThanOrEqual(record.timestamp, earliestTouchTime.timeIntervalSince1970.dd.toInt64Milliseconds)
-            XCTAssertLessThanOrEqual(record.timestamp, snapshotTime.timeIntervalSince1970.dd.toInt64Milliseconds)
+            XCTAssertGreaterThanOrEqual(record.timestamp, earliestTouchTime.timeIntervalSince1970.kubesense.toInt64Milliseconds)
+            XCTAssertLessThanOrEqual(record.timestamp, snapshotTime.timeIntervalSince1970.kubesense.toInt64Milliseconds)
         }
 
         XCTAssertEqual(core.recordsCountByViewID, ["abc": 13])
@@ -508,7 +508,7 @@ class SnapshotProcessorTests: XCTestCase {
         autoreleasepool {
             let view = UIView()
             weakView = view
-            view.dd.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
+            view.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = .maskAll
 
             let time = Date()
             let rum: RUMCoreContext = .mockWith(serverTimeOffset: 0)

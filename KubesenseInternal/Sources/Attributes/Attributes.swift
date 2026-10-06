@@ -243,9 +243,9 @@ extension AttributeValue {
     /// Instance Kubesense extension point.
     ///
     /// `AttributeValue` aka `Encodable` is a protocol and cannot be extended
-    /// with conformance to`KubesenseExtension`, so we need to define the `dd`
+    /// with conformance to`KubesenseExtension`, so we need to define the `kubesense`
     /// endpoint.
-    public var dd: KubesenseExtension<AttributeValue> {
+    public var kubesense: KubesenseExtension<AttributeValue> {
         KubesenseExtension(self)
     }
 }

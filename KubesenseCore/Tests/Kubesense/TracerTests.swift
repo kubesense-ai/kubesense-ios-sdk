@@ -212,8 +212,8 @@ class TracerTests: XCTestCase {
         // Assert child-parent relationship
 
         XCTAssertEqual(try grandchildMatcher.operationName(), "grandchild operation")
-        XCTAssertEqual(try grandchildMatcher.traceID(), rootSpan.context.dd.traceID)
-        XCTAssertEqual(try grandchildMatcher.parentSpanID(), childSpan.context.dd.spanID)
+        XCTAssertEqual(try grandchildMatcher.traceID(), rootSpan.context.kubesense.traceID)
+        XCTAssertEqual(try grandchildMatcher.parentSpanID(), childSpan.context.kubesense.spanID)
         XCTAssertNil(try? grandchildMatcher.metrics.isRootSpan())
         XCTAssertEqual(try grandchildMatcher.meta.custom(keyPath: "meta.root-item"), "foo")
         XCTAssertEqual(try grandchildMatcher.meta.custom(keyPath: "meta.child-item"), "bar")
@@ -222,8 +222,8 @@ class TracerTests: XCTestCase {
         XCTAssertEqual(try grandchildMatcher.meta.custom(keyPath: "meta.overwritten"), "b", "Tags should have higher priority than baggage items")
 
         XCTAssertEqual(try childMatcher.operationName(), "child operation")
-        XCTAssertEqual(try childMatcher.traceID(), rootSpan.context.dd.traceID)
-        XCTAssertEqual(try childMatcher.parentSpanID(), rootSpan.context.dd.spanID)
+        XCTAssertEqual(try childMatcher.traceID(), rootSpan.context.kubesense.traceID)
+        XCTAssertEqual(try childMatcher.parentSpanID(), rootSpan.context.kubesense.spanID)
         XCTAssertNil(try? childMatcher.metrics.isRootSpan())
         XCTAssertEqual(try childMatcher.meta.custom(keyPath: "meta.root-item"), "foo")
         XCTAssertEqual(try childMatcher.meta.custom(keyPath: "meta.child-item"), "bar")
@@ -349,7 +349,7 @@ class TracerTests: XCTestCase {
         )
 
         Trace.enable(with: config, in: core)
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
 
         tracer.startSpan(operationName: "span with no user info").finish()
 
@@ -400,7 +400,7 @@ class TracerTests: XCTestCase {
         )
 
         Trace.enable(with: config, in: core)
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
 
         tracer.startSpan(operationName: "span with no account info").finish()
 
@@ -447,7 +447,7 @@ class TracerTests: XCTestCase {
 
         config.networkInfoEnabled = true
         Trace.enable(with: config, in: core)
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
 
         // simulate entering cellular service range
         core.context.carrierInfo = .mockWith(
@@ -483,7 +483,7 @@ class TracerTests: XCTestCase {
 
         config.networkInfoEnabled = true
         Trace.enable(with: config, in: core)
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
 
         // simulate reachable network
         core.context.networkConnectionInfo = .mockWith(
@@ -531,7 +531,7 @@ class TracerTests: XCTestCase {
 
         config.networkInfoEnabled = true
         Trace.enable(with: config, in: core)
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
 
         core.context.networkConnectionInfo = .mockWith(linkQuality: linkQuality)
         tracer.startSpan(operationName: "span with link quality").finish()
@@ -549,7 +549,7 @@ class TracerTests: XCTestCase {
     func testSendingSpanTagsOfDifferentEncodableValues() throws {
         Trace.enable(with: config, in: core)
         let tracer = Tracer.shared(in: core)
-        tracer.dd.spanEventBuilder.attributesEncoder.outputFormatting = [.sortedKeys]
+        tracer.kubesense.spanEventBuilder.attributesEncoder.outputFormatting = [.sortedKeys]
 
         let span = tracer.startSpan(operationName: "operation", tags: [:], startTime: .mockDecember15th2019At10AMUTC())
 
@@ -635,8 +635,8 @@ class TracerTests: XCTestCase {
 
         regularLogMatcher.assertStatus(equals: "info")
         regularLogMatcher.assertMessage(equals: "hello")
-        regularLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.dd.traceID, representation: .hexadecimal))
-        regularLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.dd.spanID, representation: .hexadecimal))
+        regularLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        regularLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
         regularLogMatcher.assertValue(forKey: "custom.field", equals: "value")
 
         errorLogMatcher.assertStatus(equals: "error")
@@ -644,8 +644,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "Swift error")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.dd.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.dd.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     func testSendingSpanLogsWithErrorFromArguments() throws {
@@ -669,8 +669,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "Swift error")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.dd.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.dd.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     func testSendingSpanLogsWithErrorFromNSError() throws {
@@ -700,8 +700,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "Tracer - 1")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.dd.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.dd.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     func testSendingSpanLogsWithErrorFromSwiftError() throws {
@@ -726,8 +726,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "ErrorMock")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.dd.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.dd.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     // MARK: - Integration With RUM Feature
@@ -834,12 +834,12 @@ class TracerTests: XCTestCase {
         let extractedContext = tracer.extract(reader: reader)!
 
         // Then
-        XCTAssertEqual(injectedContext.dd.traceID, extractedContext.dd.traceID)
-        XCTAssertEqual(injectedContext.dd.spanID, extractedContext.dd.spanID)
-        XCTAssertEqual(injectedContext.dd.parentSpanID, extractedContext.dd.parentSpanID)
-        XCTAssertEqual(injectedContext.dd.sampleRate, extractedContext.dd.sampleRate)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.samplingPriority, extractedContext.dd.samplingDecision.samplingPriority)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.decisionMaker, extractedContext.dd.samplingDecision.decisionMaker)
+        XCTAssertEqual(injectedContext.kubesense.traceID, extractedContext.kubesense.traceID)
+        XCTAssertEqual(injectedContext.kubesense.spanID, extractedContext.kubesense.spanID)
+        XCTAssertEqual(injectedContext.kubesense.parentSpanID, extractedContext.kubesense.parentSpanID)
+        XCTAssertEqual(injectedContext.kubesense.sampleRate, extractedContext.kubesense.sampleRate)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.samplingPriority, extractedContext.kubesense.samplingDecision.samplingPriority)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.decisionMaker, extractedContext.kubesense.samplingDecision.decisionMaker)
     }
 
     func testInjectingAndExtractingSpanContextUsingB3SingleCarrier() {
@@ -856,12 +856,12 @@ class TracerTests: XCTestCase {
         let extractedContext = tracer.extract(reader: reader)!
 
         // Then
-        XCTAssertEqual(injectedContext.dd.traceID, extractedContext.dd.traceID)
-        XCTAssertEqual(injectedContext.dd.spanID, extractedContext.dd.spanID)
-        XCTAssertEqual(injectedContext.dd.parentSpanID, extractedContext.dd.parentSpanID)
-        XCTAssertEqual(injectedContext.dd.sampleRate, extractedContext.dd.sampleRate)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.samplingPriority, extractedContext.dd.samplingDecision.samplingPriority)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.decisionMaker, extractedContext.dd.samplingDecision.decisionMaker)
+        XCTAssertEqual(injectedContext.kubesense.traceID, extractedContext.kubesense.traceID)
+        XCTAssertEqual(injectedContext.kubesense.spanID, extractedContext.kubesense.spanID)
+        XCTAssertEqual(injectedContext.kubesense.parentSpanID, extractedContext.kubesense.parentSpanID)
+        XCTAssertEqual(injectedContext.kubesense.sampleRate, extractedContext.kubesense.sampleRate)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.samplingPriority, extractedContext.kubesense.samplingDecision.samplingPriority)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.decisionMaker, extractedContext.kubesense.samplingDecision.decisionMaker)
     }
 
     func testInjectingAndExtractingSpanContextUsingB3MultipleCarrier() {
@@ -878,12 +878,12 @@ class TracerTests: XCTestCase {
         let extractedContext = tracer.extract(reader: reader)!
 
         // Then
-        XCTAssertEqual(injectedContext.dd.traceID, extractedContext.dd.traceID)
-        XCTAssertEqual(injectedContext.dd.spanID, extractedContext.dd.spanID)
-        XCTAssertEqual(injectedContext.dd.parentSpanID, extractedContext.dd.parentSpanID)
-        XCTAssertEqual(injectedContext.dd.sampleRate, extractedContext.dd.sampleRate)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.samplingPriority, extractedContext.dd.samplingDecision.samplingPriority)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.decisionMaker, extractedContext.dd.samplingDecision.decisionMaker)
+        XCTAssertEqual(injectedContext.kubesense.traceID, extractedContext.kubesense.traceID)
+        XCTAssertEqual(injectedContext.kubesense.spanID, extractedContext.kubesense.spanID)
+        XCTAssertEqual(injectedContext.kubesense.parentSpanID, extractedContext.kubesense.parentSpanID)
+        XCTAssertEqual(injectedContext.kubesense.sampleRate, extractedContext.kubesense.sampleRate)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.samplingPriority, extractedContext.kubesense.samplingDecision.samplingPriority)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.decisionMaker, extractedContext.kubesense.samplingDecision.decisionMaker)
     }
 
     func testInjectingAndExtractingSpanContextUsingW3CCarrier() {
@@ -900,12 +900,12 @@ class TracerTests: XCTestCase {
         let extractedContext = tracer.extract(reader: reader)!
 
         // Then
-        XCTAssertEqual(injectedContext.dd.traceID, extractedContext.dd.traceID)
-        XCTAssertEqual(injectedContext.dd.spanID, extractedContext.dd.spanID)
-        XCTAssertEqual(injectedContext.dd.parentSpanID, extractedContext.dd.parentSpanID)
-        XCTAssertEqual(injectedContext.dd.sampleRate, extractedContext.dd.sampleRate)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.samplingPriority, extractedContext.dd.samplingDecision.samplingPriority)
-        XCTAssertEqual(injectedContext.dd.samplingDecision.decisionMaker, extractedContext.dd.samplingDecision.decisionMaker)
+        XCTAssertEqual(injectedContext.kubesense.traceID, extractedContext.kubesense.traceID)
+        XCTAssertEqual(injectedContext.kubesense.spanID, extractedContext.kubesense.spanID)
+        XCTAssertEqual(injectedContext.kubesense.parentSpanID, extractedContext.kubesense.parentSpanID)
+        XCTAssertEqual(injectedContext.kubesense.sampleRate, extractedContext.kubesense.sampleRate)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.samplingPriority, extractedContext.kubesense.samplingDecision.samplingPriority)
+        XCTAssertEqual(injectedContext.kubesense.samplingDecision.decisionMaker, extractedContext.kubesense.samplingDecision.decisionMaker)
     }
 
     // MARK: - Manually keeping/dropping spans
@@ -1035,7 +1035,7 @@ class TracerTests: XCTestCase {
         let spanMatcher = try core.waitAndReturnSpanMatchers()[0]
         XCTAssertEqual(
             try spanMatcher.startTime(),
-            deviceTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toNanoseconds,
+            deviceTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toNanoseconds,
             "The `startTime` should be using server time."
         )
         XCTAssertEqual(
@@ -1056,7 +1056,7 @@ class TracerTests: XCTestCase {
 
         // Start 20 spans concurrently
         DispatchQueue.concurrentPerform(iterations: 20) { iteration in
-            let span = tracer.startSpan(operationName: "operation \(iteration)", childOf: nil).dd
+            let span = tracer.startSpan(operationName: "operation \(iteration)", childOf: nil).kubesense
             queue.async { spans.append(span) }
         }
 
@@ -1128,8 +1128,8 @@ class TracerTests: XCTestCase {
     }
 
     func testGivenLoggingFeatureNotEnabled_whenSendingLogFromSpan_itPrintsWarning() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // given
         XCTAssertNil(core.get(feature: LogsFeature.self))
@@ -1142,7 +1142,7 @@ class TracerTests: XCTestCase {
 
         // then
         core.flush()
-        XCTAssertEqual(dd.logger.warnLog?.message, "The log for span \"foo\" will not be send, because the Logs feature is not enabled.")
+        XCTAssertEqual(kubesense.logger.warnLog?.message, "The log for span \"foo\" will not be send, because the Logs feature is not enabled.")
     }
 }
 // swiftlint:enable multiline_arguments_brackets

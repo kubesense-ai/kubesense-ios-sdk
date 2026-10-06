@@ -9,7 +9,7 @@ import Foundation
 /// The `CoreLogger` printing to debugger console.
 public struct InternalLogger: CoreLogger {
     /// The prefix applied to all core logs.
-    private static let prefix = "[KUBESENSE SDK] 🐶 → "
+    private static let prefix = "[KUBESENSE SDK] → "
 
     /// The date provider for annotating core logs.
     private let dateProvider: DateProvider

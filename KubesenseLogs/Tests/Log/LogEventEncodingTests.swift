@@ -40,7 +40,7 @@ final class LogEventEncodingTests: XCTestCase {
             attributes: .mockWith(userAttributes: ["value": value], internalAttributes: nil)
         )
 
-        let data = try JSONEncoder.dd.default().dd.encodeWithAttributeRecovery(event)
+        let data = try JSONEncoder.kubesense.default().kubesense.encodeWithAttributeRecovery(event)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         XCTAssertEqual(value.encodeCount, 1)
@@ -72,8 +72,8 @@ final class LogEventEncodingTests: XCTestCase {
             }
         }
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let countingValue = CountingValue()
         let poison = ThrowingAfterPartialEncode()
@@ -92,8 +92,8 @@ final class LogEventEncodingTests: XCTestCase {
             )
         )
 
-        let encoder: JSONEncoder = .dd.default()
-        let data = try encoder.dd.encodeWithAttributeRecovery(event)
+        let encoder: JSONEncoder = .kubesense.default()
+        let data = try encoder.kubesense.encodeWithAttributeRecovery(event)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         XCTAssertEqual(json["before"] as? String, "before")
@@ -102,7 +102,7 @@ final class LogEventEncodingTests: XCTestCase {
         XCTAssertEqual(countingValue.encodeCount, 2)
         XCTAssertEqual(json["usr.counted"] as? String, "call-2")
         XCTAssertEqual(poison.encodeCount, 2)
-        XCTAssertTrue(try XCTUnwrap(dd.logger.errorLog).message.contains("attribute 'poison'"))
+        XCTAssertTrue(try XCTUnwrap(kubesense.logger.errorLog).message.contains("attribute 'poison'"))
     }
 
     func testAttributeRecoveryPreservesStaticFieldsWhenAttributeKeysCollide() throws {
@@ -135,7 +135,7 @@ final class LogEventEncodingTests: XCTestCase {
             )
         )
 
-        let data = try JSONEncoder.dd.default().dd.encodeWithAttributeRecovery(event)
+        let data = try JSONEncoder.kubesense.default().kubesense.encodeWithAttributeRecovery(event)
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
 
         XCTAssertEqual(json["usr.anonymous_id"] as? String, "anonymous-id")
@@ -189,8 +189,8 @@ final class LogEventEncodingTests: XCTestCase {
             attributes: .mockWith(userAttributes: ["poison": ThrowingValue()], internalAttributes: nil)
         )
 
-        let encoder: JSONEncoder = .dd.default()
-        let data = try encoder.dd.encodeWithAttributeRecovery(event)
+        let encoder: JSONEncoder = .kubesense.default()
+        let data = try encoder.kubesense.encodeWithAttributeRecovery(event)
         let jsonString = try XCTUnwrap(String(data: data, encoding: .utf8))
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
         let structured = try XCTUnwrap(json["usr.structured"] as? [String: Any])

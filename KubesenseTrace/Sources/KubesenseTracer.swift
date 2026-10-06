@@ -82,7 +82,7 @@ internal final class KubesenseTracer: OTTracer, OpenTelemetryApi.Tracer {
     // MARK: - Open Tracing interface
 
     func startSpan(operationName: String, references: [OTReference]? = nil, tags: [String: OTTagValue]? = nil, startTime: Date? = nil) -> OTSpan {
-        let parentSpanContext = references?.compactMap { $0.context.dd }.last ?? activeSpan?.context as? KubesenseSpanContext
+        let parentSpanContext = references?.compactMap { $0.context.kubesense }.last ?? activeSpan?.context as? KubesenseSpanContext
         return startSpan(
             spanContext: createSpanContext(parentSpanContext: parentSpanContext, using: samplerProvider.sampler),
             operationName: operationName,

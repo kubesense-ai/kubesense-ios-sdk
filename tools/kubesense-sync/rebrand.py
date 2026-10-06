@@ -199,6 +199,22 @@ RULES = [
     (r'(?<![A-Za-z0-9])dd(?=[A-Z])', 'kubesense'),
     (r'(?<![A-Za-z0-9-])dd-(?=[A-Za-z\\])', 'kubesense-'),
     (r'(?<=api-surface-)dd-', 'kubesense-'),
+
+    # --- the SDK's own `dd` names -----------------------------------------------------------------
+    # The `x.dd.…` extension namespace (public: `view.dd.sessionReplayPrivacyOverrides`), the `dd`
+    # field of the event models (sent as `_kubesense` on the wire) and locals. Never inside string
+    # data: the W3C `tracestate` vendor key `"dd"` is shared with the browser SDK (`dd=s:1;o:rum`),
+    # `{CGSize=dd}` is an Objective-C type encoding, and date formats use `dd` for the day.
+    (r'(?<![A-Za-z0-9_%/="-])dd(?![A-Za-z0-9_/="-]| MMM)', 'kubesense'),
+    # The `DD` namespace of the SDK's logger (`DD.logger`) and the nested `DD` / `Dd` types of the
+    # event models (`RUMViewEvent.DD.Session`). `KS`, since `Kubesense` would shadow the SDK's entry
+    # point inside those types.
+    (r'(?<![A-Za-z0-9_])D[Dd](?![A-Za-z0-9_])', 'KS'),
+    # `DD` / `Dd` inside camel-case names: `objc_RUMViewEventDDSession`, `spanDD`, `testDDRUMAPI`.
+    # Requiring a lowercase letter before it keeps Xcode's hexadecimal object identifiers out.
+    (r'(?<=[a-z])D[Dd](?![a-z])', 'Kubesense'),
+    # Datadog's mascot in the SDK's console output (`[KUBESENSE SDK] 🐶 → `).
+    (r'🐶 ', ''),
 ]
 
 COMPILED = [(re.compile(pattern), replacement) for pattern, replacement in RULES]

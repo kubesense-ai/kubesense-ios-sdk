@@ -15,7 +15,7 @@
  */
 @implementation KubesenseInternalLogger_apiTests
 
-- (void)testDDInternalLogger {
+- (void)testKubesenseInternalLogger {
 
     [KubesenseInternalLogger consolePrint:@"" :KubesenseCoreLoggerLevelWarn];
     [KubesenseInternalLogger telemetryDebugWithId:@"" message:@""];

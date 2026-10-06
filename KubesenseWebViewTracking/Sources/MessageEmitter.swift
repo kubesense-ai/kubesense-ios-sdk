@@ -32,7 +32,7 @@ internal final class MessageEmitter: InternalExtension<WebViewTracking>.Abstract
     /// - Parameter body: The data to send, it must be parsable to `WebViewMessage`
     override func send(body: Any, slotId: String? = nil) {
         guard let core = core else {
-            return DD.logger.debug("Core must not be nil when using WebViewTracking")
+            return KS.logger.debug("Core must not be nil when using WebViewTracking")
         }
 
         do {
@@ -56,7 +56,7 @@ internal final class MessageEmitter: InternalExtension<WebViewTracking>.Abstract
                 send(record: event, view: view, slotId: slotId, in: core)
             }
         } catch {
-            DD.logger.error("Encountered an error when receiving web view event", error: error)
+            KS.logger.error("Encountered an error when receiving web view event", error: error)
             core.telemetry.error("Encountered an error when receiving web view event", error: error)
         }
     }
@@ -67,13 +67,13 @@ internal final class MessageEmitter: InternalExtension<WebViewTracking>.Abstract
         }
 
         core.send(message: .webview(message), else: {
-            DD.logger.warn("A WebView log is lost because Logging is disabled in the SDK")
+            KS.logger.warn("A WebView log is lost because Logging is disabled in the SDK")
         })
     }
 
     private func send(rum message: WebViewMessage, in core: KubesenseCoreProtocol) {
         core.send(message: .webview(message), else: {
-            DD.logger.warn("A WebView RUM event is lost because RUM is disabled in the SDK")
+            KS.logger.warn("A WebView RUM event is lost because RUM is disabled in the SDK")
         })
     }
 
@@ -83,7 +83,7 @@ internal final class MessageEmitter: InternalExtension<WebViewTracking>.Abstract
         event["slotId"] = slotId
 
         core.send(message: .webview(.record(event, view)), else: {
-            DD.logger.warn("A WebView Replay record is lost because Session Replay is disabled in the SDK")
+            KS.logger.warn("A WebView Replay record is lost because Session Replay is disabled in the SDK")
         })
     }
 }

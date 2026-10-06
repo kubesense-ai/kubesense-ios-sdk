@@ -55,7 +55,7 @@ class SendingCrashReportTests: XCTestCase {
             lastLogAttributes: .mockRandom()
         )
         let crashReport: KubesenseCrashReport = .mockRandomWith(context: crashContext)
-        let crashReportAttributes: [String: Encodable] = try XCTUnwrap(crashReport.additionalAttributes.dd.decode())
+        let crashReportAttributes: [String: Encodable] = try XCTUnwrap(crashReport.additionalAttributes.kubesense.decode())
 
         // When
         RUM.enable(with: .init(applicationID: "rum-app-id"), in: core)

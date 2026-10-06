@@ -79,7 +79,7 @@ internal final class LayerTreeSnapshotBuilder: LayerTreeSnapshotBuilding {
 
 extension UIView {
     fileprivate var embeddedContentSlot: (Int64, String)? {
-        self.dd.sessionReplaySlotID.map {
+        self.kubesense.sessionReplaySlotID.map {
             (self.layer.replayID, $0)
         }
     }

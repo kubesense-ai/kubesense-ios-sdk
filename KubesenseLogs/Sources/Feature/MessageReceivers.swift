@@ -80,7 +80,7 @@ internal struct WebViewLogReceiver: FeatureMessageReceiver {
             event[tagsKey] = KubesenseTag.merge(context.kubesenseTags, with: event[tagsKey] as? String)
 
             if let timestampInMs = event[dateKey] as? Int {
-                let serverTimeOffsetInMs = context.serverTimeOffset.dd.toInt64Milliseconds
+                let serverTimeOffsetInMs = context.serverTimeOffset.kubesense.toInt64Milliseconds
                 let correctedTimestamp = Int64(timestampInMs) + serverTimeOffsetInMs
                 event[dateKey] = correctedTimestamp
             }

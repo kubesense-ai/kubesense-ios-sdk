@@ -78,7 +78,7 @@ internal struct LogEventBuilder {
             applicationBuildNumber: context.buildNumber,
             buildId: context.buildId,
             variant: context.variant,
-            dd: LogEvent.Dd(
+            kubesense: LogEvent.KS(
                 device: .init(architecture: context.device.architecture)
             ),
             device: context.normalizedDevice(),

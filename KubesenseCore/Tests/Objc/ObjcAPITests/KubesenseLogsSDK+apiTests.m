@@ -19,7 +19,7 @@
 #pragma clang diagnostic ignored "-Wunused-value"
 #pragma clang diagnostic ignored "-Wunused-variable"
 
-- (void)testDDLogsAPI {
+- (void)testKubesenseLogsAPI {
     KubesenseLogsConfiguration *config = [[KubesenseLogsConfiguration alloc] init];
     [KubesenseLogsSDK enableWith:config];
 
@@ -33,7 +33,7 @@
     [KubesenseLogsSDK removeAttributeForKey:@"keyNotAdded"];
 }
 
-- (void)testDDLogsInstanceNameAPI {
+- (void)testKubesenseLogsInstanceNameAPI {
     NSString *instanceName = @"logs-test-instance";
     KubesenseLogsConfiguration *config = [[KubesenseLogsConfiguration alloc] init];
     [KubesenseLogsSDK enableWith:config instanceName:instanceName];
@@ -42,14 +42,14 @@
     [KubesenseLogsSDK removeAttributeForKey:@"key1" instanceName:instanceName];
 }
 
-- (void)testDDLoggerInstanceNameAPI {
+- (void)testKubesenseLoggerInstanceNameAPI {
     NSString *instanceName = @"logger-test-instance";
     KubesenseLoggerConfiguration *config = [[KubesenseLoggerConfiguration alloc] init];
     KubesenseLogger *logger = [KubesenseLogger createWith:config instanceName:instanceName];
     [logger debug:@"debug"];
 }
 
-- (void)testDDLogsConfigurationAPI {
+- (void)testKubesenseLogsConfigurationAPI {
     KubesenseLogsConfiguration *config = [KubesenseLogsConfiguration new];
 
     [config setEventMapper:^KubesenseLogEvent * (KubesenseLogEvent* logEvent) {
@@ -58,7 +58,7 @@
     }];
 }
 
-- (void)testDDLoggerAPI {
+- (void)testKubesenseLoggerAPI {
     KubesenseLoggerConfiguration *config = [[KubesenseLoggerConfiguration alloc] init];
 
     KubesenseLogger* logger = [KubesenseLogger createWith:config];
@@ -89,7 +89,7 @@
     [logger critical:@"critical" error: [NSError errorWithDomain:NSCocoaErrorDomain code:-1 userInfo:nil] attributes:@{}];
 }
 
-- (void)testDDLoggerConfigurationAPI {
+- (void)testKubesenseLoggerConfigurationAPI {
     KubesenseLoggerConfiguration *config = [[KubesenseLoggerConfiguration alloc]
                                      initWithService:nil
                                      name:nil

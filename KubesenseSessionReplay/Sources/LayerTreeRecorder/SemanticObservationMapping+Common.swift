@@ -17,7 +17,7 @@ extension CALayerSnapshot.SemanticObservationMapping {
     static let embeddedContent = Self { layer, _, context in
         guard
             let view = layer.delegate as? UIView,
-            let slotID = view.dd.sessionReplaySlotID
+            let slotID = view.kubesense.sessionReplaySlotID
         else {
             return nil
         }
@@ -181,7 +181,7 @@ extension CALayerSnapshot.SemanticObservation.ImageSemantics {
 extension CALayerSnapshot.SemanticObservation.TextInputSemantics {
     fileprivate init(textView: UITextView) {
         self.init(
-            isSensitiveText: textView.dd.isSensitiveText,
+            isSensitiveText: textView.kubesense.isSensitiveText,
             isEditable: textView.isEditable,
             isEmpty: textView.text?.isEmpty ?? true
         )
@@ -189,7 +189,7 @@ extension CALayerSnapshot.SemanticObservation.TextInputSemantics {
 
     fileprivate init(textField: UITextField) {
         self.init(
-            isSensitiveText: textField.dd.isSensitiveText,
+            isSensitiveText: textField.kubesense.isSensitiveText,
             isEditable: true,
             isEmpty: textField.text?.isEmpty ?? true
         )

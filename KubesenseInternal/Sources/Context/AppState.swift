@@ -185,7 +185,7 @@ public struct DefaultAppStateProvider: AppStateProvider {
     ///
     /// **Note**: Must be called on the main thread.
     public var current: AppState {
-        let uiKitState = UIApplication.dd.managedShared?.applicationState ?? .active // fallback to most expected state
+        let uiKitState = UIApplication.kubesense.managedShared?.applicationState ?? .active // fallback to most expected state
         return AppState(uiKitState)
     }
 }

@@ -21,6 +21,6 @@ internal func hexString(from color: CGColor) -> String? {
         return nil
     }
 
-    return UIColor(cgColor: color).dd.hexString
+    return UIColor(cgColor: color).kubesense.hexString
 }
 #endif

@@ -19,7 +19,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
-- (void)testDDContextSharingExtensionAPI {
+- (void)testKubesenseContextSharingExtensionAPI {
     [KubesenseCrossPlatformExtension subscribeToSharedContext:^(KubesenseSharedContext * _Nullable context) {
         // Just check API availability in Objective-C
     }];

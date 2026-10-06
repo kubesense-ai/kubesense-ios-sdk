@@ -66,7 +66,7 @@ class InternalProxyTests: XCTestCase {
         XCTAssertEqual(error.stack, stack)
     }
 
-    func testWhenTelemetryIsSentThroughProxy_thenItForwardsToDDTelemetry() throws {
+    func testWhenTelemetryIsSentThroughProxy_thenItForwardsToKubesenseTelemetry() throws {
         CoreRegistry.register(default: core)
         defer { CoreRegistry.unregisterDefault() }
 

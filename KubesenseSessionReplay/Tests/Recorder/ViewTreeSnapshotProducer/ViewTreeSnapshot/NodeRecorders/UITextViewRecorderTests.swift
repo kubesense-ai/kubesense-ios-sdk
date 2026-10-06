@@ -86,7 +86,7 @@ class UITextViewRecorderTests: XCTestCase {
         textView.isEditable = .mockRandom()
         oneOrMoreOf([
             { self.textView.isSecureTextEntry = true },
-            { self.textView.textContentType = UITextView.dd.sensitiveTypes.randomElement() },
+            { self.textView.textContentType = UITextView.kubesense.sensitiveTypes.randomElement() },
         ])
 
         // Then

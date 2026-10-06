@@ -97,7 +97,7 @@ internal struct UITextFieldRecorder: NodeRecorder {
             isPlaceholderText: isPlaceholder,
             font: textField.font,
             fontScalingEnabled: textField.adjustsFontSizeToFitWidth,
-            textObfuscator: textObfuscator(context, attributes, textField.dd.isSensitiveText, isPlaceholder)
+            textObfuscator: textObfuscator(context, attributes, textField.kubesense.isSensitiveText, isPlaceholder)
         )
         return Node(viewAttributes: attributes, wireframesBuilder: builder)
     }

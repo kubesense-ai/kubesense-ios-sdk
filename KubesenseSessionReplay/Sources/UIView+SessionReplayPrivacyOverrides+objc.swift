@@ -28,7 +28,7 @@ public final class objc_SessionReplayPrivacyOverrides: NSObject {
 
     @objc
     public init(view: UIView) {
-        if let existing = view.dd._privacyOverrides {
+        if let existing = view.kubesense._privacyOverrides {
             _swift = existing
         } else {
             _swift = SessionReplayPrivacyOverrides()

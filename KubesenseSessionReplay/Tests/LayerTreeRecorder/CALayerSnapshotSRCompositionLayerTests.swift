@@ -109,7 +109,7 @@ struct CALayerSnapshotSRCompositionLayerTests {
             roundedRect: CGRect(origin: .zero, size: frame.size),
             cornerRadii: cornerRadii,
             cornerCurve: .circular
-        ).dd.svgString
+        ).kubesense.svgString
 
         // When
         let modifiers = snapshot.modifiers()

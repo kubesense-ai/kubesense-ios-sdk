@@ -66,7 +66,7 @@ static constexpr bool is_valid_load_command_size(uint32_t cmdsize) {
  * The instance mutex (binary_image_cache::mutex) protects the cache map.
  */
 static std::mutex g_cacheptr_mutex;
-static dd::profiler::binary_image_cache* g_binary_image_cache = nullptr;
+static kubesense::profiler::binary_image_cache* g_binary_image_cache = nullptr;
 
 // ============================================================================
 // Binary image utility functions
@@ -147,7 +147,7 @@ bool binary_image_lookup_pc(binary_image_t* info, void* pc) {
 // Binary image cache
 // ============================================================================
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 binary_image_cache::binary_image_cache() = default;
 
@@ -326,6 +326,6 @@ void resolve_stack_trace_frames(stack_trace_t* traces, size_t count, binary_imag
     }
 }
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // __APPLE__ && !TARGET_OS_WATCH

@@ -627,7 +627,7 @@ final class SwiftPrinterTests: XCTestCase {
 
             public static func == (lhs: Foo, rhs: Foo) -> Bool {
                 lhs.property1 == rhs.property1 &&
-                lhs.context.dd == rhs.context.dd &&
+                lhs.context.kubesense == rhs.context.kubesense &&
                 lhs.property2 == rhs.property2
             }
         }

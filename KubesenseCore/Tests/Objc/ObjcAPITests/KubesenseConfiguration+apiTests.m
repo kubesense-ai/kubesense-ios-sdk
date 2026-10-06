@@ -10,10 +10,10 @@
 
 // MARK: - KubesenseDataEncryption
 
-@interface CustomDDDataEncryption: NSObject <KubesenseDataEncryption>
+@interface CustomKubesenseDataEncryption: NSObject <KubesenseDataEncryption>
 @end
 
-@implementation CustomDDDataEncryption
+@implementation CustomKubesenseDataEncryption
 
 - (NSData * _Nullable)decryptWithData:(NSData * _Nonnull)data error:(NSError * _Nullable __autoreleasing * _Nullable)error {
     return data;
@@ -38,20 +38,20 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
-- (void)testDDSiteAPI {
+- (void)testKubesenseSiteAPI {
     [KubesenseSite prod];
     [KubesenseSite staging];
 }
 
-- (void)testDDBatchSizeAPI {
+- (void)testKubesenseBatchSizeAPI {
     KubesenseBatchSizeSmall; KubesenseBatchSizeMedium; KubesenseBatchSizeLarge;
 }
 
-- (void)testDDUploadFrequencyAPI {
+- (void)testKubesenseUploadFrequencyAPI {
     KubesenseUploadFrequencyRare; KubesenseUploadFrequencyAverage; KubesenseUploadFrequencyFrequent;
 }
 
-- (void)testDDConfigurationBuilderAPI {
+- (void)testKubesenseConfigurationBuilderAPI {
     KubesenseConfiguration *configuration = [[KubesenseConfiguration alloc] initWithClientToken:@"abc" env:@"def"];
 
     configuration.site = [KubesenseSite prod];
@@ -62,7 +62,7 @@
     configuration.batchSize = KubesenseBatchSizeMedium;
     configuration.uploadFrequency = KubesenseUploadFrequencyAverage;
     configuration.additionalConfiguration = @{@"additional": @"config"};
-    [configuration setEncryption:[CustomDDDataEncryption new]];
+    [configuration setEncryption:[CustomKubesenseDataEncryption new]];
     configuration.backgroundTasksEnabled = true;
     configuration.remoteConfigurationEnabled = false;
     configuration.remoteConfigurationRefreshPeriod = 3600;

@@ -94,8 +94,8 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         XCTAssertNil(vital.vitalDescription)
 
         // Profiling Status
-        XCTAssertEqual(event.dd.profiling?.status, .running)
-        XCTAssertEqual(event.dd.profiling?.quotaReason, quotaReason)
+        XCTAssertEqual(event.kubesense.profiling?.status, .running)
+        XCTAssertEqual(event.kubesense.profiling?.quotaReason, quotaReason)
     }
 
     func testFeatureOperationCommand_sanitizesContextAttributesBeforeWriting() throws {
@@ -145,7 +145,7 @@ class RUMFeatureOperationManagerTests: XCTestCase {
             event.date,
             command.time
                 .addingTimeInterval(mockContext.serverTimeOffset)
-                .timeIntervalSince1970.dd.toInt64Milliseconds
+                .timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
     }
 
@@ -226,8 +226,8 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         // Names outside the schema facet-path set are warned about but still
         // emitted — the backend is the source of truth on character-set policy,
         // so client-side drop would force an SDK bump if the rule were relaxed.
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         for invalidName in invalidCharacterSetNames {
             let command = RUMOperationStepVitalCommand.mockWith(name: invalidName)
@@ -249,16 +249,16 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         }
 
         // A warning is logged for each non-conforming name.
-        XCTAssertEqual(dd.logger.warnMessages.count, invalidCharacterSetNames.count)
-        for (message, name) in zip(dd.logger.warnMessages, invalidCharacterSetNames) {
+        XCTAssertEqual(kubesense.logger.warnMessages.count, invalidCharacterSetNames.count)
+        for (message, name) in zip(kubesense.logger.warnMessages, invalidCharacterSetNames) {
             XCTAssertTrue(message.contains(name), "Expected warning to mention '\(name)', got: \(message)")
         }
     }
 
     func testProcess_OperationWithNameInSchemaCharacterSet_CreatesVitalEvent() {
         // Given — exercises every allowed character class
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let validNames = ["login", "step42", "login-v2", "user_login", "login.v2", "login@prod", "login$1", "LoginV2"]
         for validName in validNames {
@@ -276,7 +276,7 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         // Then — every event is emitted and no warnings are produced.
         let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
         XCTAssertEqual(vitalEvents.count, validNames.count)
-        XCTAssertNil(dd.logger.warnLog)
+        XCTAssertNil(kubesense.logger.warnLog)
     }
 
     func testProcess_OperationKeyOutsideNameCharacterSet_CreatesVitalEvent() {
@@ -298,8 +298,8 @@ class RUMFeatureOperationManagerTests: XCTestCase {
 
     func testProcess_OperationWithBlankOperationKey_LogsWarningAndCreatesVitalEvent() throws {
         // operationKey is optional — a blank value warns but does not discard the event.
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         for invalidOpKey in invalidNames {
             let command = RUMOperationStepVitalCommand.mockWith(name: .mockAny(), operationKey: invalidOpKey)
@@ -316,8 +316,8 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         // Then — events are emitted and a warning is logged for each blank key.
         let vitalEvents = mockWriter.events(ofType: RUMVitalOperationStepEvent.self)
         XCTAssertEqual(vitalEvents.count, invalidNames.count)
-        XCTAssertEqual(dd.logger.warnMessages.count, invalidNames.count)
-        let warnMessage = try XCTUnwrap(dd.logger.warnLog?.message)
+        XCTAssertEqual(kubesense.logger.warnMessages.count, invalidNames.count)
+        let warnMessage = try XCTUnwrap(kubesense.logger.warnLog?.message)
         XCTAssertTrue(warnMessage.contains("operationKey"), "Expected warning to mention 'operationKey', got: \(warnMessage)")
     }
 
@@ -325,8 +325,8 @@ class RUMFeatureOperationManagerTests: XCTestCase {
 
     func testProcess_OperationUpdateWithoutStart_LogsWarning() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
         let operationName: String = .mockRandom()
         let stepType = [
             RUMVitalOperationStepEvent.Vital.StepType.end,
@@ -343,14 +343,14 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         manager.process(command, context: mockContext, writer: mockWriter, activeView: .mockAny())
 
         // Then
-        let logMessage = try XCTUnwrap(dd.logger.warnLog?.message)
+        let logMessage = try XCTUnwrap(kubesense.logger.warnLog?.message)
         XCTAssertEqual(logMessage, "`\(stepType.rawValue)` was called, but operation `\(operationName)` is currently not active. This may lead to a backend `instrumentation_error`. Make sure to call `startOperation(name:operationKey:attributes:options:)` first. Note that the SDK only tracks operations locally and not across sessions.")
     }
 
     func testProcess_OperationStartTwice_LogsWarning() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
         let operationName: String = .mockRandom()
         let operationKey: String = .mockAny()
         let startCommand1 = RUMOperationStepVitalCommand.mockWith(
@@ -369,14 +369,14 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         manager.process(startCommand2, context: mockContext, writer: mockWriter, activeView: .mockAny())
 
         // Then
-        let logMessage = try XCTUnwrap(dd.logger.warnLog?.message)
+        let logMessage = try XCTUnwrap(kubesense.logger.warnLog?.message)
         XCTAssertEqual(logMessage, "Operation `\(operationName)` (key `\(operationKey)`) has already been started. This may result in the backend terminating the previous instance with an `auto_restart` failure. Note that the SDK only tracks operations locally and not across sessions.")
     }
 
     func testProcess_ValidOperationFlow_NoWarnings() {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
         let startCommand = RUMOperationStepVitalCommand.mockWith(stepType: .start)
         let endCommand = RUMOperationStepVitalCommand.mockWith(stepType: .end)
 
@@ -385,7 +385,7 @@ class RUMFeatureOperationManagerTests: XCTestCase {
         manager.process(endCommand, context: mockContext, writer: mockWriter, activeView: .mockAny())
 
         // Then
-        XCTAssertNil(dd.logger.warnLog)
+        XCTAssertNil(kubesense.logger.warnLog)
     }
 
     // MARK: - Synthetics Test ID Tests

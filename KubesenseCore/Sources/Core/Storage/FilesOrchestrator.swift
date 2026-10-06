@@ -301,12 +301,12 @@ internal class FilesOrchestrator: FilesOrchestratorType {
                 SDKMetricFields.typeKey: BatchDeletedMetric.typeValue,
                 BatchMetric.trackKey: metricsData.trackName,
                 BatchDeletedMetric.uploaderDelayKey: [
-                    BatchDeletedMetric.uploaderDelayMinKey: metricsData.uploaderPerformance.minUploadDelay.dd.toMilliseconds,
-                    BatchDeletedMetric.uploaderDelayMaxKey: metricsData.uploaderPerformance.maxUploadDelay.dd.toMilliseconds,
+                    BatchDeletedMetric.uploaderDelayMinKey: metricsData.uploaderPerformance.minUploadDelay.kubesense.toMilliseconds,
+                    BatchDeletedMetric.uploaderDelayMaxKey: metricsData.uploaderPerformance.maxUploadDelay.kubesense.toMilliseconds,
                 ],
                 BatchMetric.consentKey: metricsData.consentLabel,
-                BatchDeletedMetric.uploaderWindowKey: performance.uploaderWindow.dd.toMilliseconds,
-                BatchDeletedMetric.batchAgeKey: batchAge.dd.toMilliseconds,
+                BatchDeletedMetric.uploaderWindowKey: performance.uploaderWindow.kubesense.toMilliseconds,
+                BatchDeletedMetric.batchAgeKey: batchAge.kubesense.toMilliseconds,
                 BatchDeletedMetric.batchRemovalReasonKey: deletionReason.toString(),
                 BatchDeletedMetric.inBackgroundKey: false,
                 BatchDeletedMetric.backgroundTasksEnabled: metricsData.backgroundTasksEnabled,
@@ -334,10 +334,10 @@ internal class FilesOrchestrator: FilesOrchestratorType {
                 SDKMetricFields.typeKey: BatchClosedMetric.typeValue,
                 BatchMetric.trackKey: metricsData.trackName,
                 BatchMetric.consentKey: metricsData.consentLabel,
-                BatchClosedMetric.uploaderWindowKey: performance.uploaderWindow.dd.toMilliseconds,
+                BatchClosedMetric.uploaderWindowKey: performance.uploaderWindow.kubesense.toMilliseconds,
                 BatchClosedMetric.batchSizeKey: lastWritableFileApproximatedSize,
                 BatchClosedMetric.batchEventsCountKey: lastWritableFileObjectsCount,
-                BatchClosedMetric.batchDurationKey: batchDuration.dd.toMilliseconds
+                BatchClosedMetric.batchDurationKey: batchDuration.kubesense.toMilliseconds
             ],
             sampleRate: BatchClosedMetric.sampleRate
         )

@@ -53,9 +53,9 @@ internal final class WatchdogTerminationChecker {
         from previous: AppStateInfo?,
         to current: AppStateInfo
     ) -> Bool {
-        DD.logger.debug(launch.debugDescription)
-        DD.logger.debug(previous.debugDescription)
-        DD.logger.debug(current.debugDescription)
+        KS.logger.debug(launch.debugDescription)
+        KS.logger.debug(previous.debugDescription)
+        KS.logger.debug(current.debugDescription)
 
         guard let previous = previous else {
             return false

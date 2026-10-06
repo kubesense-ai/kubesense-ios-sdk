@@ -14,27 +14,27 @@ class WarningsTests: XCTestCase {
     func testPrintingWarningsOnDifferentConditions() {
         let core = PassthroughCoreMock()
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         XCTAssertTrue(warn(if: true, message: "message"))
-        XCTAssertEqual(dd.logger.warnLog?.message, "message")
+        XCTAssertEqual(kubesense.logger.warnLog?.message, "message")
 
-        dd.logger.reset()
+        kubesense.logger.reset()
 
         XCTAssertFalse(warn(if: false, message: "message"))
-        XCTAssertNil(dd.logger.warnLog)
+        XCTAssertNil(kubesense.logger.warnLog)
 
-        dd.logger.reset()
+        kubesense.logger.reset()
 
         let failingCast: () -> KubesenseSpan? = { warnIfCannotCast(value: KubesenseNoopSpan()) }
         XCTAssertNil(failingCast())
-        XCTAssertEqual(dd.logger.warnLog?.message, "🔥 Using KubesenseNoopSpan while KubesenseSpan was expected.")
+        XCTAssertEqual(kubesense.logger.warnLog?.message, "🔥 Using KubesenseNoopSpan while KubesenseSpan was expected.")
 
-        dd.logger.reset()
+        kubesense.logger.reset()
 
         let succeedingCast: () -> KubesenseSpan? = { warnIfCannotCast(value: KubesenseSpan.mockAny(in: core)) }
         XCTAssertNotNil(succeedingCast())
-        XCTAssertNil(dd.logger.warnLog)
+        XCTAssertNil(kubesense.logger.warnLog)
     }
 }

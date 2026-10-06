@@ -29,7 +29,7 @@ class RequestBuilderTests: XCTestCase {
     let pprof: Data = .mockRandom()
 
     private func mockEvent() throws -> Event {
-        let encoder = JSONEncoder.dd.default()
+        let encoder = JSONEncoder.kubesense.default()
 
         let rumEventsData = try encoder.encode(rumEvents)
         let attachments: ProfileAttachments = .init(pprof: pprof, rumEvents: rumEventsData)

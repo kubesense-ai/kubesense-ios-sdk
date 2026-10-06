@@ -34,7 +34,7 @@ class URLSessionRUMResourcesHandlerTests: XCTestCase {
 
     private lazy var handler = createHandler(rumAttributesProvider: nil)
 
-    func testGivenFirstPartyInterception_withSampledTrace_itInjectDDTraceHeaders() throws {
+    func testGivenFirstPartyInterception_withSampledTrace_itInjectKubesenseTraceHeaders() throws {
         // Given
         let handler = createHandler(
             distributedTracing: .init(
@@ -189,7 +189,7 @@ class URLSessionRUMResourcesHandlerTests: XCTestCase {
         XCTAssertEqual(injectedTraceContext.rumSessionId, "abcdef01-2345-6789-abcd-ef0123456789")
     }
 
-    func testGivenFirstPartyInterception_withRejectedTrace_itDoesNotInjectDDTraceHeaders() throws {
+    func testGivenFirstPartyInterception_withRejectedTrace_itDoesNotInjectKubesenseTraceHeaders() throws {
         /// Given
         let handler = createHandler(
             distributedTracing: .init(

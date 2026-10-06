@@ -31,10 +31,10 @@ class KubesenseTraceConfigurationTests: XCTestCase {
         let random: [String: Any] = mockRandomAttributes()
         objc.tags = random
         KubesenseAssertJSONEqual(objc.tags!, random)
-        KubesenseAssertReflectionEqual(swift.tags!, random.dd.swiftAttributes)
+        KubesenseAssertReflectionEqual(swift.tags!, random.kubesense.swiftAttributes)
     }
 
-    func testSetDDTraceURLSessionTracking() {
+    func testSetKubesenseTraceURLSessionTracking() {
         var tracking: objc_TraceURLSessionTracking
 
         tracking = objc_TraceURLSessionTracking(firstPartyHostsTracing: .init(hosts: ["foo.com"]))

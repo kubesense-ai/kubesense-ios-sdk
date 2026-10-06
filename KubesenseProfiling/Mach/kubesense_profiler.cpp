@@ -50,9 +50,9 @@ static kubesense_profiler_diagnostics_t empty_diagnostics() {
     return {0, 0, 0};
 }
 
-namespace dd::profiler { class kubesense_profiler; }
+namespace kubesense::profiler { class kubesense_profiler; }
 
-static dd::profiler::kubesense_profiler* g_kubesense_profiler = nullptr;
+static kubesense::profiler::kubesense_profiler* g_kubesense_profiler = nullptr;
 static std::mutex g_kubesense_profiler_mutex;
 
 /**
@@ -174,7 +174,7 @@ void kubesense_delete_profiling_defaults() {
 }
 #endif
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 /**
  * Encapsulates profiler state and operations
@@ -289,11 +289,11 @@ public:
             return nullptr;
         }
 
-        dd::profiler::profile* next_profile = new (std::nothrow) dd::profiler::profile(
+        kubesense::profiler::profile* next_profile = new (std::nothrow) kubesense::profiler::profile(
             sampling_interval_ns,
             KUBESENSE_PROFILER_RECORD_CPU_TIME
         );
-        dd::profiler::profile* flushed_profile = nullptr;
+        kubesense::profiler::profile* flushed_profile = nullptr;
         auto swap_profile = [this, next_profile, &flushed_profile] {
             swap_profile_at_flush_boundary(next_profile, flushed_profile);
         };
@@ -338,8 +338,8 @@ private:
      * @param flushed_profile Set to the previously active profile.
      */
     void swap_profile_at_flush_boundary(
-        dd::profiler::profile* next_profile,
-        dd::profiler::profile*& flushed_profile
+        kubesense::profiler::profile* next_profile,
+        kubesense::profiler::profile*& flushed_profile
     ) {
         std::lock_guard<std::mutex> lock(profile_mutex);
 
@@ -359,14 +359,14 @@ private:
      */
     bool create_profile_and_profiler() {
         if (is_thread_sanitizer_enabled()) {
-            printf("[KUBESENSE SDK] 🐶 → Profiling is disabled because ThreadSanitizer is active. Please disable ThreadSanitizer to enable profiling.\n");
+            printf("[KUBESENSE SDK] → Profiling is disabled because ThreadSanitizer is active. Please disable ThreadSanitizer to enable profiling.\n");
             status = KUBESENSE_PROFILER_STATUS_NOT_STARTED;
             return false;
         }
 
         if (profiler) return true;
 
-        profile = new (std::nothrow) dd::profiler::profile(
+        profile = new (std::nothrow) kubesense::profiler::profile(
             sampling_interval_ns,
             KUBESENSE_PROFILER_RECORD_CPU_TIME
         );
@@ -424,7 +424,7 @@ private:
 
         std::lock_guard<std::mutex> lock(profiler->profile_mutex);
 
-        dd::profiler::profile* profile = profiler->profile;
+        kubesense::profiler::profile* profile = profiler->profile;
 
         if (!profile) return;
 
@@ -439,7 +439,7 @@ private:
     }
 };
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 /**
  * Constructor function that runs early during app launch to check if
@@ -452,7 +452,7 @@ static void kubesense_profiler_auto_start() {
     set_main_thread(pthread_self());
 
     double sample_rate = kubesense_is_profiling_enabled() ? read_profiling_sample_rate() : 0;
-    g_kubesense_profiler = new (std::nothrow) dd::profiler::kubesense_profiler(
+    g_kubesense_profiler = new (std::nothrow) kubesense::profiler::kubesense_profiler(
         sample_rate,
         is_active_prewarm(),
         KUBESENSE_PROFILER_TIMEOUT_NS,
@@ -466,12 +466,12 @@ static void kubesense_profiler_auto_start() {
     kubesense_delete_profiling_defaults();
 }
 
-// MARK: - DD Profiler API
+// MARK: - KS Profiler API
 
 int kubesense_profiler_start(void) {
     std::lock_guard<std::mutex> lock(g_kubesense_profiler_mutex);
     if (!g_kubesense_profiler) {
-        g_kubesense_profiler = new (std::nothrow) dd::profiler::kubesense_profiler(
+        g_kubesense_profiler = new (std::nothrow) kubesense::profiler::kubesense_profiler(
             KUBESENSE_PROFILER_MAX_SAMPLE_RATE,
             false,
             KUBESENSE_PROFILER_TIMEOUT_NS,
@@ -545,7 +545,7 @@ void kubesense_profiler_start_testing(
 ) {
     std::lock_guard<std::mutex> lock(g_kubesense_profiler_mutex);
     delete g_kubesense_profiler;
-    g_kubesense_profiler = new (std::nothrow) dd::profiler::kubesense_profiler(
+    g_kubesense_profiler = new (std::nothrow) kubesense::profiler::kubesense_profiler(
         sample_rate,
         is_prewarming,
         timeout_ns,

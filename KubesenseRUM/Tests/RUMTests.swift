@@ -210,8 +210,8 @@ class RUMTests: XCTestCase {
     #endif
 
     func testWhenEnabledWithInvalidLongTasksThreshold() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         config.longTaskThreshold = -5
@@ -220,12 +220,12 @@ class RUMTests: XCTestCase {
         RUM.enable(with: config, in: core)
 
         // Then
-        XCTAssertEqual(dd.logger.errorLog?.message, "`RUM.Configuration.longTaskThreshold` cannot be less than 0s. Long Tasks monitoring will be disabled.")
+        XCTAssertEqual(kubesense.logger.errorLog?.message, "`RUM.Configuration.longTaskThreshold` cannot be less than 0s. Long Tasks monitoring will be disabled.")
     }
 
     func testWhenEnabledWithInvalidAppHangThreshold() throws {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // Given
         config.appHangThreshold = .mockRandom(min: -10, max: 0.0999)
@@ -234,7 +234,7 @@ class RUMTests: XCTestCase {
         RUM.enable(with: config, in: core)
 
         // Then
-        XCTAssertEqual(dd.logger.warnLog?.message, "`RUM.Configuration.appHangThreshold` cannot be less than 0.1s. A value of 0.1s will be used.")
+        XCTAssertEqual(kubesense.logger.warnLog?.message, "`RUM.Configuration.appHangThreshold` cannot be less than 0.1s. A value of 0.1s will be used.")
     }
 
     func testWhenEnabledWithURLSessionTracking() throws {

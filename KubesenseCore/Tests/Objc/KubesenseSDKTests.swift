@@ -140,10 +140,10 @@ class KubesenseSDKTests: XCTestCase {
         XCTAssertEqual(userInfo.current.name, "name")
         XCTAssertEqual(userInfo.current.email, "email")
         let extraInfo = userInfo.current.extraInfo
-        XCTAssertEqual(extraInfo["attribute-int"]?.dd.decode(), 42)
-        XCTAssertEqual(extraInfo["attribute-double"]?.dd.decode(), 42.5)
-        XCTAssertEqual(extraInfo["attribute-string"]?.dd.decode(), "string value")
-        XCTAssertEqual(extraInfo["foo"]?.dd.decode(), "bar")
+        XCTAssertEqual(extraInfo["attribute-int"]?.kubesense.decode(), 42)
+        XCTAssertEqual(extraInfo["attribute-double"]?.kubesense.decode(), 42.5)
+        XCTAssertEqual(extraInfo["attribute-string"]?.kubesense.decode(), "string value")
+        XCTAssertEqual(extraInfo["foo"]?.kubesense.decode(), "bar")
 
         objc_Kubesense.setUserInfo(userId: "id", name: nil, email: nil, extraInfo: [:])
         XCTAssertNotNil(userInfo.current.id)

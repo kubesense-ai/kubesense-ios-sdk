@@ -33,8 +33,8 @@ public struct KubesenseContext {
             guard version != oldValue else {
                 return
             }
-            version = version.sanitizedToDDTags()
-            kubesenseTags = buildDDTags()
+            version = version.sanitizedToKubesenseTags()
+            kubesenseTags = buildKubesenseTags()
         }
     }
 
@@ -179,14 +179,14 @@ public struct KubesenseContext {
         self.site = site
         self.intakeEndpoint = intakeEndpoint ?? site.endpoint
         self.clientToken = clientToken
-        self.service = service.sanitizedToDDTags()
-        self.env = env.sanitizedToDDTags()
-        self.version = version.sanitizedToDDTags()
+        self.service = service.sanitizedToKubesenseTags()
+        self.env = env.sanitizedToKubesenseTags()
+        self.version = version.sanitizedToKubesenseTags()
         self.buildNumber = buildNumber
         self.buildId = buildId
-        self.variant = variant?.sanitizedToDDTags()
+        self.variant = variant?.sanitizedToKubesenseTags()
         self.source = source
-        self.sdkVersion = sdkVersion.sanitizedToDDTags()
+        self.sdkVersion = sdkVersion.sanitizedToKubesenseTags()
         self.ciAppOrigin = ciAppOrigin
         self.serverTimeOffset = serverTimeOffset
         self.applicationName = applicationName
@@ -209,11 +209,11 @@ public struct KubesenseContext {
         self.isLowPowerModeEnabled = isLowPowerModeEnabled
         self.remoteConfigurationId = remoteConfigurationId
         self.additionalContext = additionalContext
-        self.kubesenseTags = buildDDTags()
+        self.kubesenseTags = buildKubesenseTags()
     }
     // swiftlint:enable function_default_parameter_at_end
 
-    private func buildDDTags() -> String {
+    private func buildKubesenseTags() -> String {
         var result = "\(KubesenseTag.service):\(service),\(KubesenseTag.version):\(version),\(KubesenseTag.sdkVersion):\(sdkVersion),\(KubesenseTag.env):\(env)"
         if let variant {
             result += ",\(KubesenseTag.variant):\(variant)"
@@ -261,7 +261,7 @@ extension KubesenseContext {
 }
 
 extension String {
-    func sanitizedToDDTags() -> String {
+    func sanitizedToKubesenseTags() -> String {
         self.replacingOccurrences(of: "[,:]", with: "", options: .regularExpression)
     }
 }

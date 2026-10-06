@@ -219,8 +219,8 @@ internal final class RUMFeature: KubesenseRemoteFeature, RUMSessionSamplerProvid
                         metric: ViewHitchesMetric(
                             maxCount: ViewHitchesReader.Constants.maxCollectedHitches,
                             slowFrameThreshold: Int64(ViewHitchesReader.Constants.hitchesMultiplier),
-                            maxDuration: (configuration.appHangThreshold ?? ViewHitchesReader.Constants.frozenFrameThreshold).dd.toInt64Nanoseconds,
-                            viewMinDuration: RUMViewScope.Constants.minimumTimeSpentForRates.dd.toInt64Nanoseconds
+                            maxDuration: (configuration.appHangThreshold ?? ViewHitchesReader.Constants.frozenFrameThreshold).kubesense.toInt64Nanoseconds,
+                            viewMinDuration: RUMViewScope.Constants.minimumTimeSpentForRates.kubesense.toInt64Nanoseconds
                         )
                     )
                 }
@@ -411,9 +411,9 @@ internal final class RUMFeature: KubesenseRemoteFeature, RUMSessionSamplerProvid
         }()
 
         core.telemetry.configuration(
-            appHangThreshold: configuration.appHangThreshold?.dd.toInt64Milliseconds,
+            appHangThreshold: configuration.appHangThreshold?.kubesense.toInt64Milliseconds,
             invTimeThresholdMs: configuration.nextViewActionPredicate?.invTimeThresholdMs,
-            mobileVitalsUpdatePeriod: configuration.vitalsUpdateFrequency?.timeInterval.dd.toInt64Milliseconds,
+            mobileVitalsUpdatePeriod: configuration.vitalsUpdateFrequency?.timeInterval.kubesense.toInt64Milliseconds,
             sessionSampleRate: Int64.kubesenseWithNoOverflow(configuration.debugSDK ? 100 : configuration.sessionSampleRate),
             telemetrySampleRate: Int64.kubesenseWithNoOverflow(configuration.debugSDK ? 100 : configuration.telemetrySampleRate),
             tnsTimeThresholdMs: configuration.networkSettledResourcePredicate.tnsTimeThresholdMs,
@@ -440,7 +440,7 @@ private extension NetworkSettledResourcePredicate {
     var tnsTimeThresholdMs: Int64? {
         switch self {
         case let timeBased as TimeBasedTNSResourcePredicate:
-            return timeBased.threshold.dd.toInt64Milliseconds
+            return timeBased.threshold.kubesense.toInt64Milliseconds
         case let objcBridge as NetworkSettledResourcePredicateBridge:
             return (objcBridge.objcPredicate as? objc_TimeBasedTNSResourcePredicate)?
                 .swiftPredicate.tnsTimeThresholdMs
@@ -454,7 +454,7 @@ private extension NextViewActionPredicate {
     var invTimeThresholdMs: Int64? {
         switch self {
         case let timeBased as TimeBasedINVActionPredicate:
-            return timeBased.maxTimeToNextView.dd.toInt64Milliseconds
+            return timeBased.maxTimeToNextView.kubesense.toInt64Milliseconds
         case let objcBridge as NextViewActionPredicateBridge:
             return (objcBridge.objcPredicate as? objc_TimeBasedINVActionPredicate)?
                 .swiftPredicate.invTimeThresholdMs

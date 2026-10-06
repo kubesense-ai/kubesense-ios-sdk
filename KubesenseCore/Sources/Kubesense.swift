@@ -301,7 +301,7 @@ public enum Kubesense {
 
         deleteV1Folders(in: core)
 
-        DD.logger = InternalLogger(
+        KS.logger = InternalLogger(
             dateProvider: configuration.dateProvider,
             timeZone: .current,
             printFunction: consolePrint,
@@ -512,8 +512,8 @@ extension KubesenseCore {
         telemetry.configuration(
             backgroundTasksEnabled: configuration.backgroundTasksEnabled,
             batchProcessingLevel: Int64(exactly: configuration.batchProcessingLevel.maxBatchesPerUpload),
-            batchSize: performance.uploaderWindow.dd.toInt64Milliseconds,
-            batchUploadFrequency: performance.minUploadDelay.dd.toInt64Milliseconds,
+            batchSize: performance.uploaderWindow.kubesense.toInt64Milliseconds,
+            batchUploadFrequency: performance.minUploadDelay.kubesense.toInt64Milliseconds,
             useLocalEncryption: configuration.encryption != nil,
             useProxy: configuration.proxyConfiguration != nil
         )

@@ -16,11 +16,11 @@ internal struct ImageSnapshotResource: Resource {
     }
 
     func calculateIdentifier() -> String {
-        image.dd.identifier
+        image.kubesense.identifier
     }
 
     func calculateData() -> Data {
-        image.dd.pngData() ?? Data()
+        image.kubesense.pngData() ?? Data()
     }
 }
 #endif

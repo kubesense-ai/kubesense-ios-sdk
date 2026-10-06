@@ -109,7 +109,7 @@ internal extension RUMViewEvent {
     func metadata(viewIndexInSession: Int, isDeltaBaseline: Bool = false) -> Metadata {
         return Metadata(
             id: view.id,
-            documentVersion: dd.documentVersion,
+            documentVersion: kubesense.documentVersion,
             hasAccessibility: view.accessibility != nil,
             duration: view.timeSpent,
             indexInSession: viewIndexInSession,

@@ -970,11 +970,11 @@ class LoggerTests: XCTestCase {
         let logMatchers = try core.waitAndReturnLogMatchers()
         logMatchers[0].assertValue(
             forKeyPath: "dd.trace_id",
-            equals: span.context.dd.traceID.toString(representation: .hexadecimal)
+            equals: span.context.kubesense.traceID.toString(representation: .hexadecimal)
         )
         logMatchers[0].assertValue(
             forKeyPath: "dd.span_id",
-            equals: span.context.dd.spanID.toString(representation: .decimal)
+            equals: span.context.kubesense.spanID.toString(representation: .decimal)
         )
         logMatchers[1].assertNoValue(forKey: "dd.trace_id")
         logMatchers[1].assertNoValue(forKey: "dd.span_id")
@@ -1074,8 +1074,8 @@ class LoggerTests: XCTestCase {
     // MARK: - Usage
 
     func testGivenKubesenseNotInitialized_whenInitializingLogger_itPrintsError() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // given
         let core = NOPKubesenseCore()
@@ -1085,19 +1085,19 @@ class LoggerTests: XCTestCase {
 
         // then
         XCTAssertEqual(
-            dd.logger.criticalLog?.message,
+            kubesense.logger.criticalLog?.message,
             "Failed to build `Logger`."
         )
         XCTAssertEqual(
-            dd.logger.criticalLog?.error?.message,
+            kubesense.logger.criticalLog?.error?.message,
             "🔥 Kubesense SDK usage error: `Kubesense.initialize()` must be called prior to `Logger.create()`."
         )
         XCTAssertTrue(logger is NOPLogger)
     }
 
     func testGivenLoggingFeatureDisabled_whenInitializingLogger_itPrintsError() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // given
         core.context = .mockAny()
@@ -1108,11 +1108,11 @@ class LoggerTests: XCTestCase {
 
         // then
         XCTAssertEqual(
-            dd.logger.criticalLog?.message,
+            kubesense.logger.criticalLog?.message,
             "Failed to build `Logger`."
         )
         XCTAssertEqual(
-            dd.logger.criticalLog?.error?.message,
+            kubesense.logger.criticalLog?.error?.message,
             "🔥 Kubesense SDK usage error: `Logger.create()` produces a non-functional logger because the `Logs` feature was not enabled."
         )
         XCTAssertTrue(logger is NOPLogger)

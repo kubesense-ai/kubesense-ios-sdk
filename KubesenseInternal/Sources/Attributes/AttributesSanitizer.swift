@@ -39,7 +39,7 @@ public struct AttributesSanitizer {
         attributes.forEach { key, value in
             let sanitizedName = sanitize(attributeKey: key, prefixLevels: prefixLevels)
             if sanitizedName != key {
-                DD.logger.warn(
+                KS.logger.warn(
                     """
                     \(featureName) attribute '\(key)' was modified to '\(sanitizedName)' to match Kubesense constraints.
                     """
@@ -73,7 +73,7 @@ public struct AttributesSanitizer {
     public func limitNumberOf<Value>(attributes: [String: Value], to count: Int) -> [String: Value] {
         if attributes.count > count {
             let extraAttributesCount = attributes.count - count
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 Number of \(featureName) attributes exceeds the limit of \(Constraints.maxNumberOfAttributes).
                 \(extraAttributesCount) attribute(s) will be ignored.

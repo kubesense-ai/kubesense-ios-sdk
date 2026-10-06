@@ -244,7 +244,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let random = mockRandomAttributes() // because below we only mock partial web event, we use this random to make the test fuzzy
         let webEventMock: JSON = [
             // Known properties:
@@ -272,7 +272,7 @@ class WebViewEventReceiverTests: XCTestCase {
                 "id": rumContext.sessionID,
             ],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags,
         ].merging(random, uniquingKeysWith: { old, _ in old })
 
@@ -282,7 +282,7 @@ class WebViewEventReceiverTests: XCTestCase {
         KubesenseAssertJSONEqual(AnyCodable(actualWebEventWritten), AnyCodable(expectedWebEventWritten))
     }
 
-    func testGivenBrowserTagsAvailable_whenReceivingWebEvent_itMergesWithNativeDDTags() throws {
+    func testGivenBrowserTagsAvailable_whenReceivingWebEvent_itMergesWithNativeKubesenseTags() throws {
         // Given
         let dateProvider = RelativeDateProvider()
         let rumContext: RUMCoreContext = .mockRandom()
@@ -298,7 +298,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "application": ["id": String.mockRandom()],
             "session": ["id": String.mockRandom()],
@@ -316,7 +316,7 @@ class WebViewEventReceiverTests: XCTestCase {
             "application": ["id": rumContext.applicationID],
             "session": ["id": rumContext.sessionID],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": "browser_sdk_version:3.6.13,env:abc,sdk_version:5.2.0,service:abc,version:abc"
         ]
 
@@ -326,7 +326,7 @@ class WebViewEventReceiverTests: XCTestCase {
         KubesenseAssertJSONEqual(AnyCodable(actualWebEventWritten), AnyCodable(expectedWebEventWritten))
     }
 
-    func testGivenNoBrowserTags_whenReceivingWebEvent_itSetsNativeDDTags() throws {
+    func testGivenNoBrowserTags_whenReceivingWebEvent_itSetsNativeKubesenseTags() throws {
         // Given
         let dateProvider = RelativeDateProvider()
         let rumContext: RUMCoreContext = .mockRandom()
@@ -342,7 +342,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "application": ["id": String.mockRandom()],
             "session": ["id": String.mockRandom()],
@@ -358,7 +358,7 @@ class WebViewEventReceiverTests: XCTestCase {
             "application": ["id": rumContext.applicationID],
             "session": ["id": rumContext.sessionID],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags
         ]
 
@@ -409,19 +409,19 @@ class WebViewEventReceiverTests: XCTestCase {
         let containerViewID: String = .mockRandom()
         receiver.viewCache.insert(
             id: containerViewID,
-            timestamp: dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds,
+            timestamp: dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds,
             hasReplay: true
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let random = mockRandomAttributes() // because below we only mock partial web event, we use this random to make the test fuzzy
         let webHasReplay: Bool = .mockRandom()
         let webEventMock: JSON = [
             // Known properties:
             "_kubesense": [
                 "browser_sdk_version": "5.2.0",
-                "replay_stats": RUMViewEvent.DD.ReplayStats(
+                "replay_stats": RUMViewEvent.KS.ReplayStats(
                     recordsCount: 10,
                     segmentsCount: 1,
                     segmentsTotalRawSize: 10
@@ -460,7 +460,7 @@ class WebViewEventReceiverTests: XCTestCase {
                 "has_replay": webHasReplay
             ] as [String: Any],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags,
         ].merging(random, uniquingKeysWith: { old, _ in old })
 
@@ -492,18 +492,18 @@ class WebViewEventReceiverTests: XCTestCase {
         let containerViewID: String = .mockRandom()
         receiver.viewCache.insert(
             id: containerViewID,
-            timestamp: dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds,
+            timestamp: dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds,
             hasReplay: true
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let random = mockRandomAttributes() // because below we only mock partial web event, we use this random to make the test fuzzy
         let webEventMock: JSON = [
             // Known properties:
             "_kubesense": [
                 "browser_sdk_version": "5.2.0",
-                "replay_stats": RUMViewEvent.DD.ReplayStats(
+                "replay_stats": RUMViewEvent.KS.ReplayStats(
                     recordsCount: .mockRandom(),
                     segmentsCount: .mockRandom(),
                     segmentsTotalRawSize: .mockRandom()
@@ -537,7 +537,7 @@ class WebViewEventReceiverTests: XCTestCase {
                 "has_replay": false
             ] as [String: Any],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags,
         ].merging(random, uniquingKeysWith: { old, _ in old })
 
@@ -569,7 +569,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "application": ["id": String.mockRandom()],
             "session": ["id": String.mockRandom()],
@@ -592,7 +592,7 @@ class WebViewEventReceiverTests: XCTestCase {
             "application": ["id": rumContext.applicationID],
             "session": ["id": rumContext.sessionID],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags,
             "usr": [
                 "id": webUsrId,
@@ -622,7 +622,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "application": ["id": String.mockRandom()],
             "session": ["id": String.mockRandom()],
@@ -642,7 +642,7 @@ class WebViewEventReceiverTests: XCTestCase {
             "application": ["id": rumContext.applicationID],
             "session": ["id": rumContext.sessionID],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags,
             "usr": ["anonymous_id": nativeAnonymousId]
         ]
@@ -690,7 +690,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "type": "resource",
             "_kubesense": [
@@ -712,10 +712,10 @@ class WebViewEventReceiverTests: XCTestCase {
         XCTAssertTrue(result)
         let events = core.waitAndReturnEvents(ofFeature: "rum", ofType: AnyEncodable.self)
         let actualWebEventWritten = try XCTUnwrap((events.first)?.value as? [String: Any])
-        let actualDD = try XCTUnwrap(actualWebEventWritten["_kubesense"] as? [String: Any])
-        XCTAssertEqual(actualDD["rule_psr"] as? Float, Float(nativeSamplingRate.percentageProportion), "rule_psr must be overwritten with the native sampling rate")
-        XCTAssertEqual(actualDD["trace_id"] as? String, "123456789", "trace_id must be preserved")
-        XCTAssertEqual(actualDD["span_id"] as? String, "987654321", "span_id must be preserved")
+        let actualKubesense = try XCTUnwrap(actualWebEventWritten["_kubesense"] as? [String: Any])
+        XCTAssertEqual(actualKubesense["rule_psr"] as? Float, Float(nativeSamplingRate.percentageProportion), "rule_psr must be overwritten with the native sampling rate")
+        XCTAssertEqual(actualKubesense["trace_id"] as? String, "123456789", "trace_id must be preserved")
+        XCTAssertEqual(actualKubesense["span_id"] as? String, "987654321", "span_id must be preserved")
     }
 
     func testGivenFirstPartyHostSamplingRate_whenReceivingResourceEventWithoutRulePsr_itDoesNotAddRulePsr() throws {
@@ -758,7 +758,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "type": "resource",
             "_kubesense": [
@@ -777,10 +777,10 @@ class WebViewEventReceiverTests: XCTestCase {
         XCTAssertTrue(result)
         let events = core.waitAndReturnEvents(ofFeature: "rum", ofType: AnyEncodable.self)
         let actualWebEventWritten = try XCTUnwrap((events.first)?.value as? [String: Any])
-        let actualDD = try XCTUnwrap(actualWebEventWritten["_kubesense"] as? [String: Any])
-        XCTAssertNil(actualDD["rule_psr"], "rule_psr should not have been created")
-        XCTAssertNil(actualDD["trace_id"])
-        XCTAssertNil(actualDD["span_id"])
+        let actualKubesense = try XCTUnwrap(actualWebEventWritten["_kubesense"] as? [String: Any])
+        XCTAssertNil(actualKubesense["rule_psr"], "rule_psr should not have been created")
+        XCTAssertNil(actualKubesense["trace_id"])
+        XCTAssertNil(actualKubesense["span_id"])
     }
 
     func testGivenNoFirstPartyHostSamplingRate_whenReceivingTracedResourceEvent_itDoesNotModifyRulePsr() throws {
@@ -817,7 +817,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let originalRulePsr: Float = 1.0
         let webEventMock: JSON = [
             "type": "resource",
@@ -840,10 +840,10 @@ class WebViewEventReceiverTests: XCTestCase {
         XCTAssertTrue(result)
         let events = core.waitAndReturnEvents(ofFeature: "rum", ofType: AnyEncodable.self)
         let actualWebEventWritten = try XCTUnwrap((events.first)?.value as? [String: Any])
-        let actualDD = try XCTUnwrap(actualWebEventWritten["_kubesense"] as? [String: Any])
-        XCTAssertEqual(actualDD["rule_psr"] as? Float, originalRulePsr, "rule_psr must be overwritten")
-        XCTAssertEqual(actualDD["trace_id"] as? String, "123456789", "trace_id must be preserved")
-        XCTAssertEqual(actualDD["span_id"] as? String, "987654321", "span_id must be preserved")
+        let actualKubesense = try XCTUnwrap(actualWebEventWritten["_kubesense"] as? [String: Any])
+        XCTAssertEqual(actualKubesense["rule_psr"] as? Float, originalRulePsr, "rule_psr must be overwritten")
+        XCTAssertEqual(actualKubesense["trace_id"] as? String, "123456789", "trace_id must be preserved")
+        XCTAssertEqual(actualKubesense["span_id"] as? String, "987654321", "span_id must be preserved")
     }
 
     // MARK: - Anonymous ID Propagation
@@ -866,7 +866,7 @@ class WebViewEventReceiverTests: XCTestCase {
         )
 
         dateProvider.advance(bySeconds: 1)
-        let date = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let date = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
         let webEventMock: JSON = [
             "application": ["id": String.mockRandom()],
             "session": ["id": String.mockRandom()],
@@ -885,7 +885,7 @@ class WebViewEventReceiverTests: XCTestCase {
             "application": ["id": rumContext.applicationID],
             "session": ["id": rumContext.sessionID],
             "view": ["id": "00000000-aaaa-0000-aaaa-000000000000"],
-            "date": date + featureScope.contextMock.serverTimeOffset.dd.toInt64Milliseconds,
+            "date": date + featureScope.contextMock.serverTimeOffset.kubesense.toInt64Milliseconds,
             "ktags": featureScope.contextMock.kubesenseTags,
             "usr": ["anonymous_id": fakeAnonymousId]
         ]

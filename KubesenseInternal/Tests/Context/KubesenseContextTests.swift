@@ -11,7 +11,7 @@ import XCTest
 final class KubesenseContextTests: XCTestCase {
     // MARK: - Test ktags
 
-    func testKubesenseDDTags() throws {
+    func testKubesenseKubesenseTags() throws {
         // Given
         let service: String = .mockRandom()
         let env: String = .mockRandom()
@@ -41,7 +41,7 @@ final class KubesenseContextTests: XCTestCase {
         XCTAssertEqual(kubesenseTags["variant"] as! String, variant)
     }
 
-    func testKubesenseSanitizedDDTags() throws {
+    func testKubesenseSanitizedKubesenseTags() throws {
         // Given
         let service = "service:with:colons"
         let env = "prod,dev"
@@ -71,7 +71,7 @@ final class KubesenseContextTests: XCTestCase {
         XCTAssertEqual(kubesenseTags["variant"] as! String, "variantwithcommas")
     }
 
-    func testKubesenseDDTagsWithoutVariant() throws {
+    func testKubesenseKubesenseTagsWithoutVariant() throws {
         // Given
         let service: String = .mockRandom()
         let env: String = .mockRandom()
@@ -102,11 +102,11 @@ final class KubesenseContextTests: XCTestCase {
 
     // MARK: - kubesenseTags caching
 
-    func testDDTagsUpdatesWhenVersionChanges() throws {
+    func testKubesenseTagsUpdatesWhenVersionChanges() throws {
         // Given
         var context: KubesenseContext = .mockWith(version: "1.0.0")
-        let originalDDTags = context.kubesenseTags
-        XCTAssertTrue(originalDDTags.contains("version:1.0.0"))
+        let originalKubesenseTags = context.kubesenseTags
+        XCTAssertTrue(originalKubesenseTags.contains("version:1.0.0"))
 
         // When
         context.version = "2.0.0"
@@ -114,10 +114,10 @@ final class KubesenseContextTests: XCTestCase {
         // Then
         XCTAssertTrue(context.kubesenseTags.contains("version:2.0.0"))
         XCTAssertFalse(context.kubesenseTags.contains("version:1.0.0"))
-        XCTAssertNotEqual(context.kubesenseTags, originalDDTags)
+        XCTAssertNotEqual(context.kubesenseTags, originalKubesenseTags)
     }
 
-    func testDDTagsSanitizesVersionOnUpdate() throws {
+    func testKubesenseTagsSanitizesVersionOnUpdate() throws {
         // Given
         var context: KubesenseContext = .mockWith(version: "1.0.0")
 
@@ -131,14 +131,14 @@ final class KubesenseContextTests: XCTestCase {
 
     // MARK: - KubesenseTag.merge
 
-    func testMergeDDTags_whenOtherTagsIsNilOrEmpty_itReturnsNativeTagsUnchanged() {
+    func testMergeKubesenseTags_whenOtherTagsIsNilOrEmpty_itReturnsNativeTagsUnchanged() {
         let nativeTags = "service:app,version:1.0.0,sdk_version:5.0.0,env:prod"
 
         XCTAssertEqual(KubesenseTag.merge(nativeTags, with: nil), nativeTags)
         XCTAssertEqual(KubesenseTag.merge(nativeTags, with: ""), nativeTags)
     }
 
-    func testMergeDDTags_whenOtherTagsHasNoOverlappingKeys_itAppendsThem() {
+    func testMergeKubesenseTags_whenOtherTagsHasNoOverlappingKeys_itAppendsThem() {
         let merged = KubesenseTag.merge(
             "service:app,version:1.0.0,sdk_version:5.0.0,env:prod",
             with: "browser_sdk_version:3.6.13"
@@ -147,7 +147,7 @@ final class KubesenseContextTests: XCTestCase {
         XCTAssertEqual(merged, "browser_sdk_version:3.6.13,env:prod,sdk_version:5.0.0,service:app,version:1.0.0")
     }
 
-    func testMergeDDTags_whenOtherTagsHasOverlappingKeys_itOverridesNativeValuesInPlace() {
+    func testMergeKubesenseTags_whenOtherTagsHasOverlappingKeys_itOverridesNativeValuesInPlace() {
         let merged = KubesenseTag.merge(
             "service:app,version:1.0.0,sdk_version:5.0.0,env:prod",
             with: "sdk_version:3.6.13,browser_sdk_version:3.6.13"
@@ -156,7 +156,7 @@ final class KubesenseContextTests: XCTestCase {
         XCTAssertEqual(merged, "browser_sdk_version:3.6.13,env:prod,sdk_version:3.6.13,service:app,version:1.0.0")
     }
 
-    func testMergeDDTags_itIgnoresPairsWithoutAColon() {
+    func testMergeKubesenseTags_itIgnoresPairsWithoutAColon() {
         let merged = KubesenseTag.merge(
             "service:app,version:1.0.0",
             with: "malformed,env:prod"

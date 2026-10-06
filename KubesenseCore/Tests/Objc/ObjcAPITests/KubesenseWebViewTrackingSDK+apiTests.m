@@ -31,7 +31,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
-- (void)testDDWebViewTrackingAPI {
+- (void)testKubesenseWebViewTrackingAPI {
     WebViewMock *webView = [WebViewMock new];
     [KubesenseWebViewTrackingSDK enableWithWebView:webView
                                    hosts:[NSSet<NSString*> setWithArray:@[@"host1.com", @"host2.com"]]
@@ -40,7 +40,7 @@
     [KubesenseWebViewTrackingSDK disableWithWebView:webView];
 }
 
-- (void)testDDWebViewTrackingInstanceNameAPI {
+- (void)testKubesenseWebViewTrackingInstanceNameAPI {
     WebViewMock *webView = [WebViewMock new];
     NSString *instanceName = @"webview-test-instance";
     [KubesenseWebViewTrackingSDK enableWithWebView:webView

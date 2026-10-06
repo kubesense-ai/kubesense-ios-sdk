@@ -28,11 +28,11 @@ class AppHangsMonitorTests: XCTestCase {
     private let currentProcessID = UUID()
     private let dateProvider = DateProviderMock()
     private let uuidGenerator = RUMUUIDGeneratorMock()
-    private var dd: KubesenseMock<CoreLoggerMock>! // swiftlint:disable:this implicitly_unwrapped_optional
+    private var kubesense: KubesenseMock<CoreLoggerMock>! // swiftlint:disable:this implicitly_unwrapped_optional
     private var monitor: AppHangsMonitor! // swiftlint:disable:this implicitly_unwrapped_optional
 
     override func setUp() {
-        dd = DD.mockWith(logger: CoreLoggerMock())
+        kubesense = KS.mockWith(logger: CoreLoggerMock())
         monitor = AppHangsMonitor(
             featureScope: featureScope,
             watchdogThread: watchdogThread,
@@ -45,7 +45,7 @@ class AppHangsMonitorTests: XCTestCase {
 
     override func tearDown() {
         monitor = nil
-        dd.reset()
+        kubesense.reset()
     }
 
     func testStartAndStop() throws {
@@ -131,7 +131,7 @@ class AppHangsMonitorTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(featureScope.dataStoreMock.value(forKey: RUMDataStore.Key.fatalAppHangKey.rawValue))
-        XCTAssertEqual(dd.logger.debugMessages, ["No pending App Hang found"])
+        XCTAssertEqual(kubesense.logger.debugMessages, ["No pending App Hang found"])
     }
 
     func testGivenFatalErrorViewContextNotAvailable_whenAppHangStarts_itLogsDebug() throws {
@@ -147,7 +147,7 @@ class AppHangsMonitorTests: XCTestCase {
         // Then
         XCTAssertNil(featureScope.dataStoreMock.value(forKey: RUMDataStore.Key.fatalAppHangKey.rawValue))
         XCTAssertEqual(
-            dd.logger.debugMessages,
+            kubesense.logger.debugMessages,
             [
                 "No pending App Hang found",
                 "App Hang is being detected, but won't be considered fatal as there is no active RUM view"
@@ -168,7 +168,7 @@ class AppHangsMonitorTests: XCTestCase {
 
         // Then
         XCTAssertNil(featureScope.dataStoreMock.value(forKey: RUMDataStore.Key.fatalAppHangKey.rawValue))
-        XCTAssertEqual(dd.logger.debugLog?.message, "No pending App Hang found")
+        XCTAssertEqual(kubesense.logger.debugLog?.message, "No pending App Hang found")
     }
 
     func testWhenAppHangEnds_itDeletesPendingAppHangInDataStore() throws {
@@ -185,7 +185,7 @@ class AppHangsMonitorTests: XCTestCase {
 
         // Then
         XCTAssertNil(featureScope.dataStoreMock.value(forKey: RUMDataStore.Key.fatalAppHangKey.rawValue))
-        XCTAssertEqual(dd.logger.debugMessages, ["No pending App Hang found"])
+        XCTAssertEqual(kubesense.logger.debugMessages, ["No pending App Hang found"])
     }
 
     // MARK: - Fatal App Hangs - Testing Conditional Uploads
@@ -219,7 +219,7 @@ class AppHangsMonitorTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.debugMessages,
+            kubesense.logger.debugMessages,
             [
                 "No pending App Hang found", // from hanged process
                 "Sending fatal App hang as RUM error with issuing RUM view update", // from next process
@@ -261,7 +261,7 @@ class AppHangsMonitorTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.debugMessages,
+            kubesense.logger.debugMessages,
             [
                 "No pending App Hang found", // from hanged process
                 "Sending fatal App hang as RUM error without updating RUM view", // from next process
@@ -301,7 +301,7 @@ class AppHangsMonitorTests: XCTestCase {
 
         // Then
         XCTAssertEqual(
-            dd.logger.debugMessages,
+            kubesense.logger.debugMessages,
             [
                 "No pending App Hang found", // from hanged process
                 "Skipped sending fatal App Hang as it was recorded with \(consent) consent", // from next process
@@ -440,7 +440,7 @@ class AppHangsMonitorTests: XCTestCase {
         XCTAssertEqual(viewEvent.application.id, lastView.application.id)
         XCTAssertEqual(viewEvent.session.id, lastView.session.id)
         XCTAssertEqual(viewEvent.view.id, lastView.view.id)
-        XCTAssertEqual(viewEvent.dd.documentVersion, lastView.dd.documentVersion + 1, "It must increment document version")
+        XCTAssertEqual(viewEvent.kubesense.documentVersion, lastView.kubesense.documentVersion + 1, "It must increment document version")
         XCTAssertEqual(viewEvent.view.error.count, lastView.view.error.count + 1, "It must count the hang error")
         XCTAssertEqual(viewEvent.view.crash?.count, 1, "It must count crash")
         XCTAssertEqual(viewEvent.view.isActive, false, "The view must be marked as inactive.")
@@ -454,10 +454,10 @@ class AppHangsMonitorTests: XCTestCase {
         XCTAssertEqual(viewEvent.view.action.count, lastView.view.action.count)
         XCTAssertEqual(
             viewEvent.date,
-            hangDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds - 1,
+            hangDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds - 1,
             "It must be issued at hang date corrected by recorded offset and shifted back by 1ms"
         )
-        XCTAssertEqual(viewEvent.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(viewEvent.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         KubesenseAssertReflectionEqual(viewEvent.device, lastView.device)
         KubesenseAssertReflectionEqual(viewEvent.os, lastView.os)
         KubesenseAssertJSONEqual(viewEvent.connectivity, lastView.connectivity)
@@ -529,7 +529,7 @@ class AppHangsMonitorTests: XCTestCase {
         )
         XCTAssertEqual(
             errorEvent.date,
-            hangDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            hangDate.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             "It must include error date corrected by recorded server time offset"
         )
         XCTAssertEqual(errorEvent.error.type, AppHangsMonitor.Constants.appHangErrorType)
@@ -542,7 +542,7 @@ class AppHangsMonitorTests: XCTestCase {
             2: stack-trace line 2
             """
         )
-        XCTAssertEqual(errorEvent.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(errorEvent.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         KubesenseAssertJSONEqual(errorEvent.error.threads, hangBacktrace.threads.toRUMDataFormat)
         KubesenseAssertJSONEqual(errorEvent.error.binaryImages, hangBacktrace.binaryImages.toRUMDataFormat)
         XCTAssertEqual(errorEvent.error.wasTruncated, hangBacktrace.wasTruncated)
@@ -580,6 +580,6 @@ class AppHangsMonitorTests: XCTestCase {
         // Then
         let errorEvent = try XCTUnwrap(featureScope.eventsWritten(ofType: RUMErrorEvent.self).first)
         XCTAssertEqual(errorEvent.error.category, .appHang)
-        XCTAssertEqual(errorEvent.error.timeSinceAppStart, hangTimeSinceAppStart.dd.toInt64Milliseconds)
+        XCTAssertEqual(errorEvent.error.timeSinceAppStart, hangTimeSinceAppStart.kubesense.toInt64Milliseconds)
     }
 }

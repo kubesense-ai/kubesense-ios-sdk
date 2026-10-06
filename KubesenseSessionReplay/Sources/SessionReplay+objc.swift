@@ -123,8 +123,8 @@ public final class objc_SessionReplayConfiguration: NSObject {
     /// - `heatmaps`: `false` by default.
     /// - `composition_tree_recording`: `false` by default (iOS 13+).
     @objc public var featureFlags: [String: Bool] {
-        set { _swift.featureFlags = newValue.dd.featureFlags }
-        get { _swift.featureFlags.dd.featureFlags }
+        set { _swift.featureFlags = newValue.kubesense.featureFlags }
+        get { _swift.featureFlags.kubesense.featureFlags }
     }
 
     /// Creates Session Replay configuration.
@@ -148,7 +148,7 @@ public final class objc_SessionReplayConfiguration: NSObject {
             textAndInputPrivacyLevel: textAndInputPrivacyLevel._swift,
             imagePrivacyLevel: imagePrivacyLevel._swift,
             touchPrivacyLevel: touchPrivacyLevel._swift,
-            featureFlags: featureFlags?.dd.featureFlags ?? .defaults
+            featureFlags: featureFlags?.kubesense.featureFlags ?? .defaults
         )
         super.init()
     }

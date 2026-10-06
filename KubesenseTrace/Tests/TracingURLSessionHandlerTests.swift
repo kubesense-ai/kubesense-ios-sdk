@@ -246,9 +246,9 @@ class TracingURLSessionHandlerTests: XCTestCase {
         let injectedTraceContext = try XCTUnwrap(traceContext, "It must return injected trace context")
         XCTAssertEqual(injectedTraceContext.traceID, .init(idHi: 10, idLo: 100))
         XCTAssertEqual(injectedTraceContext.spanID, 101)
-        XCTAssertEqual(injectedTraceContext.parentSpanID, span.context.dd.spanID)
-        XCTAssertEqual(injectedTraceContext.sampleRate, span.context.dd.sampleRate)
-        XCTAssertEqual(injectedTraceContext.samplingPriority.isKept, span.context.dd.samplingDecision.samplingPriority.isKept)
+        XCTAssertEqual(injectedTraceContext.parentSpanID, span.context.kubesense.spanID)
+        XCTAssertEqual(injectedTraceContext.sampleRate, span.context.kubesense.sampleRate)
+        XCTAssertEqual(injectedTraceContext.samplingPriority.isKept, span.context.kubesense.samplingDecision.samplingPriority.isKept)
     }
 
     func testGivenFirstPartyInterception_withActiveManuallyKeptSpan_itInjectExpectedHeaders() throws {
@@ -301,9 +301,9 @@ class TracingURLSessionHandlerTests: XCTestCase {
         let injectedTraceContext = try XCTUnwrap(traceContext, "It must return injected trace context")
         XCTAssertEqual(injectedTraceContext.traceID, .init(idHi: 10, idLo: 100))
         XCTAssertEqual(injectedTraceContext.spanID, 101)
-        XCTAssertEqual(injectedTraceContext.parentSpanID, span.context.dd.spanID)
-        XCTAssertEqual(injectedTraceContext.sampleRate, span.context.dd.sampleRate)
-        XCTAssertEqual(injectedTraceContext.samplingPriority.isKept, span.context.dd.samplingDecision.samplingPriority.isKept)
+        XCTAssertEqual(injectedTraceContext.parentSpanID, span.context.kubesense.spanID)
+        XCTAssertEqual(injectedTraceContext.sampleRate, span.context.kubesense.sampleRate)
+        XCTAssertEqual(injectedTraceContext.samplingPriority.isKept, span.context.kubesense.samplingDecision.samplingPriority.isKept)
     }
 
     func testGivenFirstPartyInterception_withActiveManuallyDroppedSpanAndInjectingAll_itInjectExpectedHeaders() throws {
@@ -356,9 +356,9 @@ class TracingURLSessionHandlerTests: XCTestCase {
         let injectedTraceContext = try XCTUnwrap(traceContext, "It must return injected trace context")
         XCTAssertEqual(injectedTraceContext.traceID, .init(idHi: 10, idLo: 100))
         XCTAssertEqual(injectedTraceContext.spanID, 101)
-        XCTAssertEqual(injectedTraceContext.parentSpanID, span.context.dd.spanID)
-        XCTAssertEqual(injectedTraceContext.sampleRate, span.context.dd.sampleRate)
-        XCTAssertEqual(injectedTraceContext.samplingPriority.isKept, span.context.dd.samplingDecision.samplingPriority.isKept)
+        XCTAssertEqual(injectedTraceContext.parentSpanID, span.context.kubesense.spanID)
+        XCTAssertEqual(injectedTraceContext.sampleRate, span.context.kubesense.sampleRate)
+        XCTAssertEqual(injectedTraceContext.samplingPriority.isKept, span.context.kubesense.samplingDecision.samplingPriority.isKept)
     }
 
     func testGivenFirstPartyInterception_withActiveManuallyDroppedSpanAndInjectingSampled_itDoesNotInjectTraceHeaders() throws {
@@ -989,10 +989,10 @@ class TracingURLSessionHandlerTests: XCTestCase {
             return
         }
 
-        assertSameDDSpans(state.activeSpan, span)
+        assertSameKubesenseSpans(state.activeSpan, span)
     }
 
-    private func assertSameDDSpans(_ lhs: OTSpan?, _ rhs: OTSpan?) {
+    private func assertSameKubesenseSpans(_ lhs: OTSpan?, _ rhs: OTSpan?) {
         guard let lSpan = lhs as? KubesenseSpan,
               let rSpan = rhs as? KubesenseSpan,
               lSpan === rSpan

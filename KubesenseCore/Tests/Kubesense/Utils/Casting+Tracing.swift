@@ -10,18 +10,18 @@
  NOTE: The casting methods defined here do shadow the ones defined in `Kubesense.Casting`.
  The difference is that here in tests we do force unwrapping (`as!`), whereas in `Kubesense` we do `as?` with a warning.
 
- This is needed for expressiveness in testing, where i.e. `XCTAssertNil(span.context.dd?.parentID)` may give a false positive
- without considering if the `parentID` is `nil`. Using `span.context.dd.parentID` mitigates it.
+ This is needed for expressiveness in testing, where i.e. `XCTAssertNil(span.context.kubesense?.parentID)` may give a false positive
+ without considering if the `parentID` is `nil`. Using `span.context.kubesense.parentID` mitigates it.
  */
 
 internal extension OTTracer {
-    var dd: KubesenseTracer { self as! KubesenseTracer }
+    var kubesense: KubesenseTracer { self as! KubesenseTracer }
 }
 
 internal extension OTSpan {
-    var dd: KubesenseSpan { self as! KubesenseSpan }
+    var kubesense: KubesenseSpan { self as! KubesenseSpan }
 }
 
 internal extension OTSpanContext {
-    var dd: KubesenseSpanContext { self as! KubesenseSpanContext }
+    var kubesense: KubesenseSpanContext { self as! KubesenseSpanContext }
 }

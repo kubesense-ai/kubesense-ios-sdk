@@ -167,24 +167,24 @@ class RUMResourceTraceIntegrationTests: RUMSessionTestsBase {
         let traceIDString: String = try XCTUnwrap(resourceMatcher.attribute(forKeyPath: "_kubesense.trace_id"))
         let traceID = TraceID(traceIDString, representation: .hexadecimal)
         let sessionSampleRate: Float = try XCTUnwrap(resourceMatcher.attribute(forKeyPath: "_kubesense.configuration.session_sample_rate"))
-        let spanDD = try XCTUnwrap(span.context.dd)
+        let spanKubesense = try XCTUnwrap(span.context.kubesense)
 
-        XCTAssertNotEqual(spanID, spanDD.spanID)
-        XCTAssertNotEqual(request.value(forHTTPHeaderField: "x-kubesense-parent-id"), spanDD.spanID.toString(representation: .decimal))
+        XCTAssertNotEqual(spanID, spanKubesense.spanID)
+        XCTAssertNotEqual(request.value(forHTTPHeaderField: "x-kubesense-parent-id"), spanKubesense.spanID.toString(representation: .decimal))
         XCTAssertEqual(request.value(forHTTPHeaderField: "x-kubesense-sampling-priority"), "1")
 
         if expectation == .rum {
-            XCTAssertNotEqual(traceID, span.context.dd?.traceID)
-            XCTAssertNotEqual(request.value(forHTTPHeaderField: "x-kubesense-trace-id"), spanDD.traceID.toString(representation: .decimal))
+            XCTAssertNotEqual(traceID, span.context.kubesense?.traceID)
+            XCTAssertNotEqual(request.value(forHTTPHeaderField: "x-kubesense-trace-id"), spanKubesense.traceID.toString(representation: .decimal))
             XCTAssertNotNil(request.value(forHTTPHeaderField: "x-kubesense-sampling-priority"))
             XCTAssertNotNil(request.value(forHTTPHeaderField: "traceparent"))
             XCTAssertEqual(sessionSampleRate, 80)
         } else { // expectation == .activeSpan
             let parentSpanIDString: String = try XCTUnwrap(resourceMatcher.attribute(forKeyPath: "_kubesense.parent_span_id"))
             let parentSpanID = SpanID(parentSpanIDString, representation: .decimal)
-            XCTAssertEqual(traceID, spanDD.traceID)
-            XCTAssertEqual(parentSpanID, spanDD.spanID)
-            XCTAssertEqual(request.value(forHTTPHeaderField: "x-kubesense-trace-id"), spanDD.traceID.toString(representation: .decimal))
+            XCTAssertEqual(traceID, spanKubesense.traceID)
+            XCTAssertEqual(parentSpanID, spanKubesense.spanID)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "x-kubesense-trace-id"), spanKubesense.traceID.toString(representation: .decimal))
             XCTAssertNotNil(request.value(forHTTPHeaderField: "traceparent"))
             XCTAssertEqual(sessionSampleRate, 80)
         }

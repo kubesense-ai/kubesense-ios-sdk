@@ -39,8 +39,8 @@ class SwiftUIExtensionsTests: XCTestCase {
         ]
 
         // Then
-        someSwiftUITypes.forEach { XCTAssertTrue(Bundle(for: $0).dd.isSwiftUI) }
-        someNonSwiftUITypes.forEach { XCTAssertFalse(Bundle(for: $0).dd.isSwiftUI) }
+        someSwiftUITypes.forEach { XCTAssertTrue(Bundle(for: $0).kubesense.isSwiftUI) }
+        someNonSwiftUITypes.forEach { XCTAssertFalse(Bundle(for: $0).kubesense.isSwiftUI) }
     }
 }
 #endif

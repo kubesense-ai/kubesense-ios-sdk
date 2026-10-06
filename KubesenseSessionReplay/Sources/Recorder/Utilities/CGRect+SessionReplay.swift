@@ -20,7 +20,7 @@ internal extension KubesenseExtension where ExtendedType == CGRect {
         }
         switch contentMode {
         case .scaleAspectFit:
-            let actualContentRect = type.size.dd.scaleAspectFitRect(for: contentSize)
+            let actualContentRect = type.size.kubesense.scaleAspectFitRect(for: contentSize)
             return CGRect(
                 x: type.origin.x + actualContentRect.origin.x,
                 y: type.origin.y + actualContentRect.origin.y,
@@ -29,7 +29,7 @@ internal extension KubesenseExtension where ExtendedType == CGRect {
             )
 
         case .scaleAspectFill:
-            let actualContentRect = type.size.dd.scaleAspectFillRect(for: contentSize)
+            let actualContentRect = type.size.kubesense.scaleAspectFillRect(for: contentSize)
             return CGRect(
                 x: type.origin.x + actualContentRect.origin.x,
                 y: type.origin.y + actualContentRect.origin.y,

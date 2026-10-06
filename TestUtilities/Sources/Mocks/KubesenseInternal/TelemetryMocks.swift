@@ -155,19 +155,19 @@ public extension TelemetryMessage {
     }
 }
 
-extension DD {
-    /// Syntactic sugar for patching the `dd` bundle by replacing `logger`.
+extension KS {
+    /// Syntactic sugar for patching the `kubesense` bundle by replacing `logger`.
     ///
     /// ```
-    /// let dd = DD.mockWith(logger: CoreLoggerMock())
-    /// defer { dd.reset() }
+    /// let kubesense = KS.mockWith(logger: CoreLoggerMock())
+    /// defer { kubesense.reset() }
     /// ```
     public static func mockWith<CL: CoreLogger>(logger: CL) -> KubesenseMock<CL> {
         let mock = KubesenseMock(
-            oldLogger: DD.logger,
+            oldLogger: KS.logger,
             logger: logger
         )
-        DD.logger = logger
+        KS.logger = logger
         return mock
     }
 }
@@ -178,6 +178,6 @@ public struct KubesenseMock<CL: CoreLogger> {
     public let logger: CL
 
     public func reset() {
-        DD.logger = oldLogger
+        KS.logger = oldLogger
     }
 }

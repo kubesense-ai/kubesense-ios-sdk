@@ -131,7 +131,7 @@ public enum WebViewTracking {
         let controller = webView.configuration.userContentController
         let isTracking = controller.userScripts.contains { $0.source.starts(with: Self.jsCodePrefix) }
         guard !isTracking else {
-            DD.logger.warn("`\(callerName)` was called more than once for the same WebView. Second call will be ignored. Make sure you call it only once.")
+            KS.logger.warn("`\(callerName)` was called more than once for the same WebView. Second call will be ignored. Make sure you call it only once.")
             return false
         }
 

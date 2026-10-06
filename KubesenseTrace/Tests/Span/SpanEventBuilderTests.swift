@@ -538,8 +538,8 @@ class SpanEventBuilderTests: XCTestCase {
     }
 
     func testWhenTagValueCannotBeConvertedToString_itPrintsErrorAndSkipsTheTag() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let builder: SpanEventBuilder = .mockAny()
 
@@ -585,7 +585,7 @@ class SpanEventBuilderTests: XCTestCase {
         XCTAssertNil(span.accountInfo?.extraInfo["failing-account-info"])
 
         // And all errors logged with correct context
-        let errorLogs = dd.logger.errorLogs
+        let errorLogs = kubesense.logger.errorLogs
         XCTAssertEqual(errorLogs.count, 3)
 
         // Custom context (tags) - no prefix
@@ -608,8 +608,8 @@ class SpanEventBuilderTests: XCTestCase {
     }
 
     func testBuildingSpanWhenSpanLinkIsPresentInTags() {
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let builder: SpanEventBuilder = .mockAny()
 

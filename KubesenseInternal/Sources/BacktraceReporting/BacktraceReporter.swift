@@ -67,7 +67,7 @@ internal struct CoreBacktraceReporter: BacktraceReporting, @unchecked Sendable {
         }
 
         guard let backtraceFeature = core.get(feature: BacktraceReportingFeature.self) else {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 Backtrace will not be generated as this capability is not available.
                 Enable `KubesenseCrashReporting` to leverage backtrace generation.
@@ -89,7 +89,7 @@ extension KubesenseCoreProtocol {
     /// - Parameter backtraceReporter: the implementation of backtrace reporter.
     public func register(backtraceReporter: BacktraceReporting) throws {
         guard get(feature: BacktraceReportingFeature.self) == nil else {
-            DD.logger.debug("Backtrace reporter is already registered to this core. Skipping registration of next one.")
+            KS.logger.debug("Backtrace reporter is already registered to this core. Skipping registration of next one.")
             return
         }
 

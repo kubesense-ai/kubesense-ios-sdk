@@ -346,10 +346,10 @@ internal class RUMSessionScope: RUMScope, RUMContextProvider {
 
         if let command = command as? RUMAddViewLoadingTime {
             if viewScopes.isEmpty {
-                DD.logger.warn("No view found to add the loading time.")
+                KS.logger.warn("No view found to add the loading time.")
                 dependencies.telemetry.usage(event: .addViewLoadingTime(.init(noActiveView: false, noView: true, overwritten: command.overwrite)))
             } else if !hasActiveView {
-                DD.logger.warn("No active view found to add the loading time.")
+                KS.logger.warn("No active view found to add the loading time.")
                 dependencies.telemetry.usage(event: .addViewLoadingTime(.init(noActiveView: true, noView: false, overwritten: command.overwrite)))
             }
         }
@@ -411,7 +411,7 @@ internal class RUMSessionScope: RUMScope, RUMContextProvider {
         // Cache the view id at each view start
         dependencies.viewCache.insert(
             id: id,
-            timestamp: startTime.timeIntervalSince1970.dd.toInt64Milliseconds,
+            timestamp: startTime.timeIntervalSince1970.kubesense.toInt64Milliseconds,
             hasReplay: hasReplay
         )
     }
@@ -475,7 +475,7 @@ internal class RUMSessionScope: RUMScope, RUMContextProvider {
 
             if !(isSilentOffViewCommand(command: command)) {
                 // As no view scope will handle this command, warn the user on dropping it.
-                DD.logger.warn(
+                KS.logger.warn(
                 """
                 \(String(describing: command)) was detected, but no view is active. To track views automatically, configure
                 `RUM.Configuration.uiKitViewsPredicate` or use `.trackRUMView()` modifier in SwiftUI. You can also track views manually

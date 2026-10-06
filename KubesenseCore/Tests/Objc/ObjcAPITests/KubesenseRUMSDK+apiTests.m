@@ -10,25 +10,25 @@
 
 // MARK: - KubesenseNetworkSettledResourcePredicate
 
-@interface CustomDDNetworkSettledResourcePredicate: NSObject
+@interface CustomKubesenseNetworkSettledResourcePredicate: NSObject
 @end
 
-@interface CustomDDNetworkSettledResourcePredicate () <KubesenseNetworkSettledResourcePredicate>
+@interface CustomKubesenseNetworkSettledResourcePredicate () <KubesenseNetworkSettledResourcePredicate>
 @end
 
-@implementation CustomDDNetworkSettledResourcePredicate
+@implementation CustomKubesenseNetworkSettledResourcePredicate
 - (BOOL)isInitialResourceFrom:(KubesenseTNSResourceParams * _Nonnull)resourceParams { return YES; }
 @end
 
 // MARK: - KubesenseNextViewActionPredicate
 
-@interface CustomDDNextViewActionPredicate: NSObject
+@interface CustomKubesenseNextViewActionPredicate: NSObject
 @end
 
-@interface CustomDDNextViewActionPredicate () <KubesenseNextViewActionPredicate>
+@interface CustomKubesenseNextViewActionPredicate () <KubesenseNextViewActionPredicate>
 @end
 
-@implementation CustomDDNextViewActionPredicate
+@implementation CustomKubesenseNextViewActionPredicate
 - (BOOL)isLastActionFrom:(KubesenseINVActionParams * _Nonnull)actionParams { return YES; }
 @end
 
@@ -36,25 +36,25 @@
 
 // MARK: - KubesenseUIKitRUMViewsPredicate
 
-@interface CustomDDUIKitRUMViewsPredicate: NSObject
+@interface CustomKubesenseUIKitRUMViewsPredicate: NSObject
 @end
 
-@interface CustomDDUIKitRUMViewsPredicate () <KubesenseUIKitRUMViewsPredicate>
+@interface CustomKubesenseUIKitRUMViewsPredicate () <KubesenseUIKitRUMViewsPredicate>
 @end
 
-@implementation CustomDDUIKitRUMViewsPredicate
+@implementation CustomKubesenseUIKitRUMViewsPredicate
 - (KubesenseRUMView * _Nullable)rumViewFor:(UIViewController * _Nonnull)viewController { return nil; }
 @end
 
 // MARK: - KubesenseUIKitRUMActionsPredicate
 
-@interface CustomDDUIKitRUMActionsPredicate: NSObject
+@interface CustomKubesenseUIKitRUMActionsPredicate: NSObject
 @end
 
-@interface CustomDDUIKitRUMActionsPredicate () <KubesenseUIKitRUMActionsPredicate>
+@interface CustomKubesenseUIKitRUMActionsPredicate () <KubesenseUIKitRUMActionsPredicate>
 @end
 
-@implementation CustomDDUIKitRUMActionsPredicate
+@implementation CustomKubesenseUIKitRUMActionsPredicate
 - (KubesenseRUMAction * _Nullable)rumActionWithTargetView:(UIView * _Nonnull)targetView { return nil; }
 - (KubesenseRUMAction * _Nullable)rumActionWithPress:(enum UIPressType)type targetView:(UIView * _Nonnull)targetView { return nil; }
 
@@ -75,12 +75,12 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
-- (void)testDDRUMAPI {
+- (void)testKubesenseRUMAPI {
     KubesenseRUMConfiguration *config = [[KubesenseRUMConfiguration alloc] initWithApplicationID:@"app-id"];
     [KubesenseRUMSDK enableWith:config];
 }
 
-- (void)testDDRUMInstanceNameAPI {
+- (void)testKubesenseRUMInstanceNameAPI {
     KubesenseRUMConfiguration *config = [[KubesenseRUMConfiguration alloc] initWithApplicationID:@"app-id"];
     NSString *instanceName = @"rum-test-instance";
     [KubesenseRUMSDK enableWith:config instanceName:instanceName];
@@ -88,7 +88,7 @@
     (void)monitor;
 }
 
-- (void)testDDRUMConfigurationAPI {
+- (void)testKubesenseRUMConfigurationAPI {
     KubesenseRUMConfiguration *config = [[KubesenseRUMConfiguration alloc] initWithApplicationID:@"app-id"];
     XCTAssertEqual(config.applicationID, @"app-id");
 
@@ -101,7 +101,7 @@
     XCTAssertEqual(config.telemetrySampleRate, 30);
 
     XCTAssertNotNil(config.networkSettledResourcePredicate);
-    CustomDDNetworkSettledResourcePredicate *tnsPredicate = [CustomDDNetworkSettledResourcePredicate new];
+    CustomKubesenseNetworkSettledResourcePredicate *tnsPredicate = [CustomKubesenseNetworkSettledResourcePredicate new];
     config.networkSettledResourcePredicate = tnsPredicate;
     XCTAssertIdentical(config.networkSettledResourcePredicate, tnsPredicate);
 
@@ -110,7 +110,7 @@
     XCTAssertNotNil(config.networkSettledResourcePredicate);
 
     XCTAssertNotNil(config.nextViewActionPredicate);
-    CustomDDNextViewActionPredicate *invPredicate = [CustomDDNextViewActionPredicate new];
+    CustomKubesenseNextViewActionPredicate *invPredicate = [CustomKubesenseNextViewActionPredicate new];
     config.nextViewActionPredicate = invPredicate;
     XCTAssertIdentical(config.nextViewActionPredicate, invPredicate);
 
@@ -120,12 +120,12 @@
 
 #if !TARGET_OS_WATCH
     XCTAssertNil(config.uiKitViewsPredicate);
-    CustomDDUIKitRUMViewsPredicate *viewsPredicate = [CustomDDUIKitRUMViewsPredicate new];
+    CustomKubesenseUIKitRUMViewsPredicate *viewsPredicate = [CustomKubesenseUIKitRUMViewsPredicate new];
     config.uiKitViewsPredicate = viewsPredicate;
     XCTAssertIdentical(config.uiKitViewsPredicate, viewsPredicate);
 
     XCTAssertNil(config.uiKitActionsPredicate);
-    CustomDDUIKitRUMActionsPredicate *actionsPredicate = [CustomDDUIKitRUMActionsPredicate new];
+    CustomKubesenseUIKitRUMActionsPredicate *actionsPredicate = [CustomKubesenseUIKitRUMActionsPredicate new];
     config.uiKitActionsPredicate = actionsPredicate;
     XCTAssertIdentical(config.uiKitActionsPredicate, actionsPredicate);
 

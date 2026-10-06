@@ -62,15 +62,15 @@ internal struct SpanTagsReducer {
         }
 
         // extract resource name from `mutableSpanTags`
-        if let resourceName: String = mutableSpanTags.removeValue(forKey: SpanTags.resource)?.dd.decode() {
+        if let resourceName: String = mutableSpanTags.removeValue(forKey: SpanTags.resource)?.kubesense.decode() {
             extractedResourceName = resourceName
         }
 
-        if let operationName: String = mutableSpanTags.removeValue(forKey: SpanTags.operation)?.dd.decode() {
+        if let operationName: String = mutableSpanTags.removeValue(forKey: SpanTags.operation)?.kubesense.decode() {
             extractedOperationName = operationName
         }
 
-        if let serviceName: String = mutableSpanTags.removeValue(forKey: SpanTags.service)?.dd.decode() {
+        if let serviceName: String = mutableSpanTags.removeValue(forKey: SpanTags.service)?.kubesense.decode() {
             extractedServiceName = serviceName
         }
 

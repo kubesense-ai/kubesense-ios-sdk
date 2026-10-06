@@ -100,7 +100,7 @@ internal final class RUMActionsHandler: RUMActionsHandling {
         }
 
         guard let subscriber = subscriber else {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 A RUM action was detected, but RUM tracking appears to be disabled.
                 Ensure `RUM.enable()` is called before any actions are triggered.
@@ -125,7 +125,7 @@ internal final class RUMActionsHandler: RUMActionsHandling {
         )
 
         guard let subscriber = subscriber else {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 A RUM action was detected in SwiftUI, but RUM tracking appears to be disabled.
                 Ensure `RUM.enable()` is called before any actions are triggered.

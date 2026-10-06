@@ -19,26 +19,26 @@ public struct KubesenseExtension<ExtendedType> {
     }
 }
 
-/// Protocol describing the `dd` extension points for Kubesense extended types.
+/// Protocol describing the `kubesense` extension points for Kubesense extended types.
 public protocol KubesenseExtended {
     /// Type being extended.
     associatedtype ExtendedType
 
     /// Static Kubesense extension point.
-    static var dd: KubesenseExtension<ExtendedType>.Type { get set }
+    static var kubesense: KubesenseExtension<ExtendedType>.Type { get set }
     /// Instance Kubesense extension point.
-    var dd: KubesenseExtension<ExtendedType> { get set }
+    var kubesense: KubesenseExtension<ExtendedType> { get set }
 }
 
 extension KubesenseExtended {
     /// Static Kubesense extension point.
-    public static var dd: KubesenseExtension<Self>.Type {
+    public static var kubesense: KubesenseExtension<Self>.Type {
         get { KubesenseExtension<Self>.self }
         set {}
     }
 
     /// Instance Kubesense extension point.
-    public var dd: KubesenseExtension<Self> {
+    public var kubesense: KubesenseExtension<Self> {
         get { KubesenseExtension(self) }
         set {}
     }

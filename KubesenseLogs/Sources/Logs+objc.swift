@@ -234,11 +234,11 @@ public final class objc_Logger: NSObject {
     }
 
     public func debug(_ message: String, attributes: [String: Any]) {
-        sdkLogger.debug(message, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.debug(message, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func debug(_ message: String, error: NSError, attributes: [String: Any]) {
-        sdkLogger.debug(message, error: error, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.debug(message, error: error, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func info(_ message: String) {
@@ -246,11 +246,11 @@ public final class objc_Logger: NSObject {
     }
 
     public func info(_ message: String, attributes: [String: Any]) {
-        sdkLogger.info(message, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.info(message, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func info(_ message: String, error: NSError, attributes: [String: Any]) {
-        sdkLogger.info(message, error: error, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.info(message, error: error, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func notice(_ message: String) {
@@ -258,11 +258,11 @@ public final class objc_Logger: NSObject {
     }
 
     public func notice(_ message: String, attributes: [String: Any]) {
-        sdkLogger.notice(message, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.notice(message, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func notice(_ message: String, error: NSError, attributes: [String: Any]) {
-        sdkLogger.notice(message, error: error, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.notice(message, error: error, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func warn(_ message: String) {
@@ -270,11 +270,11 @@ public final class objc_Logger: NSObject {
     }
 
     public func warn(_ message: String, attributes: [String: Any]) {
-        sdkLogger.warn(message, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.warn(message, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func warn(_ message: String, error: NSError, attributes: [String: Any]) {
-        sdkLogger.warn(message, error: error, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.warn(message, error: error, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func error(_ message: String) {
@@ -282,11 +282,11 @@ public final class objc_Logger: NSObject {
     }
 
     public func error(_ message: String, attributes: [String: Any]) {
-        sdkLogger.error(message, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.error(message, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func error(_ message: String, error: NSError, attributes: [String: Any]) {
-        sdkLogger.error(message, error: error, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.error(message, error: error, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func critical(_ message: String) {
@@ -294,11 +294,11 @@ public final class objc_Logger: NSObject {
     }
 
     public func critical(_ message: String, attributes: [String: Any]) {
-        sdkLogger.critical(message, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.critical(message, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func critical(_ message: String, error: NSError, attributes: [String: Any]) {
-        sdkLogger.critical(message, error: error, attributes: attributes.dd.swiftAttributes)
+        sdkLogger.critical(message, error: error, attributes: attributes.kubesense.swiftAttributes)
     }
 
     public func addAttribute(forKey key: String, value: Any) {
@@ -361,7 +361,7 @@ extension objc_Logger {
         logger.critical(
             message: message,
             error: error,
-            attributes: attributes.dd.swiftAttributes,
+            attributes: attributes.kubesense.swiftAttributes,
             completionHandler: {
                 semaphore.signal()
             }

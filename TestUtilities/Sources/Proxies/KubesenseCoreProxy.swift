@@ -192,7 +192,7 @@ private struct FeatureScopeProxy: FeatureScope {
 
 private final class FeatureScopeInterceptor: @unchecked Sendable {
     struct InterceptingWriter: Writer {
-        static let jsonEncoder = JSONEncoder.dd.default()
+        static let jsonEncoder = JSONEncoder.kubesense.default()
 
         let group: DispatchGroup
         let actualWriter: Writer

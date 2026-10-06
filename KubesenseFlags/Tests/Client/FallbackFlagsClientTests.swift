@@ -53,8 +53,8 @@ final class FallbackFlagsClientTests: XCTestCase {
         let core = SingleFeatureCoreMock<FlagsFeature>()
         Flags.enable(in: core)
         let client = FallbackFlagsClient(name: FlagsClient.defaultName, core: core)
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // When
         let flagDetails = client.getDetails(key: .mockAny(), defaultValue: false)
@@ -64,9 +64,9 @@ final class FallbackFlagsClientTests: XCTestCase {
             flagDetails,
             FlagDetails(key: .mockAny(), value: false, error: .providerNotReady)
         )
-        XCTAssertEqual(dd.logger.errorMessages.count, 1)
+        XCTAssertEqual(kubesense.logger.errorMessages.count, 1)
         XCTAssertEqual(
-            dd.logger.errorMessages.first,
+            kubesense.logger.errorMessages.first,
             """
             Using fallback client to get '\(String.mockAny())' value. \
             Ensure that a client named 'default' is created before using it.
@@ -79,17 +79,17 @@ final class FallbackFlagsClientTests: XCTestCase {
         let core = SingleFeatureCoreMock<FlagsFeature>()
         Flags.enable(in: core)
         let client = FallbackFlagsClient(name: FlagsClient.defaultName, core: core)
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // When
         let flagAssignments = client.getFlagAssignments()
 
         // Then
         XCTAssertNil(flagAssignments)
-        XCTAssertEqual(dd.logger.errorMessages.count, 1)
+        XCTAssertEqual(kubesense.logger.errorMessages.count, 1)
         XCTAssertEqual(
-            dd.logger.errorMessages.first,
+            kubesense.logger.errorMessages.first,
             """
             Using fallback client to get all flag values. \
             Ensure that a client named 'default' is created before using it.
@@ -102,16 +102,16 @@ final class FallbackFlagsClientTests: XCTestCase {
         let core = SingleFeatureCoreMock<FlagsFeature>()
         Flags.enable(in: core)
         let client = FallbackFlagsClient(name: FlagsClient.defaultName, core: core)
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // When
         client.sendFlagEvaluation(key: .mockAny(), assignment: .mockAny(), context: .mockAny())
 
         // Then
-        XCTAssertEqual(dd.logger.errorMessages.count, 1)
+        XCTAssertEqual(kubesense.logger.errorMessages.count, 1)
         XCTAssertEqual(
-            dd.logger.errorMessages.first,
+            kubesense.logger.errorMessages.first,
             """
             Using fallback client to track '\(String.mockAny())'. \
             Ensure that a client named 'default' is created before using it.

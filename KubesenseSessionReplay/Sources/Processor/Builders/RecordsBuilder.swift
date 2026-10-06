@@ -31,7 +31,7 @@ internal class RecordsBuilder {
                 width: Int64.kubesenseWithNoOverflow(snapshot.viewportSize.width)
             ),
             slotId: nil,
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
         return .metaRecord(value: record)
     }
@@ -42,7 +42,7 @@ internal class RecordsBuilder {
         let record = SRFocusRecord(
             data: SRFocusRecord.Data(hasFocus: true),
             slotId: nil,
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
         return .focusRecord(value: record)
     }
@@ -53,7 +53,7 @@ internal class RecordsBuilder {
     func createFullSnapshotRecord(from snapshot: ViewTreeSnapshot, wireframes: [SRWireframe]) -> SRRecord {
         let record = SRFullSnapshotRecord(
             data: .init(wireframes: wireframes),
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
 
         return .fullSnapshotRecord(value: record)
@@ -92,7 +92,7 @@ internal class RecordsBuilder {
                     }
                 )
             ),
-            timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+            timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
         )
 
         return .incrementalSnapshotRecord(value: record)
@@ -116,7 +116,7 @@ internal class RecordsBuilder {
                         y: round(touch.position.y)
                     )
                 ),
-                timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+                timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
             )
             return .incrementalSnapshotRecord(value: record)
         }
@@ -126,7 +126,7 @@ internal class RecordsBuilder {
         from snapshot: ViewTreeSnapshot,
         lastSnapshot: ViewTreeSnapshot
     ) -> SRRecord? {
-        guard lastSnapshot.viewportSize.dd.aspectRatio != snapshot.viewportSize.dd.aspectRatio else {
+        guard lastSnapshot.viewportSize.kubesense.aspectRatio != snapshot.viewportSize.kubesense.aspectRatio else {
             return nil
         }
         return .incrementalSnapshotRecord(
@@ -137,7 +137,7 @@ internal class RecordsBuilder {
                         width: Int64.kubesenseWithNoOverflow(snapshot.viewportSize.width)
                     )
                 ),
-                timestamp: snapshot.date.timeIntervalSince1970.dd.toInt64Milliseconds
+                timestamp: snapshot.date.timeIntervalSince1970.kubesense.toInt64Milliseconds
             )
         )
     }

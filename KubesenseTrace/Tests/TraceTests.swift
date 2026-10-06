@@ -76,7 +76,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         XCTAssertEqual(tracer.samplerProvider.sampler.samplingRate, 55)
         XCTAssertNil(
             core.get(feature: NetworkInstrumentationFeature.self),
@@ -123,7 +123,7 @@ class TraceTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(core.get(feature: TraceFeature.self))
-        XCTAssertEqual(Tracer.shared(in: core).dd.spanEventBuilder.networkInfoEnabled, true)
+        XCTAssertEqual(Tracer.shared(in: core).kubesense.spanEventBuilder.networkInfoEnabled, true)
     }
 
     // MARK: - Configuration Tests
@@ -133,7 +133,7 @@ class TraceTests: XCTestCase {
         Trace.enable(in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         let trace = try XCTUnwrap(core.get(feature: TraceFeature.self))
         XCTAssertEqual(tracer.samplerProvider.sampler.samplingRate, 100)
         XCTAssertNil(tracer.spanEventBuilder.service)
@@ -154,7 +154,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         XCTAssertEqual(tracer.samplerProvider.sampler.samplingRate, random, accuracy: 0.001)
     }
 
@@ -178,7 +178,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         XCTAssertEqual(tracer.spanEventBuilder.service, random)
         XCTAssertEqual(tracer.loggingIntegration.service, random)
     }
@@ -192,7 +192,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         KubesenseAssertDictionariesEqual(tracer.tags, random)
     }
 
@@ -286,7 +286,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         XCTAssertEqual(tracer.spanEventBuilder.bundleWithRUM, random)
     }
 
@@ -299,7 +299,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         XCTAssertEqual(tracer.spanEventBuilder.networkInfoEnabled, random)
         XCTAssertEqual(tracer.loggingIntegration.networkInfoEnabled, random)
     }
@@ -313,7 +313,7 @@ class TraceTests: XCTestCase {
         Trace.enable(with: config, in: core)
 
         // Then
-        let tracer = Tracer.shared(in: core).dd
+        let tracer = Tracer.shared(in: core).kubesense
         XCTAssertEqual(tracer.spanEventBuilder.networkInfoEnabled, random)
         XCTAssertEqual(tracer.loggingIntegration.networkInfoEnabled, random)
     }
