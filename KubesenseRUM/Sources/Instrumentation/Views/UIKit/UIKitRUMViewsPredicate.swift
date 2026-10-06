@@ -32,14 +32,14 @@ public struct DefaultUIKitRUMViewsPredicate: UIKitRUMViewsPredicate {
     public init () {}
 
     public func rumView(for viewController: UIViewController) -> RUMView? {
-        guard !Bundle(for: type(of: viewController)).dd.isUIKit || viewController.isUIAlertController else {
+        guard !Bundle(for: type(of: viewController)).kubesense.isUIKit || viewController.isUIAlertController else {
             // Part of our heuristic for (auto) tracking view controllers is to ignore
             // container view controllers coming from `UIKit` if they are not subclassed.
             // This condition is wider and it ignores all view controllers defined in `UIKit` bundle.
             return nil
         }
 
-        guard !Bundle(for: type(of: viewController)).dd.isSwiftUI || viewController.isUIAlertController else {
+        guard !Bundle(for: type(of: viewController)).kubesense.isSwiftUI || viewController.isUIAlertController else {
             // `SwiftUI` requires manual instrumentation in views. Therefore, all SwiftUI
             // `UIKit` containers (e.g. `UIHostingController`) will be ignored from
             // auto-instrumentation.

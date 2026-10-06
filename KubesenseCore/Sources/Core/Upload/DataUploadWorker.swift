@@ -75,12 +75,12 @@ internal class DataUploadWorker: DataUploadWorkerType {
             let isSystemReady = blockersForUpload.isEmpty
             let files = isSystemReady ? fileReader.readFiles(limit: maxBatchesPerUpload) : nil
             if let files = files, !files.isEmpty {
-                DD.logger.debug("⏳ (\(self.featureName)) Uploading batches...")
+                KS.logger.debug("⏳ (\(self.featureName)) Uploading batches...")
                 self.backgroundTaskCoordinator?.beginBackgroundTask()
                 self.uploadFile(from: files.reversed(), context: context)
             } else {
                 let batchLabel = files?.isEmpty == false ? "YES" : (isSystemReady ? "NO" : "NOT CHECKED")
-                DD.logger.debug("💡 (\(self.featureName)) No upload. Batch to upload: \(batchLabel), System conditions: \(blockersForUpload.description)")
+                KS.logger.debug("💡 (\(self.featureName)) No upload. Batch to upload: \(batchLabel), System conditions: \(blockersForUpload.description)")
                 self.delay.increase()
                 self.backgroundTaskCoordinator?.endBackgroundTask()
                 self.scheduleNextCycle()
@@ -125,13 +125,13 @@ internal class DataUploadWorker: DataUploadWorkerType {
                     sendUploadQualityMetric(status: uploadStatus)
 
                     if uploadStatus.needsRetry {
-                        DD.logger.debug("   → (\(self.featureName)) not delivered, will be retransmitted: \(uploadStatus.userDebugDescription)")
+                        KS.logger.debug("   → (\(self.featureName)) not delivered, will be retransmitted: \(uploadStatus.userDebugDescription)")
                         self.delay.increase()
                         self.scheduleNextCycle()
                         return
                     }
 
-                    DD.logger.debug("   → (\(self.featureName)) accepted, won't be retransmitted: \(uploadStatus.userDebugDescription)")
+                    KS.logger.debug("   → (\(self.featureName)) accepted, won't be retransmitted: \(uploadStatus.userDebugDescription)")
                     if files.isEmpty {
                         self.delay.reset()
                     }
@@ -152,7 +152,7 @@ internal class DataUploadWorker: DataUploadWorkerType {
                         throw error
                     }
                 } catch DataUploadError.httpError(statusCode: .unauthorized), DataUploadError.httpError(statusCode: .forbidden) {
-                    DD.logger.error("⚠️ Make sure that the provided token still exists and you're targeting the relevant Kubesense site.")
+                    KS.logger.error("⚠️ Make sure that the provided token still exists and you're targeting the relevant Kubesense site.")
                 } catch DataUploadError.httpError(statusCode: let statusCode) where !telemetryIgnoredStatusCodes.contains(statusCode) {
                     self.telemetry.error("Data upload finished with status code: \(statusCode.rawValue)")
                 } catch DataUploadError.networkError(let error) where !telemetryIgnoredNSURLErrorCodes.contains(error.code) {

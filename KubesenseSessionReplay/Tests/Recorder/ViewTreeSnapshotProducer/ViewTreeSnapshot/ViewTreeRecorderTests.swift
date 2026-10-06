@@ -326,7 +326,7 @@ class ViewTreeRecorderTests: XCTestCase {
         let childView = UIView.mock(withFixture: .visible(.someAppearance))
         let parentView = UIView.mock(withFixture: .visible(.someAppearance))
         parentView.addSubview(childView)
-        parentView.dd.sessionReplayPrivacyOverrides.hide = true
+        parentView.kubesense.sessionReplayPrivacyOverrides.hide = true
 
         // When
         let nodes = recorder.record(parentView, in: .mockWith(coordinateSpace: parentView))
@@ -339,10 +339,10 @@ class ViewTreeRecorderTests: XCTestCase {
         // Given
         let recorder = ViewTreeRecorder(nodeRecorders: createDefaultNodeRecorders(featureFlags: .allEnabled))
         let childView = UIView.mock(withFixture: .visible(.someAppearance))
-        childView.dd.sessionReplayPrivacyOverrides.hide = true
+        childView.kubesense.sessionReplayPrivacyOverrides.hide = true
         let parentView = UIView.mock(withFixture: .visible(.someAppearance))
         parentView.addSubview(childView)
-        parentView.dd.sessionReplayPrivacyOverrides.hide = false
+        parentView.kubesense.sessionReplayPrivacyOverrides.hide = false
 
         // When
         let nodes = recorder.record(parentView, in: .mockWith(coordinateSpace: parentView))
@@ -354,7 +354,7 @@ class ViewTreeRecorderTests: XCTestCase {
     func testChildViewHideOverrideIsTrueAndParentHideOverrideIsNil() {
         // Given
         let childView = UIView.mock(withFixture: .visible(.someAppearance))
-        childView.dd.sessionReplayPrivacyOverrides.hide = true
+        childView.kubesense.sessionReplayPrivacyOverrides.hide = true
         let parentView = UIView.mock(withFixture: .visible(.someAppearance))
         parentView.addSubview(childView)
 
@@ -374,7 +374,7 @@ class ViewTreeRecorderTests: XCTestCase {
         let viewImagePrivacy: ImagePrivacyLevel = .maskNone
         let imageView = UIImageView.mock(withFixture: .visible(.someAppearance))
         imageView.image = .mockRandom()
-        imageView.dd.sessionReplayPrivacyOverrides.imagePrivacy = viewImagePrivacy
+        imageView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = viewImagePrivacy
 
         // When
         let recorder = ViewTreeRecorder(nodeRecorders: createDefaultNodeRecorders(featureFlags: .allEnabled))
@@ -395,10 +395,10 @@ class ViewTreeRecorderTests: XCTestCase {
         let childImagePrivacy: ImagePrivacyLevel = .maskNone
         let childView = UIImageView.mock(withFixture: .visible(.someAppearance))
         childView.image = .mockRandom()
-        childView.dd.sessionReplayPrivacyOverrides.imagePrivacy = childImagePrivacy
+        childView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = childImagePrivacy
         let parentImagePrivacy: ImagePrivacyLevel = .mockRandom()
         let parentView = UIView.mock(withFixture: .visible(.someAppearance))
-        parentView.dd.sessionReplayPrivacyOverrides.imagePrivacy = parentImagePrivacy
+        parentView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = parentImagePrivacy
         parentView.addSubview(childView)
 
         // When
@@ -419,10 +419,10 @@ class ViewTreeRecorderTests: XCTestCase {
         let childImagePrivacy: ImagePrivacyLevel = .maskAll
         let childView = UIImageView.mock(withFixture: .visible(.someAppearance))
         childView.image = .mockRandom()
-        childView.dd.sessionReplayPrivacyOverrides.imagePrivacy = childImagePrivacy
+        childView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = childImagePrivacy
         let parentImagePrivacy: ImagePrivacyLevel = .mockRandom()
         let parentView = UIView.mock(withFixture: .visible(.someAppearance))
-        parentView.dd.sessionReplayPrivacyOverrides.imagePrivacy = parentImagePrivacy
+        parentView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = parentImagePrivacy
         parentView.addSubview(childView)
 
         // When

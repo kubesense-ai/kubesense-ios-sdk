@@ -161,7 +161,7 @@ internal final class AppHangsWatchdogThread: Thread, AppHangsObservingThread {
             // We expect to be here roughtly `~appHangThreshold` after `wait()`. If this code is executed well after (50% margin),
             // assume that the thread was suspended and app just woke up. In such case, ignore the hang as likely false-positive.
             if interval(from: waitStart, to: .now()) > appHangThreshold * 1.5 {
-                DD.logger.debug("Ignoring likely false-positive App Hang")
+                KS.logger.debug("Ignoring likely false-positive App Hang")
                 continue // ignore likely false-positive
             }
 
@@ -218,7 +218,7 @@ internal final class AppHangsWatchdogThread: Thread, AppHangsObservingThread {
                 return .notAvailable
             }
         } catch let error {
-            DD.logger.error("Encountered an error when generating App Hang backtrace", error: error)
+            KS.logger.error("Encountered an error when generating App Hang backtrace", error: error)
             telemetry.error("Failed to generate App Hang backtrace", error: error)
             return .failed
         }

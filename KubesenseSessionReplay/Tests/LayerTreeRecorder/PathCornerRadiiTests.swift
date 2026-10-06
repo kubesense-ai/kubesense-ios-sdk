@@ -33,7 +33,7 @@ struct PathCornerRadiiTests {
 
         // Then
         #expect(
-            path.dd.svgString == """
+            path.kubesense.svgString == """
                 M 10.000 0.000 L 80.000 0.000 \
                 C 91.046 0.000 100.000 4.477 100.000 10.000 \
                 L 100.000 35.000 \

@@ -19,44 +19,44 @@ class TimeIntervalExtensionTests: XCTestCase {
 
     func testTimeIntervalSince1970InMilliseconds() {
         let date15Dec2019 = Date.mockDecember15th2019At10AMUTC()
-        XCTAssertEqual(date15Dec2019.timeIntervalSince1970.dd.toMilliseconds, 1_576_404_000_000)
+        XCTAssertEqual(date15Dec2019.timeIntervalSince1970.kubesense.toMilliseconds, 1_576_404_000_000)
 
         let dateAdvanced = date15Dec2019 + 9.999
-        XCTAssertEqual(dateAdvanced.timeIntervalSince1970.dd.toMilliseconds, 1_576_404_009_999)
+        XCTAssertEqual(dateAdvanced.timeIntervalSince1970.kubesense.toMilliseconds, 1_576_404_009_999)
 
         let dateAgo = date15Dec2019 - 0.001
-        XCTAssertEqual(dateAgo.timeIntervalSince1970.dd.toMilliseconds, 1_576_403_999_999)
+        XCTAssertEqual(dateAgo.timeIntervalSince1970.kubesense.toMilliseconds, 1_576_403_999_999)
 
         let overflownDate = Date(timeIntervalSinceReferenceDate: .greatestFiniteMagnitude)
-        XCTAssertEqual(overflownDate.timeIntervalSince1970.dd.toMilliseconds, UInt64.max)
+        XCTAssertEqual(overflownDate.timeIntervalSince1970.kubesense.toMilliseconds, UInt64.max)
 
         let uInt64MaxDate = Date(timeIntervalSinceReferenceDate: TimeInterval(UInt64.max))
-        XCTAssertEqual(uInt64MaxDate.timeIntervalSince1970.dd.toMilliseconds, UInt64.max)
+        XCTAssertEqual(uInt64MaxDate.timeIntervalSince1970.kubesense.toMilliseconds, UInt64.max)
     }
 
     func testTimeIntervalSince1970InNanoseconds() {
         let date15Dec2019 = Date.mockDecember15th2019At10AMUTC()
-        XCTAssertEqual(date15Dec2019.timeIntervalSince1970.dd.toNanoseconds, 1_576_404_000_000_000_000)
+        XCTAssertEqual(date15Dec2019.timeIntervalSince1970.kubesense.toNanoseconds, 1_576_404_000_000_000_000)
 
         // As `TimeInterval` yields sub-millisecond precision this rounds up to the nearest millisecond:
         let dateAdvanced = date15Dec2019 + 9.999999999
-        XCTAssertEqual(dateAdvanced.timeIntervalSince1970.dd.toNanoseconds, 1_576_404_010_000_000_000)
+        XCTAssertEqual(dateAdvanced.timeIntervalSince1970.kubesense.toNanoseconds, 1_576_404_010_000_000_000)
 
         // As `TimeInterval` yields sub-millisecond precision this rounds up to the nearest millisecond:
         let dateAgo = date15Dec2019 - 0.000000001
-        XCTAssertEqual(dateAgo.timeIntervalSince1970.dd.toNanoseconds, 1_576_404_000_000_000_000)
+        XCTAssertEqual(dateAgo.timeIntervalSince1970.kubesense.toNanoseconds, 1_576_404_000_000_000_000)
 
         let overflownDate = Date(timeIntervalSinceReferenceDate: .greatestFiniteMagnitude)
-        XCTAssertEqual(overflownDate.timeIntervalSince1970.dd.toNanoseconds, UInt64.max)
+        XCTAssertEqual(overflownDate.timeIntervalSince1970.kubesense.toNanoseconds, UInt64.max)
 
         let uInt64MaxDate = Date(timeIntervalSinceReferenceDate: TimeInterval(UInt64.max))
-        XCTAssertEqual(uInt64MaxDate.timeIntervalSince1970.dd.toNanoseconds, UInt64.max)
+        XCTAssertEqual(uInt64MaxDate.timeIntervalSince1970.kubesense.toNanoseconds, UInt64.max)
     }
 }
 
 class UUIDExtensionTests: XCTestCase {
     func testNullUUID() {
-        let uuid: UUID = .dd.nullUUID
+        let uuid: UUID = .kubesense.nullUUID
         XCTAssertEqual(uuid.uuidString, "00000000-0000-0000-0000-000000000000", "It must be all zeroes")
     }
 }
@@ -117,12 +117,12 @@ class IntegerOverflowExtensionTests: XCTestCase {
 
 class DoubleExtensionTests: XCTestCase {
     func testDivideIfNotZero() {
-        XCTAssertNil(2.0.dd.divideIfNotZero(by: 0))
-        XCTAssertEqual(2.0.dd.divideIfNotZero(by: 1.0), 2.0)
+        XCTAssertNil(2.0.kubesense.divideIfNotZero(by: 0))
+        XCTAssertEqual(2.0.kubesense.divideIfNotZero(by: 1.0), 2.0)
     }
 
     func testInverted() {
-        XCTAssertEqual(0.0.dd.inverted, 0.0)
-        XCTAssertEqual(2.0.dd.inverted, 0.5)
+        XCTAssertEqual(0.0.kubesense.inverted, 0.0)
+        XCTAssertEqual(2.0.kubesense.inverted, 0.5)
     }
 }

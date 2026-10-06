@@ -13,7 +13,7 @@ internal final class FlagsClientRegistry {
 
     func register(_ client: FlagsClientProtocol, named name: String) {
         guard !isRegistered(clientName: name) else {
-            DD.logger.warn("A flags client with name \(name) has already been registered.")
+            KS.logger.warn("A flags client with name \(name) has already been registered.")
             return
         }
         clients[name] = client

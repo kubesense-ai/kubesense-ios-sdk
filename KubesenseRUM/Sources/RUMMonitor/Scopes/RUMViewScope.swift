@@ -9,7 +9,7 @@ import Foundation
 
 internal class RUMViewScope: RUMScope, RUMContextProvider {
     struct Constants {
-        static let frozenFrameThresholdInNs = (0.7).dd.toInt64Nanoseconds // 700ms
+        static let frozenFrameThresholdInNs = (0.7).kubesense.toInt64Nanoseconds // 700ms
         static let slowRenderingThresholdFPS = 55.0
         static let minimumTimeSpentForRates = 1.0 // 1s
         /// Minimum duration of a view (1ns). Prevents negative durations and serves as placeholder value assigned when view starts.
@@ -296,7 +296,7 @@ extension RUMViewScope {
             addViewLoadingTime(on: command)
         case let command as RUMAddViewTimingCommand where isActiveView:
             attributes.merge(command.attributes) { $1 }
-            customTimings[command.timingName] = command.time.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+            customTimings[command.timingName] = command.time.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
             needsViewUpdate = true
 
         // Resource commands
@@ -368,7 +368,7 @@ extension RUMViewScope {
             if let viewHitchesReader {
                 viewEndedMetric.track(
                     hitchesTelemetry: viewHitchesReader.telemetryModel,
-                    viewDuration: command.time.timeIntervalSince(viewStartTime).dd.toInt64Nanoseconds
+                    viewDuration: command.time.timeIntervalSince(viewStartTime).kubesense.toInt64Nanoseconds
                 )
                 dependencies.renderLoopObserver?.unregister(viewHitchesReader)
             }
@@ -383,13 +383,13 @@ extension RUMViewScope {
             let time = command.time.timeIntervalSince(viewStartTime)
             viewLoadingTime = time
             needsViewUpdate = true
-            DD.logger.debug("View loading time \(time)ns added to the view \(viewName)")
+            KS.logger.debug("View loading time \(time)ns added to the view \(viewName)")
             dependencies.telemetry.usage(event: .addViewLoadingTime(.init(noActiveView: false, noView: false, overwritten: false)))
         } else if command.overwrite {
             let time = command.time.timeIntervalSince(viewStartTime)
             viewLoadingTime = time
             needsViewUpdate = true
-            DD.logger.warn("View loading time already exists for the view \(viewName). Replacing the existing \(String(describing: viewLoadingTime))ns with the new \(time)ns loading time.")
+            KS.logger.warn("View loading time already exists for the view \(viewName). Replacing the existing \(String(describing: viewLoadingTime))ns with the new \(time)ns loading time.")
             dependencies.telemetry.usage(event: .addViewLoadingTime(.init(noActiveView: false, noView: false, overwritten: true)))
         }
     }
@@ -485,7 +485,7 @@ extension RUMViewScope {
     }
 
     private func reportActionDropped(type: RUMActionType, name: String) {
-        DD.logger.warn(
+        KS.logger.warn(
             """
             RUM Action '\(type)' on '\(name)' was dropped, because another action is still active for the same view.
             """
@@ -531,7 +531,7 @@ extension RUMViewScope {
            command.identity == identity,
            timeSpent >= Constants.minimumTimeSpentForRates {
             if let totalHitchesDuration = viewHitchesReader?.dataModel.hitchesDuration {
-                slowFramesRate = totalHitchesDuration / timeSpent * Double(1.dd.toMilliseconds) // milliseconds/second
+                slowFramesRate = totalHitchesDuration / timeSpent * Double(1.kubesense.toMilliseconds) // milliseconds/second
             }
             if dependencies.hasAppHangsEnabled {
                 freezeRate = totalAppHangDuration / timeSpent * 1.hours // seconds/hour
@@ -579,7 +579,7 @@ extension RUMViewScope {
         let sessionReplayConfig = context.sessionReplayConfiguration
         let profiling = context.additionalContext(ofType: ProfilingContext.self)?.kubesenseProfiling
 
-        let viewEventDD: RUMViewEvent.DD = .init(
+        let viewEventKubesense: RUMViewEvent.KS = .init(
             browserSdkVersion: nil,
             cls: nil,
             configuration: .init(
@@ -608,7 +608,7 @@ extension RUMViewScope {
             accessibility: accessibility,
             action: .init(count: actionsCount.toInt64),
             cpuTicksCount: cpuInfo?.greatestDiff,
-            cpuTicksPerSecond: timeSpent > 1.0 ? cpuInfo?.greatestDiff?.dd.divideIfNotZero(by: Double(timeSpent)) : nil,
+            cpuTicksPerSecond: timeSpent > 1.0 ? cpuInfo?.greatestDiff?.kubesense.divideIfNotZero(by: Double(timeSpent)) : nil,
             crash: isCrash ? .init(count: 1) : .init(count: 0),
             cumulativeLayoutShift: nil,
             cumulativeLayoutShiftTargetSelector: nil,
@@ -635,20 +635,20 @@ extension RUMViewScope {
             interactionToNextPaint: nil,
             interactionToNextPaintTargetSelector: nil,
             interactionToNextPaintTime: nil,
-            interactionToNextViewTime: interactionToNextViewTime.value?.dd.toInt64Nanoseconds,
+            interactionToNextViewTime: interactionToNextViewTime.value?.kubesense.toInt64Nanoseconds,
             isActive: isActive,
             isSlowRendered: isSlowRendered ?? false,
             jsRefreshRate: viewPerformanceMetrics[.jsFrameTimeSeconds]?.asJsRefreshRate(),
             largestContentfulPaint: nil,
             largestContentfulPaintTargetSelector: nil,
             loadEvent: nil,
-            loadingTime: viewLoadingTime?.dd.toInt64Nanoseconds,
+            loadingTime: viewLoadingTime?.kubesense.toInt64Nanoseconds,
             loadingType: nil,
             longTask: .init(count: longTasksCount),
             memoryAverage: memoryInfo?.meanValue,
             memoryMax: memoryInfo?.maxValue,
             name: viewName,
-            networkSettledTime: networkSettledTime.value?.dd.toInt64Nanoseconds,
+            networkSettledTime: networkSettledTime.value?.kubesense.toInt64Nanoseconds,
             performance: performance,
             referrer: nil,
             refreshRateAverage: refreshRateInfo?.meanValue,
@@ -656,12 +656,12 @@ extension RUMViewScope {
             resource: .init(count: resourcesCount.toInt64),
             slowFrames: viewHitchesReader?.dataModel.hitches.map { .init(duration: $0.duration, start: $0.start) },
             slowFramesRate: slowFramesRate,
-            timeSpent: timeSpent.dd.toInt64Nanoseconds,
+            timeSpent: timeSpent.kubesense.toInt64Nanoseconds,
             url: viewPath
         )
 
         let viewEvent = RUMViewEvent(
-            dd: viewEventDD,
+            kubesense: viewEventKubesense,
             account: .init(context: context),
             application: .init(currentLocale: context.localeInfo.currentLocale, id: self.context.rumApplicationID),
             buildId: context.buildId,
@@ -670,7 +670,7 @@ extension RUMViewScope {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: attributes),
-            date: viewStartTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: viewStartTime.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -715,7 +715,7 @@ extension RUMViewScope {
                 // as baseline would produce deltas against an event the backend never received.
                 // Subsequent views' 1ns start event is kept by the filter, so it is safe as baseline.
                 if dependencies.featureFlags[.viewUpdates],
-                   viewIndexInSession != 0 || event.view.timeSpent > Constants.minimumTimeSpent.dd.toInt64Nanoseconds {
+                   viewIndexInSession != 0 || event.view.timeSpent > Constants.minimumTimeSpent.kubesense.toInt64Nanoseconds {
                     lastSentViewEvent = event
                     consecutiveViewUpdatesCount = 0
                 }
@@ -762,8 +762,8 @@ extension RUMViewScope {
             let appHang = DurationEvent(
                 id: errorId,
                 type: .error,
-                start: command.time.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Nanoseconds,
-                duration: appHangCommand.hangDuration.dd.toInt64Nanoseconds
+                start: command.time.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Nanoseconds,
+                duration: appHangCommand.hangDuration.kubesense.toInt64Nanoseconds
             )
 
             dependencies.featureScope.send(message: .payload(AppHangMessage(attributes: rumContextAttributes, hang: appHang)))
@@ -774,11 +774,11 @@ extension RUMViewScope {
         var commandAttributes = command.globalAttributes
             .merging(attributes) { $1 }
             .merging(command.attributes) { $1 }
-        let errorFingerprint: String? = commandAttributes.removeValue(forKey: RUM.Attributes.errorFingerprint)?.dd.decode()
-        let timeSinceAppStart = command.time.timeIntervalSince(context.launchInfo.processLaunchDate).dd.toInt64Milliseconds
+        let errorFingerprint: String? = commandAttributes.removeValue(forKey: RUM.Attributes.errorFingerprint)?.kubesense.decode()
+        let timeSinceAppStart = command.time.timeIntervalSince(context.launchInfo.processLaunchDate).kubesense.toInt64Milliseconds
 
         var binaryImages = command.binaryImages?.compactMap { $0.toRUMDataFormat }
-        if commandAttributes.removeValue(forKey: CrossPlatformAttributes.includeBinaryImages)?.dd.decode() == true {
+        if commandAttributes.removeValue(forKey: CrossPlatformAttributes.includeBinaryImages)?.kubesense.decode() == true {
             // Don't try to get binary images if we already have them.
             if binaryImages == nil {
                 do {
@@ -792,7 +792,7 @@ extension RUMViewScope {
         let profiling = context.additionalContext(ofType: ProfilingContext.self)?.kubesenseProfiling
 
         let errorEvent = RUMErrorEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .init(sessionReplaySampleRate: nil, sessionSampleRate: Double(dependencies.samplingRate)),
                 profiling: profiling,
@@ -812,7 +812,7 @@ extension RUMViewScope {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: commandAttributes),
-            date: command.time.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: command.time.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -839,7 +839,7 @@ extension RUMViewScope {
             ),
             featureFlags: .init(featureFlagsInfo: featureFlags),
             freeze: (command as? RUMAddCurrentViewAppHangCommand).map { appHangCommand in
-                .init(duration: appHangCommand.hangDuration.dd.toInt64Nanoseconds)
+                .init(duration: appHangCommand.hangDuration.kubesense.toInt64Nanoseconds)
             },
             os: context.os,
             service: context.service,
@@ -876,13 +876,13 @@ extension RUMViewScope {
     private func sendLongTaskEvent(on command: RUMAddLongTaskCommand, context: KubesenseContext, writer: Writer) {
         let longTaskId = dependencies.rumUUIDGenerator.generateUnique().toRUMDataFormat
         let start = (command.time - command.duration).addingTimeInterval(serverTimeOffset).timeIntervalSince1970
-        let taskDurationInNs = command.duration.dd.toInt64Nanoseconds
+        let taskDurationInNs = command.duration.kubesense.toInt64Nanoseconds
         let isFrozenFrame = taskDurationInNs > Constants.frozenFrameThresholdInNs
 
         let longTask = DurationEvent(
             id: longTaskId,
             type: .longTask,
-            start: start.dd.toInt64Nanoseconds,
+            start: start.kubesense.toInt64Nanoseconds,
             duration: taskDurationInNs
         )
         dependencies.featureScope.send(message: .payload(LongTaskMessage(attributes: rumContextAttributes, longTask: longTask)))
@@ -896,7 +896,7 @@ extension RUMViewScope {
         let profiling = context.additionalContext(ofType: ProfilingContext.self)?.kubesenseProfiling
 
         let longTaskEvent = RUMLongTaskEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
                 configuration: .init(sessionReplaySampleRate: nil, sessionSampleRate: Double(dependencies.samplingRate)),
                 discarded: nil,
@@ -917,7 +917,7 @@ extension RUMViewScope {
             connectivity: .init(context: context),
             container: nil,
             context: .init(contextInfo: commandAttributes),
-            date: start.dd.toInt64Milliseconds,
+            date: start.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: context.normalizedDevice(),
             display: nil,
@@ -957,7 +957,7 @@ extension RUMViewScope {
             longTasksCount += 1
             needsViewUpdate = true
 
-            if command.duration.dd.toInt64Nanoseconds > Constants.frozenFrameThresholdInNs {
+            if command.duration.kubesense.toInt64Nanoseconds > Constants.frozenFrameThresholdInNs {
                 frozenFramesCount += 1
             }
         }
@@ -967,7 +967,7 @@ extension RUMViewScope {
         let sanitized = customTiming.replacingOccurrences(of: "[^a-zA-Z0-9_.@$-]", with: "_", options: .regularExpression)
 
         if customTiming != sanitized {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 Custom timing '\(customTiming)' was modified to '\(sanitized)' to match Kubesense constraints.
                 """
@@ -1010,10 +1010,10 @@ private extension VitalInfo {
 
     func asJsRefreshRate() -> RUMViewEvent.View.JsRefreshRate {
         return RUMViewEvent.View.JsRefreshRate(
-            average: meanValue.map { $0.dd.inverted } ?? 0,
-            max: minValue.map { $0.dd.inverted } ?? 0,
+            average: meanValue.map { $0.kubesense.inverted } ?? 0,
+            max: minValue.map { $0.kubesense.inverted } ?? 0,
             metricMax: 60.0,
-            min: maxValue.map { $0.dd.inverted } ?? 0
+            min: maxValue.map { $0.kubesense.inverted } ?? 0
         )
     }
 }

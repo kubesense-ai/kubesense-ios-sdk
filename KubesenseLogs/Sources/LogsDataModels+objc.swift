@@ -74,7 +74,7 @@ public class objc_LogEvent: NSObject {
         swiftModel.variant
     }
 
-    public var dd: objc_LogEventDd {
+    public var kubesense: objc_LogEventKubesense {
         .init(root: self)
     }
 
@@ -171,8 +171,8 @@ public class objc_LogEventAttributes: NSObject {
     }
 
     public var userAttributes: [String: Any] {
-        set { root.swiftModel.attributes.userAttributes = newValue.dd.swiftAttributes }
-        get { root.swiftModel.attributes.userAttributes.dd.objCAttributes }
+        set { root.swiftModel.attributes.userAttributes = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.attributes.userAttributes.kubesense.objCAttributes }
     }
 }
 
@@ -203,8 +203,8 @@ public class objc_LogEventUserInfo: NSObject {
     }
 
     public var extraInfo: [String: Any] {
-        set { root.swiftModel.userInfo.extraInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.userInfo.extraInfo.dd.objCAttributes }
+        set { root.swiftModel.userInfo.extraInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.userInfo.extraInfo.kubesense.objCAttributes }
     }
 }
 
@@ -228,8 +228,8 @@ public class objc_LogEventAccountInfo: NSObject {
     }
 
     public var extraInfo: [String: Any] {
-        set { root.swiftModel.accountInfo!.extraInfo = newValue.dd.swiftAttributes }
-        get { root.swiftModel.accountInfo!.extraInfo.dd.objCAttributes }
+        set { root.swiftModel.accountInfo!.extraInfo = newValue.kubesense.swiftAttributes }
+        get { root.swiftModel.accountInfo!.extraInfo.kubesense.objCAttributes }
     }
     // swiftlint:enable force_unwrapping
 }
@@ -339,25 +339,25 @@ public class objc_LogEventOperatingSystem: NSObject {
     }
 }
 
-@objc(KubesenseLogEventDd)
+@objc(KubesenseLogEventKubesense)
 @objcMembers
 @_spi(objc)
-public class objc_LogEventDd: NSObject {
+public class objc_LogEventKubesense: NSObject {
     internal let root: objc_LogEvent
 
     internal init(root: objc_LogEvent) {
         self.root = root
     }
 
-    public var device: objc_LogEventDDDevice {
+    public var device: objc_LogEventKubesenseDevice {
         .init(root: root)
     }
 }
 
-@objc(KubesenseLogEventDDDevice)
+@objc(KubesenseLogEventKubesenseDevice)
 @objcMembers
 @_spi(objc)
-public class objc_LogEventDDDevice: NSObject {
+public class objc_LogEventKubesenseDevice: NSObject {
     internal let root: objc_LogEvent
 
     internal init(root: objc_LogEvent) {
@@ -365,7 +365,7 @@ public class objc_LogEventDDDevice: NSObject {
     }
 
     public var architecture: String {
-        root.swiftModel.dd.device.architecture
+        root.swiftModel.kubesense.device.architecture
     }
 }
 

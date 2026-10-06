@@ -12,7 +12,7 @@ This document covers two distinct concerns that both fall under "error handling"
 The SDK must **never throw exceptions** to customer code:
 
 - **NOP implementations**: `NOPMonitor`, `NOPKubesenseCore` silently accept all API calls when the SDK is not initialized or a feature is disabled.
-- **Validation at boundaries**: Invalid input is logged via `DD.logger` and ignored.
+- **Validation at boundaries**: Invalid input is logged via `KS.logger` and ignored.
 - **Objective-C exception safety**: Code that can trigger an Objective-C exception outside Swift's error model (e.g. Session Replay's view-tree snapshotting in `LayerRecorder`, `ImageSnapshotter`) wraps the call with `ObjcException.rethrow`, converting it into a catchable Swift `ObjcException` (`KubesenseInternal/Sources/Utils/KubesenseError.swift`).
 
 ## Internal Telemetry Error Reporting

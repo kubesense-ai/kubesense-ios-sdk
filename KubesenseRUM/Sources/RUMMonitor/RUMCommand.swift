@@ -342,7 +342,7 @@ internal struct RUMAddCurrentViewErrorCommand: RUMErrorCommand {
         completionHandler: @escaping CompletionHandler
     ) {
         var attributes = attributes
-        let isCrossPlatformCrash: Bool? = attributes.removeValue(forKey: CrossPlatformAttributes.errorIsCrash)?.dd.decode()
+        let isCrossPlatformCrash: Bool? = attributes.removeValue(forKey: CrossPlatformAttributes.errorIsCrash)?.kubesense.decode()
         let crossPlatformSourceType = RUMErrorSourceType.extract(from: &attributes)
 
         self.time = time

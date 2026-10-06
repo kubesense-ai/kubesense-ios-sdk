@@ -130,7 +130,7 @@ typedef void (*stack_trace_callback_t)(stack_trace_t* traces, size_t count, void
 
 #ifdef __cplusplus
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 // Forward declarations
     class mach_sampling_profiler;
     class profile;
@@ -150,7 +150,7 @@ extern "C" {
  * Opaque handle to a profiler instance
  */
 #ifdef __cplusplus
-typedef dd::profiler::mach_sampling_profiler profiler_t;
+typedef kubesense::profiler::mach_sampling_profiler profiler_t;
 #else
 typedef struct profiler profiler_t;
 #endif
@@ -186,10 +186,10 @@ bool kubesense_profiler_is_running();
  */
 bool kubesense_profiler_was_started_at_launch();
 
-// MARK: - DD Profiler (auto-start) API
+// MARK: - KS Profiler (auto-start) API
 
 /**
- * Status codes for the dd profiler operations
+ * Status codes for the kubesense profiler operations
  */
 typedef enum {
     KUBESENSE_PROFILER_STATUS_NOT_CREATED = 0,       ///< Profiler was not created
@@ -214,16 +214,16 @@ typedef struct kubesense_profiler_diagnostics {
 } kubesense_profiler_diagnostics_t;
 
 /**
- * Opaque handle to a dd profiler profile instance
+ * Opaque handle to a kubesense profiler profile instance
  */
 #ifdef __cplusplus
-typedef dd::profiler::profile kubesense_profile_t;
+typedef kubesense::profiler::profile kubesense_profile_t;
 #else
 typedef struct profile kubesense_profile_t;
 #endif
 
 /**
- * @brief Gets the current status of the dd profiler
+ * @brief Gets the current status of the kubesense profiler
  *
  * This function provides detailed information about the profiler's current state,
  * including why it may not have started or why it stopped.
@@ -293,7 +293,7 @@ kubesense_profile_t* kubesense_profiler_flush_and_get_profile(void);
 void kubesense_profiler_set_server_time_offset_ns(int64_t offset_ns);
 
 /**
- * @brief Destroys the dd profiler data and frees all associated memory
+ * @brief Destroys the kubesense profiler data and frees all associated memory
  *
  * This function should be called when the profile data is no longer needed
  * to free memory resources.

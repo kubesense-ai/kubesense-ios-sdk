@@ -33,7 +33,7 @@ internal final class FallbackFlagsClient: FlagsClientProtocol {
     }
 
     func getDetails<T>(key: String, defaultValue: T) -> FlagDetails<T> where T: FlagValue, T: Equatable {
-        DD.logger.error(
+        KS.logger.error(
             """
             Using fallback client to get '\(key)' value. \
             Ensure that a client named '\(name)' is created before using it.
@@ -47,7 +47,7 @@ internal final class FallbackFlagsClient: FlagsClientProtocol {
 
 extension FallbackFlagsClient: FlagsClientInternal {
     func getFlagAssignments() -> [String: FlagAssignment]? {
-        DD.logger.error(
+        KS.logger.error(
             """
             Using fallback client to get all flag values. \
             Ensure that a client named '\(name)' is created before using it.
@@ -57,7 +57,7 @@ extension FallbackFlagsClient: FlagsClientInternal {
     }
 
     func sendFlagEvaluation(key: String, assignment: FlagAssignment, context: FlagsEvaluationContext) {
-        DD.logger.error(
+        KS.logger.error(
             """
             Using fallback client to track '\(key)'. \
             Ensure that a client named '\(name)' is created before using it.

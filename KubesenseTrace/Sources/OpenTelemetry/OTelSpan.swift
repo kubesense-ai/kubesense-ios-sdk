@@ -141,37 +141,37 @@ internal class OTelSpan: OpenTelemetryApi.Span {
     }
 
     func addEvent(name: String) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func addEvent(name: String, timestamp: Date) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func addEvent(name: String, attributes: [String: OpenTelemetryApi.AttributeValue]) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func addEvent(name: String, attributes: [String: OpenTelemetryApi.AttributeValue], timestamp: Date) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func recordException(_ exception: any OpenTelemetryApi.SpanException, attributes: [String: OpenTelemetryApi.AttributeValue], timestamp: Date) {
         // RUM-8558: `recordException()` should be based on `addEvent()` which we currently don't support.
         // Ref.: https://github.com/open-telemetry/opentelemetry-swift/blob/1.13.0/Sources/OpenTelemetrySdk/Trace/RecordEventsReadableSpan.swift#L356
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func recordException(_ exception: any OpenTelemetryApi.SpanException, attributes: [String: OpenTelemetryApi.AttributeValue]) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func recordException(_ exception: any OpenTelemetryApi.SpanException, timestamp: Date) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func recordException(_ exception: any OpenTelemetryApi.SpanException) {
-        DD.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
+        KS.logger.warn("\(#function) is not yet supported in `KubesenseTrace`")
     }
 
     func end() {

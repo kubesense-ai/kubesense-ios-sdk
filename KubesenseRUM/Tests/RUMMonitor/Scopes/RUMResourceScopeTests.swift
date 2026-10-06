@@ -109,7 +109,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -137,10 +137,10 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertNil(event.resource.request)
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.traceId, "64")
-        XCTAssertEqual(event.dd.spanId, "200")
-        XCTAssertEqual(event.dd.rulePsr, 0.42)
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.traceId, "64")
+        XCTAssertEqual(event.kubesense.spanId, "200")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.42)
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
         XCTAssertEqual(event.buildVersion, "test-build")
@@ -196,7 +196,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .ciTest)
@@ -221,10 +221,10 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertNil(event.resource.download)
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.traceId, "64")
-        XCTAssertEqual(event.dd.spanId, "200")
-        XCTAssertEqual(event.dd.rulePsr, 0.42)
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.traceId, "64")
+        XCTAssertEqual(event.kubesense.spanId, "200")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.42)
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
         XCTAssertEqual(event.buildVersion, "test-build")
@@ -282,7 +282,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .synthetics)
@@ -307,10 +307,10 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertNil(event.resource.download)
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.traceId, "64")
-        XCTAssertEqual(event.dd.spanId, "200")
-        XCTAssertEqual(event.dd.rulePsr, 0.42)
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.traceId, "64")
+        XCTAssertEqual(event.kubesense.spanId, "200")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.42)
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
         XCTAssertEqual(event.buildVersion, "test-build")
@@ -348,9 +348,9 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.dd.traceId, "64")
-        XCTAssertEqual(event.dd.spanId, "200")
-        XCTAssertEqual(event.dd.rulePsr, 0.42)
+        XCTAssertEqual(event.kubesense.traceId, "64")
+        XCTAssertEqual(event.kubesense.spanId, "200")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.42)
         XCTAssertNil(event.resource.encodedBodySize)
         XCTAssertNil(event.resource.decodedBodySize)
     }
@@ -375,9 +375,9 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertNil(event.dd.traceId)
-        XCTAssertNil(event.dd.spanId)
-        XCTAssertNil(event.dd.rulePsr)
+        XCTAssertNil(event.kubesense.traceId)
+        XCTAssertNil(event.kubesense.spanId)
+        XCTAssertNil(event.kubesense.rulePsr)
         XCTAssertNil(event.resource.encodedBodySize)
         XCTAssertNil(event.resource.decodedBodySize)
     }
@@ -456,7 +456,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -480,7 +480,7 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertNil(event.resource.download)
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
         XCTAssertEqual(event.buildVersion, "test-build")
@@ -524,7 +524,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, Date.mockDecember15th2019At10AMUTC().timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -592,7 +592,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -611,7 +611,7 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertEqual(event.error.resource?.url, "https://foo.com/resource/1")
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.source, .ios)
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
@@ -706,7 +706,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -726,7 +726,7 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertEqual(event.error.resource?.url, "https://foo.com/resource/1")
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.source, .ios)
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
@@ -771,7 +771,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .ciTest)
@@ -790,7 +790,7 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertEqual(event.error.resource?.url, "https://foo.com/resource/1")
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.source, .ios)
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
@@ -837,7 +837,7 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, currentTime.timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .synthetics)
@@ -856,7 +856,7 @@ class RUMResourceScopeTests: XCTestCase {
         XCTAssertEqual(event.error.resource?.url, "https://foo.com/resource/1")
         XCTAssertEqual(try XCTUnwrap(event.action?.id.stringValue), provider.context.activeUserActionID?.toRUMDataFormat)
         XCTAssertEqual(event.context?.contextInfo as? [String: String], ["foo": "bar"])
-        XCTAssertEqual(event.dd.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
+        XCTAssertEqual(event.kubesense.session?.plan, .plan1, "All RUM events should use RUM Lite plan")
         XCTAssertEqual(event.source, .ios)
         XCTAssertEqual(event.service, "test-service")
         XCTAssertEqual(event.version, "test-version")
@@ -989,7 +989,7 @@ class RUMResourceScopeTests: XCTestCase {
         // Then
         let metrics = metricsCommand.metrics
         let event = try XCTUnwrap(writer.events(ofType: RUMResourceEvent.self).first)
-        XCTAssertEqual(event.date, metrics.fetch.start.timeIntervalSince1970.dd.toInt64Milliseconds)
+        XCTAssertEqual(event.date, metrics.fetch.start.timeIntervalSince1970.kubesense.toInt64Milliseconds)
         XCTAssertEqual(event.application.id, scope.parent.context.rumApplicationID)
         XCTAssertEqual(event.session.id, scope.parent.context.sessionID.toRUMDataFormat)
         XCTAssertEqual(event.session.type, .user)
@@ -2075,10 +2075,10 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.dd.traceId, "64") // hex of 100 (idLo: 100)
-        XCTAssertEqual(event.dd.spanId, "200")
-        XCTAssertEqual(event.dd.parentSpanId, "300")
-        XCTAssertEqual(event.dd.rulePsr, 0.42)
+        XCTAssertEqual(event.kubesense.traceId, "64") // hex of 100 (idLo: 100)
+        XCTAssertEqual(event.kubesense.spanId, "200")
+        XCTAssertEqual(event.kubesense.parentSpanId, "300")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.42)
     }
 
     func testGivenResourceWithGraphQLAttributes_whenResourceLoadingEndsWithError_itSendsErrorEventWithGraphQL() throws {
@@ -2356,10 +2356,10 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then - traceId is stored as-is (hex string), spanId is stored as-is (decimal string)
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.dd.traceId, "1a2b3c")
-        XCTAssertEqual(event.dd.spanId, "12345678901")
-        XCTAssertEqual(event.dd.parentSpanId, "9999")
-        XCTAssertEqual(event.dd.rulePsr, 0.5)
+        XCTAssertEqual(event.kubesense.traceId, "1a2b3c")
+        XCTAssertEqual(event.kubesense.spanId, "12345678901")
+        XCTAssertEqual(event.kubesense.parentSpanId, "9999")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.5)
     }
 
     func testGivenResourceWithMutationGraphQLOperationType_whenResourceLoadingEndsWithError_itSendsErrorEventWithGraphQL() throws {
@@ -2508,8 +2508,8 @@ class RUMResourceScopeTests: XCTestCase {
 
         // Then - cross-platform attributes take precedence over spanContext
         let event = try XCTUnwrap(writer.events(ofType: RUMErrorEvent.self).first)
-        XCTAssertEqual(event.dd.traceId, "aabbcc")
-        XCTAssertEqual(event.dd.spanId, "42")
-        XCTAssertEqual(event.dd.rulePsr, 0.9)
+        XCTAssertEqual(event.kubesense.traceId, "aabbcc")
+        XCTAssertEqual(event.kubesense.spanId, "42")
+        XCTAssertEqual(event.kubesense.rulePsr, 0.9)
     }
 }

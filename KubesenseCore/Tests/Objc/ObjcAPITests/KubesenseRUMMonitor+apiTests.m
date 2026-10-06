@@ -19,43 +19,43 @@
 #pragma clang diagnostic ignored "-Wunused-value"
 
 #if !TARGET_OS_WATCH
-- (void)testDDRUMViewAPI {
+- (void)testKubesenseRUMViewAPI {
     KubesenseRUMView *view = [[KubesenseRUMView alloc] initWithName:@"abc" attributes:@{@"foo": @"bar"}];
     XCTAssertEqual(view.name, @"abc");
     XCTAssertNotNil(view.attributes[@"foo"]); // TODO: RUMM-1583 assert with `XCTAssertEqual`
 }
 
-- (void)testDDRUMActionAPI {
+- (void)testKubesenseRUMActionAPI {
     KubesenseRUMAction *action = [[KubesenseRUMAction alloc] initWithName:@"abc" attributes:@{@"foo": @"bar"}];
     XCTAssertEqual(action.name, @"abc");
     XCTAssertNotNil(action.attributes[@"foo"]); // TODO: RUMM-1583 assert with `XCTAssertEqual`
 }
 #endif
 
-- (void)testDDRUMErrorSourceAPI {
+- (void)testKubesenseRUMErrorSourceAPI {
     KubesenseRUMErrorSourceSource; KubesenseRUMErrorSourceNetwork; KubesenseRUMErrorSourceWebview; KubesenseRUMErrorSourceConsole; KubesenseRUMErrorSourceCustom;
 }
 
-- (void)testDDRUMActionTypeAPI {
+- (void)testKubesenseRUMActionTypeAPI {
     KubesenseRUMActionTypeTap; KubesenseRUMActionTypeScroll; KubesenseRUMActionTypeSwipe; KubesenseRUMActionTypeCustom;
 }
 
-- (void)testDDRUMResourceTypeAPI {
+- (void)testKubesenseRUMResourceTypeAPI {
     KubesenseRUMResourceTypeImage; KubesenseRUMResourceTypeXhr; KubesenseRUMResourceTypeBeacon; KubesenseRUMResourceTypeCss; KubesenseRUMResourceTypeDocument;
     KubesenseRUMResourceTypeFetch; KubesenseRUMResourceTypeFont; KubesenseRUMResourceTypeJs; KubesenseRUMResourceTypeMedia; KubesenseRUMResourceTypeOther;
     KubesenseRUMResourceTypeNative;
 }
 
-- (void)testDDRUMMethodAPI {
+- (void)testKubesenseRUMMethodAPI {
     KubesenseRUMMethodPost; KubesenseRUMMethodGet; KubesenseRUMMethodHead; KubesenseRUMMethodPut; KubesenseRUMMethodDelete; KubesenseRUMMethodPatch; KubesenseRUMMethodConnect;
     KubesenseRUMMethodTrace; KubesenseRUMMethodOptions;
 }
 
-- (void)testDDRUMFeatureOperationFailureReasonAPI {
+- (void)testKubesenseRUMFeatureOperationFailureReasonAPI {
     KubesenseRUMFeatureOperationFailureReasonError; KubesenseRUMFeatureOperationFailureReasonAbandoned; KubesenseRUMFeatureOperationFailureReasonOther;
 }
 
-- (void)testDDRUMMonitorAPI {
+- (void)testKubesenseRUMMonitorAPI {
     KubesenseRUMMonitor *monitor = [KubesenseRUMMonitor shared];
     [monitor currentSessionIDWithCompletion:^(NSString * _Nullable sessionID) {}];
     [monitor stopSession];

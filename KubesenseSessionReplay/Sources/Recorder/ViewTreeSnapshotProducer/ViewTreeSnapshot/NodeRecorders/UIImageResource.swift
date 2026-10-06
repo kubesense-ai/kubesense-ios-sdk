@@ -24,11 +24,11 @@ extension UIImageResource: Resource {
     }
 
     func calculateIdentifier() -> String {
-        tintColor.map { image.dd.identifier + $0.dd.identifier } ?? image.dd.identifier
+        tintColor.map { image.kubesense.identifier + $0.kubesense.identifier } ?? image.kubesense.identifier
     }
 
     func calculateData() -> Data {
-        image.dd.pngData(tintColor: tintColor) ?? Data()
+        image.kubesense.pngData(tintColor: tintColor) ?? Data()
     }
 }
 #endif

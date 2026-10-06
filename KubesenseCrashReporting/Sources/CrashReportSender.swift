@@ -37,7 +37,7 @@ internal struct MessageBusSender: CrashReportSender {
     ///   - context: The crash context
     func send(report: KubesenseCrashReport, with context: CrashContext) {
         guard let core = core, context.trackingConsent == .granted else {
-            DD.logger.debug("Skipped sending Crash Report as it was recorded with \(context.trackingConsent) consent")
+            KS.logger.debug("Skipped sending Crash Report as it was recorded with \(context.trackingConsent) consent")
             return
         }
 
@@ -46,7 +46,7 @@ internal struct MessageBusSender: CrashReportSender {
                 Crash(report: report, context: context)
             ),
             else: {
-                DD.logger.warn(
+                KS.logger.warn(
                     """
                     In order to use Crash Reporting, RUM feature must be enabled.
                     Make sure `RUM.enable(with:)` is called when initializing Kubesense SDK.

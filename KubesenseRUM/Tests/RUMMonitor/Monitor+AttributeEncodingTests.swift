@@ -44,8 +44,8 @@ class Monitor_AttributeEncodingTests: XCTestCase {
 
     func testWhenCustomAttributeFailsToEncode_itIsNullAndEventIsSent() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // When
         monitor.addAttribute(forKey: "valid", value: "test")
@@ -62,7 +62,7 @@ class Monitor_AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(context?["invalid"] is NSNull, "Non-encodable attribute should be null")
 
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute 'invalid'") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode attribute 'invalid'") }.count,
             1,
             "One error should be logged for the null attribute"
         )
@@ -83,8 +83,8 @@ class Monitor_AttributeEncodingTests: XCTestCase {
             }
         }
 
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         let poison = ThrowingAfterPartialEncode()
         monitor.addAttribute(forKey: "before", value: "before")
@@ -101,15 +101,15 @@ class Monitor_AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(context["poison"] is NSNull)
         XCTAssertEqual(context["after"] as? String, "after")
         XCTAssertEqual(poison.encodeCount, 2)
-        XCTAssertTrue(try XCTUnwrap(dd.logger.errorLog).message.contains("attribute 'poison'"))
+        XCTAssertTrue(try XCTUnwrap(kubesense.logger.errorLog).message.contains("attribute 'poison'"))
     }
 
     // MARK: - User info extra attributes (usr.*)
 
     func testWhenUserInfoExtraAttributeFailsToEncode_itIsNullAndEventIsSent() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         featureScope.contextMock = .mockWith(userInfo: UserInfo(
             id: "user-id",
@@ -132,7 +132,7 @@ class Monitor_AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(usr?["invalid_info"] is NSNull, "Non-encodable user info attribute should be null")
 
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode") && $0.message.contains("invalid_info") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode") && $0.message.contains("invalid_info") }.count,
             1
         )
     }
@@ -141,8 +141,8 @@ class Monitor_AttributeEncodingTests: XCTestCase {
 
     func testWhenAccountInfoExtraAttributeFailsToEncode_itIsNullAndEventIsSent() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         featureScope.contextMock = .mockWith(accountInfo: AccountInfo(
             id: "acc-id",
@@ -165,7 +165,7 @@ class Monitor_AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(account?["invalid_plan"] is NSNull, "Non-encodable account info attribute should be null")
 
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode") && $0.message.contains("invalid_plan") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode") && $0.message.contains("invalid_plan") }.count,
             1
         )
     }
@@ -198,8 +198,8 @@ class Monitor_AttributeEncodingTests: XCTestCase {
 
     func testWhenFeatureFlagValueFailsToEncode_itIsNullAndEventIsSent() throws {
         // Given
-        let dd = DD.mockWith(logger: CoreLoggerMock())
-        defer { dd.reset() }
+        let kubesense = KS.mockWith(logger: CoreLoggerMock())
+        defer { kubesense.reset() }
 
         // When
         monitor.notifySDKInit()
@@ -218,7 +218,7 @@ class Monitor_AttributeEncodingTests: XCTestCase {
         XCTAssertTrue(featureFlags?["invalid_flag"] is NSNull, "Non-encodable feature flag should be null")
 
         XCTAssertEqual(
-            dd.logger.errorLogs.filter { $0.message.contains("Failed to encode") && $0.message.contains("invalid_flag") }.count,
+            kubesense.logger.errorLogs.filter { $0.message.contains("Failed to encode") && $0.message.contains("invalid_flag") }.count,
             1
         )
     }
@@ -246,6 +246,6 @@ class Monitor_AttributeEncodingTests: XCTestCase {
     }
 
     private func encodeForStorage<T: Encodable>(_ value: T) throws -> Data {
-        try JSONEncoder.dd.default().dd.encodeWithAttributeRecovery(value)
+        try JSONEncoder.kubesense.default().kubesense.encodeWithAttributeRecovery(value)
     }
 }

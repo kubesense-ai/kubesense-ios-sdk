@@ -137,7 +137,7 @@ class WebEventIntegrationTests: XCTestCase {
             "application": {
               "id": "\(randomApplicationID)"
             },
-            "date": \(1_635_932_927_012 + 123.dd.toInt64Milliseconds),
+            "date": \(1_635_932_927_012 + 123.kubesense.toInt64Milliseconds),
             "service": "super",
             "session": {
               "id": "\(expectedUUID)",
@@ -252,7 +252,7 @@ class WebEventIntegrationTests: XCTestCase {
             jsonString: """
         {
           "type": "telemetry",
-          "date": \(1_712_069_357_432 + 123.dd.toInt64Milliseconds),
+          "date": \(1_712_069_357_432 + 123.kubesense.toInt64Milliseconds),
           "service": "browser-rum-sdk",
           "version": "5.2.0-b93ed472a4f14fbf2bcd1bc2c9faacb4abbeed82",
           "source": "browser",

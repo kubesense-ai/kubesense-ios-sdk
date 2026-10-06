@@ -71,7 +71,7 @@ public extension KeyedEncodingContainer {
         } catch {
             // `superEncoder(forKey:)` reserves the key, so replace any partial value with null.
             try? encodeNil(forKey: key)
-            DD.logger.error(
+            KS.logger.error(
                 "Failed to encode \(context.errorMessagePrefix)attribute '\(attributeName)'. "
                     + "This attribute will be encoded as null.",
                 error: error

@@ -15,12 +15,12 @@ extension RUMViewEvent {
     /// - `self` is the previously sent `RUMViewEvent` (stored in `RUMViewScope.lastSentViewEvent`).
     /// - `event` is the newly built `RUMViewEvent` (post-mapper). Its values win.
     /// - Fields equal between `self` and `event` are set to `nil` (meaning "unchanged").
-    ///   `dd`, `usr`, and `account` are always forwarded wholesale from `event`, since `nil`
+    ///   `kubesense`, `usr`, and `account` are always forwarded wholesale from `event`, since `nil`
     ///   would be ambiguous between "unchanged" and "explicitly cleared" for these fields.
     ///
     func update(from event: RUMViewEvent) -> RUMViewUpdateEvent {
         RUMViewUpdateEvent(
-            dd: .init(event.dd),
+            kubesense: .init(event.kubesense),
             account: event.account,
             application: .init(event.application),
             buildId: diff(buildId, event.buildId),
@@ -108,8 +108,8 @@ private extension RUMViewUpdateEvent.Privacy.ReplayLevel {
     }
 }
 
-private extension RUMViewUpdateEvent.DD.Session.Plan {
-    init(_ s: RUMViewEvent.DD.Session.Plan) {
+private extension RUMViewUpdateEvent.KS.Session.Plan {
+    init(_ s: RUMViewEvent.KS.Session.Plan) {
         switch s {
         case .plan1: self = .plan1
         case .plan2: self = .plan2
@@ -134,10 +134,10 @@ private extension RUMViewUpdateEvent.View.LoadingType {
     }
 }
 
-// MARK: - DD projection
+// MARK: - KS projection
 
-private extension RUMViewUpdateEvent.DD {
-    init(_ s: RUMViewEvent.DD) {
+private extension RUMViewUpdateEvent.KS {
+    init(_ s: RUMViewEvent.KS) {
         self.init(
             browserSdkVersion: s.browserSdkVersion,
             cls: s.cls.map { .init($0) },
@@ -152,14 +152,14 @@ private extension RUMViewUpdateEvent.DD {
     }
 }
 
-private extension RUMViewUpdateEvent.DD.CLS {
-    init(_ s: RUMViewEvent.DD.CLS) {
+private extension RUMViewUpdateEvent.KS.CLS {
+    init(_ s: RUMViewEvent.KS.CLS) {
         self.init(devicePixelRatio: s.devicePixelRatio)
     }
 }
 
-private extension RUMViewUpdateEvent.DD.Configuration {
-    init(_ s: RUMViewEvent.DD.Configuration) {
+private extension RUMViewUpdateEvent.KS.Configuration {
+    init(_ s: RUMViewEvent.KS.Configuration) {
         self.init(
             profilingSampleRate: s.profilingSampleRate,
             remoteConfigurationId: s.remoteConfigurationId,
@@ -172,14 +172,14 @@ private extension RUMViewUpdateEvent.DD.Configuration {
     }
 }
 
-private extension RUMViewUpdateEvent.DD.PageStates {
-    init(_ s: RUMViewEvent.DD.PageStates) {
+private extension RUMViewUpdateEvent.KS.PageStates {
+    init(_ s: RUMViewEvent.KS.PageStates) {
         self.init(start: s.start, state: .init(s.state))
     }
 }
 
-private extension RUMViewUpdateEvent.DD.PageStates.State {
-    init(_ s: RUMViewEvent.DD.PageStates.State) {
+private extension RUMViewUpdateEvent.KS.PageStates.State {
+    init(_ s: RUMViewEvent.KS.PageStates.State) {
         switch s {
         case .active: self = .active
         case .passive: self = .passive
@@ -190,8 +190,8 @@ private extension RUMViewUpdateEvent.DD.PageStates.State {
     }
 }
 
-private extension RUMViewUpdateEvent.DD.ReplayStats {
-    init(_ s: RUMViewEvent.DD.ReplayStats) {
+private extension RUMViewUpdateEvent.KS.ReplayStats {
+    init(_ s: RUMViewEvent.KS.ReplayStats) {
         self.init(
             recordsCount: s.recordsCount,
             segmentsCount: s.segmentsCount,
@@ -200,8 +200,8 @@ private extension RUMViewUpdateEvent.DD.ReplayStats {
     }
 }
 
-private extension RUMViewUpdateEvent.DD.Session {
-    init(_ s: RUMViewEvent.DD.Session) {
+private extension RUMViewUpdateEvent.KS.Session {
+    init(_ s: RUMViewEvent.KS.Session) {
         self.init(
             plan: s.plan.map { .init($0) },
             sessionPrecondition: s.sessionPrecondition

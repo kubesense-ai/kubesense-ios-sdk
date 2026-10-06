@@ -11,15 +11,15 @@ import KubesenseInternal
 @testable import KubesenseLogs
 
 class LogsDataModels_objcTests: XCTestCase {
-    func testSwiftDDDevice_isEqualToObjCDDDevice() throws {
+    func testSwiftKubesenseDevice_isEqualToObjCDDDevice() throws {
         // Given
         let swiftDevice: Device = .mockRandom()
         let objcLogEvent = objc_LogEvent(swiftModel: .mockWith(device: swiftDevice))
-        let objcDDDevice = objc_LogEventDDDevice(root: objcLogEvent)
+        let objcKubesenseDevice = objc_LogEventKubesenseDevice(root: objcLogEvent)
 
         // Then
-        XCTAssertEqual(swiftDevice.architecture, objcDDDevice.architecture)
-        XCTAssertEqual(swiftDevice.architecture, objcLogEvent.dd.device.architecture)
+        XCTAssertEqual(swiftDevice.architecture, objcKubesenseDevice.architecture)
+        XCTAssertEqual(swiftDevice.architecture, objcLogEvent.kubesense.device.architecture)
     }
 
     func testSwiftDevice_isEqualToObjCDevice() throws {

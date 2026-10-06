@@ -80,7 +80,7 @@ extension CALayerSnapshot {
                         roundedRect: .init(origin: .zero, size: absoluteFrame.size),
                         cornerRadii: $0,
                         cornerCurve: cornerCurve
-                    ).dd.svgString
+                    ).kubesense.svgString
                 )
             )
         }
@@ -104,7 +104,7 @@ extension CALayerSnapshot {
                 path: shadowPath.map {
                     SwiftUI.Path($0)
                         .applying(.init(translationX: -bounds.minX, y: -bounds.minY))
-                        .dd.svgString
+                        .kubesense.svgString
                 },
                 radius: Double(shadowRadius)
             )

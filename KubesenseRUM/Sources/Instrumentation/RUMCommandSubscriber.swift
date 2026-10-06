@@ -66,7 +66,7 @@ internal extension InstrumentationType {
     static func extract(from attributes: inout [AttributeKey: AttributeValue]) -> InstrumentationType? {
         let rawValue: String? = attributes
             .removeValue(forKey: CrossPlatformAttributes.instrumentationType)?
-            .dd.decode()
+            .kubesense.decode()
 
         guard let rawValue = rawValue, !rawValue.isEmpty else {
             return nil

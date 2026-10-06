@@ -1570,11 +1570,11 @@ final class ObjcInteropPrinterTests: XCTestCase {
             }
 
             public var immutableCodables: [String: Any] {
-                root.swiftModel.immutableCodables.dd.objCAttributes
+                root.swiftModel.immutableCodables.kubesense.objCAttributes
             }
 
             public var optionalImmutableCodables: [String: Any]? {
-                root.swiftModel.optionalImmutableCodables?.dd.objCAttributes
+                root.swiftModel.optionalImmutableCodables?.kubesense.objCAttributes
             }
         }
 
@@ -2648,7 +2648,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
         XCTAssertEqual(expected, actual)
     }
 
-    func testPrintingObjcInteropForReferencedDDTypeRemovesDuplicatedDDPrefixFromWrapperNames() throws {
+    func testPrintingObjcInteropForReferencedKubesenseTypeRemovesDuplicatedKubesensePrefixFromWrapperNames() throws {
         let rumErrorEvent = SwiftStruct(
             name: "RUMEvent",
             comment: nil,
@@ -2656,7 +2656,7 @@ final class ObjcInteropPrinterTests: XCTestCase {
                 .mock(
                     propertyName: "dd",
                     type: SwiftStruct(
-                        name: "DD",
+                        name: "KS",
                         comment: nil,
                         properties: [
                             .mock(
@@ -2711,14 +2711,14 @@ final class ObjcInteropPrinterTests: XCTestCase {
 
         let actual = try printSwiftWithObjcInterop(for: [rumErrorEvent, kubesenseShared])
 
-        XCTAssertTrue(actual.contains("public var shared: objc_RUMEventDDShared?"))
-        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventDDShared)"))
-        XCTAssertTrue(actual.contains("public class objc_RUMEventDDShared: NSObject"))
-        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventDDSharedDetail)"))
-        XCTAssertTrue(actual.contains("public enum objc_RUMEventDDSharedDetail: Int"))
-        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventDDSharedStatus)"))
-        XCTAssertTrue(actual.contains("public enum objc_RUMEventDDSharedStatus: Int"))
-        XCTAssertFalse(actual.contains("KubesenseDDShared"))
+        XCTAssertTrue(actual.contains("public var shared: objc_RUMEventKubesenseShared?"))
+        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventKubesenseShared)"))
+        XCTAssertTrue(actual.contains("public class objc_RUMEventKubesenseShared: NSObject"))
+        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventKubesenseSharedDetail)"))
+        XCTAssertTrue(actual.contains("public enum objc_RUMEventKubesenseSharedDetail: Int"))
+        XCTAssertTrue(actual.contains("@objc(KubesenseRUMEventKubesenseSharedStatus)"))
+        XCTAssertTrue(actual.contains("public enum objc_RUMEventKubesenseSharedStatus: Int"))
+        XCTAssertFalse(actual.contains("KubesenseKubesenseShared"))
     }
 
     func testPrintingObjcInteropForSwiftStructWithAssociatedTypeEnumArrayProperties() throws {

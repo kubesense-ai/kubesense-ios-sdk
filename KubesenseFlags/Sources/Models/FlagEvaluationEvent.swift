@@ -83,7 +83,7 @@ internal struct FlagEvaluationEvent: Equatable, Codable {
 
     struct EvaluationEventContext: Equatable, Codable {
         let evaluation: [String: AnyValue]?
-        let dd: KubesenseInfo?
+        let kubesense: KubesenseInfo?
 
         struct KubesenseInfo: Equatable, Codable {
             let service: String?

@@ -21,7 +21,7 @@ internal struct FeatureStorage {
     /// Encryption algorithm applied to persisted data.
     let encryption: DataEncryption?
     /// JSON encoder reused by writers executing on this storage queue.
-    private let jsonEncoder: JSONEncoder = .dd.default()
+    private let jsonEncoder: JSONEncoder = .kubesense.default()
     /// Telemetry interface.
     let telemetry: Telemetry
 
@@ -126,7 +126,7 @@ extension FeatureStorage {
         let trackName = BatchMetric.trackValue(for: featureName)
 
         if trackName == nil {
-            DD.logger.error("Can't determine track name for feature named '\(featureName)'")
+            KS.logger.error("Can't determine track name for feature named '\(featureName)'")
         }
 
         let authorizedFilesOrchestrator = FilesOrchestrator(

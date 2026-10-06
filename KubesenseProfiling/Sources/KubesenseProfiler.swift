@@ -193,7 +193,7 @@ private extension KubesenseProfiler {
     func handle(context: KubesenseContext) {
         telemetryController.register(context: context)
         currentServerTimeOffset = context.serverTimeOffset
-        kubesense_profiler_set_server_time_offset_ns(context.serverTimeOffset.dd.toInt64Nanoseconds)
+        kubesense_profiler_set_server_time_offset_ns(context.serverTimeOffset.kubesense.toInt64Nanoseconds)
 
         queue.async { [weak self] in
             guard let self else {
@@ -289,7 +289,7 @@ private extension KubesenseProfiler {
                 if var startVital = currentRUMVitals[message.operation.key] {
                     // Add duration to vital to help Profiling backend label correctly the samples of this vital
                     let duration = message.operation.date.timeIntervalSince(startVital.date)
-                    startVital.duration = duration.dd.toInt64Nanoseconds
+                    startVital.duration = duration.kubesense.toInt64Nanoseconds
                     currentRUMVitals[message.operation.key] = startVital
 
                     if currentRUMVitals.hasCompletedAllOperations(),
@@ -430,7 +430,7 @@ private extension KubesenseProfiler {
         }
         hasReceivedAppLaunchVital = true
         currentServerTimeOffset = message.ttid.serverTimeOffset
-        kubesense_profiler_set_server_time_offset_ns(message.ttid.serverTimeOffset.dd.toInt64Nanoseconds)
+        kubesense_profiler_set_server_time_offset_ns(message.ttid.serverTimeOffset.kubesense.toInt64Nanoseconds)
 
         queue.async { [weak self] in
             guard let self else {

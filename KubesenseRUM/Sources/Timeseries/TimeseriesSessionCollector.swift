@@ -335,17 +335,17 @@ internal class TimeseriesSessionCollector: TimeseriesCollecting {
         let eventID = UUID().uuidString.lowercased()
 
         featureScope.eventWriteContext { context, writer in
-            let offsetNs = context.serverTimeOffset.dd.toInt64Nanoseconds
+            let offsetNs = context.serverTimeOffset.kubesense.toInt64Nanoseconds
             let timestamps = batch.map { $0.timestamp + offsetNs }
             let adjustedStart = start + offsetNs
             let adjustedEnd = end + offsetNs
             let event = RUMTimeseriesMemoryEvent(
-                dd: .init(configuration: .init(sessionSampleRate: sessionSampleRate)),
+                kubesense: .init(configuration: .init(sessionSampleRate: sessionSampleRate)),
                 application: .init(id: applicationID),
                 buildId: context.buildId,
                 buildVersion: context.buildNumber,
                 ciTest: ciTest,
-                date: (Double(start) / 1_000_000_000 + context.serverTimeOffset).dd.toInt64Milliseconds,
+                date: (Double(start) / 1_000_000_000 + context.serverTimeOffset).kubesense.toInt64Milliseconds,
                 ktags: context.kubesenseTags,
                 device: context.normalizedDevice(),
                 os: context.os,
@@ -389,17 +389,17 @@ internal class TimeseriesSessionCollector: TimeseriesCollecting {
         let eventID = UUID().uuidString.lowercased()
 
         featureScope.eventWriteContext { context, writer in
-            let offsetNs = context.serverTimeOffset.dd.toInt64Nanoseconds
+            let offsetNs = context.serverTimeOffset.kubesense.toInt64Nanoseconds
             let timestamps = batch.map { $0.timestamp + offsetNs }
             let adjustedStart = start + offsetNs
             let adjustedEnd = end + offsetNs
             let event = RUMTimeseriesCpuEvent(
-                dd: .init(configuration: .init(sessionSampleRate: sessionSampleRate)),
+                kubesense: .init(configuration: .init(sessionSampleRate: sessionSampleRate)),
                 application: .init(id: applicationID),
                 buildId: context.buildId,
                 buildVersion: context.buildNumber,
                 ciTest: ciTest,
-                date: (Double(start) / 1_000_000_000 + context.serverTimeOffset).dd.toInt64Milliseconds,
+                date: (Double(start) / 1_000_000_000 + context.serverTimeOffset).kubesense.toInt64Milliseconds,
                 ktags: context.kubesenseTags,
                 device: context.normalizedDevice(),
                 os: context.os,

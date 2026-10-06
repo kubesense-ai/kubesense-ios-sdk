@@ -34,7 +34,7 @@
 #include <cstdint>
 #include <time.h>
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 class binary_image_cache;
 
@@ -302,7 +302,7 @@ private:
     uint32_t intern_location(const location_t& location);
 };
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // !TARGET_OS_WATCH
 #endif // __APPLE__

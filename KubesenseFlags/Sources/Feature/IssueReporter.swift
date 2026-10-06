@@ -29,7 +29,7 @@ extension IssueReporter {
     }
 
     private static let coreLogger = Self { message, _, _ in
-        DD.logger.error(message)
+        KS.logger.error(message)
     }
 
     private static let consolePrint = Self { message, _, _ in

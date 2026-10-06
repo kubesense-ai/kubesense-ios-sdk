@@ -18,8 +18,8 @@ class RUMDataModels_objcTests: XCTestCase {
 
         // Given
         var swiftView: RUMViewEvent = .mockRandom()
-        swiftView.context?.contextInfo = expectedContextAttributes.dd.swiftAttributes
-        swiftView.usr?.usrInfo = expectedUserInfoAttributes.dd.swiftAttributes
+        swiftView.context?.contextInfo = expectedContextAttributes.kubesense.swiftAttributes
+        swiftView.usr?.usrInfo = expectedUserInfoAttributes.kubesense.swiftAttributes
 
         let objcView = objc_RUMViewEvent(swiftModel: swiftView)
 
@@ -38,8 +38,8 @@ class RUMDataModels_objcTests: XCTestCase {
 
         // Given
         var swiftResource: RUMResourceEvent = .mockRandom()
-        swiftResource.context?.contextInfo = expectedContextAttributes.dd.swiftAttributes
-        swiftResource.usr?.usrInfo = expectedUserInfoAttributes.dd.swiftAttributes
+        swiftResource.context?.contextInfo = expectedContextAttributes.kubesense.swiftAttributes
+        swiftResource.usr?.usrInfo = expectedUserInfoAttributes.kubesense.swiftAttributes
 
         let objcResource = objc_RUMResourceEvent(swiftModel: swiftResource)
 
@@ -58,8 +58,8 @@ class RUMDataModels_objcTests: XCTestCase {
 
         // Given
         var swiftAction: RUMActionEvent = .mockAny()
-        swiftAction.context?.contextInfo = expectedContextAttributes.dd.swiftAttributes
-        swiftAction.usr?.usrInfo = expectedUserInfoAttributes.dd.swiftAttributes
+        swiftAction.context?.contextInfo = expectedContextAttributes.kubesense.swiftAttributes
+        swiftAction.usr?.usrInfo = expectedUserInfoAttributes.kubesense.swiftAttributes
 
         let objcAction = objc_RUMActionEvent(swiftModel: swiftAction)
 
@@ -78,8 +78,8 @@ class RUMDataModels_objcTests: XCTestCase {
 
         // Given
         var swiftError: RUMErrorEvent = .mockRandom()
-        swiftError.context?.contextInfo = expectedContextAttributes.dd.swiftAttributes
-        swiftError.usr?.usrInfo = expectedUserInfoAttributes.dd.swiftAttributes
+        swiftError.context?.contextInfo = expectedContextAttributes.kubesense.swiftAttributes
+        swiftError.usr?.usrInfo = expectedUserInfoAttributes.kubesense.swiftAttributes
 
         let objcError = objc_RUMErrorEvent(swiftModel: swiftError)
 
@@ -98,8 +98,8 @@ class RUMDataModels_objcTests: XCTestCase {
 
         // Given
         var swiftLongTask: RUMLongTaskEvent = .mockRandom()
-        swiftLongTask.context?.contextInfo = expectedContextAttributes.dd.swiftAttributes
-        swiftLongTask.usr?.usrInfo = expectedUserInfoAttributes.dd.swiftAttributes
+        swiftLongTask.context?.contextInfo = expectedContextAttributes.kubesense.swiftAttributes
+        swiftLongTask.usr?.usrInfo = expectedUserInfoAttributes.kubesense.swiftAttributes
 
         let objcLongTask = objc_RUMLongTaskEvent(swiftModel: swiftLongTask)
 

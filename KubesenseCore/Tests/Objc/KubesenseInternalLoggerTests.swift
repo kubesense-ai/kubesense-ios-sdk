@@ -66,7 +66,7 @@ class KubesenseInternalLoggerTests: XCTestCase {
         XCTAssertEqual(error.stack, stack)
     }
 
-    func testWhenTelemetryIsSentThroughObjc_thenItForwardsToDDTelemetry() throws {
+    func testWhenTelemetryIsSentThroughObjc_thenItForwardsToKubesenseTelemetry() throws {
         CoreRegistry.register(default: core)
         defer { CoreRegistry.unregisterDefault() }
 

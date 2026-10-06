@@ -99,7 +99,7 @@ class ProfilingTest: XCTestCase {
         let configuration = Profiling.Configuration(applicationLaunchSampleRate: 5)
         let core = SingleFeatureCoreMock<ProfilerFeature>()
         core.remoteConfiguration = .mockWith(profiling: .mockWith(applicationLaunchSampleRate: 100))
-        kubesense_profiler_start_testing(100, false, 5.seconds.dd.toInt64Nanoseconds, 0)
+        kubesense_profiler_start_testing(100, false, 5.seconds.kubesense.toInt64Nanoseconds, 0)
         defer { kubesense_profiler_destroy() }
 
         // When

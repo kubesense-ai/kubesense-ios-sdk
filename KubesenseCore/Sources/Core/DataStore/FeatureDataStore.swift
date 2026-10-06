@@ -49,7 +49,7 @@ internal final class FeatureDataStore: DataStore {
             do {
                 try self.write(data: value, forKey: key, version: version)
             } catch let error {
-                DD.logger.error("[Data Store] Error on setting `\(key)` value for `\(self.feature)`", error: error)
+                KS.logger.error("[Data Store] Error on setting `\(key)` value for `\(self.feature)`", error: error)
                 self.telemetry.error("[Data Store] Error on setting `\(key)` value for `\(self.feature)`", error: error)
             }
         }
@@ -66,7 +66,7 @@ internal final class FeatureDataStore: DataStore {
                 callback(result)
             } catch let error {
                 callback(.error(error))
-                DD.logger.error("[Data Store] Error on getting `\(key)` value for `\(self.feature)`", error: error)
+                KS.logger.error("[Data Store] Error on getting `\(key)` value for `\(self.feature)`", error: error)
                 self.telemetry.error("[Data Store] Error on getting `\(key)` value for `\(self.feature)`", error: error)
             }
         }
@@ -81,7 +81,7 @@ internal final class FeatureDataStore: DataStore {
             do {
                 try self.deleteData(forKey: key)
             } catch let error {
-                DD.logger.error("[Data Store] Error on deleting `\(key)` value for `\(self.feature)`", error: error)
+                KS.logger.error("[Data Store] Error on deleting `\(key)` value for `\(self.feature)`", error: error)
                 self.telemetry.error("[Data Store] Error on deleting `\(key)` value for `\(self.feature)`", error: error)
             }
         }
@@ -93,7 +93,7 @@ internal final class FeatureDataStore: DataStore {
                 let directory = try self.coreDirectory.coreDirectory.subdirectoryIfExists(path: self.directoryPath)
                 try directory?.deleteAllFiles()
             } catch let error {
-                DD.logger.error("[Data Store] Error on clearing all data for `\(self.feature)`", error: error)
+                KS.logger.error("[Data Store] Error on clearing all data for `\(self.feature)`", error: error)
                 self.telemetry.error("[Data Store] Error on clearing all data for `\(self.feature)`", error: error)
             }
         }

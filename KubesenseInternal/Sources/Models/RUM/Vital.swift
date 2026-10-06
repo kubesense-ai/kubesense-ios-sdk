@@ -57,7 +57,7 @@ public struct Vital: Encodable, Equatable {
         try container.encode(id, forKey: .id)
         try container.encode(type, forKey: .type)
         try container.encode(name, forKey: .name)
-        let start = date.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.dd.toInt64Nanoseconds
+        let start = date.addingTimeInterval(serverTimeOffset).timeIntervalSince1970.kubesense.toInt64Nanoseconds
         try container.encode(start, forKey: .start)
         try container.encodeIfPresent(duration, forKey: .duration)
     }

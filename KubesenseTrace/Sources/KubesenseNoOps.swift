@@ -18,7 +18,7 @@ internal final class KubesenseNoopTracer: OTTracer, OpenTelemetryApi.Tracer, Sen
     var activeSpan: OTSpan? { nil }
 
     private func warn() {
-        DD.logger.warn(
+        KS.logger.warn(
             """
             The `KubesenseTracer.shared()` was called but `KubesenseTracer` is not initialised. Configure the `KubesenseTracer` before invoking the feature:
                 KubesenseTracer.initialize()

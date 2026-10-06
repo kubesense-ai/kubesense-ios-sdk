@@ -183,7 +183,7 @@ internal final class RUMViewsHandler {
 
     private func start(view: View) {
         guard let subscriber = subscriber else {
-            DD.logger.warn(
+            KS.logger.warn(
                 """
                 A RUM view was started with \(view.instrumentationType) instrumentation, but RUM tracking appears to be disabled.
                 Ensure `RUM.enable()` is called before starting any views.

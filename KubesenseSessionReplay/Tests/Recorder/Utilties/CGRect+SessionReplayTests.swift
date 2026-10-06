@@ -14,39 +14,39 @@ class CGRectSessionReplayTests: XCTestCase {
 
     func testZeroContentFrame() {
         XCTAssertRectsEqual(
-            CGRect.zero.dd.contentFrame(for: CGSize.mockAny(), using: .mockRandom()),
+            CGRect.zero.kubesense.contentFrame(for: CGSize.mockAny(), using: .mockRandom()),
             .zero,
             accuracy: accuracy
         )
 
         XCTAssertRectsEqual(
             CGRect(origin: .zero, size: CGSize(width: 0, height: 100))
-                .dd.contentFrame(for: CGSize.mockAny(), using: .mockRandom()),
+                .kubesense.contentFrame(for: CGSize.mockAny(), using: .mockRandom()),
             .zero,
             accuracy: accuracy
         )
 
         XCTAssertRectsEqual(
             CGRect(origin: .zero, size: CGSize(width: 100, height: 0))
-                .dd.contentFrame(for: CGSize.zero, using: .mockRandom()),
+                .kubesense.contentFrame(for: CGSize.zero, using: .mockRandom()),
             .zero,
             accuracy: accuracy
         )
 
         XCTAssertRectsEqual(
-            CGRect.mockAny().dd.contentFrame(for: CGSize.zero, using: .mockRandom()),
+            CGRect.mockAny().kubesense.contentFrame(for: CGSize.zero, using: .mockRandom()),
             .zero,
             accuracy: accuracy
         )
 
         XCTAssertRectsEqual(
-            CGRect.mockAny().dd.contentFrame(for: CGSize(width: 0, height: 100), using: .mockRandom()),
+            CGRect.mockAny().kubesense.contentFrame(for: CGSize(width: 0, height: 100), using: .mockRandom()),
             .zero,
             accuracy: accuracy
         )
 
         XCTAssertRectsEqual(
-            CGRect.mockAny().dd.contentFrame(for: CGSize(width: 100, height: 0), using: .mockRandom()),
+            CGRect.mockAny().kubesense.contentFrame(for: CGSize(width: 100, height: 0), using: .mockRandom()),
             .zero,
             accuracy: accuracy
         )
@@ -56,67 +56,67 @@ class CGRectSessionReplayTests: XCTestCase {
         let frame = CGRect(x: 10, y: 10, width: 100, height: 100)
         let contentSize = CGSize(width: 21, height: 19.5)
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleAspectFit),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleAspectFit),
             CGRect(x: 10.0, y: 13.57142857142857, width: 100.0, height: 92.85714285714286),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleAspectFill),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleAspectFill),
             CGRect(x: 6.153846153846146, y: 9.999999999999993, width: 107.69230769230771, height: 100.00000000000001),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleToFill),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleToFill),
             CGRect(x: 10, y: 10, width: 100, height: 100),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .redraw),
+            frame.kubesense.contentFrame(for: contentSize, using: .redraw),
             CGRect(x: 49.5, y: 50.25, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .center),
+            frame.kubesense.contentFrame(for: contentSize, using: .center),
             CGRect(x: 49.5, y: 50.25, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .left),
+            frame.kubesense.contentFrame(for: contentSize, using: .left),
             CGRect(x: 10.0, y: 50.25, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .right),
+            frame.kubesense.contentFrame(for: contentSize, using: .right),
             CGRect(x: 89.0, y: 50.25, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .top),
+            frame.kubesense.contentFrame(for: contentSize, using: .top),
             CGRect(x: 49.5, y: 10.0, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .bottom),
+            frame.kubesense.contentFrame(for: contentSize, using: .bottom),
             CGRect(x: 49.5, y: 90.5, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .bottomLeft),
+            frame.kubesense.contentFrame(for: contentSize, using: .bottomLeft),
             CGRect(x: 10.0, y: 90.5, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .bottomRight),
+            frame.kubesense.contentFrame(for: contentSize, using: .bottomRight),
             CGRect(x: 89.0, y: 90.5, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .topLeft),
+            frame.kubesense.contentFrame(for: contentSize, using: .topLeft),
             CGRect(x: 10.0, y: 10.0, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .topRight),
+            frame.kubesense.contentFrame(for: contentSize, using: .topRight),
             CGRect(x: 89.0, y: 10.0, width: 21.0, height: 19.5),
             accuracy: accuracy
         )
@@ -126,67 +126,67 @@ class CGRectSessionReplayTests: XCTestCase {
         let frame = CGRect(x: 100, y: 100, width: 100, height: 100)
         let contentSize = CGSize(width: 200, height: 200)
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleAspectFit),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleAspectFit),
             CGRect(x: 100.0, y: 100.0, width: 100.0, height: 100.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleAspectFill),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleAspectFill),
             CGRect(x: 100.0, y: 100.0, width: 100.0, height: 100.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleToFill),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleToFill),
             CGRect(x: 100.0, y: 100.0, width: 100.0, height: 100.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .redraw),
+            frame.kubesense.contentFrame(for: contentSize, using: .redraw),
             CGRect(x: 50.0, y: 50.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .center),
+            frame.kubesense.contentFrame(for: contentSize, using: .center),
             CGRect(x: 50.0, y: 50.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .left),
+            frame.kubesense.contentFrame(for: contentSize, using: .left),
             CGRect(x: 100.0, y: 50.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .right),
+            frame.kubesense.contentFrame(for: contentSize, using: .right),
             CGRect(x: 0.0, y: 50.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .top),
+            frame.kubesense.contentFrame(for: contentSize, using: .top),
             CGRect(x: 50.0, y: 100.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .bottom),
+            frame.kubesense.contentFrame(for: contentSize, using: .bottom),
             CGRect(x: 50.0, y: 0.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .bottomLeft),
+            frame.kubesense.contentFrame(for: contentSize, using: .bottomLeft),
             CGRect(x: 100.0, y: 0.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .bottomRight),
+            frame.kubesense.contentFrame(for: contentSize, using: .bottomRight),
             CGRect(x: 0.0, y: 0.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .topLeft),
+            frame.kubesense.contentFrame(for: contentSize, using: .topLeft),
             CGRect(x: 100.0, y: 100.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .topRight),
+            frame.kubesense.contentFrame(for: contentSize, using: .topRight),
             CGRect(x: 0.0, y: 100.0, width: 200.0, height: 200.0),
             accuracy: accuracy
         )
@@ -197,7 +197,7 @@ class CGRectSessionReplayTests: XCTestCase {
         let contentSize = CGSize(width: 400, height: 280)
 
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleAspectFill),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleAspectFill),
             CGRect(x: 0, y: -5, width: 300, height: 210),
             accuracy: accuracy
         )
@@ -207,7 +207,7 @@ class CGRectSessionReplayTests: XCTestCase {
         let frame = CGRect(x: 0, y: 0, width: 300, height: 200)
         let contentSize = CGSize(width: 100, height: 50)
         XCTAssertRectsEqual(
-            frame.dd.contentFrame(for: contentSize, using: .scaleAspectFill),
+            frame.kubesense.contentFrame(for: contentSize, using: .scaleAspectFill),
             CGRect(x: -50, y: 0, width: 400, height: 200),
             accuracy: accuracy
         )

@@ -493,7 +493,7 @@ extension RUMMonitorViewProtocol {
 
 internal class NOPMonitor: RUMMonitorProtocol {
     private func warn(method: StaticString = #function) {
-        DD.logger.critical(
+        KS.logger.critical(
             """
             Calling `\(method)` on NOPMonitor.
             Make sure RUM feature is enabled before using `RUMMonitor.shared()`.

@@ -63,13 +63,13 @@ extension ProfilingHandler {
         rumEvents: [RUMEvent],
         attributes: [AttributeKey: AttributeValue]
     ) {
-        let timeOffsetInNanoseconds = currentServerTimeOffset.dd.toInt64Nanoseconds
+        let timeOffsetInNanoseconds = currentServerTimeOffset.kubesense.toInt64Nanoseconds
         kubesense_pprof_set_server_time_offset_ns(profile, timeOffsetInNanoseconds)
 
         var data: UnsafeMutablePointer<UInt8>?
         let start = kubesense_pprof_get_start_timestamp_s(profile)
         let end = kubesense_pprof_get_end_timestamp_s(profile)
-        let durationMs = (end - start).dd.toInt64Milliseconds
+        let durationMs = (end - start).kubesense.toInt64Milliseconds
         let size = kubesense_pprof_serialize(profile, &data)
 
         guard let data else {

@@ -9,9 +9,9 @@ import Foundation
 /// Core utilities for monitoring performance and execution of the SDK.
 ///
 /// These are meant to be shared by all instances of the SDK and `KubesenseCore`.
-/// `DD` bundles static dependencies that must be available and functional right away,
+/// `KS` bundles static dependencies that must be available and functional right away,
 /// so it is possible to monitor any phase of the SDK execution, including its initialization sequence.
-public struct DD {
+public struct KS {
     /// The logger providing methods to print debug information and execution errors from Kubesense SDK to user console.
     ///
     /// It is meant for debugging purposes when using the SDK, hence **it should log information useful and actionable

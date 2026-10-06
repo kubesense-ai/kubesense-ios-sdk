@@ -43,14 +43,14 @@ internal class KubesenseTestsObserver: NSObject, XCTestObservation {
             """
         ),
         .init(
-            assert: { DD.logger is InternalLogger },
-            problem: "`DD.logger` must use `InternalLogger` implementation.",
+            assert: { KS.logger is InternalLogger },
+            problem: "`KS.logger` must use `InternalLogger` implementation.",
             solution: """
-            Make sure the `DD` bundle is reset after test to use previous dependencies, e.g.:
+            Make sure the `KS` bundle is reset after test to use previous dependencies, e.g.:
 
             ```
-            let dd = DD.mockWith(logger: CoreLoggerMock())
-            defer { dd.reset() }
+            let kubesense = KS.mockWith(logger: CoreLoggerMock())
+            defer { kubesense.reset() }
             ```
             """
         ),

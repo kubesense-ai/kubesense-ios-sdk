@@ -66,7 +66,7 @@ internal extension RUMErrorSourceType {
     static func extract(from attributes: inout [AttributeKey: AttributeValue]) -> RUMErrorSourceType? {
         return attributes
             .removeValue(forKey: CrossPlatformAttributes.errorSourceType)?
-            .dd.decode()
+            .kubesense.decode()
             .flatMap {
                 RUMErrorEvent.Error.SourceType(rawValue: $0)
             }
@@ -244,7 +244,7 @@ internal class Monitor: RUMCommandSubscriber {
     func transform(command: RUMCommand) -> RUMCommand {
         var mutableCommand = command
 
-        if let customTimestampInMilliseconds: Int64 = mutableCommand.attributes.removeValue(forKey: CrossPlatformAttributes.timestampInMilliseconds)?.dd.decode() {
+        if let customTimestampInMilliseconds: Int64 = mutableCommand.attributes.removeValue(forKey: CrossPlatformAttributes.timestampInMilliseconds)?.kubesense.decode() {
             let customTimeInterval = TimeInterval.kubesenseFromMilliseconds( customTimestampInMilliseconds)
             mutableCommand.time = Date(timeIntervalSince1970: customTimeInterval)
         }
@@ -547,7 +547,7 @@ extension Monitor: RUMMonitorProtocol {
     // MARK: - Feature Operations
 
     func startOperation(name: String, operationKey: String?, attributes: [AttributeKey: AttributeValue], options: OperationOptions?) {
-        DD.logger.debug("Feature Operation `\(name)`\(instanceSuffix(operationKey)) started")
+        KS.logger.debug("Feature Operation `\(name)`\(instanceSuffix(operationKey)) started")
 
         telemetry.usage(event: .addOperationStepVital(.init(actionType: .start)))
 
@@ -570,7 +570,7 @@ extension Monitor: RUMMonitorProtocol {
     }
 
     func succeedOperation(name: String, operationKey: String?, attributes: [AttributeKey: AttributeValue]) {
-        DD.logger.debug("Feature Operation `\(name)`\(instanceSuffix(operationKey)) successfully ended")
+        KS.logger.debug("Feature Operation `\(name)`\(instanceSuffix(operationKey)) successfully ended")
 
         telemetry.usage(event: .addOperationStepVital(.init(actionType: .succeed)))
 
@@ -592,7 +592,7 @@ extension Monitor: RUMMonitorProtocol {
     }
 
     func failOperation(name: String, operationKey: String?, reason: RUMFeatureOperationFailureReason, attributes: [AttributeKey: AttributeValue]) {
-        DD.logger.debug("Feature Operation `\(name)`\(instanceSuffix(operationKey)) unsuccessfully ended with the following failure reason: \(reason.rawValue)")
+        KS.logger.debug("Feature Operation `\(name)`\(instanceSuffix(operationKey)) unsuccessfully ended with the following failure reason: \(reason.rawValue)")
 
         telemetry.usage(event: .addOperationStepVital(.init(actionType: .fail)))
 

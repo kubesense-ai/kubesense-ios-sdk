@@ -19,13 +19,13 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
-- (void)testDDTrackingConsentAPI {
+- (void)testKubesenseTrackingConsentAPI {
     [KubesenseTrackingConsent granted];
     [KubesenseTrackingConsent notGranted];
     [KubesenseTrackingConsent pending];
 }
 
-- (void)testDDKubesense {
+- (void)testKubesenseKubesense {
     KubesenseConfiguration *configuration = [[KubesenseConfiguration alloc] initWithClientToken:@"abc" env:@"def"];
 
     [KubesenseSDK initializeWithConfiguration:configuration trackingConsent:[KubesenseTrackingConsent notGranted]];
@@ -43,7 +43,7 @@
     [KubesenseSDK stopInstance];
 }
 
-- (void)testDDKubesenseInstanceNameAPI {
+- (void)testKubesenseKubesenseInstanceNameAPI {
     NSString *instanceName = @"test-instance";
     KubesenseConfiguration *configuration = [[KubesenseConfiguration alloc] initWithClientToken:@"abc" env:@"def"];
 

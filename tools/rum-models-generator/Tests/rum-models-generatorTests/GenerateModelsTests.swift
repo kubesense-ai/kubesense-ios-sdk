@@ -31,7 +31,7 @@ final class GenerateModelsTests: XCTestCase {
 //            .generateCode(from: schema)
 //            .skip(types: ["TelemetryUsageEvent"]) // we don't need that one for Objc
 //            .decorate(using: RUMCodeDecorator())
-//            .print(using: OutputTemplate(header: "", footer: ""), and: ObjcInteropPrinter(objcTypeNamesPrefix: "DD"))
+//            .print(using: OutputTemplate(header: "", footer: ""), and: ObjcInteropPrinter(objcTypeNamesPrefix: "KS"))
 //        print(objcInteropCode)
 //        print(">>>>>>>>>>>>>>>>>> ObjcInterop >>>>>>>>>>>>>>>>>>>>>>")
 //    }

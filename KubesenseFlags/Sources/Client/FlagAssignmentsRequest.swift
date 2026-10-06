@@ -46,7 +46,7 @@ extension URLRequest {
             )
         )
 
-        let encoder = JSONEncoder.dd.default()
+        let encoder = JSONEncoder.kubesense.default()
         request.httpBody = try encoder.encode(requestBody)
 
         return request

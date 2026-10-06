@@ -110,7 +110,7 @@ internal final class RemoteLogger: LoggerProtocol, Sendable {
 
         // on user thread:
         let date = dateProvider.now
-        let threadName = Thread.current.dd.name
+        let threadName = Thread.current.kubesense.name
 
         // capture current tags and attributes before opening the write event context
         let tags = loggerTags.getTags()
@@ -118,8 +118,8 @@ internal final class RemoteLogger: LoggerProtocol, Sendable {
         let loggerAttributes = loggerAttributes.getAttributes()
         var logAttributes = attributes
 
-        let errorFingerprint: String? = logAttributes?.removeValue(forKey: Logs.Attributes.errorFingerprint)?.dd.decode()
-        let addBinaryImages = logAttributes?.removeValue(forKey: CrossPlatformAttributes.includeBinaryImages)?.dd.decode() ?? false
+        let errorFingerprint: String? = logAttributes?.removeValue(forKey: Logs.Attributes.errorFingerprint)?.kubesense.decode()
+        let addBinaryImages = logAttributes?.removeValue(forKey: CrossPlatformAttributes.includeBinaryImages)?.kubesense.decode() ?? false
         let userAttributes = loggerAttributes
             .merging(logAttributes ?? [:]) { $1 } // prefer `logAttributes``
 

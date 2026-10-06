@@ -231,7 +231,7 @@ internal final class KubesenseCore {
     ///    - extraInfo: The account's custom attributes to add or override
     func addAccountExtraInfo(_ newExtraInfo: [AttributeKey: AttributeValue?]) {
         guard let accountInfo = accountInfoPublisher.current else {
-            DD.logger.error(
+            KS.logger.error(
                 "Failed to add Account ExtraInfo because no Account Info exist yet. Please call `setAccountInfo` first."
             )
             #if DEBUG
@@ -462,7 +462,7 @@ internal class CoreFeatureScope<Feature>: @unchecked Sendable, FeatureScope wher
         // that we write events which were collected on the caller thread even if the core was released in the meantime.
         guard let storage = core.stores[Feature.name]?.storage else {
             if core.get(feature: Feature.self) != nil { // the feature is running, but has no storage
-                DD.logger.error(
+                KS.logger.error(
                     "Failed to obtain Event Write Context for '\(Feature.name)' because it is not a `KubesenseRemoteFeature`."
                 )
                 #if DEBUG

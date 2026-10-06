@@ -33,7 +33,7 @@ internal struct SwiftUIReflectionBasedViewNameExtractor: SwiftUIViewNameExtracto
     /// - Returns: The extracted view name or `nil`
     func extractName(from viewController: UIViewController) -> String? {
         // We ignore UIKit container view controllers
-        if Bundle(for: type(of: viewController)).dd.isUIKit {
+        if Bundle(for: type(of: viewController)).kubesense.isUIKit {
             return nil
         }
 

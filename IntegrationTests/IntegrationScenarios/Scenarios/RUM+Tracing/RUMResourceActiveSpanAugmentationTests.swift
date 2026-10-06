@@ -155,11 +155,11 @@ class RUMResourceActiveSpanAugmentationTests: IntegrationTests, RUMCommonAsserts
             XCTAssertEqual(getDecisionMaker(from: firstPartyPOSTRequest), decisionMaker)
 
             XCTAssertEqual(
-                firstPartyResource.dd.traceId,
+                firstPartyResource.kubesense.traceId,
                 traceId.toString(representation: .hexadecimal)
             )
             XCTAssertEqual(
-                firstPartyResource.dd.spanId,
+                firstPartyResource.kubesense.spanId,
                 firstPartyPOSTRequestSpanID.toString(representation: .decimal)
             )
 
@@ -168,11 +168,11 @@ class RUMResourceActiveSpanAugmentationTests: IntegrationTests, RUMCommonAsserts
 
             // Make sure the active span ID is the parent span ID of the RUM resource span
             XCTAssertEqual(
-                firstPartyResource.dd.parentSpanId,
+                firstPartyResource.kubesense.parentSpanId,
                 spanId.toString(representation: .decimal)
             )
 
-            let firstPartyResource2SampleRate = try XCTUnwrap(firstPartyResource.dd.rulePsr, "Traced resource should send sample rate")
+            let firstPartyResource2SampleRate = try XCTUnwrap(firstPartyResource.kubesense.rulePsr, "Traced resource should send sample rate")
 
             XCTAssertTrue(isValid(sampleRate: firstPartyResource2SampleRate), "\(firstPartyResource2SampleRate) is not valid sample rate")
         } else {
@@ -187,9 +187,9 @@ class RUMResourceActiveSpanAugmentationTests: IntegrationTests, RUMCommonAsserts
             XCTAssertNil(firstPartyPOSTRequest.httpHeaders["x-kubesense-sampling-priority"])
             XCTAssertNil(getDecisionMaker(from: firstPartyPOSTRequest))
 
-            XCTAssertNil(firstPartyResource.dd.traceId)
-            XCTAssertNil(firstPartyResource.dd.spanId)
-            XCTAssertNil(firstPartyResource.dd.parentSpanId)
+            XCTAssertNil(firstPartyResource.kubesense.traceId)
+            XCTAssertNil(firstPartyResource.kubesense.spanId)
+            XCTAssertNil(firstPartyResource.kubesense.parentSpanId)
         }
     }
 

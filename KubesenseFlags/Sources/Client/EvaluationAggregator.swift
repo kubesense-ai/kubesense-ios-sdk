@@ -42,7 +42,7 @@ internal final class EvaluationAggregator {
         flagError: String?
     ) {
         let errorMessage = flagError
-        let now = dateProvider.now.timeIntervalSince1970.dd.toInt64Milliseconds
+        let now = dateProvider.now.timeIntervalSince1970.kubesense.toInt64Milliseconds
 
         let key = AggregationKey(
             flagKey: flagKey,
@@ -165,7 +165,7 @@ private struct AggregatedEvaluation {
     func toFlagEvaluationEvent() -> FlagEvaluationEvent {
         let eventContext: FlagEvaluationEvent.EvaluationEventContext? = context.isEmpty ? nil : .init(
             evaluation: context,
-            dd: nil
+            kubesense: nil
         )
 
         return FlagEvaluationEvent(

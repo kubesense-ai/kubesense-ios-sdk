@@ -43,7 +43,7 @@ struct EmbeddedContentViewRecorderTests {
         let recorder = EmbeddedContentViewRecorder(identifier: UUID())
         let context = ViewTreeRecordingContext.mockWith()
         let embeddedContentView = UIView()
-        embeddedContentView.dd.setSessionReplaySlotID("opaque-slot")
+        embeddedContentView.kubesense.setSessionReplaySlotID("opaque-slot")
 
         // When
         let semantics = try #require(
@@ -91,7 +91,7 @@ struct EmbeddedContentViewRecorderTests {
             )
         })
         let embeddedContentView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        embeddedContentView.dd.setSessionReplaySlotID("opaque-slot")
+        embeddedContentView.kubesense.setSessionReplaySlotID("opaque-slot")
         embeddedContentView.addSubview(UIView(frame: embeddedContentView.bounds))
         let context = ViewTreeRecordingContext.mockWith(coordinateSpace: embeddedContentView)
         let viewTreeRecorder = ViewTreeRecorder(nodeRecorders: [recorder, fallbackRecorder])
@@ -109,7 +109,7 @@ struct EmbeddedContentViewRecorderTests {
         // Given
         let embeddedContentRecorder = EmbeddedContentViewRecorder(identifier: UUID())
         let embeddedContentView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        embeddedContentView.dd.setSessionReplaySlotID("opaque-slot")
+        embeddedContentView.kubesense.setSessionReplaySlotID("opaque-slot")
         let context = ViewTreeRecordingContext.mockWith(coordinateSpace: embeddedContentView)
         _ = embeddedContentRecorder.semantics(
             of: embeddedContentView,
@@ -127,7 +127,7 @@ struct EmbeddedContentViewRecorderTests {
         )
 
         // When
-        embeddedContentView.dd.sessionReplayPrivacyOverrides.hide = true
+        embeddedContentView.kubesense.sessionReplayPrivacyOverrides.hide = true
         let nodes = viewTreeRecorder.record(embeddedContentView, in: context)
         let wireframe = try #require(
             nodes.first?.wireframesBuilder.buildWireframes(with: WireframesBuilder()).first
@@ -150,7 +150,7 @@ struct EmbeddedContentViewRecorderTests {
         let recorder = EmbeddedContentViewRecorder(identifier: UUID())
         let context = ViewTreeRecordingContext.mockWith()
         let embeddedContentView = UIView()
-        embeddedContentView.dd.setSessionReplaySlotID("opaque-slot")
+        embeddedContentView.kubesense.setSessionReplaySlotID("opaque-slot")
 
         // When
         let semantics = try #require(
@@ -181,9 +181,9 @@ struct EmbeddedContentViewRecorderTests {
         let recorder = EmbeddedContentViewRecorder(identifier: UUID())
         let context = ViewTreeRecordingContext.mockWith()
         let firstEmbeddedContentView = UIView()
-        firstEmbeddedContentView.dd.setSessionReplaySlotID("first-slot")
+        firstEmbeddedContentView.kubesense.setSessionReplaySlotID("first-slot")
         let secondEmbeddedContentView = UIView()
-        secondEmbeddedContentView.dd.setSessionReplaySlotID("second-slot")
+        secondEmbeddedContentView.kubesense.setSessionReplaySlotID("second-slot")
 
         // When
         let firstSemantics = try #require(

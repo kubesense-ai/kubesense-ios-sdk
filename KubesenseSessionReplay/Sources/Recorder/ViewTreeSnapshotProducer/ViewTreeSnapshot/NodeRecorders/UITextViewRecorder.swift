@@ -43,7 +43,7 @@ internal struct UITextViewRecorder: NodeRecorder {
             textAlignment: textView.textAlignment,
             textColor: textView.textColor?.cgColor ?? UIColor.black.cgColor,
             font: textView.font,
-            textObfuscator: textObfuscator(context, attributes, textView.dd.isSensitiveText, textView.isEditable),
+            textObfuscator: textObfuscator(context, attributes, textView.kubesense.isSensitiveText, textView.isEditable),
             contentRect: CGRect(origin: textView.contentOffset, size: textView.contentSize)
         )
         let node = Node(viewAttributes: attributes, wireframesBuilder: builder)

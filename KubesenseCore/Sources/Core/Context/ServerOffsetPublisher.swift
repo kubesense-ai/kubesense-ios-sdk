@@ -46,7 +46,7 @@ internal class KubesenseNTPDateProvider: ServerDateProvider {
                     update(offset)
 
                     let difference = (offset * 1_000).rounded() / 1_000
-                    DD.logger.debug(
+                    KS.logger.debug(
                         """
                         NTP time synchronization completed.
                         Server time will be used for signing events (\(difference)s difference with device time).
@@ -55,7 +55,7 @@ internal class KubesenseNTPDateProvider: ServerDateProvider {
                 } else {
                     update(0)
 
-                    DD.logger.error(
+                    KS.logger.error(
                         """
                         NTP time synchronization failed.
                         Device time will be used for signing events.

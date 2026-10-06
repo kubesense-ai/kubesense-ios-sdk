@@ -191,7 +191,7 @@ class ViewAttributesTests: XCTestCase {
         let childView = UIView.mock(withFixture: .visible(.someAppearance))
         let parentView = UIView.mock(withFixture: .visible(.someAppearance))
         parentView.addSubview(childView)
-        parentView.dd.sessionReplayPrivacyOverrides.hide = true
+        parentView.kubesense.sessionReplayPrivacyOverrides.hide = true
 
         let recorder = ViewTreeRecorder(nodeRecorders: createDefaultNodeRecorders(featureFlags: .defaults))
 
@@ -208,8 +208,8 @@ class ViewAttributesTests: XCTestCase {
         let childView = UIView.mock(withFixture: .visible(.someAppearance))
         parentView.addSubview(childView)
 
-        parentView.dd.sessionReplayPrivacyOverrides.hide = true
-        childView.dd.sessionReplayPrivacyOverrides.hide = false
+        parentView.kubesense.sessionReplayPrivacyOverrides.hide = true
+        childView.kubesense.sessionReplayPrivacyOverrides.hide = false
 
         let recorder = ViewTreeRecorder(nodeRecorders: createDefaultNodeRecorders(featureFlags: .defaults))
 
@@ -227,9 +227,9 @@ class ViewAttributesTests: XCTestCase {
         parentView.addSubview(childView)
 
         let parentOverrides: PrivacyOverrides = .mockRandom()
-        parentView.dd.sessionReplayPrivacyOverrides.textAndInputPrivacy = parentOverrides.textAndInputPrivacy
-        parentView.dd.sessionReplayPrivacyOverrides.imagePrivacy = parentOverrides.imagePrivacy
-        parentView.dd.sessionReplayPrivacyOverrides.touchPrivacy = parentOverrides.touchPrivacy
+        parentView.kubesense.sessionReplayPrivacyOverrides.textAndInputPrivacy = parentOverrides.textAndInputPrivacy
+        parentView.kubesense.sessionReplayPrivacyOverrides.imagePrivacy = parentOverrides.imagePrivacy
+        parentView.kubesense.sessionReplayPrivacyOverrides.touchPrivacy = parentOverrides.touchPrivacy
 
         let recorder = ViewTreeRecorder(nodeRecorders: createDefaultNodeRecorders(featureFlags: .defaults))
         let nodes = recorder.record(parentView, in: .mockWith(coordinateSpace: parentView))

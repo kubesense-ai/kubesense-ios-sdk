@@ -14,7 +14,7 @@
 #include <cstdint>
 #include <cstddef>
 
-namespace dd::profiler {
+namespace kubesense::profiler {
 
 class profile;
 
@@ -33,7 +33,7 @@ class profile;
  */
 size_t profile_pprof_pack(const profile& prof, uint8_t** data);
 
-} // namespace dd::profiler
+} // namespace kubesense::profiler
 
 #endif // !TARGET_OS_WATCH
 #endif // __APPLE__

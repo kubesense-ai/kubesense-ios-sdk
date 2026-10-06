@@ -11,7 +11,7 @@ import KubesenseInternal
 @testable import KubesenseCore
 
 class JSONEncoderTests: XCTestCase {
-    private let jsonEncoder = JSONEncoder.dd.default()
+    private let jsonEncoder = JSONEncoder.kubesense.default()
 
     func testDateEncoding() throws {
         let encodedDate = try jsonEncoder.encode(

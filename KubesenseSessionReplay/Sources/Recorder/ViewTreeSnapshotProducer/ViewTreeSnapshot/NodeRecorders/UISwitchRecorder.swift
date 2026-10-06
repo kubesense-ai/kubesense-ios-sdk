@@ -34,7 +34,7 @@ internal struct UISwitchRecorder: NodeRecorder {
             trackWireframeID: ids[1],
             thumbWireframeID: ids[2],
             isEnabled: `switch`.isEnabled,
-            isDarkMode: `switch`.dd.usesDarkMode,
+            isDarkMode: `switch`.kubesense.usesDarkMode,
             isOn: `switch`.isOn,
             isMasked: context.recorder.textAndInputPrivacy.shouldMaskInputElements,
             thumbTintColor: `switch`.thumbTintColor?.cgColor,

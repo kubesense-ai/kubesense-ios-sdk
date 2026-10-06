@@ -52,7 +52,7 @@ internal struct FatalErrorBuilder {
 
     /// Creates RUM error linked to given view.
     func createRUMError(with lastRUMView: RUMViewEvent) -> RUMErrorEvent {
-        let msSinceAppStart = timeSinceAppStart.map { max(0, $0.dd.toInt64Milliseconds) }
+        let msSinceAppStart = timeSinceAppStart.map { max(0, $0.kubesense.toInt64Milliseconds) }
 
         // Merge last view attributes with crash report attributes
         let lastViewContextAttributes = lastRUMView.context?.contextInfo ?? [:]
@@ -60,9 +60,9 @@ internal struct FatalErrorBuilder {
         let contextInfo = lastViewContextAttributes.merging(additionalAttributes) { _, new in new }
 
         let event = RUMErrorEvent(
-            dd: .init(
+            kubesense: .init(
                 browserSdkVersion: nil,
-                configuration: lastRUMView.dd.configuration.map {
+                configuration: lastRUMView.kubesense.configuration.map {
                     .init(
                         sessionReplaySampleRate: $0.sessionReplaySampleRate,
                         sessionSampleRate: $0.sessionSampleRate
@@ -70,7 +70,7 @@ internal struct FatalErrorBuilder {
                 },
                 session: .init(
                     plan: .plan1,
-                    sessionPrecondition: lastRUMView.dd.session?.sessionPrecondition
+                    sessionPrecondition: lastRUMView.kubesense.session?.sessionPrecondition
                 )
             ),
             account: lastRUMView.account,
@@ -84,7 +84,7 @@ internal struct FatalErrorBuilder {
             context: RUMEventAttributes(
                 contextInfo: contextInfo
             ),
-            date: errorDate.timeIntervalSince1970.dd.toInt64Milliseconds,
+            date: errorDate.timeIntervalSince1970.kubesense.toInt64Milliseconds,
             ktags: context.kubesenseTags,
             device: lastRUMView.device,
             display: nil,
@@ -147,16 +147,16 @@ internal struct FatalErrorBuilder {
     /// Updates given RUM view with fatal error information.
     func updateRUMViewWithError(_ original: RUMViewEvent) -> RUMViewEvent {
         return RUMViewEvent(
-            dd: .init(
-                browserSdkVersion: original.dd.browserSdkVersion,
-                cls: original.dd.cls,
-                configuration: original.dd.configuration,
-                documentVersion: original.dd.documentVersion + 1,
-                pageStates: original.dd.pageStates,
-                profiling: original.dd.profiling,
-                replayStats: original.dd.replayStats,
-                sdkName: original.dd.sdkName,
-                session: original.dd.session
+            kubesense: .init(
+                browserSdkVersion: original.kubesense.browserSdkVersion,
+                cls: original.kubesense.cls,
+                configuration: original.kubesense.configuration,
+                documentVersion: original.kubesense.documentVersion + 1,
+                pageStates: original.kubesense.pageStates,
+                profiling: original.kubesense.profiling,
+                replayStats: original.kubesense.replayStats,
+                sdkName: original.kubesense.sdkName,
+                session: original.kubesense.session
             ),
             account: original.account,
             application: original.application,
@@ -166,7 +166,7 @@ internal struct FatalErrorBuilder {
             connectivity: original.connectivity,
             container: original.container,
             context: original.context,
-            date: errorDate.timeIntervalSince1970.dd.toInt64Milliseconds - 1, // -1ms to put the fatal error after view in RUM session
+            date: errorDate.timeIntervalSince1970.kubesense.toInt64Milliseconds - 1, // -1ms to put the fatal error after view in RUM session
             ktags: context.kubesenseTags,
             device: original.device,
             display: original.display,

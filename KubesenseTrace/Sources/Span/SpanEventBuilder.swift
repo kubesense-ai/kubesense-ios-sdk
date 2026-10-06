@@ -22,7 +22,7 @@ internal struct SpanEventBuilder: Sendable {
     /// Telemetry interface.
     let telemetry: Telemetry
     /// Span attributes encoder
-    let attributesEncoder: JSONEncoder = .dd.default()
+    let attributesEncoder: JSONEncoder = .kubesense.default()
 
     func createSpanEvent(
         context: KubesenseContext,
@@ -144,7 +144,7 @@ internal struct SpanEventBuilder: Sendable {
                         throw EncodingError.invalidValue(encodable.value, encodingContext)
                     }
                 } catch let error {
-                    DD.logger.error(
+                    KS.logger.error(
                         "Failed to encode \(context.errorMessagePrefix)attribute '\(key)' to `String`. This attribute will be dropped from the span.",
                         error: error
                     )

@@ -51,7 +51,7 @@ internal struct UIImageViewRecorder: NodeRecorder {
 
         let ids = context.ids.nodeIDs(2, view: imageView, nodeRecorder: self)
         let contentFrame = imageView.image.map {
-            attributes.frame.dd.contentFrame(
+            attributes.frame.kubesense.contentFrame(
                 for: $0.size,
                 using: imageView.contentMode
             )

@@ -29,7 +29,7 @@ internal struct ViewTreeRecorder {
     /// Creates `Nodes` for given view and its subtree hierarchy.
     func record(_ anyView: UIView, in context: ViewTreeRecordingContext) -> [Node] {
         var nodes: [Node] = []
-        recordRecursively(nodes: &nodes, view: anyView, typeIndex: 0, context: context, overrides: anyView.dd._privacyOverrides)
+        recordRecursively(nodes: &nodes, view: anyView, typeIndex: 0, context: context, overrides: anyView.kubesense._privacyOverrides)
         return nodes
     }
 
@@ -98,7 +98,7 @@ internal struct ViewTreeRecorder {
         case .record:
             let typeIndices = self.typeIndices(for: view.subviews)
             for (index, subview) in view.subviews.enumerated() {
-                let subviewOverrides = SessionReplayPrivacyOverrides.merge(subview.dd._privacyOverrides, with: overrides)
+                let subviewOverrides = SessionReplayPrivacyOverrides.merge(subview.kubesense._privacyOverrides, with: overrides)
                 recordRecursively(
                     nodes: &nodes,
                     view: subview,

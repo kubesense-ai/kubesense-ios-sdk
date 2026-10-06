@@ -29,8 +29,8 @@ public final class objc_TraceConfiguration: NSObject {
     }
 
     public var tags: [String: Any]? {
-        set { swiftConfig.tags = newValue?.dd.swiftSendableAttributes }
-        get { swiftConfig.tags?.dd.objCAttributes }
+        set { swiftConfig.tags = newValue?.kubesense.swiftSendableAttributes }
+        get { swiftConfig.tags?.kubesense.objCAttributes }
     }
 
     public func setURLSessionTracking(_ tracking: objc_TraceURLSessionTracking) {
@@ -147,7 +147,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer {
     }
 
     public func startSpan(_ operationName: String, childOf parent: objc_OTSpanContext?) -> objc_OTSpan {
-        let ddspanContext = parent?.dd
+        let ddspanContext = parent?.kubesense
         return objc_SpanObjc(
             objcTracer: self,
             swiftSpan: swiftTracer.startSpan(
@@ -162,7 +162,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer {
         childOf parent: objc_OTSpanContext?,
         tags: NSDictionary?
     ) -> objc_OTSpan {
-        let ddspanContext = parent?.dd
+        let ddspanContext = parent?.kubesense
         return objc_SpanObjc(
             objcTracer: self,
             swiftSpan: swiftTracer.startSpan(
@@ -179,7 +179,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer {
         tags: NSDictionary?,
         startTime: Date?
     ) -> objc_OTSpan {
-        let ddspanContext = parent?.dd
+        let ddspanContext = parent?.kubesense
         return objc_SpanObjc(
             objcTracer: self,
             swiftSpan: swiftTracer.startSpan(
@@ -210,7 +210,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer {
 
     public func inject(_ spanContext: objc_OTSpanContext, format: String, carrier: Any) throws {
         if let objcWriter = carrier as? objc_HTTPHeadersWriter, format == OT.formatTextMap {
-            guard let ddspanContext = spanContext.dd else {
+            guard let ddspanContext = spanContext.kubesense else {
                 return
             }
             swiftTracer.inject(
@@ -218,7 +218,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer {
                 writer: objcWriter.swiftHTTPHeadersWriter
             )
         } else if let objcWriter = carrier as? objc_B3HTTPHeadersWriter, format == OT.formatTextMap {
-            guard let ddspanContext = spanContext.dd else {
+            guard let ddspanContext = spanContext.kubesense else {
                 return
             }
             swiftTracer.inject(
@@ -226,7 +226,7 @@ public final class objc_Tracer: NSObject, objc_OTTracer {
                 writer: objcWriter.swiftB3HTTPHeadersWriter
             )
         } else if let objcWriter = carrier as? objc_W3CHTTPHeadersWriter, format == OT.formatTextMap {
-            guard let ddspanContext = spanContext.dd else {
+            guard let ddspanContext = spanContext.kubesense else {
                 return
             }
             swiftTracer.inject(

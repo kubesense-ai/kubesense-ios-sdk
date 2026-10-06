@@ -167,9 +167,9 @@ class ViewTreeSnapshotBuilderTests: XCTestCase {
         // Given
         let rootView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
         let firstEmbeddedContentView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        firstEmbeddedContentView.dd.setSessionReplaySlotID("first-slot")
+        firstEmbeddedContentView.kubesense.setSessionReplaySlotID("first-slot")
         let secondEmbeddedContentView = UIView(frame: CGRect(x: 100, y: 0, width: 100, height: 100))
-        secondEmbeddedContentView.dd.setSessionReplaySlotID("second-slot")
+        secondEmbeddedContentView.kubesense.setSessionReplaySlotID("second-slot")
         rootView.addSubview(firstEmbeddedContentView)
         rootView.addSubview(secondEmbeddedContentView)
         let builder = ViewTreeSnapshotBuilder(
@@ -191,7 +191,7 @@ class ViewTreeSnapshotBuilderTests: XCTestCase {
         let rootView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
         let embeddedContentLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         embeddedContentLabel.text = "Native label"
-        embeddedContentLabel.dd.setSessionReplaySlotID("embedded-slot")
+        embeddedContentLabel.kubesense.setSessionReplaySlotID("embedded-slot")
         rootView.addSubview(embeddedContentLabel)
         let builder = ViewTreeSnapshotBuilder(
             additionalNodeRecorders: [],
@@ -212,7 +212,7 @@ class ViewTreeSnapshotBuilderTests: XCTestCase {
         // Given
         let rootView = UIView(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
         let embeddedContentView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        embeddedContentView.dd.setSessionReplaySlotID("retained-slot")
+        embeddedContentView.kubesense.setSessionReplaySlotID("retained-slot")
         rootView.addSubview(embeddedContentView)
         let builder = ViewTreeSnapshotBuilder(
             additionalNodeRecorders: [],
@@ -242,7 +242,7 @@ class ViewTreeSnapshotBuilderTests: XCTestCase {
         var initialSlots: [WireframeID: String] = [:]
         autoreleasepool {
             let embeddedContentView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-            embeddedContentView.dd.setSessionReplaySlotID("released-slot")
+            embeddedContentView.kubesense.setSessionReplaySlotID("released-slot")
             weakEmbeddedContentView = embeddedContentView
             rootView.addSubview(embeddedContentView)
             initialSlots = builder.createSnapshot(of: rootView, with: .mockAny()).embeddedContentSlots

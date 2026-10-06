@@ -44,10 +44,10 @@ internal struct RUMDataStore {
 
     func setValue<V: Codable>(_ value: V, forKey key: Key, version: DataStoreKeyVersion = dataStoreDefaultKeyVersion) {
         do {
-            let data = try JSONEncoder().dd.encodeWithAttributeRecovery(value)
+            let data = try JSONEncoder().kubesense.encodeWithAttributeRecovery(value)
             featureScope.dataStore.setValue(data, forKey: key.rawValue, version: version)
         } catch let error {
-            DD.logger.error("Failed to encode \(type(of: value)) in RUM Data Store", error: error)
+            KS.logger.error("Failed to encode \(type(of: value)) in RUM Data Store", error: error)
             featureScope.telemetry.error("Failed to encode \(type(of: value)) in RUM Data Store", error: error)
         }
     }
@@ -66,7 +66,7 @@ internal struct RUMDataStore {
                 let value = try RUMDataStore.decoder.decode(V.self, from: data)
                 callback(value)
             } catch let error {
-                DD.logger.error("Failed to decode \(V.self) from RUM Data Store", error: error)
+                KS.logger.error("Failed to decode \(V.self) from RUM Data Store", error: error)
                 featureScope.telemetry.error("Failed to decode \(V.self) from RUM Data Store", error: error)
                 callback(nil)
             }

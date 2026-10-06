@@ -37,7 +37,7 @@ class KubesenseRUMViewTests: XCTestCase {
     func testItCreatesSwiftRUMView() {
         let objcRUMView = objc_RUMView(name: "name", attributes: ["foo": "bar"])
         XCTAssertEqual(objcRUMView.swiftView.name, "name")
-        XCTAssertEqual(objcRUMView.swiftView.attributes["foo"]?.dd.decode(), "bar")
+        XCTAssertEqual(objcRUMView.swiftView.attributes["foo"]?.kubesense.decode(), "bar")
         XCTAssertEqual(objcRUMView.name, "name")
         XCTAssertEqual(objcRUMView.attributes["foo"] as? String, "bar")
     }
@@ -83,7 +83,7 @@ class KubesenseRUMActionTests: XCTestCase {
     func testItCreatesSwiftRUMAction() {
         let objcRUMAction = objc_RUMAction(name: "name", attributes: ["foo": "bar"])
         XCTAssertEqual(objcRUMAction.swiftAction.name, "name")
-        XCTAssertEqual(objcRUMAction.swiftAction.attributes["foo"]?.dd.decode(), "bar")
+        XCTAssertEqual(objcRUMAction.swiftAction.attributes["foo"]?.kubesense.decode(), "bar")
         XCTAssertEqual(objcRUMAction.name, "name")
         XCTAssertEqual(objcRUMAction.attributes["foo"] as? String, "bar")
     }
