@@ -7,13 +7,13 @@
 #import <XCTest/XCTest.h>
 @import KubesenseTrace;
 
-@interface KubesenseTrace_apiTests : XCTestCase
+@interface KubesenseTraceSDK_apiTests : XCTestCase
 @end
 
 /*
  * Objc APIs smoke tests - minimal assertions, mainly check if the interface is available to Objc.
  */
-@implementation KubesenseTrace_apiTests
+@implementation KubesenseTraceSDK_apiTests
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
@@ -21,13 +21,13 @@
 
 - (void)testKubesenseTraceAPI {
     KubesenseTraceConfiguration *config = [[KubesenseTraceConfiguration alloc] init];
-    [KubesenseTrace enableWith:config];
+    [KubesenseTraceSDK enableWith:config];
 }
 
 - (void)testKubesenseTraceInstanceNameAPI {
     KubesenseTraceConfiguration *config = [[KubesenseTraceConfiguration alloc] init];
     NSString *instanceName = @"trace-test-instance";
-    [KubesenseTrace enableWith:config instanceName:instanceName];
+    [KubesenseTraceSDK enableWith:config instanceName:instanceName];
     id<OTTracer> tracer = [KubesenseTracer sharedWithInstanceName:instanceName];
     (void)tracer;
 }

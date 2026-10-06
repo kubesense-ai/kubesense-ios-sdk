@@ -202,8 +202,8 @@ requestSpan.finish()
 - **`KubesenseTrace/Sources/OpenTelemetry/OTelTracerProvider.swift`** — `OTelTracerProvider` to register with `OpenTelemetry.registerTracerProvider(...)` and use the standard OpenTelemetry `Tracer` / `SpanBuilder` API.
 
 ### Public API — Objective-C Bridge
-- **`KubesenseTrace/Sources/Objc/Tracing/Trace+objc.swift`** — Objective-C Trace entry point and configuration bridge (`KubesenseTrace`, `KubesenseTraceConfiguration`, `KubesenseTraceURLSessionTracking`, `KubesenseTracer`).
-  - `+[KubesenseTrace enableWith:instanceName:]` — enables Trace in a named SDK instance (mirrors Swift `Trace.enable(with:in:)`).
+- **`KubesenseTrace/Sources/Objc/Tracing/Trace+objc.swift`** — Objective-C Trace entry point and configuration bridge (`KubesenseTraceSDK`, `KubesenseTraceConfiguration`, `KubesenseTraceURLSessionTracking`, `KubesenseTracer`).
+  - `+[KubesenseTraceSDK enableWith:instanceName:]` — enables Trace in a named SDK instance (mirrors Swift `Trace.enable(with:in:)`).
   - `+[KubesenseTracer sharedWithInstanceName:]` — retrieves the tracer from a named SDK instance (mirrors Swift `Tracer.shared(in:)`).
 - **`KubesenseTrace/Sources/Objc/OpenTracing/OTTracer+objc.swift`**, **`OTSpan+objc.swift`**, **`OTSpanContext+objc.swift`** — Objective-C OpenTracing protocols and constants.
 - **`KubesenseTrace/Sources/Objc/Tracing/KubesenseSpan+objc.swift`**, **`KubesenseSpanContext+objc.swift`** — Objective-C wrappers around Kubesense span and span context implementations.

@@ -64,7 +64,7 @@ public final class objc_LogsConfiguration: NSObject {
     }
 }
 
-@objc(KubesenseLogs)
+@objc(KubesenseLogsSDK)
 @objcMembers
 @_spi(objc)
 public final class objc_Logs: NSObject {

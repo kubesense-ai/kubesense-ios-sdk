@@ -62,28 +62,28 @@
 
 #endif
 
-// MARK: - KubesenseRUM tests
+// MARK: - KubesenseRUMSDK tests
 
-@interface KubesenseRUM_apiTests : XCTestCase
+@interface KubesenseRUMSDK_apiTests : XCTestCase
 @end
 
 /*
  * Objc APIs smoke tests - minimal assertions, mainly check if the interface is available to Objc.
  */
-@implementation KubesenseRUM_apiTests
+@implementation KubesenseRUMSDK_apiTests
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
 - (void)testKubesenseRUMAPI {
     KubesenseRUMConfiguration *config = [[KubesenseRUMConfiguration alloc] initWithApplicationID:@"app-id"];
-    [KubesenseRUM enableWith:config];
+    [KubesenseRUMSDK enableWith:config];
 }
 
 - (void)testKubesenseRUMInstanceNameAPI {
     KubesenseRUMConfiguration *config = [[KubesenseRUMConfiguration alloc] initWithApplicationID:@"app-id"];
     NSString *instanceName = @"rum-test-instance";
-    [KubesenseRUM enableWith:config instanceName:instanceName];
+    [KubesenseRUMSDK enableWith:config instanceName:instanceName];
     KubesenseRUMMonitor *monitor = [KubesenseRUMMonitor sharedWithInstanceName:instanceName];
     (void)monitor;
 }

@@ -10,10 +10,10 @@
 
 @import KubesenseSessionReplay;
 
-@interface KubesenseSessionReplay_apiTests : XCTestCase
+@interface KubesenseSessionReplaySDK_apiTests : XCTestCase
 @end
 
-@implementation KubesenseSessionReplay_apiTests
+@implementation KubesenseSessionReplaySDK_apiTests
 
 // MARK: Configuration
 
@@ -28,12 +28,12 @@
     configuration.imagePrivacyLevel = KubesenseImagePrivacyLevelMaskAll;
     configuration.touchPrivacyLevel = KubesenseTouchPrivacyLevelHide;
 
-    [KubesenseSessionReplay enableWith:configuration];
+    [KubesenseSessionReplaySDK enableWith:configuration];
 }
 
 - (void)testStartAndStopRecording {
-    [KubesenseSessionReplay startRecording];
-    [KubesenseSessionReplay stopRecording];
+    [KubesenseSessionReplaySDK startRecording];
+    [KubesenseSessionReplaySDK stopRecording];
 }
 
 - (void)testSessionReplayInstanceNameAPI {
@@ -43,9 +43,9 @@
                                                                                                touchPrivacyLevel:KubesenseTouchPrivacyLevelShow
                                                                                                     featureFlags:nil];
     NSString *instanceName = @"sr-test-instance";
-    [KubesenseSessionReplay enableWith:configuration instanceName:instanceName];
-    [KubesenseSessionReplay startRecordingWithInstanceName:instanceName];
-    [KubesenseSessionReplay stopRecordingWithInstanceName:instanceName];
+    [KubesenseSessionReplaySDK enableWith:configuration instanceName:instanceName];
+    [KubesenseSessionReplaySDK startRecordingWithInstanceName:instanceName];
+    [KubesenseSessionReplaySDK stopRecordingWithInstanceName:instanceName];
 }
 
 - (void)testStartRecordingImmediately {
