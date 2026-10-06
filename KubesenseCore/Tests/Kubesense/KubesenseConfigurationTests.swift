@@ -357,7 +357,12 @@ class KubesenseConfigurationTests: XCTestCase {
                 trackingConsent: .mockRandom()
             )
             defer { Kubesense.flushAndDeinitialize() }
+            #if os(macOS)
+            // Temporary, will be removed when we're ready!
+            XCTAssertEqual(printFunction.printedMessage, "⚠️ macOS is not officially supported by Kubesense SDK: some features may NOT be functional!")
+            #else
             XCTAssertNil(printFunction.printedMessage)
+            #endif
         }
 
         func verify(invalidEnv env: String) {

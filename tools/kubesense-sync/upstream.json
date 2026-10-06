@@ -1,19 +1,19 @@
 {
   "repository": "https://github.com/DataDog/dd-sdk-ios",
-  "baseline": "3.18.0",
-  "baselineTag": "upstream/3.18.0",
+  "baseline": "3.19.0",
+  "baselineTag": "upstream/3.19.0",
   "version": "1.0.0",
   "modules": {
-    "KubesenseCore": { "upstream": "DatadogCore", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseInternal": { "upstream": "DatadogInternal", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseLogs": { "upstream": "DatadogLogs", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseTrace": { "upstream": "DatadogTrace", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseRUM": { "upstream": "DatadogRUM", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseSessionReplay": { "upstream": "DatadogSessionReplay", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseCrashReporting": { "upstream": "DatadogCrashReporting", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseWebViewTracking": { "upstream": "DatadogWebViewTracking", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseFlags": { "upstream": "DatadogFlags", "upstreamVersion": "3.18.0", "version": "1.0.0" },
-    "KubesenseProfiling": { "upstream": "DatadogProfiling", "upstreamVersion": "3.18.0", "version": "1.0.0" }
+    "KubesenseCore": { "upstream": "DatadogCore", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseInternal": { "upstream": "DatadogInternal", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseLogs": { "upstream": "DatadogLogs", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseTrace": { "upstream": "DatadogTrace", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseRUM": { "upstream": "DatadogRUM", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseSessionReplay": { "upstream": "DatadogSessionReplay", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseCrashReporting": { "upstream": "DatadogCrashReporting", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseWebViewTracking": { "upstream": "DatadogWebViewTracking", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseFlags": { "upstream": "DatadogFlags", "upstreamVersion": "3.19.0", "version": "1.0.0" },
+    "KubesenseProfiling": { "upstream": "DatadogProfiling", "upstreamVersion": "3.19.0", "version": "1.0.0" }
   },
   "package": {
     "identity": "kubesense-ios-sdk",

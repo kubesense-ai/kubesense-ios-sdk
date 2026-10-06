@@ -5,6 +5,11 @@
  */
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 import KubesenseInternal
 
 /// Publisher generating RUM Commands on `SwiftUI.View` events.

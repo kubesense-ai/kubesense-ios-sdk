@@ -13,7 +13,7 @@ import SwiftUI
 @testable import KubesenseCore
 @testable import KubesenseInternal
 
-class CustomViewController: UIViewController {}
+class CustomViewController: KubesenseViewController {}
 
 final class TestView: View {
     var body = EmptyView()
@@ -28,12 +28,12 @@ class SwiftUIExtensionsTests: XCTestCase {
     func testBundleIsSwiftUI() {
         // Given
         let someSwiftUITypes: [AnyClass] = [
-            UIHostingController<AnyView>.self // The only class in SwiftUI
+            KubesenseHostingController<AnyView>.self // The only class in SwiftUI
         ]
 
         let someNonSwiftUITypes: [AnyClass] = [
             TestView.self,
-            UIViewController.self,
+            KubesenseViewController.self,
             OperationQueue.self,
             CustomViewController.self
         ]

@@ -155,7 +155,7 @@ export DEVELOPER_DIR=/Applications/Xcode-26.6.0.app/Contents/Developer   # if Xc
 | --- | --- |
 | SDK sources | `make test-ios SCHEME="<Module>"`, `make lint` |
 | Public API | `make api-surface` and commit `api-surface-swift` / `api-surface-objc`; `make api-surface-verify` |
-| Files from upstream, rebrand rules, `tools/kubesense-sync` | `rebrand.py apply` (0 changes), `rebrand.py check` (0 leftovers), `rebrand.py attribution --ref upstream/3.18.0` (0 missing) |
+| Files from upstream, rebrand rules, `tools/kubesense-sync` | `rebrand.py apply` (0 changes), `rebrand.py check` (0 leftovers), `rebrand.py attribution --ref upstream/3.19.0` (0 missing) |
 | License headers | `make license-check` |
 | Feature docs (`*_FEATURE.md`) | `make feature-docs-verify` |
 | Sample app | `make -C Samples/KubesenseShop test`, and `ui-test` against the sample API |

@@ -1,7 +1,7 @@
 ---
-last_updated: 2026-09-18
+last_updated: 2026-09-30
 sdk_version: 1.0.0
-verified_against_commit: e0e2888d9
+verified_against_commit: c7d0eba6b
 tracked_files:
   - KubesenseLogs/Sources/Logs.swift
   - KubesenseLogs/Sources/Logger.swift

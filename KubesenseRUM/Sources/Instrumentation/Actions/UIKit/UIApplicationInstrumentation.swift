@@ -4,43 +4,47 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-#if !os(watchOS)
+#if canImport(UIKit) && !os(watchOS)
 import UIKit
 import KubesenseInternal
 
-internal final class UIApplicationSwizzler {
+internal final class KubesenseApplicationInstrumentation {
     let sendEvent: SendEvent
 
     init(handler: RUMActionsHandling) throws {
         sendEvent = try SendEvent(handler: handler)
     }
 
-    func swizzle() {
+    func install() {
         sendEvent.swizzle()
     }
 
-    internal func unswizzle() {
+    internal func uninstall() {
+        sendEvent.unswizzle()
+    }
+
+    deinit {
         sendEvent.unswizzle()
     }
 
     // MARK: - Swizzlings
 
-    /// Swizzles the `UIApplication.sendEvent(_:)`
+    /// Swizzles the `KubesenseApplication.sendEvent(_:)`
     class SendEvent: MethodSwizzler <
-        @convention(c) (UIApplication, Selector, UIEvent) -> Bool,
-        @convention(block) (UIApplication, UIEvent) -> Bool
+        @convention(c) (KubesenseApplication, Selector, KubesenseEvent) -> Bool,
+        @convention(block) (KubesenseApplication, KubesenseEvent) -> Bool
     > {
-        private static let selector = #selector(UIApplication.sendEvent(_:))
+        private static let selector = #selector(KubesenseApplication.sendEvent(_:))
         private let method: Method
         private let handler: RUMActionsHandling
 
         init(handler: RUMActionsHandling) throws {
-            self.method = try kubesense_class_getInstanceMethod(UIApplication.self, Self.selector)
+            self.method = try kubesense_class_getInstanceMethod(KubesenseApplication.self, Self.selector)
             self.handler = handler
         }
 
         func swizzle() {
-            typealias Signature = @convention(block) (UIApplication, UIEvent) -> Bool
+            typealias Signature = @convention(block) (KubesenseApplication, KubesenseEvent) -> Bool
             swizzle(method) { previousImplementation -> Signature in
                 return { [weak handler = self.handler] application, event  in
                     handler?.notify_sendEvent(application: application, event: event)

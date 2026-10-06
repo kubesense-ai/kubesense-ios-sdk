@@ -4,11 +4,11 @@
  * Copyright 2019-Present Datadog, Inc.
  */
 
-#if !os(watchOS)
+#if !os(watchOS) && canImport(UIKit)
 import UIKit
 import KubesenseInternal
 
-internal class UIViewControllerSwizzler {
+internal class KubesenseViewControllerSwizzler {
     let viewDidAppear: ViewDidAppear
     let viewDidDisappear: ViewDidDisappear
 
@@ -29,22 +29,22 @@ internal class UIViewControllerSwizzler {
 
     // MARK: - Swizzlings
 
-    /// Swizzles the `UIViewController.viewDidAppear()`
+    /// Swizzles the `KubesenseViewController.viewDidAppear()`
     class ViewDidAppear: MethodSwizzler <
-        @convention(c) (UIViewController, Selector, Bool) -> Void,
-        @convention(block) (UIViewController, Bool) -> Void
+        @convention(c) (KubesenseViewController, Selector, Bool) -> Void,
+        @convention(block) (KubesenseViewController, Bool) -> Void
     > {
-        private static let selector = #selector(UIViewController.viewDidAppear(_:))
+        private static let selector = #selector(KubesenseViewController.viewDidAppear(_:))
         private let method: Method
         private let handler: UIViewControllerHandler
 
         init(handler: UIViewControllerHandler) throws {
-            self.method = try kubesense_class_getInstanceMethod(UIViewController.self, Self.selector)
+            self.method = try kubesense_class_getInstanceMethod(KubesenseViewController.self, Self.selector)
             self.handler = handler
         }
 
         func swizzle() {
-            typealias Signature = @convention(block) (UIViewController, Bool) -> Void
+            typealias Signature = @convention(block) (KubesenseViewController, Bool) -> Void
             swizzle(method) { previousImplementation -> Signature in
                 return { [weak handler = self.handler] vc, animated  in
                     handler?.notify_viewDidAppear(viewController: vc, animated: animated)
@@ -54,22 +54,22 @@ internal class UIViewControllerSwizzler {
         }
     }
 
-    /// Swizzles the `UIViewController.viewDidDisappear()`
+    /// Swizzles the `KubesenseViewController.viewDidDisappear()`
     class ViewDidDisappear: MethodSwizzler <
-        @convention(c) (UIViewController, Selector, Bool) -> Void,
-        @convention(block) (UIViewController, Bool) -> Void
+        @convention(c) (KubesenseViewController, Selector, Bool) -> Void,
+        @convention(block) (KubesenseViewController, Bool) -> Void
     > {
-        private static let selector = #selector(UIViewController.viewDidDisappear(_:))
+        private static let selector = #selector(KubesenseViewController.viewDidDisappear(_:))
         private let method: Method
         private let handler: UIViewControllerHandler
 
         init(handler: UIViewControllerHandler) throws {
-            self.method = try kubesense_class_getInstanceMethod(UIViewController.self, Self.selector)
+            self.method = try kubesense_class_getInstanceMethod(KubesenseViewController.self, Self.selector)
             self.handler = handler
         }
 
         func swizzle() {
-            typealias Signature = @convention(block) (UIViewController, Bool) -> Void
+            typealias Signature = @convention(block) (KubesenseViewController, Bool) -> Void
             swizzle(method) { previousImplementation -> Signature in
                 return { [weak handler = self.handler] vc, animated  in
                     handler?.notify_viewDidDisappear(viewController: vc, animated: animated)

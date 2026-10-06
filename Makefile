@@ -4,7 +4,7 @@ all: repo-setup dependencies
 		test test-ios test-ios-all test-tvos test-tvos-all test-visionos test-visionos-all \
 		ui-test ui-test-all ui-test-podinstall \
 		tools-test \
-		smoke-test smoke-test-ios smoke-test-ios-all smoke-test-tvos smoke-test-tvos-all \
+		smoke-test smoke-test-ios smoke-test-ios-all smoke-test-tvos smoke-test-tvos-all smoke-test-macos smoke-test-macos-all \
 		spm-build spm-build-ios spm-build-tvos spm-build-visionos spm-build-macos spm-build-watchos \
 		models-generate rum-models-generate sr-models-generate rc-models-generate models-verify rum-models-verify sr-models-verify rc-models-verify \
 		api-surface \
@@ -65,6 +65,12 @@ DEFAULT_WATCHOS_DEVICE := Apple Watch Series 11 (46mm)
 DEFAULT_VISIONOS_OS := latest
 DEFAULT_VISIONOS_PLATFORM := visionOS Simulator
 DEFAULT_VISIONOS_DEVICE := Apple Vision Pro
+
+# Test env for running macOS tests in local:
+# macOS runs natively (no simulator), so OS and DEVICE are placeholders ignored by tools/test.sh.
+DEFAULT_MACOS_OS := latest
+DEFAULT_MACOS_PLATFORM := macOS
+DEFAULT_MACOS_DEVICE := macOS
 
 # Default location for deploying artifacts
 DEFAULT_ARTIFACTS_PATH := artifacts
@@ -162,6 +168,25 @@ test-visionos-all:
 	@$(MAKE) test-visionos SCHEME="KubesenseProfiling"
 	@$(MAKE) test-visionos SCHEME="KubesenseIntegrationTests"
 
+# Run unit tests for specified SCHEME using macOS
+test-macos:
+	@$(call require_param,SCHEME)
+	@:$(eval OS ?= $(DEFAULT_MACOS_OS))
+	@:$(eval PLATFORM ?= $(DEFAULT_MACOS_PLATFORM))
+	@:$(eval DEVICE ?= $(DEFAULT_MACOS_DEVICE))
+	@$(MAKE) test SCHEME="$(SCHEME)" OS="$(OS)" PLATFORM="$(PLATFORM)" DEVICE="$(DEVICE)"
+
+# Run unit tests for all schemes ready for macOS so far
+test-macos-all:
+	@$(MAKE) test-macos SCHEME="KubesenseInternal"
+	@$(MAKE) test-macos SCHEME="KubesenseCore"
+	@$(MAKE) test-macos SCHEME="KubesenseRUM"
+	@$(MAKE) test-macos SCHEME="KubesenseLogs"
+	@$(MAKE) test-macos SCHEME="KubesenseTrace"
+	@$(MAKE) test-macos SCHEME="KubesenseCrashReporting"
+	@$(MAKE) test-macos SCHEME="KubesenseWebViewTracking"
+	@$(MAKE) test-macos SCHEME="KubesenseFlags"
+
 # Run UI tests for specified TEST_PLAN
 ui-test:
 	@$(call require_param,TEST_PLAN)
@@ -236,6 +261,19 @@ smoke-test-tvos-all:
 	@$(MAKE) smoke-test-tvos TEST_DIRECTORY="SmokeTests/cocoapods"
 	@$(MAKE) smoke-test-tvos TEST_DIRECTORY="SmokeTests/xcframeworks"
 
+# Run smoke tests for specified TEST_DIRECTORY using macOS (runs natively on the host)
+smoke-test-macos:
+	@$(call require_param,TEST_DIRECTORY)
+	@:$(eval OS ?= $(DEFAULT_MACOS_OS))
+	@:$(eval PLATFORM ?= $(DEFAULT_MACOS_PLATFORM))
+	@:$(eval DEVICE ?= $(DEFAULT_MACOS_DEVICE))
+	@$(MAKE) smoke-test TEST_DIRECTORY="$(TEST_DIRECTORY)" OS="$(OS)" PLATFORM="$(PLATFORM)" DEVICE="$(DEVICE)"
+
+# Run all smoke tests using macOS (SmokeTests/spm + spm-6 have macOS targets)
+smoke-test-macos-all:
+	@$(MAKE) smoke-test-macos TEST_DIRECTORY="SmokeTests/spm"
+	@$(MAKE) smoke-test-macos TEST_DIRECTORY="SmokeTests/spm-6"
+
 # Builds SPM package SCHEME for specified DESTINATION
 spm-build:
 	@$(call require_param,SCHEME)
@@ -264,11 +302,15 @@ spm-build-watchos:
 spm-build-macos:
 	# Whole package for Mac Catalyst:
 	@$(MAKE) spm-build SCHEME="Kubesense-Package" DESTINATION="platform=macOS,variant=Mac Catalyst"
-	# Only compatible schemes for macOS:
+	# Only macOS-compatible product schemes (KubesenseInternal is built transitively as a
+	# dependency of these; it is not a package product, so it has no scheme of its own):
 	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseCore"
 	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseLogs"
 	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseTrace"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseRUM"
 	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseCrashReporting"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseWebViewTracking"
+	@$(MAKE) spm-build DESTINATION="platform=macOS" SCHEME="KubesenseFlags"
 
 xcodeproj-session-replay:
 		@echo "⚙️  Generating 'KubesenseSessionReplay.xcodeproj'..."
