@@ -10,7 +10,7 @@ import KubesenseInternal
 #if canImport(WebKit)
 import WebKit
 
-@objc(KubesenseWebViewTracking)
+@objc(KubesenseWebViewTrackingSDK)
 @_spi(objc)
 public final class objc_WebViewTracking: NSObject {
     override private init() { }

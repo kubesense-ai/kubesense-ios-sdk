@@ -18,37 +18,37 @@
 @implementation WebViewMock
 @end
 
-// MARK: - KubesenseWebViewTracking tests
+// MARK: - KubesenseWebViewTrackingSDK tests
 
-@interface KubesenseWebViewTracking_apiTests : XCTestCase
+@interface KubesenseWebViewTrackingSDK_apiTests : XCTestCase
 @end
 
 /*
  * `WebViewTracking` APIs smoke tests - minimal assertions, mainly check if the interface is available to Objc.
  */
-@implementation KubesenseWebViewTracking_apiTests
+@implementation KubesenseWebViewTrackingSDK_apiTests
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 
 - (void)testKubesenseWebViewTrackingAPI {
     WebViewMock *webView = [WebViewMock new];
-    [KubesenseWebViewTracking enableWithWebView:webView
+    [KubesenseWebViewTrackingSDK enableWithWebView:webView
                                    hosts:[NSSet<NSString*> setWithArray:@[@"host1.com", @"host2.com"]]
                           logsSampleRate:100.0
     ];
-    [KubesenseWebViewTracking disableWithWebView:webView];
+    [KubesenseWebViewTrackingSDK disableWithWebView:webView];
 }
 
 - (void)testKubesenseWebViewTrackingInstanceNameAPI {
     WebViewMock *webView = [WebViewMock new];
     NSString *instanceName = @"webview-test-instance";
-    [KubesenseWebViewTracking enableWithWebView:webView
+    [KubesenseWebViewTrackingSDK enableWithWebView:webView
                             instanceName:instanceName
                                    hosts:[NSSet<NSString*> setWithArray:@[@"host1.com"]]
                           logsSampleRate:100.0
     ];
-    [KubesenseWebViewTracking disableWithWebView:webView];
+    [KubesenseWebViewTrackingSDK disableWithWebView:webView];
 }
 
 #pragma clang diagnostic pop

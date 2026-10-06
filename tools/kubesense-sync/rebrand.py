@@ -178,6 +178,10 @@ RULES = [
     # The Objective-C entry point: `DDDatadog` would otherwise become `KubesenseKubesense`, and
     # `Kubesense` alone collides with the `DatadogTests` test case in the same module.
     (r'(?<![A-Za-z0-9])DDDatadog', 'KubesenseSDK'),
+    # The Objective-C entry classes of the features, named like `KubesenseSDK`: `DDRUM` would otherwise
+    # become `KubesenseRUM`, the name of its module, which then shadows the module in module-qualified
+    # Swift names (`KubesenseRUM.AppStateInfo` in TestUtilities no longer compiles).
+    (r'(?<![A-Za-z0-9])DD(RUM|Logs|Trace|SessionReplay|WebViewTracking)(?![A-Za-z0-9])', r'Kubesense\1SDK'),
     # Test cases whose `DD` and `Datadog` spellings would merge into one class (and one file name)
     # in the same test target.
     (r'\bDDConfigurationTests\b', 'KubesenseObjcConfigurationTests'),

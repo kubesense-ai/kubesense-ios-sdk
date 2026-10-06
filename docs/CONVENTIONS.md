@@ -140,6 +140,17 @@ Every change to a file that came from upstream is replayed onto each new upstrea
 
 There is no CI, so run what the change touches, locally. Build and test with Xcode 26: Xcode 27 rejects the iOS 12 deployment target of the KSCrash and OpenTelemetry packages.
 
+Once per machine and checkout:
+
+```bash
+brew install carthage xcbeautify swiftlint   # make dependencies, make test, make lint
+make repo-setup ENV=dev                      # xcconfigs, and the CocoaPods version from the Gemfile
+make dependencies                            # the OpenTelemetryApi binary, through Carthage
+export DEVELOPER_DIR=/Applications/Xcode-26.6.0.app/Contents/Developer   # if Xcode 26 is not the default
+```
+
+`make test-ios SCHEME=<Module>` runs one module's tests on the simulator named by `DEFAULT_IOS_DEVICE` in the Makefile; `make test-ios-all` runs every module and stops at the first failing one.
+
 | Change | Run |
 | --- | --- |
 | SDK sources | `make test-ios SCHEME="<Module>"`, `make lint` |

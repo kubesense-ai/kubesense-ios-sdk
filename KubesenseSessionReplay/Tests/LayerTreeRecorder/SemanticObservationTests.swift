@@ -129,40 +129,46 @@ struct SemanticObservationTests {
     @available(iOS 26.0, *)
     @Test("Records scroll pockets with their rect edge and ignores sublayers")
     func recordsScrollPocketsWithTheirRectEdgeAndIgnoresSublayers() throws {
-        // Given
-        let viewController = UIHostingController(rootView: ScrollPocketFixture())
+        // Later iOS 26 releases draw scroll pockets with `UIKit.ScrollEdgeEffectView`, which this
+        // version does not recognise; upstream 3.19.0 does. Remove with the upgrade to it.
+        try withKnownIssue("Scroll pockets drawn by UIKit.ScrollEdgeEffectView are recognised from 3.19.0") {
+            // Given
+            let viewController = UIHostingController(rootView: ScrollPocketFixture())
 
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.view.layoutIfNeeded()
-        defer { window.isHidden = true }
+            let window = UIWindow(frame: UIScreen.main.bounds)
+            window.rootViewController = viewController
+            window.makeKeyAndVisible()
+            viewController.view.layoutIfNeeded()
+            defer { window.isHidden = true }
 
-        let scrollPockets = try [UIRectEdge.top, .bottom].map { edge in
-            try #require(
-                window.layer.firstDescendant { layer in
-                    guard
-                        let delegate = layer.delegate as? NSObject,
-                        NSStringFromClass(type(of: delegate)) == "_UIScrollPocket",
-                        let value = delegate.value(forKey: "edge") as? NSNumber
-                    else {
-                        return false
+            let scrollPockets = try [UIRectEdge.top, .bottom].map { edge in
+                try #require(
+                    window.layer.firstDescendant { layer in
+                        guard
+                            let delegate = layer.delegate as? NSObject,
+                            NSStringFromClass(type(of: delegate)) == "_UIScrollPocket",
+                            let value = delegate.value(forKey: "edge") as? NSNumber
+                        else {
+                            return false
+                        }
+                        return UIRectEdge(rawValue: value.uintValue) == edge
                     }
-                    return UIRectEdge(rawValue: value.uintValue) == edge
-                }
-            )
-        }
+                )
+            }
 
-        // When
-        let observations = scrollPockets.map {
-            CALayerSnapshot.SemanticObservation(layer: $0, context: .mockAny())
-        }
+            // When
+            let observations = scrollPockets.map {
+                CALayerSnapshot.SemanticObservation(layer: $0, context: .mockAny())
+            }
 
-        // Then
-        #expect(observations == [
-            .init(semantics: .visualEffect(.scrollPocket(.top)), ignoresSublayers: true),
-            .init(semantics: .visualEffect(.scrollPocket(.bottom)), ignoresSublayers: true)
-        ])
+            // Then
+            #expect(observations == [
+                .init(semantics: .visualEffect(.scrollPocket(.top)), ignoresSublayers: true),
+                .init(semantics: .visualEffect(.scrollPocket(.bottom)), ignoresSublayers: true)
+            ])
+        } when: {
+            NSClassFromString("UIKit.ScrollEdgeEffectView") != nil
+        }
     }
 
     @available(iOS 26.0, *)

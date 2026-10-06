@@ -7,7 +7,7 @@
 #if !os(watchOS)
 
 import XCTest
-import KubesenseProfiling
+@testable import KubesenseProfiling
 
 final class ProfilingConfigurationTests: XCTestCase {
     func testDefaultConfiguration() {

@@ -139,8 +139,8 @@ logger.error(
   - Tag management: `addTag(withKey:value:)`, `removeTag(withKey:)`, `add(tag:)`, `remove(tag:)`
 
 ### Objective-C Bridge
-- **`KubesenseLogs/Sources/Logs+objc.swift`** — Objective-C entry point (`KubesenseLogs`, `KubesenseLoggerConfiguration`, `KubesenseLogger`).
-  - `+[KubesenseLogs enableWith:]` mirrors Swift `Logs.enable(with:)`
+- **`KubesenseLogs/Sources/Logs+objc.swift`** — Objective-C entry point (`KubesenseLogsSDK`, `KubesenseLoggerConfiguration`, `KubesenseLogger`).
+  - `+[KubesenseLogsSDK enableWith:]` mirrors Swift `Logs.enable(with:)`
   - `+[KubesenseLogger createWith:]` mirrors Swift `Logger.create(with:)`
   - ObjC `printLogsToConsole: Bool` maps to Swift `consoleLogFormat: .short`
 
