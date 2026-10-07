@@ -113,13 +113,6 @@ PRESERVED_TOKENS = [
     'datadoghq.atlassian.net',
     'ci-dd-sdk-ios',
     'datadoghq.dev',
-    # The flags assignments request keeps these headers (Android `PrecomputedAssignmentsRequestFactory`).
-    # `DD-CLIENT-TOKEN` is the same header, compared case-insensitively to recognise the SDK's own requests.
-    'dd-client-token',
-    'DD-CLIENT-TOKEN',
-    'dd-application-id',
-    # Field of the precompute-assignments request body, unchanged in the Android flags module.
-    '"dd_env"',
 ]
 
 # Tokens kept like PRESERVED_TOKENS, but only as whole names. The Android fork kept the log correlation
@@ -168,6 +161,12 @@ RULES = [
     (r'\bDD-EVP-ORIGIN\b', 'KUBESENSE-EVP-ORIGIN'),
     (r'\bDD-REQUEST-ID\b', 'KUBESENSE-REQUEST-ID'),
     (r'\bDD-IDEMPOTENCY-KEY\b', 'KUBESENSE-IDEMPOTENCY-KEY'),
+    # Flags assignment headers and body field (Android `PrecomputedAssignmentsRequestFactory`). The
+    # upper-case header is the same one, compared case-insensitively to recognise the SDK's own requests.
+    (r'\bDD-CLIENT-TOKEN\b', 'KUBESENSE-CLIENT-TOKEN'),
+    (r'\bdd-client-token\b', 'kubesense-client-token'),
+    (r'\bdd-application-id\b', 'kubesense-application-id'),
+    (r'\bdd_env\b', 'kubesense_env'),
     (r'\bddsource\b', 'ksource'),
     (r'\bddtags\b', 'ktags'),
     (r'\bx-datadog-', 'x-kubesense-'),

@@ -34,7 +34,7 @@ final class FlagAssignmentsRequestTests: XCTestCase {
           "data" : {
             "attributes" : {
               "env" : {
-                "dd_env" : "production",
+                "kubesense_env" : "production",
                 "name" : "production"
               },
               "source" : {
@@ -67,8 +67,8 @@ final class FlagAssignmentsRequestTests: XCTestCase {
         XCTAssertEqual(request.httpMethod, "POST")
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/vnd.api+json")
         XCTAssertEqual(request.value(forHTTPHeaderField: "Accept-Encoding"), "gzip, deflate, br")
-        XCTAssertEqual(request.value(forHTTPHeaderField: "dd-client-token"), "test-token")
-        XCTAssertEqual(request.value(forHTTPHeaderField: "dd-application-id"), "test-app-id")
+        XCTAssertEqual(request.value(forHTTPHeaderField: "kubesense-client-token"), "test-token")
+        XCTAssertEqual(request.value(forHTTPHeaderField: "kubesense-application-id"), "test-app-id")
         XCTAssertEqual(request.value(forHTTPHeaderField: "X-Custom-Header"), "custom-value")
         let actualBody = try XCTUnwrap(request.httpBody.flatMap { String(data: $0, encoding: .utf8) })
         XCTAssertEqual(actualBody.normalizedJSON, expectedBody.normalizedJSON)

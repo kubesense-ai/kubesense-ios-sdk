@@ -1875,10 +1875,10 @@ class NetworkInstrumentationFeatureTests: XCTestCase {
             interceptedSDKRequests.append(interception)
         }
 
-        // When - Make a request with DD-CLIENT-TOKEN (used by the profiling quota admission API)
+        // When - Make a request with KUBESENSE-CLIENT-TOKEN (used by the profiling quota admission API)
         let quotaURL = URL(string: "http://custom-endpoint.example.com/api/v2/profiling/quota?session_id=test")!
         var request = URLRequest(url: quotaURL)
-        request.setValue(.mockRandom(), forHTTPHeaderField: "DD-CLIENT-TOKEN")
+        request.setValue(.mockRandom(), forHTTPHeaderField: "KUBESENSE-CLIENT-TOKEN")
 
         let taskCompleted = expectation(description: "Task completed")
         let task = session.dataTask(with: request) { _, _, _ in
@@ -1891,7 +1891,7 @@ class NetworkInstrumentationFeatureTests: XCTestCase {
         wait(for: [taskCompleted], timeout: 1)
 
         // Then
-        XCTAssertEqual(interceptedSDKRequests.count, 0, "Should not intercept SDK requests with DD-CLIENT-TOKEN header")
+        XCTAssertEqual(interceptedSDKRequests.count, 0, "Should not intercept SDK requests with KUBESENSE-CLIENT-TOKEN header")
     }
 
     func testAutomaticMode_doesNotTrackSDKRequestsMarkedInternal() throws {
@@ -1906,7 +1906,7 @@ class NetworkInstrumentationFeatureTests: XCTestCase {
         }
 
         // When - Make a request to a public CDN endpoint marked internal (e.g. Remote Configuration
-        // fetch), which cannot carry KUBESENSE-API-KEY/DD-CLIENT-TOKEN since those must not reach a public CDN.
+        // fetch), which cannot carry KUBESENSE-API-KEY/KUBESENSE-CLIENT-TOKEN since those must not reach a public CDN.
         let cdnURL = URL(string: "http://custom-endpoint.example.com/v1/remote-configuration.json")!
         var request = URLRequest(url: cdnURL)
         URLRequestBuilder.markAsInternal(&request)

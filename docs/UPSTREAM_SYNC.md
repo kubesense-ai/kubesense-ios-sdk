@@ -172,6 +172,7 @@ hand for its API changes), and a run of the example app against a collector.
 | Upstream | Kubesense | Why |
 | --- | --- | --- |
 | `DD-API-KEY`, `DD-EVP-ORIGIN(-VERSION)`, `DD-REQUEST-ID`, `DD-IDEMPOTENCY-KEY` | `KUBESENSE-*` | Android `RequestFactory`; kubecol reads `Kubesense-Api-Key` (case-insensitive) |
+| `dd-client-token` / `DD-CLIENT-TOKEN`, `dd-application-id`, `dd_env` | `kubesense-client-token` / `KUBESENSE-CLIENT-TOKEN`, `kubesense-application-id`, `kubesense_env` | Android `PrecomputedAssignmentsRequestFactory` (from 2.2.0); the upper-case header is the same one, compared case-insensitively to recognise the SDK's own requests |
 | `ddsource`, `ddtags` | `ksource`, `ktags` | Android query parameters; kubecol `GetRequestTags` |
 | `x-datadog-*`, `TracingHeaderType.datadog` | `x-kubesense-*`, `.kubesense` | Android `TracingInterceptor` |
 | `_dd`, `_dd.*`, `_dd-custom-header-graph-ql-*` | `_kubesense`, `_kubesense.*`, `_kubesense-custom-header-graph-ql-*` | Android event schemas and `GraphQLHeaders` |
@@ -192,10 +193,6 @@ Kept as they are, on purpose:
 - `dd.trace_id`, `dd.span_id` (log correlation; Android `LogAttributes`). They are kept only as whole names
   (`PRESERVED_PATTERNS`): the RUM cross-platform attributes `_dd.trace_id` / `_dd.span_id` become
   `_kubesense.trace_id` / `_kubesense.span_id`, like Android `RumAttributes.TRACE_ID` / `SPAN_ID`.
-- `dd-client-token` / `DD-CLIENT-TOKEN` and
-  `dd-application-id` (flags assignment headers; `DD-CLIENT-TOKEN` is the same header, compared
-  case-insensitively to recognise the SDK's own requests), `dd_env` (flags request body) — the Android fork
-  kept them.
 - The W3C `tracestate` vendor key `dd=` — Android and the browser SDK (`dd=s:1;o:rum`) kept it. The
   Swift constant holding it is renamed (`W3CHTTPHeaders.Constants.kubesense`); its value stays `"dd"`.
 - The `dd` of date formats (`"EEE, dd MMM yyyy"`), Objective-C type encodings (`{CGSize=dd}`) and the
@@ -256,7 +253,7 @@ Kept as they are, on purpose:
     native SDKs now read as `_kubesense.trace_id` / `_kubesense.span_id`.
 - **Collector (kubecol).** `POST /rum/api/v1/logs`, `/profile` and `/exposures` are accepted and dropped;
   `/precompute-assignments` answers 501 (and, with authentication on, reads `Kubesense-Api-Key` while the
-  flags request carries `dd-client-token`, as on Android); `/rum/api/v1/flagevaluation` does not exist (404,
+  flags request carries `kubesense-client-token`, as on Android); `/rum/api/v1/flagevaluation` does not exist (404,
   the batch is dropped). Its default `sdk-config` document switches `logs`, `trace` and `profiling` off, so
   apps without a stored configuration lose those features from their second launch on.
 - **Android.** Registers its WebView bridge as `KubesenseEventBridge`, while the browser SDK reads

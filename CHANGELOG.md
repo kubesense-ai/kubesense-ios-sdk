@@ -1,5 +1,10 @@
 # Unreleased
 
+- [BREAKING] Flags and the client-token header use Kubesense wire names: the assignments request sends
+  `kubesense-client-token` and `kubesense-application-id` instead of `dd-client-token` and
+  `dd-application-id`, and `env.kubesense_env` instead of `env.dd_env`. The shared client-token header
+  (also on the Profiling quota request) is `KUBESENSE-CLIENT-TOKEN` instead of `DD-CLIENT-TOKEN`.
+
 # Kubesense 1.0.0
 
 First release of the Kubesense iOS SDK, forked from dd-sdk-ios 3.19.0. The entries below this one are
