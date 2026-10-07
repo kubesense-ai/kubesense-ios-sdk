@@ -12,8 +12,8 @@ import KubesenseInternal
 class LogSanitizerTests: XCTestCase {
     /// Tracer Attributes shared with other Feature registered in core.
     struct TracerAttributes {
-        static let traceID = "dd.trace_id"
-        static let spanID = "dd.span_id"
+        static let traceID = "kubesense.trace_id"
+        static let spanID = "kubesense.span_id"
     }
 
     /// RUM Attributes shared with other Feature registered in core.

@@ -16,7 +16,7 @@ The procedure is in [docs/UPSTREAM_SYNC.md](../../docs/UPSTREAM_SYNC.md).
 | `verify/run-runtime-tests.sh` | Runs the swift-testing tests in `verify/runtime` on macOS: sites, endpoint normalization, the remote configuration document and provider, a core applying a cached document, and the Logs / Trace / Flags exposure upload URLs and headers |
 
 `rebrand.py` is Python 3 with no dependencies. Its token map is `RULES`; `PRESERVED_TOKENS` (substrings) and
-`PRESERVED_PATTERNS` (whole names, e.g. `dd.trace_id` but not `_dd.trace_id`) are never rewritten, and
+`PRESERVED_PATTERNS` (whole names only, empty today) are never rewritten, and
 `PRESERVED_LINE` protects the attribution notices. It never touches `LICENSE`, `NOTICE`,
 `LICENSE-3rdparty.csv`, the fork-owned files (`README.md`, `CLAUDE.md`, `CHANGELOG.md`,
 `docs/UPSTREAM_SYNC.md`) or this directory.

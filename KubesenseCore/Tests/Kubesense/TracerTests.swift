@@ -635,8 +635,8 @@ class TracerTests: XCTestCase {
 
         regularLogMatcher.assertStatus(equals: "info")
         regularLogMatcher.assertMessage(equals: "hello")
-        regularLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
-        regularLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
+        regularLogMatcher.assertValue(forKey: "kubesense.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        regularLogMatcher.assertValue(forKey: "kubesense.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
         regularLogMatcher.assertValue(forKey: "custom.field", equals: "value")
 
         errorLogMatcher.assertStatus(equals: "error")
@@ -644,8 +644,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "Swift error")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     func testSendingSpanLogsWithErrorFromArguments() throws {
@@ -669,8 +669,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "Swift error")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     func testSendingSpanLogsWithErrorFromNSError() throws {
@@ -700,8 +700,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "Tracer - 1")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     func testSendingSpanLogsWithErrorFromSwiftError() throws {
@@ -726,8 +726,8 @@ class TracerTests: XCTestCase {
         errorLogMatcher.assertValue(forKey: "error.kind", equals: "ErrorMock")
         errorLogMatcher.assertValue(forKey: "error.message", equals: "Ops!")
         errorLogMatcher.assertMessage(equals: "Ops!")
-        errorLogMatcher.assertValue(forKey: "dd.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
-        errorLogMatcher.assertValue(forKey: "dd.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.trace_id", equals: String(span.context.kubesense.traceID, representation: .hexadecimal))
+        errorLogMatcher.assertValue(forKey: "kubesense.span_id", equals: String(span.context.kubesense.spanID, representation: .hexadecimal))
     }
 
     // MARK: - Integration With RUM Feature

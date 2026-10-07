@@ -59,7 +59,7 @@ final class ProfilingQuotaCheckerTests: XCTestCase {
             "https://quota.us2.kubesense.ai/api/v2/profiling/quota?session_id=\(sessionID.uuidString.lowercased())"
         )
         XCTAssertEqual(request.httpMethod, "GET")
-        XCTAssertEqual(request.value(forHTTPHeaderField: "DD-CLIENT-TOKEN"), "test-client-token")
+        XCTAssertEqual(request.value(forHTTPHeaderField: "KUBESENSE-CLIENT-TOKEN"), "test-client-token")
         XCTAssertEqual(request.value(forHTTPHeaderField: "Accept"), "application/vnd.api+json")
         XCTAssertFalse(request.httpShouldHandleCookies)
     }

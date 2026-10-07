@@ -616,8 +616,8 @@ class RemoteLoggerTests: XCTestCase {
         XCTAssertEqual(logs.count, 1)
 
         let log = try XCTUnwrap(logs.first)
-        XCTAssertEqual(log.attributes.internalAttributes?["dd.trace_id"] as? String, traceID.toString(representation: .hexadecimal))
-        XCTAssertEqual(log.attributes.internalAttributes?["dd.span_id"] as? String, spanID.toString(representation: .decimal))
+        XCTAssertEqual(log.attributes.internalAttributes?["kubesense.trace_id"] as? String, traceID.toString(representation: .hexadecimal))
+        XCTAssertEqual(log.attributes.internalAttributes?["kubesense.span_id"] as? String, spanID.toString(representation: .decimal))
     }
 
     func testWhenActiveSpanIntegrationIsEnabled_withNoActiveSpan_itDoesNotSendTelemetryError() throws {
@@ -640,8 +640,8 @@ class RemoteLoggerTests: XCTestCase {
         XCTAssertEqual(logs.count, 1)
 
         let log = try XCTUnwrap(logs.first)
-        XCTAssertNil(log.attributes.internalAttributes?["dd.trace_id"])
-        XCTAssertNil(log.attributes.internalAttributes?["dd.span_id"])
+        XCTAssertNil(log.attributes.internalAttributes?["kubesense.trace_id"])
+        XCTAssertNil(log.attributes.internalAttributes?["kubesense.span_id"])
         XCTAssertTrue(featureScope.telemetryMock.messages.isEmpty)
     }
 

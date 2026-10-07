@@ -14,7 +14,7 @@ internal struct LogEventSanitizer {
         /// If any of those is used by the user, the attribute will be ignored.
         static let reservedAttributeNames: Set<String> = [
             "host", "message", "status", "service", "source", "ktags",
-            "dd.trace_id", "dd.span_id",
+            "kubesense.trace_id", "kubesense.span_id",
             "application_id", "session_id", "view.id", "user_action.id",
             "build_id",
         ]

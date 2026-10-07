@@ -135,15 +135,15 @@ class TracingURLSessionHandlerTests: XCTestCase {
         XCTAssertEqual(log.status, .error)
         XCTAssertEqual(log.message, "network error")
         XCTAssertEqual(
-            log.attributes.internalAttributes?["dd.trace_id"] as? String,
+            log.attributes.internalAttributes?["kubesense.trace_id"] as? String,
             String(span.traceID, representation: .hexadecimal)
         )
         XCTAssertEqual(
-            log.attributes.internalAttributes?["dd.trace_id"] as? String,
+            log.attributes.internalAttributes?["kubesense.trace_id"] as? String,
             String(span.traceID, representation: .hexadecimal)
         )
         XCTAssertEqual(
-            log.attributes.internalAttributes?["dd.span_id"] as? String,
+            log.attributes.internalAttributes?["kubesense.span_id"] as? String,
             String(span.spanID, representation: .hexadecimal)
         )
         XCTAssertEqual(log.error?.kind, "domain - 123")
@@ -205,11 +205,11 @@ class TracingURLSessionHandlerTests: XCTestCase {
         XCTAssertEqual(log.status, .error)
         XCTAssertEqual(log.message, "404 not found")
         KubesenseAssertJSONEqual(
-            AnyEncodable(log.attributes.internalAttributes?["dd.trace_id"]),
+            AnyEncodable(log.attributes.internalAttributes?["kubesense.trace_id"]),
             String(span.traceID, representation: .hexadecimal)
         )
         KubesenseAssertJSONEqual(
-            AnyEncodable(log.attributes.internalAttributes?["dd.span_id"]),
+            AnyEncodable(log.attributes.internalAttributes?["kubesense.span_id"]),
             String(span.spanID, representation: .hexadecimal)
         )
         XCTAssertEqual(log.error?.kind, "HTTPURLResponse - 404")
@@ -266,7 +266,7 @@ class TracingURLSessionHandlerTests: XCTestCase {
                 "x-kubesense-trace-id": "100",
                 "x-kubesense-tags": "_kubesense.p.tid=a,_kubesense.p.dm=-1",
                 "baggage": "session.id=\(storeSessionId)",
-                "tracestate": "dd=p:0000000000000064;s:1;t.dm:-1",
+                "tracestate": "kubesense=p:0000000000000064;s:1;t.dm:-1",
                 "x-kubesense-parent-id": "100",
                 "x-kubesense-sampling-priority": "1"
             ]

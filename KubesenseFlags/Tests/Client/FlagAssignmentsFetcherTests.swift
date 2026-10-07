@@ -143,6 +143,6 @@ final class FlagAssignmentsFetcherTests: XCTestCase {
         waitForExpectations(timeout: 0)
         XCTAssertEqual(capturedRequest?.url?.absoluteString, "https://collector.example.com/precompute-assignments")
         // The Kubesense Android SDK kept these header names for the assignments request.
-        XCTAssertNotNil(capturedRequest?.value(forHTTPHeaderField: "dd-client-token"))
+        XCTAssertNotNil(capturedRequest?.value(forHTTPHeaderField: "kubesense-client-token"))
     }
 }

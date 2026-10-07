@@ -20,7 +20,7 @@ public struct URLRequestBuilder {
         public static let contentEncodingHeaderField = "Content-Encoding"
         public static let userAgentHeaderField = "User-Agent"
         public static let kubesenseAPIKeyHeaderField = "KUBESENSE-API-KEY"
-        public static let kubesenseClientTokenHeaderField = "DD-CLIENT-TOKEN"
+        public static let kubesenseClientTokenHeaderField = "KUBESENSE-CLIENT-TOKEN"
         public static let kubesenseEVPOriginHeaderField = "KUBESENSE-EVP-ORIGIN"
         public static let kubesenseEVPOriginVersionHeaderField = "KUBESENSE-EVP-ORIGIN-VERSION"
         public static let kubesenseRequestIDHeaderField = "KUBESENSE-REQUEST-ID"

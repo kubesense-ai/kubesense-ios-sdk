@@ -969,15 +969,15 @@ class LoggerTests: XCTestCase {
         // then
         let logMatchers = try core.waitAndReturnLogMatchers()
         logMatchers[0].assertValue(
-            forKeyPath: "dd.trace_id",
+            forKeyPath: "kubesense.trace_id",
             equals: span.context.kubesense.traceID.toString(representation: .hexadecimal)
         )
         logMatchers[0].assertValue(
-            forKeyPath: "dd.span_id",
+            forKeyPath: "kubesense.span_id",
             equals: span.context.kubesense.spanID.toString(representation: .decimal)
         )
-        logMatchers[1].assertNoValue(forKey: "dd.trace_id")
-        logMatchers[1].assertNoValue(forKey: "dd.span_id")
+        logMatchers[1].assertNoValue(forKey: "kubesense.trace_id")
+        logMatchers[1].assertNoValue(forKey: "kubesense.span_id")
     }
 
     func testGivenBundlingWithTraceEnabledAndOpenTelemetryTracerRegistered_whenSendingLog_itContainsActiveSpanAttributes() throws {
@@ -1008,15 +1008,15 @@ class LoggerTests: XCTestCase {
         // then
         let logMatchers = try core.waitAndReturnLogMatchers()
         logMatchers[0].assertValue(
-            forKeyPath: "dd.trace_id",
+            forKeyPath: "kubesense.trace_id",
             equals: span.context.traceId.toKubesense().toString(representation: .hexadecimal)
         )
         logMatchers[0].assertValue(
-            forKeyPath: "dd.span_id",
+            forKeyPath: "kubesense.span_id",
             equals: span.context.spanId.toKubesense().toString(representation: .decimal)
         )
-        logMatchers[1].assertNoValue(forKey: "dd.trace_id")
-        logMatchers[1].assertNoValue(forKey: "dd.span_id")
+        logMatchers[1].assertNoValue(forKey: "kubesense.trace_id")
+        logMatchers[1].assertNoValue(forKey: "kubesense.span_id")
     }
 
     // MARK: - Log Dates Correction

@@ -28,10 +28,10 @@ customizations that must survive an upgrade, and the traps already paid for.
 - Wire names are load-bearing: `KUBESENSE-API-KEY`, `ksource`/`ktags`, `x-kubesense-*`, `_kubesense`,
   `window.KubeSenseEventBridge`, and the `/rum/api/v1/...` upload paths must match the collector and the
   other Kubesense SDKs. Renaming one is a breaking change, not a cleanup.
-- Some Datadog-looking names are kept on purpose (`dd.trace_id` / `dd.span_id` in logs, `dd-client-token`,
-  `dd-application-id`, `dd_env`, the `DD` and `.dd` Swift namespaces, the W3C `dd=` tracestate key); see the
-  token map before "fixing" them. The RUM attributes `_kubesense.trace_id` / `_kubesense.span_id` are not
-  among them.
+- Some Datadog-looking names are kept on purpose (the `DD` and `.dd` Swift namespaces); see the token map
+  before "fixing" them. None of them is sent on the wire: logs carry `kubesense.trace_id` /
+  `kubesense.span_id`, RUM `_kubesense.trace_id` / `_kubesense.span_id`, and the W3C `tracestate` vendor
+  key is `kubesense=`.
 
 ## Building without Xcode
 

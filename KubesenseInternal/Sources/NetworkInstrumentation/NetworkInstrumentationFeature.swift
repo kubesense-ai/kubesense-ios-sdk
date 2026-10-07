@@ -365,7 +365,7 @@ extension NetworkInstrumentationFeature {
     /// - Parameter request: The URLRequest to check.
     /// - Returns: `true` if the request is an SDK internal request, `false` otherwise.
     private func isKubesenseInternalRequest(request: URLRequest?) -> Bool {
-        // Kubesense internal requests authenticate with either `KUBESENSE-API-KEY` or `DD-CLIENT-TOKEN`.
+        // Kubesense internal requests authenticate with either `KUBESENSE-API-KEY` or `KUBESENSE-CLIENT-TOKEN`.
         // This catches both this SDK's own uploads (preventing recursion) and other Kubesense
         // tooling that may run in the same process (e.g. `DatadogSDKTesting`'s CI Visibility
         // uploader, which would otherwise pollute interception expectations via the global

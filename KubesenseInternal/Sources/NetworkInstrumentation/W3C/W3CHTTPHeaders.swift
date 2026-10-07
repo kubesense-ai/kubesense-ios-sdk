@@ -55,7 +55,7 @@ public enum W3CHTTPHeaders {
         public static let separator = "-"
 
         // MARK: - Kubesense specific tracestate keys
-        public static let kubesense = "dd"
+        public static let kubesense = "kubesense"
         public static let sampling = "s"
         public static let samplingDecisionMaker = "t.dm"
         public static let origin = "o"

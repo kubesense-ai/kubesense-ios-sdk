@@ -13,9 +13,9 @@ internal struct TracingWithLoggingIntegration: Sendable {
         static let defaultLogMessage = "Span event"
         static let defaultErrorProperty = "Unknown"
         /// Key referencing the trace ID.
-        static let traceIDKey = "dd.trace_id"
+        static let traceIDKey = "kubesense.trace_id"
         /// Key referencing the span ID.
-        static let spanIDKey = "dd.span_id"
+        static let spanIDKey = "kubesense.span_id"
     }
 
     /// `KubesenseCore` instance managing this integration.
