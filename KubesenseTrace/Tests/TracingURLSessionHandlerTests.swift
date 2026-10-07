@@ -85,7 +85,7 @@ class TracingURLSessionHandlerTests: XCTestCase {
         XCTAssertEqual(request.value(forHTTPHeaderField: B3HTTPHeaders.Multiple.sampledField), "1")
         XCTAssertEqual(request.value(forHTTPHeaderField: B3HTTPHeaders.Single.b3Field), "000000000000000a0000000000000064-0000000000000064-1")
         XCTAssertEqual(request.value(forHTTPHeaderField: W3CHTTPHeaders.traceparent), "00-000000000000000a0000000000000064-0000000000000064-01")
-        XCTAssertEqual(request.value(forHTTPHeaderField: W3CHTTPHeaders.tracestate), "dd=p:0000000000000064;s:1;t.dm:-1")
+        XCTAssertEqual(request.value(forHTTPHeaderField: W3CHTTPHeaders.tracestate), "kubesense=p:0000000000000064;s:1;t.dm:-1")
         XCTAssertNil(capturedState)
 
         let injectedTraceContext = try XCTUnwrap(traceContext, "It must return injected trace context")

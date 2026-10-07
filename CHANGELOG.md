@@ -4,6 +4,11 @@
   `kubesense-client-token` and `kubesense-application-id` instead of `dd-client-token` and
   `dd-application-id`, and `env.kubesense_env` instead of `env.dd_env`. The shared client-token header
   (also on the Profiling quota request) is `KUBESENSE-CLIENT-TOKEN` instead of `DD-CLIENT-TOKEN`.
+- [BREAKING] Log correlation and trace propagation use Kubesense wire names: logs written inside a span
+  carry `kubesense.trace_id` / `kubesense.span_id` instead of `dd.trace_id` / `dd.span_id` (like the
+  Android SDK), and the W3C `tracestate` header's vendor member is `kubesense` instead of `dd`
+  (`kubesense=s:1;o:rum`), which the SDK also reads back. `W3CHTTPHeaders.Constants.kubesense` is
+  `"kubesense"`.
 
 # Kubesense 1.0.0
 

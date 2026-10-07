@@ -93,9 +93,9 @@ class TracingManualInstrumentationScenarioTests: IntegrationTests, TracingCommon
         logMatchers[1].assertValue(forKeyPath: "error.stack", matches: matcher)
 
         // Assert logs are linked to "data downloading" span
-        logMatchers[0].assertValue(forKey: "dd.trace_id", equals: try spanMatchers[0].traceID()?.toString(representation: .hexadecimal))
-        logMatchers[0].assertValue(forKey: "dd.span_id", equals: try spanMatchers[0].spanID()?.toString(representation: .hexadecimal))
-        logMatchers[1].assertValue(forKey: "dd.trace_id", equals: try spanMatchers[1].traceID()?.toString(representation: .hexadecimal))
-        logMatchers[1].assertValue(forKey: "dd.span_id", equals: try spanMatchers[1].spanID()?.toString(representation: .hexadecimal))
+        logMatchers[0].assertValue(forKey: "kubesense.trace_id", equals: try spanMatchers[0].traceID()?.toString(representation: .hexadecimal))
+        logMatchers[0].assertValue(forKey: "kubesense.span_id", equals: try spanMatchers[0].spanID()?.toString(representation: .hexadecimal))
+        logMatchers[1].assertValue(forKey: "kubesense.trace_id", equals: try spanMatchers[1].traceID()?.toString(representation: .hexadecimal))
+        logMatchers[1].assertValue(forKey: "kubesense.span_id", equals: try spanMatchers[1].spanID()?.toString(representation: .hexadecimal))
     }
 }

@@ -115,12 +115,9 @@ PRESERVED_TOKENS = [
     'datadoghq.dev',
 ]
 
-# Tokens kept like PRESERVED_TOKENS, but only as whole names. The Android fork kept the log correlation
-# attributes `dd.trace_id` / `dd.span_id` on the wire, while it renamed the RUM ones `_dd.trace_id` /
-# `_dd.span_id` to `_kubesense.*` (`RumAttributes.TRACE_ID`): a plain substring mask would keep both.
-PRESERVED_PATTERNS = [
-    re.compile(r'(?<![A-Za-z0-9_])dd\.(?:trace|span)_id\b'),
-]
+# Tokens kept like PRESERVED_TOKENS, but only as whole names (a plain substring mask would also keep
+# the name inside a longer one). None today.
+PRESERVED_PATTERNS = []
 
 # Interface Builder object ids (`ADw-wv-DDT`, `dHi-dd-Jze`) are opaque and sometimes look like
 # `DD`/`dd` prefixes. They are masked so that no rule rewrites them.
@@ -172,6 +169,13 @@ RULES = [
     (r'\bx-datadog-', 'x-kubesense-'),
     # `_dd`, `_dd.*` and `_dd-custom-header-*`; `\b` would not match after a `_`.
     (r'(?<![A-Za-z0-9])_dd\b', '_kubesense'),
+    # Log correlation attributes (Android `LogAttributes`). Not the `_dd.trace_id` / `_dd.span_id` of
+    # RUM, which the `_dd` rule above already renames `_kubesense.*`.
+    (r'(?<![A-Za-z0-9_])dd\.(trace|span)_id\b', r'kubesense.\1_id'),
+    # The W3C `tracestate` vendor key (`kubesense=s:1;o:rum`): the `W3CHTTPHeaders.Constants.dd` constant
+    # and the headers the tests expect. The generic `dd` rule below leaves string data alone.
+    (r'(\bstatic let (?:dd|kubesense) = )"dd"', r'\1"kubesense"'),
+    (r'(?<![A-Za-z0-9_.-])dd=(?=[a-z.]+:)', 'kubesense='),
 
     # --- identifiers ------------------------------------------------------------------------------
     # The Objective-C entry point: `DDDatadog` would otherwise become `KubesenseKubesense`, and
@@ -202,8 +206,8 @@ RULES = [
     # --- the SDK's own `dd` names -----------------------------------------------------------------
     # The `x.dd.…` extension namespace (public: `view.dd.sessionReplayPrivacyOverrides`), the `dd`
     # field of the event models (sent as `_kubesense` on the wire) and locals. Never inside string
-    # data: the W3C `tracestate` vendor key `"dd"` is shared with the browser SDK (`dd=s:1;o:rum`),
-    # `{CGSize=dd}` is an Objective-C type encoding, and date formats use `dd` for the day.
+    # data: `{CGSize=dd}` is an Objective-C type encoding, and date formats use `dd` for the day (the
+    # W3C `tracestate` vendor key is handled by the wire name rules above).
     (r'(?<![A-Za-z0-9_%/="-])dd(?![A-Za-z0-9_/="-]| MMM)', 'kubesense'),
     # The `DD` namespace of the SDK's logger (`DD.logger`) and the nested `DD` / `Dd` types of the
     # event models (`RUMViewEvent.DD.Session`). `KS`, since `Kubesense` would shadow the SDK's entry

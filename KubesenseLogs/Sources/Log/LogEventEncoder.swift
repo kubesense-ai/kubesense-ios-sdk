@@ -41,9 +41,9 @@ public struct LogEvent: Encodable {
         /// Those keys are recognised by Kubesense app and used to render the link in web UI.
         internal enum Trace {
             /// Key referencing the trace ID.
-            static let traceID = "dd.trace_id"
+            static let traceID = "kubesense.trace_id"
             /// Key referencing the span ID.
-            static let spanID = "dd.span_id"
+            static let spanID = "kubesense.span_id"
         }
 
         /// User attribute keys propagated from the native SDK to webview events.

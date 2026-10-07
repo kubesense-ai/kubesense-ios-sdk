@@ -162,7 +162,7 @@ logger.error(
 - **Logger name**: `name` — reported as `logger.name` on log events.
 - **Network info**: `networkInfoEnabled` (default: `false`) — attaches reachability, connection type, mobile carrier to every log. Mobile carrier info is only available on iOS versions below 16, since Apple deprecated the required Core Telephony APIs (`CTCarrier`) without a replacement.
 - **RUM bundling**: `bundleWithRumEnabled` (default: `true`) — attaches `application_id`, `session_id`, `view.id`, `user_action.id` when a sampled-in RUM session is active.
-- **Trace bundling**: `bundleWithTraceEnabled` (default: `true`) — attaches `dd.trace_id` and `dd.span_id` when a Kubesense span is active (via `span.setActive()` from `Tracer.shared()`). OTel spans activated through `withActiveSpan` do not propagate through this path.
+- **Trace bundling**: `bundleWithTraceEnabled` (default: `true`) — attaches `kubesense.trace_id` and `kubesense.span_id` when a Kubesense span is active (via `span.setActive()` from `Tracer.shared()`). OTel spans activated through `withActiveSpan` do not propagate through this path.
 
 ### Console Output
 - `consoleLogFormat: nil` (default) — no console output.
@@ -210,7 +210,7 @@ Returned when `Kubesense.initialize()` was not called or `Logs.enable()` was not
 ## Feature Interactions
 
 - **RUM**: When `bundleWithRumEnabled` is `true` and the current RUM session is sampled in, logs are enriched with the current RUM view / session / action IDs for correlation in Kubesense.
-- **Trace**: When `bundleWithTraceEnabled` is `true` and an active span is present (via `Tracer.shared()` or `OTelTracerProvider`), logs are enriched with `dd.trace_id` and `dd.span_id`. Span logs written via `OTSpan.log(...)` also flow through the Logs feature — if Logs is not enabled, those span logs are dropped.
+- **Trace**: When `bundleWithTraceEnabled` is `true` and an active span is present (via `Tracer.shared()` or `OTelTracerProvider`), logs are enriched with `kubesense.trace_id` and `kubesense.span_id`. Span logs written via `OTSpan.log(...)` also flow through the Logs feature — if Logs is not enabled, those span logs are dropped.
 
 ## Additional Context
 

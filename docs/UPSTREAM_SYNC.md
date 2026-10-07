@@ -176,6 +176,8 @@ hand for its API changes), and a run of the example app against a collector.
 | `ddsource`, `ddtags` | `ksource`, `ktags` | Android query parameters; kubecol `GetRequestTags` |
 | `x-datadog-*`, `TracingHeaderType.datadog` | `x-kubesense-*`, `.kubesense` | Android `TracingInterceptor` |
 | `_dd`, `_dd.*`, `_dd-custom-header-graph-ql-*` | `_kubesense`, `_kubesense.*`, `_kubesense-custom-header-graph-ql-*` | Android event schemas and `GraphQLHeaders` |
+| `dd.trace_id`, `dd.span_id` (log correlation) | `kubesense.trace_id`, `kubesense.span_id` | Android `LogAttributes`. Whole names only: the RUM `_dd.trace_id` / `_dd.span_id` go through the `_dd` rule (`_kubesense.*`, Android `RumAttributes.TRACE_ID` / `SPAN_ID`) |
+| W3C `tracestate` vendor key `dd=` (`W3CHTTPHeaders.Constants.dd = "dd"`) | `kubesense=` (`Constants.kubesense = "kubesense"`) | no Datadog name on the wire; written as `kubesense=s:1;o:rum` and read back under `kubesense` |
 | `DatadogEventBridge` | `KubeSenseEventBridge` | browser fork `eventBridge.ts` (capital S) |
 | `Datadog` (Swift entry point) / `DDDatadog` (Objective-C) | `Kubesense` / `KubesenseSDK` | `KubesenseKubesense` otherwise; `Kubesense` alone collides with the `DatadogTests` test case |
 | `DD` + capital (`DDRUMMonitor`, `DDSpan`, `DDAssertEqual`) | `Kubesense` + capital | Not `KS`: KSCrash, imported by crash reporting, owns that prefix (`KSCrashReport`) |
@@ -190,11 +192,6 @@ hand for its API changes), and a run of the example app against a collector.
 
 Kept as they are, on purpose:
 
-- `dd.trace_id`, `dd.span_id` (log correlation; Android `LogAttributes`). They are kept only as whole names
-  (`PRESERVED_PATTERNS`): the RUM cross-platform attributes `_dd.trace_id` / `_dd.span_id` become
-  `_kubesense.trace_id` / `_kubesense.span_id`, like Android `RumAttributes.TRACE_ID` / `SPAN_ID`.
-- The W3C `tracestate` vendor key `dd=` — Android and the browser SDK (`dd=s:1;o:rum`) kept it. The
-  Swift constant holding it is renamed (`W3CHTTPHeaders.Constants.kubesense`); its value stays `"dd"`.
 - The `dd` of date formats (`"EEE, dd MMM yyyy"`), Objective-C type encodings (`{CGSize=dd}`) and the
   `"dd"` keys of test data: the bare-`dd` rule skips string data.
 - External projects and tools: `rum-events-format`, `dd-go`, `datadog-ci`, `dd-octo-sts`,

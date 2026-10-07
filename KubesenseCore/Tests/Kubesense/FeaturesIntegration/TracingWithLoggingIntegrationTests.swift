@@ -57,8 +57,8 @@ class TracingWithLoggingIntegrationTests: XCTestCase {
         KubesenseAssertJSONEqual(
             AnyEncodable(log.attributes.internalAttributes),
             AnyEncodable([
-                "dd.trace_id": "a0000000000000064",
-                "dd.span_id": "c8"
+                "kubesense.trace_id": "a0000000000000064",
+                "kubesense.span_id": "c8"
             ])
         )
     }
@@ -133,8 +133,8 @@ class TracingWithLoggingIntegrationTests: XCTestCase {
         KubesenseAssertJSONEqual(
             AnyEncodable(log.attributes.internalAttributes),
             AnyEncodable([
-                "dd.trace_id": "a0000000000000064",
-                "dd.span_id": "c8"
+                "kubesense.trace_id": "a0000000000000064",
+                "kubesense.span_id": "c8"
             ])
         )
     }
